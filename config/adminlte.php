@@ -247,77 +247,254 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
+            'text'        => 'Dashboard',
+            'url'         => 'dashboard',
+            'icon'        => 'fas fa-fw fa-chart-line',
             'label'       => 4,
             'label_color' => 'success',
         ],
-        ['header' => 'account_settings'],
+
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'route'  => 'profile.show',
             'icon' => 'fas fa-fw fa-user',
         ],
+
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Ventas',
+            'icon'    => 'fas fa-fw fa-dollar-sign',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'text' => 'Comprobantes',
+                    'icon' => 'fas fa-fw ',
                     'url'  => '#',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Anticipo de Venta',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
                 ],
                 [
-                    'text' => 'level_one',
+                    'text' => 'Comunicaciones de Baja',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Cotización',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Garantías',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                
+            ],
+        ],
+
+        [
+            'text'    => 'Caja',
+            'icon'    => 'fas fa-fw fa-cash-register',
+            'submenu' => [
+                [
+                    'text' => 'Liquidación Diaria',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Por Cobrar',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Por Pagar',
+                    'icon' => 'fas fa-fw ',
                     'url'  => '#',
                 ],
             ],
         ],
-        ['header' => 'labels'],
+
         [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
+            'text' => 'Catálogos',
+            'icon' => 'fas fa-fw fa-th-large',
+            'url'  => '#',
+            'submenu' => [
+                [
+                    'text' => 'Categorias',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Marcas',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Familias',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Productos',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Series',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Configuraciones de PC',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
         ],
+
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text'    => 'Compras',
+            'icon'    => 'fas fa-fw fa-shopping-cart',
+            'submenu' => [
+                [
+                    'text' => 'Registros de Compras',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
         ],
+
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text'    => 'Inventario',
+            'icon'    => 'fas fa-fw fa-warehouse',
+            'submenu' => [
+                [
+                    'text' => 'Locales',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Movimiento de Local',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Kardex',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Modificación de Stock',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Devoluciones',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
         ],
+
+        [
+            'text'    => 'Reportes',
+            'icon'    => 'fas fa-fw fa-chart-area',
+            'submenu' => [
+                [
+                    'text' => 'Reporte de Inventario',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Reporte de Ventas',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Reporte de Productos',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Reporte de Compras',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Reporte de Caja',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Reporte Detallado',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
+        ],
+
+        [
+            'text'    => 'Terceros',
+            'icon'    => 'fas fa-fw fa-users',
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Proveedores',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
+        ],
+
+        [
+            'text'    => 'Configuración',
+            'icon'    => 'fas fa-fw fa-cogs',
+            'submenu' => [
+                [
+                    'text' => 'Empresa',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Usuarios',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Roles',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Series',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+            ],
+        ],    
+
+
+        // ['header' => 'labels'],
+        // [
+        //     'text'       => 'important',
+        //     'icon_color' => 'red',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'warning',
+        //     'icon_color' => 'yellow',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url'        => '#',
+        // ],
     ],
 
     /*
