@@ -65,11 +65,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
-    'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_header' => true,
+    'usermenu_header_class' => 'bg-dark',
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -250,19 +250,22 @@ return [
             'text'        => 'Dashboard',
             'url'         => 'dashboard',
             'icon'        => 'fas fa-fw fa-chart-line',
+            'can'         => 'dashboard',
             'label'       => 4,
             'label_color' => 'success',
         ],
 
         [
-            'text' => 'profile',
+            'text'   => 'profile',
             'route'  => 'profile.show',
-            'icon' => 'fas fa-fw fa-user',
+            'icon'   => 'fas fa-fw fa-user',
+            'can'    => 'profile',
         ],
 
         [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-dollar-sign',
+            'can'     => 'sales',
             'submenu' => [
                 [
                     'text' => 'Comprobantes',
@@ -296,6 +299,7 @@ return [
         [
             'text'    => 'Caja',
             'icon'    => 'fas fa-fw fa-cash-register',
+            'can'     => 'cash-register',
             'submenu' => [
                 [
                     'text' => 'Liquidación Diaria',
@@ -318,7 +322,7 @@ return [
         [
             'text' => 'Catálogos',
             'icon' => 'fas fa-fw fa-th-large',
-            'url'  => '#',
+            'can'     => 'catalogs',
             'submenu' => [
                 [
                     'text' => 'Categorias',
@@ -356,6 +360,7 @@ return [
         [
             'text'    => 'Compras',
             'icon'    => 'fas fa-fw fa-shopping-cart',
+            'can'     => 'purchases',
             'submenu' => [
                 [
                     'text' => 'Registros de Compras',
@@ -368,31 +373,33 @@ return [
         [
             'text'    => 'Inventario',
             'icon'    => 'fas fa-fw fa-warehouse',
+            'can'     => 'inventory',
             'submenu' => [
                 [
-                    'text' => 'Locales',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Sucursales',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'branches.index',
+                    'can'    => 'branches.index',
                 ],
                 [
-                    'text' => 'Movimiento de Local',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Movimiento de Sucursal',
+                    'icon'   => 'fas fa-fw ',
+                    'url'    => '#',
                 ],
                 [
-                    'text' => 'Kardex',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Kardex',
+                    'icon'   => 'fas fa-fw ',
+                    'url'    => '#',
                 ],
                 [
-                    'text' => 'Modificación de Stock',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Modificación de Stock',
+                    'icon'   => 'fas fa-fw ',
+                    'url'    => '#',
                 ],
                 [
-                    'text' => 'Devoluciones',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Devoluciones',
+                    'icon'   => 'fas fa-fw ',
+                    'url'    => '#',
                 ],
             ],
         ],
@@ -400,6 +407,7 @@ return [
         [
             'text'    => 'Reportes',
             'icon'    => 'fas fa-fw fa-chart-area',
+            'can'     => 'reports',
             'submenu' => [
                 [
                     'text' => 'Reporte de Inventario',
@@ -437,6 +445,7 @@ return [
         [
             'text'    => 'Terceros',
             'icon'    => 'fas fa-fw fa-users',
+            'can'     => 'third-parties',
             'submenu' => [
                 [
                     'text' => 'Clientes',
@@ -454,26 +463,30 @@ return [
         [
             'text'    => 'Configuración',
             'icon'    => 'fas fa-fw fa-cogs',
+            'can'     => 'settings',
             'submenu' => [
                 [
-                    'text' => 'Empresa',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Empresa',
+                    'icon'   => 'fas fa-fw ',
+                    'url'    => '#',
                 ],
                 [
-                    'text' => 'Usuarios',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Usuarios',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'users.index',
+                    'can'    => 'users.index',
                 ],
                 [
-                    'text' => 'Roles',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Roles',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'roles.index',
+                    'can'    => 'roles.index',
                 ],
                 [
-                    'text' => 'Series',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'text'   => 'Series',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'series.index',
+                    'can'    => 'series.index',
                 ],
             ],
         ],    
@@ -533,7 +546,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -549,6 +562,46 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/jszip/jszip.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/pdfmake.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
                 ],
             ],
         ],
@@ -578,12 +631,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],
@@ -615,5 +668,5 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

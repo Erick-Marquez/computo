@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,4 +61,19 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function adminlte_desc()
+    {
+        return auth()->user()->getRoleNames()[0];
+    }
+
+    public function adminlte_profile_url()
+    {
+        return route('profile.show');
+    }
+
+    public function adminlte_image(){
+        
+        return auth()->user()->profile_photo_url; 
+    }
 }
