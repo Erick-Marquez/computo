@@ -325,24 +325,28 @@ return [
             'can'     => 'catalogs',
             'submenu' => [
                 [
-                    'text' => 'Categorias',
+                    'text' => 'Familias',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'families.index',
+                    'can'    => 'families.index',
+                ],
+                [
+                    'text' => 'Lineas',
+                    'icon' => 'fas fa-fw ',
+                    'route'  => 'lines.index',
+                    'can'    => 'lines.index',
                 ],
                 [
                     'text' => 'Marcas',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
-                ],
-                [
-                    'text' => 'Familias',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'brands.index',
+                    'can'    => 'brands.index',
                 ],
                 [
                     'text' => 'Productos',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'products.index',
+                    'can'    => 'products.index',
                 ],
                 [
                     'text' => 'Series',
@@ -450,12 +454,14 @@ return [
                 [
                     'text' => 'Clientes',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'customers.index',
+                    'can'    => 'customers.index',
                 ],
                 [
                     'text' => 'Proveedores',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'providers.index',
+                    'can'    => 'providers.index',
                 ],
             ],
         ],
@@ -606,7 +612,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

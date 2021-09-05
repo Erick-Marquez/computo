@@ -1,8 +1,18 @@
 <?php
 
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\LineController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductController;
+
 use App\Http\Controllers\BranchController;
+
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProviderController;
+
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SerieController;
 
 use Illuminate\Support\Facades\Route;
@@ -27,16 +37,26 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 
+//Modulo Catalago
+Route::middleware(['auth:sanctum', 'verified'])->resource('families', FamilyController::class)->names('families');
+Route::middleware(['auth:sanctum', 'verified'])->resource('lines', LineController::class)->names('lines');
+Route::middleware(['auth:sanctum', 'verified'])->resource('brands', BrandController::class)->names('brands');
+Route::middleware(['auth:sanctum', 'verified'])->resource('products', ProductController::class)->names('products');
+
 
 //Modulo Inventario
 Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
 Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products', [BranchController::class, 'products'])->name('branches.products');
 
 
+//Modulo Terceros
+Route::middleware(['auth:sanctum', 'verified'])->resource('customers', CustomerController::class)->names('customers');
+Route::middleware(['auth:sanctum', 'verified'])->resource('providers', ProviderController::class)->names('providers');
+
 //Rutas en español
 //Route::middleware(['auth:sanctum', 'verified'])->get('usuarios/{user}/editar', [UserController::class, 'edit'])->name('users.edit');
 
-// Modulo Configuracion
+//Modulo Configuracion
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class)->names('users');
 Route::middleware(['auth:sanctum', 'verified'])->resource('roles', RoleController::class)->names('roles');
 Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series');

@@ -20,10 +20,14 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Branch::factory(3)->create();
 
+        
+
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(VoucherTypeSeeder::class);
 
-        
+        \App\Models\Product::factory(10)->create();
+        \App\Models\Provider::factory(10)->create();
+        \App\Models\Customer::factory(10)->create();
     }
 }
