@@ -7,8 +7,7 @@
 @stop
 
 @section('content')
-    <p>Hola</p>
-    {{$user}}
+
 @stop
 
 @section('css')

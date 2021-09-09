@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Branch;
+use App\Models\BranchProduct;
+use App\Models\Product;
 
 class BranchController extends Controller
 {
@@ -112,7 +114,20 @@ class BranchController extends Controller
      */
     public function products(Branch $branch)  
     {
-        //
-        return view('inventory.branches.products');
+        $branchProducts = $branch->branchProducts;
+        return view('inventory.branches.products', compact('branch','branchProducts'));
+    }
+
+    public function productsAdd(Branch $branch)  
+    {
+        
+        return view('inventory.branches.create');
+    }
+
+    public function productsDestroy(BranchProduct $branchProduct)  
+    {
+        $branch = $branchProduct->branch;
+        $branchProduct->delete();
+        return redirect()->route('branches.products', $branch);
     }
 }

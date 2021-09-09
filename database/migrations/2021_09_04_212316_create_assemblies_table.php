@@ -15,9 +15,9 @@ class CreateAssembliesTable extends Migration
     {
         Schema::create('assemblies', function (Blueprint $table) {
             $table->id();
-
+            $table->string('name');
             $table->bigInteger('stock')->nullable();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->unsignedDecimal('price', 9,3)->nullable();
             $table->unsignedDecimal('discount', 9,3)->nullable();
             $table->boolean('active')->default(true);

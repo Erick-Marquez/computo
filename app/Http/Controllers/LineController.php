@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Line;
 use App\Models\Family;
 use Illuminate\Http\Request;
@@ -28,7 +29,8 @@ class LineController extends Controller
     public function create()
     {
         $families = Family::all();
-        return view('catalogs.lines.create', compact('families'));
+        $brands = Brand::all();
+        return view('catalogs.lines.create', compact('families', 'brands'));
     }
 
     /**
@@ -44,11 +46,13 @@ class LineController extends Controller
             'family_id' => 'required'
         ]);
 
-        line::create([
+        $line = line::create([
             'cod' => $request->cod,
             'description' => $request->description,
             'family_id' => $request->family_id,
         ]);
+
+        $line->brands()->sync($request->brand_id);
 
         return redirect()->route('lines.index');
     }
@@ -73,7 +77,8 @@ class LineController extends Controller
     public function edit(Line $line)
     {
         $families = Family::all();
-        return view('catalogs.lines.edit', compact('line','families'));
+        $brands = Brand::all();
+        return view('catalogs.lines.edit', compact('line', 'families', 'brands'));
     }
 
     /**
@@ -92,6 +97,8 @@ class LineController extends Controller
 
         $line->update($request->all());
 
+        $line->brands()->sync($request->brand_id);
+        
         return redirect()->route('lines.index');
     }
 

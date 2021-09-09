@@ -17,6 +17,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Código</th>
+                        <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Acciones</th>
                     </tr>
@@ -26,6 +27,7 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->cod }}</td>
+                            <td>{{ $product->name }}</td>
                             <td>{{ $product->description }}</td>
                             <td>
                                 <div class="dropdown">

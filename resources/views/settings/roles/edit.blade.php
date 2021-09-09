@@ -7,7 +7,6 @@
 @stop
 
 @section('content')
-{{$role}}
     <div class="card">
         <div class="card-body">
             <form method="POST" action="{{ route('roles.update', $role) }}">
@@ -17,7 +16,7 @@
                     <label for="name" class="font-weight-normal">Nombre del Rol</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Nombre del Rol" value="{{ $role->name }}" required>
                 </div>
-
+                <label class="font-weight-normal">Permisos</label>
                 @foreach ($permissions as $permission)
                     <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-on-success">

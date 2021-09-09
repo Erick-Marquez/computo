@@ -20,8 +20,11 @@ class Line extends Model
     {
         return $this->belongsToMany(Brand::class);
     }
+    
+
     public function family()
     {
         return $this->belongsTo(Family::class);
     }
+
 }

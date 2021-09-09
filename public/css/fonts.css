@@ -1,0 +1,20 @@
+@font-face {
+    src: local("Poppins-Italic"), url(../fonts/Poppins/Poppins-Italic.ttf);
+    font-family: "Poppins-Italic";
+}
+@font-face {
+    src: local("Poppins-Medium"), url(../fonts/Poppins/Poppins-Medium.ttf);
+    font-family: "Poppins-Medium";
+}
+@font-face {
+    src: local("Poppins-Bold"), url(../fonts/Poppins/Poppins-Bold.ttf);
+    font-family: "Poppins-Bold";
+}
+@font-face {
+    src: local("Poppins-Light"), url(../fonts/Poppins/Poppins-Light.ttf);
+    font-family: "Poppins-Light";
+}
+@font-face {
+    src: local("Poppins-LightItalic"), url(../fonts/Poppins/Poppins-LightItalic.ttf);
+    font-family: "Poppins-LightItalic";
+}

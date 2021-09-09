@@ -5,10 +5,12 @@ use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AssemblyController;
 
 use App\Http\Controllers\BranchController;
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
 
 use App\Http\Controllers\UserController;
@@ -42,11 +44,17 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('families', FamilyCont
 Route::middleware(['auth:sanctum', 'verified'])->resource('lines', LineController::class)->names('lines');
 Route::middleware(['auth:sanctum', 'verified'])->resource('brands', BrandController::class)->names('brands');
 Route::middleware(['auth:sanctum', 'verified'])->resource('products', ProductController::class)->names('products');
+Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', ProductSerieController::class)->names('product-series')->parameters(['product-series' => 'productSerie']);
+Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
+
 
 
 //Modulo Inventario
 Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
-Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products', [BranchController::class, 'products'])->name('branches.products');
+    Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products', [BranchController::class, 'products'])->name('branches.products');
+    Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
+    Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
+    
 
 
 //Modulo Terceros
@@ -59,6 +67,4 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('providers', ProviderC
 //Modulo Configuracion
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class)->names('users');
 Route::middleware(['auth:sanctum', 'verified'])->resource('roles', RoleController::class)->names('roles');
-Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series');
-
-
+Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series')->parameters(['series' => 'serie']);

@@ -59,6 +59,18 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'products.edit', 'description' => 'Editar Producto'])->syncRoles([$role1]);
             Permission::create(['name' => 'products.destroy', 'description' => 'Eliminar Producto'])->syncRoles([$role1]);
 
+            //Product Series Permissions
+            Permission::create(['name' => 'product-series.index', 'description' => 'Ver Lista de Series de Productos'])->syncRoles([$role1]);
+            Permission::create(['name' => 'product-series.create', 'description' => 'Crear Serie de Producto'])->syncRoles([$role1]);
+            Permission::create(['name' => 'product-series.edit', 'description' => 'Editar Serie de Producto'])->syncRoles([$role1]);
+            Permission::create(['name' => 'product-series.destroy', 'description' => 'Eliminar Serie de Producto'])->syncRoles([$role1]);
+
+            //Assemblies Permissions
+            Permission::create(['name' => 'assemblies.index', 'description' => 'Ver Lista de Configuraciones de PC'])->syncRoles([$role1]);
+            Permission::create(['name' => 'assemblies.create', 'description' => 'Crear Configuracion de PC'])->syncRoles([$role1]);
+            Permission::create(['name' => 'assemblies.edit', 'description' => 'Editar Configuracion de PC'])->syncRoles([$role1]);
+            Permission::create(['name' => 'assemblies.destroy', 'description' => 'Eliminar Configuracion de PC'])->syncRoles([$role1]);
+
         //Purchases Permissions
         Permission::create(['name' => 'purchases', 'description' => 'Ver Compras'])->syncRoles([$role1]);
 

@@ -27,6 +27,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="brand_id" class="font-weight-normal">Marcas</label>
+                    <select class="form-control brand" id="brand_id" name="brand_id[]" multiple="multiple">
+                        @foreach ($brands as $brand)
+                            <option value="{{ $brand->id }}">{{ $brand->description }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>
         </div>
@@ -41,6 +49,10 @@
     <script>
         $(document).ready(function() {
             $('.family').select2();
+        });
+
+        $(document).ready(function() {
+            $('.brand').select2();
         });
     </script>
 @stop

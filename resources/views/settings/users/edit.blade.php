@@ -7,7 +7,6 @@
 @stop
 
 @section('content')
-    {{$user}}
     <div class="card">
         <div class="card-body">
             <form method="POST" action="{{ route('users.update', '1') }}">

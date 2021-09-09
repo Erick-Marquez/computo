@@ -10,6 +10,11 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+@font-face {
+  src: local("Poppins"), url(../../../../fonts/Poppins/Poppins-Regular.ttf);
+  font-family: "Poppins";
+}
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -37,8 +42,8 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-family-sans-serif: Poppins;
+  --font-family-monospace: Poppins;
 }
 
 *,
@@ -48,7 +53,7 @@
 }
 
 html {
-  font-family: sans-serif;
+  font-family: Poppins;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -60,7 +65,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: Poppins;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;

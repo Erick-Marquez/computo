@@ -45,7 +45,7 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Serie $serie)
     {
         //
     }
@@ -56,7 +56,7 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Serie $serie)
     {
         //
     }
@@ -68,7 +68,7 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Serie $serie)
     {
         //
     }
@@ -79,8 +79,9 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Serie $serie)
     {
-        //
+        $serie->delete();
+        return redirect()->route('series.index');
     }
 }

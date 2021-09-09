@@ -20,4 +20,14 @@ class BrandLine extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function line()
+    {
+        return $this->belongsTo(Line::class);
+    }
 }

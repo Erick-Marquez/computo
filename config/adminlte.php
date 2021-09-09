@@ -351,12 +351,14 @@ return [
                 [
                     'text' => 'Series',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'product-series.index',
+                    'can'    => 'product-series.index',
                 ],
                 [
                     'text' => 'Configuraciones de PC',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'assemblies.index',
+                    'can'    => 'assemblies.index',
                 ],
             ],
         ],

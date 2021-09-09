@@ -23,8 +23,9 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'cod' => $this->faker->unique()->numberBetween(1000,9000),
-            'description' => $this->faker->unique()->word(10),
+            'cod' => $this->faker->unique()->unique()->numerify('#####'),
+            'name' => $this->faker->unique()->word(10),
+            'description' => $this->faker->unique()->word(20),
             'price' => $this->faker->randomFloat(3, 20, 500),
             'brand_line_id' => BrandLine::all()->random()->id,
         ];

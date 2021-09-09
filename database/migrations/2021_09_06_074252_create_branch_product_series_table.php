@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssemblyBranchProductTable extends Migration
+class CreateBranchProductSeriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateAssemblyBranchProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('assembly_branch_product', function (Blueprint $table) {
+        Schema::create('branch_product_series', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('assembly_id') 
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->string('serie');
+            $table->boolean('sold')->default(false);
+            $table->boolean('active')->default(true);
+
             $table->foreignId('branch_product_id') 
                 ->constrained('branch_product')
                 ->onUpdate('cascade')
@@ -36,6 +36,6 @@ class CreateAssemblyBranchProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assembly_branch_product');
+        Schema::dropIfExists('branch_product_series');
     }
 }
