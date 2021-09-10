@@ -302,7 +302,12 @@ return [
             'can'     => 'cash-register',
             'submenu' => [
                 [
-                    'text' => 'Liquidación Diaria',
+                    'text' => 'Aperturas y Cierres',
+                    'icon' => 'fas fa-fw ',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Egresos e Ingresos',
                     'icon' => 'fas fa-fw ',
                     'url'  => '#',
                 ],
@@ -315,7 +320,7 @@ return [
                     'text' => 'Por Pagar',
                     'icon' => 'fas fa-fw ',
                     'url'  => '#',
-                ],
+                ]
             ],
         ],
 

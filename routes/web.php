@@ -48,6 +48,8 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', Prod
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
 
 
+//Modulo Compras
+
 
 //Modulo Inventario
 Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
