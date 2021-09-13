@@ -40,10 +40,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($assembly_products as $assembly_product)
+                        @foreach ($assemblyProducts as $assemblyProduct)
                             <tr>
-                                <td>{{ $assembly_product->name }}</td>
-                                <td>{{ $assembly_product->quantity }}</td>
+                                <td>{{ $assemblyProduct->name }}</td>
+                                <td>{{ $assemblyProduct->pivot->quantity }}</td>
                             </tr>
                         @endforeach
                     </tbody>

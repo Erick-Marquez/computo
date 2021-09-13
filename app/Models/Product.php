@@ -28,9 +28,19 @@ class Product extends Model
         return $this->belongsToMany(Branch::class);
     }
 
+    public function branchProducts()
+    {
+        return $this->hasMany(BranchProduct::class);
+    }
+
     public function assemblies()
     {
         return $this->belongsToMany(Assembly::class);
+    }
+
+    public function quotationDetails()
+    {
+        return $this->hasMany(QuotationDetail::class);
     }
 
     public function image()

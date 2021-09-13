@@ -18,8 +18,16 @@ class CreateProductsTable extends Migration
             $table->string('cod')->nullable();
             $table->string('name');
             $table->string('description');
-            $table->unsignedDecimal('price', 9,3)->nullable();
+            $table->unsignedDecimal('referential_purchase_price', 9,3)->nullable();
+            $table->unsignedDecimal('referential_sale_price', 9,3)->nullable();
+            $table->unsignedDecimal('referential_sale_price_one', 9,3)->nullable();
+            $table->unsignedDecimal('referential_sale_price_two', 9,3)->nullable();
             $table->boolean('active')->default(true);
+
+            $table->foreignId('igv_type_id') 
+                ->constrained('igv_types')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreignId('brand_line_id') 
                 ->constrained('brand_line')

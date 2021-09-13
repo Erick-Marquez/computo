@@ -58,8 +58,8 @@ class AssemblyController extends Controller
      */
     public function edit(Assembly $assembly)
     {
-        $assembly_products = $assembly->products;
-        return view('catalogs.assemblies.edit', compact('assembly', 'assembly_products'));
+        $assemblyProducts = $assembly->products;
+        return view('catalogs.assemblies.edit', compact('assembly', 'assemblyProducts'));
     }
 
     /**

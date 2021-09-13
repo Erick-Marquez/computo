@@ -19,7 +19,8 @@ class Assembly extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'assembly_product', 'assembly_id', 'product_id')
+                    ->withPivot('quantity');
     }
 
     public function image()

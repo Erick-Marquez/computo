@@ -14,8 +14,15 @@ class VoucherType extends Model
         'active'
     ];
 
+    protected $table = "voucher_types";
+
     public function series()
     {
         return $this->hasMany(Serie::class);
+    }
+
+    public function branches()
+    {
+        return $this->belongsToMany(Branch::class, 'series', 'voucher_type_id', 'branch_id');
     }
 }

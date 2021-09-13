@@ -29,6 +29,18 @@ class RoleSeeder extends Seeder
         //Sales Permissions
         Permission::create(['name' => 'sales', 'description' => 'Ver Ventas'])->syncRoles([$role1]);
 
+            //Vouchers Permissions
+            Permission::create(['name' => 'vouchers.index', 'description' => 'Ver Lista de Ventas'])->syncRoles([$role1]);
+            Permission::create(['name' => 'vouchers.create', 'description' => 'Crear Venta'])->syncRoles([$role1]);
+            Permission::create(['name' => 'vouchers.edit', 'description' => 'Editar Venta'])->syncRoles([$role1]);
+            Permission::create(['name' => 'vouchers.destroy', 'description' => 'Eliminar Venta'])->syncRoles([$role1]);
+
+            //Quotations Permissions
+            Permission::create(['name' => 'quotations.index', 'description' => 'Ver Lista de Cotizaciones'])->syncRoles([$role1]);
+            Permission::create(['name' => 'quotations.create', 'description' => 'Crear Cotización'])->syncRoles([$role1]);
+            Permission::create(['name' => 'quotations.edit', 'description' => 'Editar Cotización'])->syncRoles([$role1]);
+            Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
+
         //Cash Register Permissions
         Permission::create(['name' => 'cash-register', 'description' => 'Ver Caja'])->syncRoles([$role1]);
         

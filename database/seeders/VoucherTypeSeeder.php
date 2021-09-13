@@ -14,11 +14,34 @@ class VoucherTypeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('branches')->insert([
+            ['state' => true, 'description' => 'HUANUCO'],
+            ['state' => true, 'description' => 'AMARILIS'],
+            ['state' => true, 'description' => 'PILLCO MARCA']
+        ]);
+
+        DB::table('igv_types')->insert([
+            ['description' => 'Gravado - Operación Onerosa'],
+            ['description' => '[Gratuita] Gravado - Retiro por premio'],
+            ['description' => '[Gratuita] Gravado - Retiro por donación'],
+            ['description' => '[Gratuita] Gravado - Retiro'],
+            ['description' => '[Gratuita] Gravado - Retiro por publicidad'],
+            ['description' => '[Gratuita] Gravado - Bonificaciones'],
+            ['description' => '[Gratuita] Gravado - Retiro por entrega a trabajadores'],
+            ['description' => 'Exonerado - Operación Onerosa'],
+            ['description' => '[Gratuita] Inafecto - Retiro por Bonificación'],
+            ['description' => '[Gratuita] Inafecto - Retiro'],
+            ['description' => '[Gratuita] Inafecto - Retiro por Muestras Medicas'],
+            ['description' => '[Gratuita] Inafecto - Retiro por Convenio Colectivo'],
+            ['description' => '[Gratuita] Inafecto - Retiro por Premio'],
+            ['description' => '[Gratuita] Inafecto - Retiro por Publicidad'],
+            ['description' => 'Exportación'],
+        ]);
+
         DB::table('voucher_types')->insert([
-            ['active' => true, 'description' => 'FACTURA ELECTRÓNICA'],
-            ['active' => true, 'description' => 'BOLETA DE VENTA ELECTRÓNICA'],
-            ['active' => true, 'description' => 'NOTA DE VENTA ELECTRÓNICA'],
+            ['active' => true, 'description' => 'FACTURA'],
+            ['active' => true, 'description' => 'BOLETA DE VENTA'],
+            ['active' => true, 'description' => 'NOTA DE VENTA'],
             ['active' => true, 'description' => 'NOTA DE CRÉDITO'],
             ['active' => true, 'description' => 'NOTA DE DÉBITO']
         ]);
@@ -26,7 +49,8 @@ class VoucherTypeSeeder extends Seeder
         DB::table('identification_documents')->insert([
             ['description' => 'DNI'],
             ['description' => 'RUC'],
-            ['description' => 'NUMERO DE PASAPORTE']
+            ['description' => 'PASAPORTE'],
+            ['description' => 'CARNET DE EXTRANJERIA']
         ]);
 
         DB::table('series')->insert([

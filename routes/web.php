@@ -12,11 +12,11 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
-
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SerieController;
-
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +37,17 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+//Rutas imprimir
+Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
+Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
+
+
+
+//Modulo Ventas
+Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherController::class)->names('vouchers');
+Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', QuotationController::class)->names('quotations');
+
 
 
 //Modulo Catalago

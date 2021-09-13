@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Info</b>Market',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -270,7 +270,8 @@ return [
                 [
                     'text' => 'Comprobantes',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'vouchers.index',
+                    'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Anticipo de Venta',
@@ -285,7 +286,8 @@ return [
                 [
                     'text' => 'Cotización',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'quotations.index',
+                    'can'    => 'quotations.index',
                 ],
                 [
                     'text' => 'Garantías',
@@ -665,6 +667,17 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+
+        'AlpineJs' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//unpkg.com/alpinejs@3.3.2/dist/cdn.min.js',
                 ],
             ],
         ],

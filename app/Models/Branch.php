@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPUnit\Framework\returnSelf;
+
 class Branch extends Model
 {
     use HasFactory;
@@ -45,5 +47,10 @@ class Branch extends Model
     public function cashboxes()
     {
         return $this->hasMany(Cashbox::class);
+    }
+
+    public function voucherTypes()
+    {
+        return $this->belongsToMany(VoucherType::class, 'series', 'branch_id', 'voucher_type_id');
     }
 }
