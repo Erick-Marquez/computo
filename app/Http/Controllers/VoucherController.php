@@ -100,8 +100,12 @@ class VoucherController extends Controller
                 'branch_product_id' => $request->branch_product_id[$i]
             ]);
 
-            // Funcion Kardex
+
+            // Funcion Kardex($data)
+            // request->all()
+            // $data->branch_product_id
             // $request->series[$i][$j]
+            //
 
         }
         

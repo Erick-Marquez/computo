@@ -1,5 +1,203 @@
-.azul {
-    color: blue;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;452;600&display=swap');
+*{
+    box-sizing: border-box;
+}
+body{
     width: 100%;
+    height: 100%;
+    margin-left: auto;
+    color: rgb(73, 73, 73);
+    font-family: 'Rubik', sans-serif;
+}
+main{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+img{
+    display: block;
+    width: 100%;
+}
+a{
+    text-decoration: none;
+    color: rgb(66, 65, 65);
+}
+.telefono img,.correo img{
+    width: 50px;
+}
+.header{
+    width: 100%;
+    padding: 0;
+}
+.header .logo{
+    width: 25%;
+    display: inline-block;
+}
+.header .titular{
+    width: 41%;
+    font-size: 0.9rem;
+    display: inline-block;
     text-align: center;
+}
+.titular h1{
+    font-size: 1.3rem;
+    text-align: center;
+}
+.titular p{
+    margin-top: 0;
+    margin-bottom: 0.2rem;
+}
+.titular .titular__ciudad{
+    font-size: 0.9rem;
+    text-align: center;
+}
+.titular__elemento .telefono__numero{
+    margin-left: 3px;
+}
+.titular .titular__elemento{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.titular__elemento img{
+    width: 15px;
+}
+
+.correo .correo__dir{
+    margin-left: 3px;
+}
+.header .ruc{
+    width: 29%;
+    border: 2px solid  rgb(73, 73, 73);
+    padding: 25px 2px;
+    display: inline-block;
+    text-align: center;
+}
+.ruc p{
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+}
+.cliente{
+    margin-bottom: 10px;
+}
+.cliente p{
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+.cliente .cliente__puntos{
+    display: inline-block;
+    margin-right: 3px;
+}
+.cliente p:first-child .cliente__puntos{
+   margin-left: 20px;
+}
+.cliente p:nth-child(2) .cliente__puntos{
+    margin-left: 3px;
+ }
+.cliente p:last-child .cliente__puntos{
+    margin-left: 6px;
+ }
+ 
+ table{
+    width: 100%;
+    border: 2px solid rgb(73, 73, 73);
+    text-align: center;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.descripcion {
+    margin-bottom: 10px;
+}
+
+.descripcion th,.descripcion td{
+   border: 2px solid rgb(73, 73, 73);
+   padding: 0.5rem;
+}
+.descripcion tbody td{
+    font-size: 0.7rem;
+}
+.pagar thead tr,.pagar thead td{
+   border: 2px solid rgb(73, 73, 73);
+   padding: 0.5rem;
+}
+.pagar tbody td{
+   font-size: 0.8rem;
+   padding-top: 6px;
+   padding-bottom: 6px;
+}
+.pagar tbody td:nth-child(2){
+   text-align: start;
+}
+.pagar .tfood {
+   border-top:2px solid rgb(73, 73, 73) ;
+   text-align: start;
+}
+.tfood td{
+   padding-left: 20px;
+}
+.escaner{
+    
+    height: 150px;
+    width: 150px;
+}
+.escaner .escaner__img{
+    height: 150px;
+    width: 150px;
+}
+.compra__texto{
+    text-align: left;
+    font-weight: 400;
+    padding-left: 10px;
+}
+
+.resumen > p{
+    font-weight: bold;
+    text-align: left;
+    font-size: 0.9rem;
+}
+.resumen .resumen__elemento{
+    font-weight: 400;
+    font-size: 0.8rem;
+    width: 100%;
+}
+.resumen__elemento p{
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+    display: inline-block;
+    
+}
+.resumen__elemento p:first-child{
+    width: 45%;
+    text-align: left;
+    }
+.resumen__elemento .gravada__precio,.exonerado__precio,.igv__precio,.descuento__precio,.total__precio{
+    width: 50%;
+    text-align: right;
+}
+.transaccion{
+    border: none;
+    margin-bottom: 10px;
+}
+
+.transaccion td:first-child{
+    width: 20%;
+}
+
+.transaccion td:nth-child(2){
+    width: 40%;
+}
+
+.observacion td{
+    text-align: start;
+    padding-left: 20px;
+    font-weight: 400;
+}
+
+.observacion td span{
+    font-weight: bold;
+}
+
+.pagar .detalle{
+    font-weight: 450;
 }

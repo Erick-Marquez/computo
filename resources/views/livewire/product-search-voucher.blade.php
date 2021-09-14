@@ -150,7 +150,7 @@
                             @for ($j = 0; $j < $selectProduct['quantity']; $j++)
                                 <div class="row m-3">
                                     <input type="text" class="form-control" name="serie[{{ $i }}][]" id="" placeholder="Serie" value=""
-                                    >
+                                    placeholder="Total">
                                 </div>
                             @endfor
                         </div>

@@ -6,53 +6,135 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Quotation {{ $head->document_number }}</title>
+    <title>Cotizacion {{ $head->document_number }}</title>
     <link href="{{ $path_style }}" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        <div class="azul">
-            <div >
-                Logo
-            </div>
-            <div>
-                Datos de la empresa
-            </div>
-            <div>
-                <p>R.U.C. de la empresa</p>
-                <p>COTIZACIÓN</p>
-                <p>{{ str_pad($head->document_number, 8, '0', STR_PAD_LEFT) }}</p>
-            </div>
+    <header class="header">
+        <div class="logo">
+            <img src="storage/logo.jpg" alt="este es el logo del negocio">
         </div>
-        <div>
-            <p>Cliente : {{ $head->customer->name }}</p>
-            <p>Num. Doc.: {{ $head->customer->document }}</p>
-            <p>Dirección: {{ $head->customer->address }}</p>
+        <div class="titular">
+            <h1>DEMO COMPUTO</h1>
+            <p class="titular__distrito">JR 28 DE JULIO 190 -</p>
+            <p class="titular__ciudad">Huánuco, Huánuco, Huánuco</p>
+            <div class="titular__elemento">
+                {{-- <img src="img/phone-call.svg" alt="telefono"> --}}
+                <p class="telefono__numero"> Tel: 987654321</p>
+            </div>
+            <a href="#" class="correo titular__elemento">
+                {{-- <img src="img/email.svg" alt="correo"> --}}
+                <p class="correo__dir">computo@gmail.com</p>
+            </a>
         </div>
-    </div>
-    <div>
-        <table>
-            <tr>
-                <th>CANTIDAD</th>
-                <th>DESCRIPCIÓN</th>
-                <th>PRECIO</th>
-                <th>UNID/MED</th>
-                <th>IMPORTE</th>
-            </tr>
-            @foreach ($details as $detail)
+        <div class="ruc">
+            <p class="ruc__primero">R.U.C. 10758534427</p>
+            <p class="ruc__segundo">COTIZACIÓN</p>
+            <p class="ruc__numero">{{ str_pad($head->document_number, 8, '0', STR_PAD_LEFT) }}</p>
+        </div>
+    </header>
+    <main>
+        <div class="cliente">
+            <p>Cliente <span class="cliente__puntos">:</span>{{ $head->customer->name }}</p>
+            <p>Num.Doc:<span class="cliente__puntos">:</span>{{ $head->customer->document }}</p>
+            <p>Direccion<span class="cliente__puntos">:</span>{{ $head->customer->address }}</p>
+        </div>
+        <table class="descripcion">
+            <thead>
                 <tr>
-                    <td>{{ $detail->quantity }}</td>
-                    <td>{{ $detail->product->name }}</td>
-                    <td>{{ $detail->price }}</td>
-                    <td>Unidades</td>
-                    <td>{{ $detail->total }}</td>
+                    <td>FECHA DE EMISIÓN</td>
+                    <td>CONDICIÓN DE PAGO</td>
+                    <td>TIPO DE MONEDA</td>
+                    <td>VALIDO HASTA</td>
+                    {{-- <td>ORDEN DE COMPRA</td> --}}
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                <tr>
+                    <td>07-09-2021 / 00:00 AM</td>
+                    <td>EFECTIVO</td>
+                    <td>Soles</td>
+                    <td></td>
+                    {{-- <td></td> --}}
+                </tr>
+            </tbody>
         </table>
-    </div>
-    <div>
-        <p>Total: {{ $head->total }}</p>
-        <p>Vendedor: {{ $head->user->name }}</p>
-    </div>
-</body>
+        <table class="pagar">
+            <thead>
+                <tr>
+                    <td>CANT.</td>
+                    <td>DESCRIPCIÓN</td>
+                    <td>PRECIO</td>
+                    <td>UNID/MED</td>
+                    <td>AFECT.IGV</td>
+                    <td>IMPORTE</td>
+                </tr>
+            </thead>
+            <tbody class="detalle">
+                @foreach ($details as $detail)
+                    <tr>
+                        <td>{{ $detail->quantity }}</td>
+                        <td>{{ $detail->product->name }}</td>
+                        <td>S/ {{ $detail->price }}</td>
+                        <td>UNIDADES</td>
+                        <td>Exonerado</td>
+                        <td>S/ {{ $detail->total }}</td>
+                    </tr>
+                @endforeach
+                <tr class="tfood">
+                    <td colspan="6">SON TRESCIENTOS CON 00/100 SOLES</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="transaccion">
+            <tr>
+                <td>
+                    <div class="escaner">
+                        <div class="escaner__img">
+                            <img src="storage/qr-code.png" alt="este es el logo del negocio">
+                        </div>
+                    </div>  
+                </td>
+                <td>
+                    <div class="compra__texto">
+                        <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
+                        <div class="compra__hash">
+                            <p>Hash: </p>
+                            <p></p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="resumen">
+                        <p>RESUMEN:</p>
+                        <div class="resumen__elemento">
+                            <p>Gravada:</p>
+                            <p class="gravada__precio">S/ 0.00</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Exonerado:</p>
+                            <p class="exonerado__precio">S/ 300.00</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>IGV (18.00%):</p>
+                            <p class="igv__precio">S/ 0.00</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Descuento Total:</p>
+                            <p class="descuento__precio">S/ 0000000.00</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Total:</p>
+                            <p class="total__precio">S/ {{ $head->total }}</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="observacion">
+                <td colspan="3">
+                    <p><span>Observación: </span>{{$head->observation }}</p>
+                </td>
+            </tr>
+        </table>
+    </main>
 </html>

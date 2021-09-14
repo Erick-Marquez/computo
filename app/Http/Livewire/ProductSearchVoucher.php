@@ -47,7 +47,6 @@ class ProductSearchVoucher extends Component
 
     public function updated($searchProduct)
     {
-        
         $this->products = BranchProduct::select(
             'branch_product.id',
             'branch_product.sale_price',
@@ -62,6 +61,8 @@ class ProductSearchVoucher extends Component
         ->where('branch_product.branch_id',$this->selectBranch)
         ->where('p.name', 'like', '%'. $this->searchProduct .'%')
         ->get()->toArray();
+
+        
         $this->highlightIndex = 0;
     }
 

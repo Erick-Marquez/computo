@@ -8,6 +8,7 @@ use App\Models\QuotationDetail;
 use Illuminate\Http\Request;
 
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QuotationController extends Controller
 {
@@ -123,7 +124,25 @@ class QuotationController extends Controller
         $company = [];
         $head = Quotation::find($quotation->id);
         $details = $head->quotationDetails;
+        // $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
+        // dd($qr);
+
         $pdf = PDF::loadView('templates.pdf.quotation-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
+
+        
+
+        // $text = join('|', [
+        //     $this->company->number,
+        //     $this->document->document_type_id,
+        //     $this->document->series,
+        //     $this->document->number,
+        //     $this->document->total_igv,
+        //     $this->document->total,
+        //     $this->document->date_of_issue->format('Y-m-d'),
+        //     $customer->identity_document_type_id,
+        //     $customer->number,
+        //     $this->document->hash
+        // ]);
 
         // TICKET
         //setPaper(array(0,0,220,700)
