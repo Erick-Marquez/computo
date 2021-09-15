@@ -9,7 +9,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{ route('users.update', '1') }}">
+            <form method="POST" action="{{ route('users.update', $user) }}">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
@@ -25,12 +25,12 @@
                 <div class="form-group">
                     <label for="password" class="font-weight-normal">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña"
-                        required>
+                    >
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation" class="font-weight-normal">Confirmar Contraseña</label>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                        placeholder="Confirmar Contraseña" required>
+                        placeholder="Confirmar Contraseña">
                 </div>
                 <h5>Lista de Roles</h5>
                 @foreach ($roles as $role)

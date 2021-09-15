@@ -137,13 +137,15 @@ a{
    padding-left: 20px;
 }
 .escaner{
-    
     height: 150px;
     width: 150px;
 }
 .escaner .escaner__img{
-    height: 150px;
-    width: 150px;
+    padding-top: 24px;
+    margin: auto;
+    height: 100px;
+    width: 100px;
+    
 }
 .compra__texto{
     text-align: left;

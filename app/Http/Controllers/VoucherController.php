@@ -11,6 +11,7 @@ use App\Models\VoucherType;
 use Illuminate\Http\Request;
 
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VoucherController extends Controller
 {
@@ -175,11 +176,15 @@ class VoucherController extends Controller
         $head = Sale::find($sale->id);
         $details = $head->saleDetails;
 
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
         if ($type == 'A4') {
-            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
         }
         if ($type == 'TICKET') {
-            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details'))->setPaper(array(0,0,220,700),'portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,700),'portrait');
+        }
+        if ($type == 'WARRANTY') {
+            $pdf = PDF::loadView('templates.pdf.warranty-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
         }
         
 

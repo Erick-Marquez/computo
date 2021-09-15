@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;452;600&display=swap');
+*{
+    box-sizing: border-box;
+}
+body{
+    width: 93%;
+    padding: 3%;
+    font-size: 0.9rem;
+    color: rgb(73, 73, 73);
+    font-weight: 400;
+    font-family: 'Rubik', sans-serif;
+}
+
+header{
+    width: 100%;
+    height: 130px;
+}
+
+.logo{
+    width: 53%;
+    display: inline-block;
+    text-align: center;
+}
+.logo img{
+    height: 150px;
+}
+.ruc{
+    height: 100px;
+    width: 30%;
+    padding: 0px 45px;
+    padding-top: 30px;
+    display: inline-block;
+    border: 2px solid black;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.ruc p{
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 10px;
+}
+.productos{
+    width: 95%;
+}
+.productos td:last-of-type{
+    width: 70%;
+}
+.productos thead td{
+    color: rgb(3, 29, 148);
+    border-bottom: 1px solid black;
+}
+.productos thead td:last-child{
+    text-align: center;
+}
+.productos {
+    border-bottom: 1px dashed black;
+}
+.desplazar{
+    margin-left: 40px;
+}
+.desplazar p{
+    margin: 0px;
+    margin-bottom: 1px;
+}
+.negrita{
+    font-weight: bold;
+}
+.firma{
+    width: 30%;
+    text-align: center;
+    margin-top: 150px;
+    margin-bottom: 150px;
+    margin-left: 20px;
+}
+.firma span:first-of-type{
+    margin-right: 30px;
+}
+.linea{
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    margin-top: 50px;
+}
+.dir{
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+.dir span{
+    color: rgb(3, 29, 148);
+}
+.dir span:nth-child(1){
+    margin-right: 50px;
+}
+.primer__parrafo{
+    margin-top: 0px;
+
+}
+table{
+    text-align: center;
+}
+tbody tr td:nth-child(4){
+    text-align: start;
+}

@@ -29,15 +29,12 @@
         </div>
         <div class="ruc">
             <p class="ruc__primero">R.U.C. 10758534427</p>
-            <p>{{ $head->serie->voucherType->description }} ELECTRÓNICA</p>
+            <p class="ruc__segundo">{{ $head->serie->voucherType->description }} ELECTRÓNICA</p>
             <p class="ruc__numero">{{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
         </div>
     </header>
     <main>
         <div class="cliente">
-            <!-- <div class="cliente__elemento">
-                <span>Cliente</span> 
-            </div> -->
             <p>Cliente <span class="cliente__puntos">:</span>{{ $head->customer->name }}</p>
             <p>Num.Doc:<span class="cliente__puntos">:</span>{{ $head->customer->document }}</p>
             <p>Direccion<span class="cliente__puntos">:</span>{{ $head->customer->address }}</p>
@@ -54,7 +51,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>07-09-2021 / 00:00 AM</td>
+                    <td>{{ $head->created_at }}</td>
                     <td>EFECTIVO</td>
                     <td>Soles</td>
                     <td></td>
@@ -73,7 +70,7 @@
                     <td>IMPORTE</td>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="detalle">
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
@@ -89,44 +86,56 @@
                 </tr>
             </tbody>
         </table>
-        <div class="transaccion">
-            <div class="compra">
-                <div class="escaner">
-                    <div class="escaner__img"></div>
-                </div>
-                <div class="compra__texto">
-                    <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
-                    <div class="compra__observacion">
-                        <p>Observación:</p>
-                        <p>{{ $head->observation }}</p>
+        <table class="transaccion">
+            <tr>
+                <td>
+                    <div class="escaner">
+                        <div class="escaner__img">
+                            <img src="data:image/png;base64, {{ $qr }}"/>
+                        </div>
+                    </div>  
+                </td>
+                <td>
+                    <div class="compra__texto">
+                        <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
+                        <div class="compra__hash">
+                            <p>Hash: </p>
+                            <p></p>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="resumen">
-                <p>RESUMEN:</p>
-                <div class="resumen__elemento">
-                    <p>Gravada:</p>
-                    <p class="gravada__precio">S/ 0.00</p>
-                </div>
-                <div class="resumen__elemento">
-                    <p>Exonerado:</p>
-                    <p class="exonerado__precio">S/ 300.00</p>
-                </div>
-                <div class="resumen__elemento">
-                    <p>IGV (18.00%):</p>
-                    <p class="igv__precio">S/ 0.00</p>
-                </div>
-                <div class="resumen__elemento">
-                    <p>Descuento Total:</p>
-                    <p class="descuento__precio">S/ 0.00</p>
-                </div>
-                <div class="resumen__elemento">
-                    <p>Total:</p>
-                    <p class="total__precio">S/ {{ $head->total }}</p>
-                </div>
-            </div>
-        </div>
-        
+                </td>
+                <td>
+                    <div class="resumen">
+                        <p>RESUMEN:</p>
+                        <div class="resumen__elemento">
+                            <p>Gravada:</p>
+                            <p class="gravada__precio">S/ 0.000</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Exonerado:</p>
+                            <p class="exonerado__precio">S/ {{ $head->total_exonerated }}</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>IGV (18.00%):</p>
+                            <p class="igv__precio">S/ 0.000</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Descuento Total:</p>
+                            <p class="descuento__precio">S/ 0.000</p>
+                        </div>
+                        <div class="resumen__elemento">
+                            <p>Total:</p>
+                            <p class="total__precio">S/ {{ $head->total }}</p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="observacion">
+                <td colspan="3">
+                    <p><span>Observación: </span>{{$head->observation }}</p>
+                </td>
+            </tr>
+        </table>
     </main>
 </body>
 </html>

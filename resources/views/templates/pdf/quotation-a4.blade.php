@@ -91,7 +91,7 @@
                 <td>
                     <div class="escaner">
                         <div class="escaner__img">
-                            <img src="storage/qr-code.png" alt="este es el logo del negocio">
+                            <img src="data:image/png;base64, {{ $qr }}"/>
                         </div>
                     </div>  
                 </td>

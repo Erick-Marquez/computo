@@ -50,6 +50,9 @@
 
                                             <a class="dropdown-item" href="{{ route('vouchers.print', ['TICKET' , $voucher]) }}" target="_blank">
                                                 <i class="col-1 mr-3 fas fa-receipt"></i>TICKET</a>
+                                            
+                                            <a class="dropdown-item" href="{{ route('vouchers.print', ['WARRANTY' , $voucher]) }}" target="_blank">
+                                                <i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a>
 
                                         <form action="{{ route('vouchers.destroy', $voucher) }}" method="POST">
                                             @csrf

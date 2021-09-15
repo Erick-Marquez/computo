@@ -124,10 +124,11 @@ class QuotationController extends Controller
         $company = [];
         $head = Quotation::find($quotation->id);
         $details = $head->quotationDetails;
-        // $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
-        // dd($qr);
 
-        $pdf = PDF::loadView('templates.pdf.quotation-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
+    
+
+        $pdf = PDF::loadView('templates.pdf.quotation-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
 
         
 
