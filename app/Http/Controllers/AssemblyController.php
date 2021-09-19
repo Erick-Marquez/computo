@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AssemblyResource;
 use App\Models\Assembly;
 use Illuminate\Http\Request;
 
@@ -83,5 +84,11 @@ class AssemblyController extends Controller
     public function destroy(Assembly $assembly)
     {
         //
+    }
+
+    public function get()
+    {
+        $assemblies = Assembly::all();
+        return AssemblyResource::collection($assemblies);
     }
 }

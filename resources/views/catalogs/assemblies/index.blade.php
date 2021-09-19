@@ -12,6 +12,7 @@
             <a class="btn btn-secondary" href="{{ route('assemblies.create') }}">Nuevo</a>
         </div>
         <div class="card-body">
+
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -53,6 +54,7 @@
                     @endforeach
                 </tbody>
             </table>
+            <index-assemblies></index-assemblies>
         </div>
     </div>
 @stop

@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherCon
 Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', QuotationController::class)->names('quotations');
 
 
-
+Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 //Modulo Catalago
 Route::middleware(['auth:sanctum', 'verified'])->resource('families', FamilyController::class)->names('families');
 Route::middleware(['auth:sanctum', 'verified'])->resource('lines', LineController::class)->names('lines');

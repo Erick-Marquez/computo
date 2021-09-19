@@ -33,7 +33,8 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="main-wrapper">
+
                 {{ $slot }}
             </main>
         </div>
