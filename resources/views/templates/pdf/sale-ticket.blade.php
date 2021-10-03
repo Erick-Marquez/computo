@@ -1,5 +1,6 @@
 @php
     $path_style = resource_path('views'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'style.css');
+
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -7,13 +8,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{{ $head->serie->voucherType->description }} {{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</title>
-    <link href="{{ $path_style }}" rel="stylesheet" />
 </head>
-<body>
+<style>
+    @page { margin:0px; }
+</style>
+<body style="margin:0px; padding:0px; width:100vw">
     <div>
         <div class="azul">
             <div >
-                Logo
+                <img src="storage/logo.jpg" width="200px" alt="este es el logo del negocio">
             </div>
             <div>
                 Datos de la empresa

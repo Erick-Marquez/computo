@@ -32,12 +32,11 @@ class CreateSalesTable extends Migration
             $table->decimal('received_money', 9, 3)->nullable();
             $table->decimal('change', 9, 3)->nullable();
 
-            // $table->boolean('send_sunat')->default(false);
-            // $table->string('response_sunat')->default(false);
-            // $table->string('description_sunat_cdr');
-            // $table->string('hash_cdr');
-            // $table->string('hash_cpe');
-            // $table->boolean('canceled');
+            $table->boolean('send_sunat')->default(false);
+            $table->boolean('response_sunat')->default(false);
+            $table->string('description_sunat_cdr')->nullable();
+            $table->string('hash_cdr')->nullable();
+            $table->boolean('canceled')->default(false);
             
             
             $table->foreignId('serie_id')

@@ -15,6 +15,7 @@ class CreateIdentificationDocumentsTable extends Migration
     {
         Schema::create('identification_documents', function (Blueprint $table) {
             $table->id();
+            $table->string('cod');
             $table->string('description');
             $table->timestamps();
         });

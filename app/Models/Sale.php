@@ -24,6 +24,13 @@ class Sale extends Model
         'observation',
         'received_money',
         'change',
+
+        'send_sunat',
+        'response_sunat',
+        'description_sunat_cdr',
+        'hash_cdr',
+        'canceled',
+
         'serie_id',
         'customer_id',
         'open_closed_cashbox_id',

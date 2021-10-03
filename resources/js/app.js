@@ -6,13 +6,16 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+import router from "./router";
+
 import { createApp } from 'vue';
 
-import indexAssemblies from './components/catalogs/assemblies/Index.vue';
+import indexKardex from './modules/inventory/kardex/index.vue';
+import indexBranches from './modules/inventory/branches/index.vue';
 
 const app = createApp({});
 
-app.component('index-assemblies', indexAssemblies);
+app.component('index-kardex', indexKardex);
+app.component('index-branches', indexBranches);
 
-app.mount('#app');
-
+app.use(router).mount('#app');

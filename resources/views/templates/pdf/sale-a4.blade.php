@@ -82,7 +82,7 @@
                     </tr>
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6">SON TRESCIENTOS CON 00/100 SOLES</td>
+                    <td colspan="6">{{ $numberLetter }}</td>
                 </tr>
             </tbody>
         </table>

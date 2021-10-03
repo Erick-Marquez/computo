@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LineResource;
 use App\Models\Brand;
 use App\Models\Line;
 use App\Models\Family;
@@ -18,8 +19,9 @@ class LineController extends Controller
     public function index()
     {
         $lines = Line::all();
-        return view('catalogs.lines.index', compact('lines'));
+        return LineResource::collection($lines);
     }
+
 
     /**
      * Show the form for creating a new resource.

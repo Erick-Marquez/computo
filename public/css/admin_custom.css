@@ -3,3 +3,7 @@ html{
     height: 100vh !important;
 
 }
+
+.container-fluid{
+    padding-top: 50px !important;
+  }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FamilyResource;
 use Illuminate\Http\Request;
 use App\Models\Family;
 
@@ -15,7 +16,7 @@ class FamilyController extends Controller
     public function index()
     {
         $families = Family::all();
-        return view('catalogs.families.index', compact('families'));
+        return FamilyResource::collection($families);
     }
 
     /**
@@ -40,12 +41,12 @@ class FamilyController extends Controller
             'description' => 'required'
         ]);
 
-        Family::create([
+        $family = Family::create([
             'cod' => $request->cod,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('families.index');
+        return FamilyResource::make($family);
     }
 
     /**
@@ -56,7 +57,7 @@ class FamilyController extends Controller
      */
     public function show(Family $family)
     {
-        //
+        return $family;
     }
 
     /**
@@ -85,7 +86,7 @@ class FamilyController extends Controller
 
         $family->update($request->all());
 
-        return redirect()->route('families.index');
+        return FamilyResource::make($family);
     }
 
     /**

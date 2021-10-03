@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::all();
-        return view('catalogs.brands.index', compact('brands'));
+        return BrandResource::collection($brands);
     }
 
     /**

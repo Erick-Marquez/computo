@@ -332,6 +332,11 @@ return [
             'can'     => 'catalogs',
             'submenu' => [
                 [
+                    'text' => 'Familias, Lineas y Marcas',
+                    'icon' => 'fas fa-fw ',
+                    'route'  => 'web.families-lines-brands',
+                ],
+                [
                     'text' => 'Familias',
                     'icon' => 'fas fa-fw ',
                     'route'  => 'families.index',
@@ -391,7 +396,7 @@ return [
                 [
                     'text'   => 'Sucursales',
                     'icon'   => 'fas fa-fw ',
-                    'route'  => 'branches.index',
+                    'route'  => 'web.branches',
                     'can'    => 'branches.index',
                 ],
                 [
@@ -402,7 +407,7 @@ return [
                 [
                     'text'   => 'Kardex',
                     'icon'   => 'fas fa-fw ',
-                    'url'    => '#',
+                    'route'  => 'web.kardex',
                 ],
                 [
                     'text'   => 'Modificación de Stock',

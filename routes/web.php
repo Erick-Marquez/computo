@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WebController;
 
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\LineController;
@@ -33,6 +34,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+// Rutas Web
+Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
+Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
+
+Route::get('/prueba', [WebController::class, 'prueba']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -50,6 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', Quotatio
 
 
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
+
 //Modulo Catalago
 Route::middleware(['auth:sanctum', 'verified'])->resource('families', FamilyController::class)->names('families');
 Route::middleware(['auth:sanctum', 'verified'])->resource('lines', LineController::class)->names('lines');
@@ -64,8 +73,8 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', Assembly
 
 //Modulo Inventario
 Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products', [BranchController::class, 'products'])->name('branches.products');
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/{branch}/products/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
+    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
+    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
     Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
     
 

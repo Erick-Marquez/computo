@@ -15,6 +15,7 @@ class CreateVoucherTypesTable extends Migration
     {
         Schema::create('voucher_types', function (Blueprint $table) {
             $table->id();
+            $table->string('cod');
             $table->string('description');
             $table->boolean('active')->default(true);
             $table->timestamps();

@@ -18,10 +18,11 @@ class CreateSaleDetailsTable extends Migration
 
             $table->decimal('price', 12, 3);
             $table->bigInteger('quantity');
+            
             $table->decimal('total_igv', 12, 3)->default(0);
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
-            $table->unsignedDecimal('total', 12, 3);
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
+            $table->unsignedDecimal('total', 12, 3)->nullable();;
+            //$table->unsignedDecimal('discount', 12, 3)->nullable();
 
             $table->foreignId('sale_id')
                 ->constrained()
@@ -32,9 +33,9 @@ class CreateSaleDetailsTable extends Migration
                 ->constrained('branch_product')
                 ->onUpdate('cascade');
 
-            // $table->foreignId('igv_type_id')
-            //     ->constrained()
-            //     ->onUpdate('cascade');
+            $table->foreignId('igv_type_id')
+                ->constrained()
+                ->onUpdate('cascade');
             
             $table->timestamps();
         });

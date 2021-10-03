@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchProductResource;
+use App\Http\Resources\BranchResource;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\BranchProduct;
@@ -17,7 +19,7 @@ class BranchController extends Controller
     public function index()
     {
         $branches = Branch::all();
-        return view('inventory.branches.index', compact('branches'));
+        return BranchResource::collection($branches);
     }
 
     /**
@@ -115,7 +117,7 @@ class BranchController extends Controller
     public function products(Branch $branch)  
     {
         $branchProducts = $branch->branchProducts;
-        return view('inventory.branches.products', compact('branch','branchProducts'));
+        return BranchProductResource::collection($branchProducts);
     }
 
     public function productsAdd(Branch $branch)  

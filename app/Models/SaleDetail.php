@@ -12,10 +12,12 @@ class SaleDetail extends Model
     protected $fillable = [
         'price',
         'quantity',
+        'unit_price',
         'total_igv',
         'subtotal',
         'total',
         'discount',
+        'igv_type_id',
         'sale_id',
         'branch_product_id'
     ];
@@ -29,4 +31,10 @@ class SaleDetail extends Model
     {
         return $this->belongsTo(BranchProduct::class);
     }
+
+    public function igvType()
+    {
+        return $this->belongsTo(IgvType::class);
+    }
+
 }
