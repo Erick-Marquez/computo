@@ -31,8 +31,13 @@ class WebController extends Controller
         return view('inventory.kardex.index');
     }
 
+    public function cashboxes()
+    {
+        return view('cashboxes.open-closed.index');
+    }
+
     public function prueba()
-    {    
+    {
         return SunatService::facturar(1, 'credit');
     }
 }

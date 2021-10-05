@@ -178,7 +178,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        ZanySoft\Zip\ZipServiceProvider::class
+        // ZanySoft\Zip\ZipServiceProvider::class
 
     ],
 
@@ -235,7 +235,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Zip' => ZanySoft\Zip\ZipFacade::class
+        // 'Zip' => ZanySoft\Zip\ZipFacade::class
 
     ],
 

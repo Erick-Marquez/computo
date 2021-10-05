@@ -1,0 +1,248 @@
+<template>
+  <div class="container-fluid">
+    <button
+      class="btn btn-lg btn-block btn-primary my-2"
+      @click="showModal('#modal-create')"
+    >
+      <span><i class="fas fa-plus"></i></span>
+      Agregar Nueva caja
+    </button>
+    <div class="row">
+      <div
+        class="col-md-3 col-sm-6 col-12"
+        v-for="cashbox in cashboxes"
+        :key="cashbox.id"
+      >
+        <div
+          :class="[cashbox.state ? 'small-box bg-info' : 'small-box bg-danger']"
+        >
+          <div class="btn-group float-right">
+            <button
+              type="button"
+              :class="[
+                cashbox.state
+                  ? 'btn btn-info btn-sm dropdown-toggle'
+                  : 'btn btn-danger btn-sm dropdown-toggle',
+              ]"
+              data-toggle="dropdown"
+              data-offset="-52"
+              aria-expanded="false"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="dropdown-menu" role="menu" style="">
+              <a href="#" class="dropdown-item">Editar</a>
+              <div class="dropdown-divider"></div>
+              <a
+                @click="deleteCashbox(cashbox.id)"
+                href="#"
+                class="dropdown-item"
+                >Eliminar</a
+              >
+            </div>
+          </div>
+          <div class="inner">
+            <h3>{{ cashbox.description }}</h3>
+            <div class="info-contenido">
+              <p v-if="cashbox.state">Estado: Aperturado</p>
+              <p v-else>Estado: Sin Aperturar</p>
+              <p>Balance: S/. 0.00</p>
+            </div>
+          </div>
+          <div class="icon">
+            <i class="fas fa-cash-register"></i>
+          </div>
+          <router-link
+            v-if="cashbox.state"
+            :to="{ name: 'show-cashbox', params: { id: cashbox.id }}"
+            class="small-box-footer"
+          >
+            Ver caja
+            <i class="fas fa-arrow-circle-right"></i>
+          </router-link>
+          <a
+            v-else
+            href="#"
+            class="small-box-footer"
+            @click="showModal('#open-cashbox', cashbox)"
+          >
+            Aperturar Caja
+            <i class="fas fa-door-open"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- MODALES -->
+  <div class="modal fade" id="modal-create" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Crear nueva Caja</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="createCashbox()">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Nombre de la caja</label>
+              <input
+                id="description"
+                type="text"
+                class="form-control"
+                v-model="caja.description"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA APERTURAR CAJA -->
+  <div class="modal fade" id="open-cashbox" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Aperturar {{ cashbox.description }}</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="openCashbox()">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Monto de apertura</label>
+              <input
+                id="description"
+                type="number"
+                class="form-control"
+                v-model="cashbox.opening_amount"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {},
+  data() {
+    return {
+      caja: {
+        description: "",
+      },
+      cashboxes: [],
+      cashbox: {},
+    };
+  },
+  created() {
+    this.showCashboxes();
+  },
+  methods: {
+    async showCashboxes() {
+      await axios
+        .get("/api/cajas")
+        .then((response) => {
+          this.cashboxes = response.data.data; // resource creado por laravel
+          console.log(this.cashboxes)
+        })
+        .catch((error) => {
+          this.cashboxes = [];
+        });
+    },
+    createCashbox() {
+      axios
+        .post("/api/cajas", this.caja)
+        .then((response) => {
+          $("#modal-create").modal("hide");
+          this.showCashboxes();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteCashbox(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`/api/cajas/${id}`)
+            .then((response) => {
+              this.showCashboxes();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
+    },
+    openCashbox() {
+      axios
+        .post('/api/cashbox/open', this.cashbox)
+        .then((response) => {
+          $("#open-cashbox").modal("hide");
+          console.log(response.data);
+          this.showCashboxes();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    showModal(modal, cashbox = null) {
+      if (cashbox !== null) {
+        this.cashbox = cashbox;
+      }
+      $(modal).modal("show");
+    },
+  },
+};
+</script>
+
+<style scoped>
+.info-contenido {
+  margin-top: 1em;
+  line-height: 0.5;
+  font-weight: 300;
+}
+</style>

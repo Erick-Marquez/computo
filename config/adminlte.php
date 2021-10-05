@@ -294,7 +294,7 @@ return [
                     'icon' => 'fas fa-fw ',
                     'url'  => '#',
                 ],
-                
+
             ],
         ],
 
@@ -306,7 +306,7 @@ return [
                 [
                     'text' => 'Aperturas y Cierres',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.cajas',
                 ],
                 [
                     'text' => 'Egresos e Ingresos',
@@ -509,7 +509,7 @@ return [
                     'can'    => 'series.index',
                 ],
             ],
-        ],    
+        ],
 
 
         // ['header' => 'labels'],

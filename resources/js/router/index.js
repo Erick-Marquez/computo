@@ -8,7 +8,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "inventory  " */ '../modules/inventory/branches/index.vue'),
     children:[
       {
-          path:'',
+          path:'/',
           name:'layout-sucursales',
           component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/inventory/branches/pages/layout.vue'),
       },
@@ -39,6 +39,23 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/cajas',
+    name: 'cajas-index',
+    component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/open-closed/index.vue'),
+    children: [
+        {
+            path: '',
+            name: 'layout-cashbox',
+            component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/cashboxes/open-closed/pages/Cashbox.vue'),
+        },
+        {
+            path: 'detalle/:id',
+            name: 'show-cashbox',
+            component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/open-closed/pages/CashboxDetail.vue'),
+        },
+    ]
+},
 
 ]
 
