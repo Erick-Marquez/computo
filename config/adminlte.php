@@ -402,7 +402,7 @@ return [
                 [
                     'text'   => 'Movimiento de Sucursal',
                     'icon'   => 'fas fa-fw ',
-                    'url'    => '#',
+                    'route'  => 'web.branch-movements',
                 ],
                 [
                     'text'   => 'Kardex',
@@ -412,12 +412,12 @@ return [
                 [
                     'text'   => 'Modificación de Stock',
                     'icon'   => 'fas fa-fw ',
-                    'url'    => '#',
+                    'route'  => 'web.stock-modifications',
                 ],
                 [
                     'text'   => 'Devoluciones',
                     'icon'   => 'fas fa-fw ',
-                    'url'    => '#',
+                    'route'  => 'web.devolutions',
                 ],
             ],
         ],

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BranchProduct;
+use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
-use Greenter\XMLSecLibs\Certificate\X509Certificate;
-use Greenter\XMLSecLibs\Certificate\X509ContentType;
 use Illuminate\Support\Facades\Storage;
 
 class WebController extends Controller
@@ -26,13 +26,36 @@ class WebController extends Controller
         return view('inventory.branches.index');
     }
 
+    public function branchMovements()
+    {
+        return view('inventory.branch-movements.index');
+    }
+
     public function kardex()
     {
         return view('inventory.kardex.index');
     }
 
+    public function stockModifications()
+    {
+        return view('inventory.stock-modifications.index');
+    }
+
+    public function devolutions()
+    {
+        return view('inventory.devolutions.index');
+    }
+
     public function prueba()
     {    
-        return SunatService::facturar(1, 'credit');
+        // $data['branch_product_id'] = 1;
+        // $data['quantity'] = 2;
+        // $data['document'] = "F001" . '-' . "352";
+        // //$data['operation'] = "resta";
+        // $data['series'] = ["TDX00N", "TDX01N"];
+        // $data['user_id'] = auth()->user()->id;
+
+        // KardexService::purchase($data);
+        return SunatService::facturar(1, 'invoice');
     }
 }

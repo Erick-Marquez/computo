@@ -66,20 +66,20 @@
         </div>
     </div>
     <script>
-        // function data(){
-        //     return {
-        //         customers: {!! json_encode($customers) !!},
-        //         customersBackup : {!! json_encode($customers) !!},
-        //         cliente: null,
-        //         myFunction: function (){
-        //             let customerFil = this.customersBackup.filter( customers =>
-        //                 (customers.name.toLowerCase().indexOf(this.cliente) !== -1) ||
-        //                 (customers.document.toLowerCase().indexOf(this.cliente) !== -1)
-        //             )
-        //             this.customers = customerFil  
-        //         }
-        //     }
-        // }
+        function data(){
+            return {
+                customers: {!! json_encode($customers) !!},
+                customersBackup: {!! json_encode($customers) !!},
+                cliente: null,
+                myFunction: function (){
+                    let customerFil = this.customersBackup.filter( customers =>
+                        (customers.name.toLowerCase().indexOf(this.cliente) !== -1) ||
+                        (customers.document.toLowerCase().indexOf(this.cliente) !== -1)
+                    )
+                    this.customers = customerFil  
+                }
+            }
+        }
     </script>
 @stop
 

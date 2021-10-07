@@ -47,17 +47,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _context.next = 2;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/branches").then(function (resp) {
                 var datos = resp.data.data;
-                var names = [];
-                var objeto = [];
-                datos.forEach(function (element) {
-                  names.push(element.description);
-                  var date = {
-                    name: element.description,
-                    id: element.id
-                  };
-                  objeto.push(date);
-                });
-                _this.select = names;
+                _this.select = resp.data.data;
                 _this.dates = datos;
               });
 
@@ -72,7 +62,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       select: {},
-      selectSearch: [],
+      selectSearch: {},
       ocultar: false,
       filtrado: '',
       filtradoSearch: '',
@@ -81,8 +71,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       elementoFiltradoSearch: [],
       dates: {},
       products: {},
-      movs: {},
-      table: []
+      table: {},
+      saldo: 0
     };
   },
   mounted: function mounted() {
@@ -98,12 +88,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (e.target.className != 'inputContent') {
         _this2.elementoFiltradoSearch = '';
       }
-    }); // axios.get(`http://localhost:3000/products`).then( resp =>{
-    //      this.products=resp.data
-    //  })
-    // axios.get(`http://localhost:3000/movimiento`).then( resp =>{
-    //      this.movs=resp.data
-    //  }) 
+    });
   },
   methods: {
     cod: function cod(a, b) {
@@ -112,19 +97,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }) === 0 : a === b;
     },
     filtrar: function filtrar() {
-      var mayus = this.filtrado.toUpperCase();
-      this.elementoFiltrado = this.select.filter(function (arr) {
-        return arr.startsWith(mayus);
+      var palabraFiltrar = this.filtrado.toLowerCase();
+      var clientesRespaldo = this.select;
+      var clientesFiltrados = clientesRespaldo.filter(function (clientes) {
+        return clientes.description.toLowerCase().indexOf(palabraFiltrar) !== -1;
       });
+      this.elementoFiltrado = clientesFiltrados;
     },
     filtrarSearch: function filtrarSearch() {
-      var mayusSearch = this.filtradoSearch.toUpperCase();
+      var clientesRespaldo = this.selectSearch;
+      var palabraFiltrar = this.filtradoSearch.toLowerCase();
 
-      if (mayusSearch === '') {
+      if (palabraFiltrar === '') {
         this.elementoFiltradoSearch = '';
       } else {
-        this.elementoFiltradoSearch = this.selectSearch.filter(function (arr) {
-          return arr.startsWith(mayusSearch);
+        this.elementoFiltradoSearch = clientesRespaldo.filter(function (clientes) {
+          return clientes.name.toLowerCase().indexOf(palabraFiltrar) !== -1;
         });
       }
     },
@@ -134,15 +122,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.filtradoSearch = '';
       this.seleccionado = e.target.textContent;
       this.dates.forEach(function (element) {
-        if (_this3.cod(_this3.seleccionado, element.name)) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("branches/products/".concat(element.id)).then(function (resp) {
-            _this3.selectSearch = [];
-            console.log(resp.data);
-            _this3.products = resp.data.data; //  let productos=resp.data
-
-            for (var key in _this3.products) {
-              _this3.selectSearch.push(_this3.products[key]['name']);
-            }
+        if (_this3.cod(_this3.seleccionado, element.description)) {
+          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/branches/products/".concat(element.id)).then(function (resp) {
+            _this3.products = resp.data.data;
+            _this3.selectSearch = resp.data.data;
           });
         }
       });
@@ -151,43 +134,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     seleccionarSearch: function seleccionarSearch(e) {
       var _this4 = this;
 
-      this.table = [];
-      this.filtradoSearch = e.target.textContent;
-      this.products.forEach(function (product) {
-        if (_this4.cod(_this4.filtradoSearch, product.name)) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/movimiento?idProduct=".concat(product.id)).then(function (resp) {
-            console.log(resp.data);
-            _this4.movs = resp.data;
-
-            _this4.movs.forEach(function (tab) {
-              tab.entrada = parseInt(tab.entrada) || 0;
-              tab.salida = parseInt(tab.salida) || 0;
-              tab.saldo = tab.entrada - tab.salida;
-
-              _this4.table.push(tab);
-            });
-          });
-        }
+      console.log(e.id);
+      this.table = {};
+      this.filtradoSearch = e.name;
+      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/kardex/".concat(e.id)).then(function (resp) {
+        _this4.table = resp.data.data;
+        _this4.saldo = 0;
       });
-      console.log("FiltradoSearch: ".concat(this.elementoFiltradoSearch));
       this.elementoFiltradoSearch = '';
-    },
-    toUpper: function toUpper() {
-      var uppercased = this.select.map(function (name) {
-        return name.toUpperCase();
-      });
-      this.select = uppercased;
-      var uppercasedSearch = this.selectSearch.map(function (name) {
-        return name.toUpperCase();
-      });
-      this.selectSearch = uppercasedSearch;
     },
     ocultarOptions: function ocultarOptions() {
       this.ocultar = !this.ocultar;
-      this.toUpper();
-    },
-    ocultarSearch: function ocultarSearch() {
-      this.toUpper();
     }
   }
 });
@@ -211,7 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-5200fd71");
 
 var _hoisted_1 = {
-  "class": "container"
+  "class": "pagina"
 };
 var _hoisted_2 = {
   "class": "form__element form__select"
@@ -247,8 +204,9 @@ var _hoisted_9 = {
 var _hoisted_10 = {
   "class": "option__contenedor"
 };
+var _hoisted_11 = ["onClick"];
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Fecha"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Tipo Doc."), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Nro. Doc."), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Entradas"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Salidas"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Saldo")])], -1
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "fecha."), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Nro. Doc."), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "series"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Description"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Entrada"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Salida"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Saldo")])], -1
 /* HOISTED */
 );
 
@@ -274,7 +232,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.select, function (element) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", {
       key: element
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(element), 1
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(element.description), 1
     /* TEXT */
     );
   }), 128
@@ -287,7 +245,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.elementoFiltrado, function (fil) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", {
       key: fil
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(fil), 1
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(fil.description), 1
     /* TEXT */
     );
   }), 128
@@ -299,7 +257,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.seleccionado), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"../../../img/abajo.svg\" :class=\"{'rotate':ocultar}\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img src=\"../../../../img/abajo.svg\" :class=\"{'rotate':ocultar}\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.filtradoSearch = $event;
@@ -308,50 +266,41 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.filtrarSearch && $options.filtrarSearch.apply($options, arguments);
     }),
     onClick: _cache[7] || (_cache[7] = function () {
-      return $options.ocultarSearch && $options.ocultarSearch.apply($options, arguments);
+      return _ctx.ocultarSearch && _ctx.ocultarSearch.apply(_ctx, arguments);
     }),
     "class": "inputContent"
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.filtradoSearch]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    onClick: _cache[8] || (_cache[8] = function ($event) {
-      return $options.seleccionarSearch($event);
-    })
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.elementoFiltradoSearch, function (filSearch) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.filtradoSearch]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.elementoFiltradoSearch, function (filSearch) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", {
-      key: filSearch
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch), 1
-    /* TEXT */
-    );
+      key: filSearch,
+      onClick: function onClick($event) {
+        return $options.seleccionarSearch(filSearch);
+      }
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.name) + "- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.brand), 9
+    /* TEXT, PROPS */
+    , _hoisted_11);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.table, function (tab) {
+  ))])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saldo = 0) + " ", 1
+  /* TEXT */
+  ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.table, function (tab) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: tab.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.fecha), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.date), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.tipo), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.document === null ? "-" : tab.document), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.doc), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.series), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-        'colorActive': tab.entrada > 0
-      })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.entrada), 3
-    /* TEXT, CLASS */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-        'colorActive': tab.salida > 0
-      })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.salida), 3
-    /* TEXT, CLASS */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
-        'colorActive': tab.saldo > 0
-      })
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.saldo), 3
-    /* TEXT, CLASS */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.description), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.movement_type == 'INGRESO' ? tab.quantity : "-"), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.movement_type == 'SALIDA' ? tab.quantity : "-"), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(tab.movement_type == 'INGRESO' ? $data.saldo += tab.quantity : $data.saldo -= tab.quantity), 1
+    /* TEXT */
     )]);
   }), 128
   /* KEYED_FRAGMENT */
@@ -398,7 +347,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container[data-v-5200fd71]{\r\n        padding-top: 25px;\r\n        padding-bottom: 25px;\r\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\n}\nform[data-v-5200fd71]{\r\n        display: flex;\r\n        justify-content: space-around;\r\n        align-items: center;\r\n        height: 95px;\r\n        width: 95%;\r\n        background-color: #fff;\r\n        border-radius: 10px;\r\n        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        margin-bottom: 40px;\n}\nlabel[data-v-5200fd71]{\r\n        color: rgb(172,173,182);\n}\r\n    /* .label{\r\n        color: rgb(128,189,255);\r\n    } */\n.form__select[data-v-5200fd71]{\r\n        width: 40%;\n}\n.form__select .select[data-v-5200fd71]{\r\n        width: 100%;\r\n        height: 40px;\r\n        /* outline-color: rgb(128,189,255); */\r\n        border: 1px solid rgb(147,168,195);\r\n        padding-left: 10px;\r\n        border-radius: 5px;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\r\n        cursor: pointer;\n}\n.select p[data-v-5200fd71]{\r\n        margin: 0;\n}\n.select img[data-v-5200fd71]{\r\n        display: block;\r\n        width: 15px;\r\n        margin-right: 10px;\r\n        transition: all 300ms;\n}\n.rotate[data-v-5200fd71]{\r\n        transform: rotate(-180deg);\n}\n.option__contenedor[data-v-5200fd71]{\r\n        box-sizing: border-box;\r\n        border-radius: 5px;\r\n        width: 100%;\r\n        max-height: 200px;\r\n        box-shadow: 0 0 2px 0 rgb(128,189,255);\r\n        background-color: #fff;\r\n        box-sizing: border-box;\r\n        cursor: pointer;\r\n        overflow-y: scroll;\r\n        position: absolute;\r\n        z-index: 100;\r\n        top: 44px;\n}\n.option__contenedor input[data-v-5200fd71],.search input[data-v-5200fd71]{\r\n        display: block;\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        border-color: #93a8c3;\r\n        outline-color: rgb(128,189,255);\r\n        border-style: solid;\r\n        border-width: 1px;\r\n        color:rgb(172,173,182)\n}\n.option__contenedor p[data-v-5200fd71]{\r\n        padding:8px 10px ;\r\n        margin: 0;\n}\n.option__contenedor p[data-v-5200fd71]:hover{\r\n        background-color: rgb(0, 116, 240);\r\n        color: #fff;\n}\n.form__select input[data-v-5200fd71]{\r\n        width: 99%;\r\n        margin: 5px auto;\r\n        /* margin-left: auto;\r\n        margin-right: auto; */\n}\n.option__contenedor[data-v-5200fd71]::-webkit-scrollbar{\r\n        width: 7px;\r\n        background-color: rgb(128,189,255)\n}\n.option__contenedor[data-v-5200fd71]::-webkit-scrollbar-thumb{\r\n        background-color: rgb(255, 255, 255);\r\n        border-radius: 10px;\r\n        border-right: 1px solid rgb(128,189,255);\r\n        border-left: 1px solid rgb(128,189,255);\n}\n.option__relative[data-v-5200fd71]{\r\n        position: relative;\r\n        z-index: 99;\n}\n.search[data-v-5200fd71]{\r\n        width: 40%;\n}\n.search .option__contenedor[data-v-5200fd71]{\r\n        top: 0;\n}\n.search input[data-v-5200fd71]{\r\n        width: 100%;\r\n        height: 40px;\r\n        border-radius: 5px;\n}\ntable[data-v-5200fd71]{\r\n        width: 95%;\r\n        border-collapse: separate;\r\n        border-spacing: 0px 10px;\r\n        margin-left: auto;\r\n        margin-right: auto;\n}\nthead tr[data-v-5200fd71]{\r\n        color: rgb(172,173,182);\n}\nthead td[data-v-5200fd71]{\r\n        margin-bottom: 50px;\n}\ntbody tr[data-v-5200fd71]{\r\n        background-color: rgb(255, 255, 255);\r\n        box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px;\r\n        transition: all 300ms;\n}\r\n    /* tbody tr:hover{\r\n        transform: scale(1.05);\r\n        box-shadow: rgba(172,173,182, 0.25) 0px 24px 25px, \r\n        rgba(172,173,182, 0.12) 0px -2px 10px, rgba(172,173,182, 0.12) 0px 4px 6px, \r\n        rgba(172,173,182, 0.17) 0px 2px 13px, rgba(172,173,182, 0.09) 0px -3px 5px;\r\n    } */\ntd[data-v-5200fd71]{\r\n         padding: 15px 10px;\n}\ntbody td[data-v-5200fd71]:first-of-type{\r\n        border-top-left-radius: 10px;\r\n        border-bottom-left-radius: 10px;\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\n}\ntbody td[data-v-5200fd71]:last-of-type{\r\n        border-top-right-radius: 10px;\r\n        border-bottom-right-radius: 10px;\n}\ntd[data-v-5200fd71]:nth-of-type(n+4){\r\n        color: rgb(172,173,182);\n}\ntd.colorActive[data-v-5200fd71]{\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pagina[data-v-5200fd71]{\r\n        width: 95%;\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        padding-top: 25px;\r\n        padding-bottom: 25px;\r\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\n}\nform[data-v-5200fd71]{\r\n        display: flex;\r\n        justify-content: space-around;\r\n        align-items: center;\r\n        height: 95px;\r\n        width: 95%;\r\n        background-color: #fff;\r\n        border-radius: 10px;\r\n        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        margin-bottom: 40px;\n}\nlabel[data-v-5200fd71]{\r\n        color: rgb(172,173,182);\n}\r\n    /* .label{\r\n        color: rgb(128,189,255);\r\n    } */\n.form__select[data-v-5200fd71]{\r\n        width: 40%;\n}\n.form__select .select[data-v-5200fd71]{\r\n        width: 100%;\r\n        height: 40px;\r\n        /* outline-color: rgb(128,189,255); */\r\n        border: 1px solid rgb(147,168,195);\r\n        padding-left: 10px;\r\n        border-radius: 5px;\r\n        display: flex;\r\n        justify-content: space-between;\r\n        align-items: center;\r\n        cursor: pointer;\n}\n.select p[data-v-5200fd71]{\r\n        margin: 0;\n}\n.select img[data-v-5200fd71]{\r\n        display: block;\r\n        width: 15px;\r\n        margin-right: 10px;\r\n        transition: all 300ms;\n}\n.rotate[data-v-5200fd71]{\r\n        transform: rotate(-180deg);\n}\n.option__contenedor[data-v-5200fd71]{\r\n        box-sizing: border-box;\r\n        border-radius: 5px;\r\n        width: 100%;\r\n        max-height: 200px;\r\n        box-shadow: 0 0 2px 0 rgb(128,189,255);\r\n        background-color: #fff;\r\n        box-sizing: border-box;\r\n        cursor: pointer;\r\n        overflow-y: scroll;\r\n        position: absolute;\r\n        z-index: 100;\r\n        top: 44px;\n}\n.option__contenedor input[data-v-5200fd71],.search input[data-v-5200fd71]{\r\n        display: block;\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        border-color: #93a8c3;\r\n        outline-color: rgb(128,189,255);\r\n        border-style: solid;\r\n        border-width: 1px;\r\n        color:rgb(172,173,182)\n}\n.option__contenedor p[data-v-5200fd71]{\r\n        padding:8px 10px ;\r\n        margin: 0;\n}\n.option__contenedor p[data-v-5200fd71]:hover{\r\n        background-color: rgb(0, 116, 240);\r\n        color: #fff;\n}\n.form__select input[data-v-5200fd71]{\r\n        width: 99%;\r\n        margin: 5px auto;\r\n        /* margin-left: auto;\r\n        margin-right: auto; */\n}\n.option__contenedor[data-v-5200fd71]::-webkit-scrollbar{\r\n        width: 7px;\r\n        background-color: rgb(128,189,255)\n}\n.option__contenedor[data-v-5200fd71]::-webkit-scrollbar-thumb{\r\n        background-color: rgb(255, 255, 255);\r\n        border-radius: 10px;\r\n        border-right: 1px solid rgb(128,189,255);\r\n        border-left: 1px solid rgb(128,189,255);\n}\n.option__relative[data-v-5200fd71]{\r\n        position: relative;\r\n        z-index: 99;\n}\n.search[data-v-5200fd71]{\r\n        width: 40%;\n}\n.search .option__contenedor[data-v-5200fd71]{\r\n        top: 0;\n}\n.search input[data-v-5200fd71]{\r\n        width: 100%;\r\n        height: 40px;\r\n        border-radius: 5px;\n}\ntable[data-v-5200fd71]{\r\n        width: 95%;\r\n        border-collapse: separate;\r\n        border-spacing: 0px 10px;\r\n        margin-left: auto;\r\n        margin-right: auto;\n}\nthead tr[data-v-5200fd71]{\r\n        color: rgb(172,173,182);\n}\nthead td[data-v-5200fd71]{\r\n        margin-bottom: 50px;\n}\ntbody tr[data-v-5200fd71]{\r\n        background-color: rgb(255, 255, 255);\r\n        box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px;\r\n        transition: all 300ms;\n}\r\n    /* tbody tr:hover{\r\n        transform: scale(1.05);\r\n        box-shadow: rgba(172,173,182, 0.25) 0px 24px 25px, \r\n        rgba(172,173,182, 0.12) 0px -2px 10px, rgba(172,173,182, 0.12) 0px 4px 6px, \r\n        rgba(172,173,182, 0.17) 0px 2px 13px, rgba(172,173,182, 0.09) 0px -3px 5px;\r\n    } */\ntd[data-v-5200fd71]{\r\n         padding: 15px 10px;\n}\ntbody td[data-v-5200fd71]:first-of-type{\r\n        border-top-left-radius: 10px;\r\n        border-bottom-left-radius: 10px;\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\n}\ntbody td[data-v-5200fd71]:last-of-type{\r\n        border-top-right-radius: 10px;\r\n        border-bottom-right-radius: 10px;\n}\ntd[data-v-5200fd71]:nth-of-type(n+4){\r\n        color: rgb(172,173,182);\n}\ntd.colorActive[data-v-5200fd71]{\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

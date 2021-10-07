@@ -11,6 +11,7 @@ use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\BranchController;
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\QuotationController;
@@ -38,7 +39,13 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
+//Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales/productos/{id}', [WebController::class, 'branches']);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
+Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
+Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
+
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
@@ -76,7 +83,8 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
     Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
-    
+
+    Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']); 
 
 
 //Modulo Terceros

@@ -82,7 +82,7 @@
                     </tr>
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6">{{ $numberLetter }}</td>
+                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert(152.54, 'SOLES', 'CENTIMOS') }}</td>
                 </tr>
             </tbody>
         </table>

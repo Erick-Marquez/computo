@@ -178,8 +178,8 @@ class ProductSeeder extends Seeder
         ]);
 
         DB::table('assemblies')->insert([
-            ['active' => true, 'discount' => 0, 'price' => 2000.000, 'name' => 'PC Galactica', 'description' => 'Para que puedas jugar maincra'],
-            ['active' => true, 'discount' => 0, 'price' => 3000.000, 'name' => 'PC Ultra', 'description' => 'Para que puedas jugar fortin'],
+            ['active' => true, 'discount' => 0, 'price' => 2000.000, 'name' => 'PC Galactica', 'description' => 'Para que puedas jugar minecraft'],
+            ['active' => true, 'discount' => 0, 'price' => 3000.000, 'name' => 'PC Ultra', 'description' => 'Para que puedas jugar fornite'],
         ]);
 
         DB::table('assembly_product')->insert([

@@ -16,10 +16,14 @@ class SaleDetail extends Model
         'total_igv',
         'subtotal',
         'total',
-        'discount',
+        'series',
         'igv_type_id',
         'sale_id',
         'branch_product_id'
+    ];
+
+    protected $casts = [
+        'series' => 'array'
     ];
 
     public function sale()

@@ -8,6 +8,7 @@ use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Serie;
 use App\Models\VoucherType;
+use App\Services\KardexService;
 use App\Services\NumberLetterService;
 use Illuminate\Http\Request;
 
@@ -51,7 +52,6 @@ class VoucherController extends Controller
     {
 
         $document_number = Serie::find($request->serie_id)->current_number + 1;
-
         $sale = Sale::create([
             'document_number' => $document_number,
             'date_issue' => $request->date_issue,
@@ -104,11 +104,13 @@ class VoucherController extends Controller
             ]);
 
 
-            // Funcion Kardex($data)
-            // request->all()
-            // $data->branch_product_id
-            // $request->series[$i][$j]
-            //
+            $data['branch_product_id'] = $request->branch_product_id[$i];
+            $data['quantity'] = $request->quantity[$i];
+            $data['document'] = $sale->serie->serie . '-' . $sale->document_number;
+            $data['series'] = $request->serie[$i];
+            $data['user_id'] = auth()->user()->id;
+            
+            $kardex = KardexService::sale($data);
         }
         
         $sale->update([
@@ -177,12 +179,11 @@ class VoucherController extends Controller
         $details = $head->saleDetails;
 
         $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
-        $numberLetter = NumberLetterService::convert($sale->total, 'SOLES', 'CENTIMOS');
         if ($type == 'A4') {
-            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr', 'numberLetter'))->setPaper('A4','portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
         }
         if ($type == 'TICKET') {
-            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr', 'numberLetter'))->setPaper(array(0,0,220,700),'portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,700),'portrait');
         }
         if ($type == 'WARRANTY') {
             $pdf = PDF::loadView('templates.pdf.warranty-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
