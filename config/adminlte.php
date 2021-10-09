@@ -270,8 +270,8 @@ return [
                 [
                     'text' => 'Comprobantes',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'vouchers.index',
-                    'can'    => 'vouchers.index',
+                    'route'  => 'web.ventas',
+                    // 'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Anticipo de Venta',

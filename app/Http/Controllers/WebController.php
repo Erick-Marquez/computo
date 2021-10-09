@@ -36,6 +36,11 @@ class WebController extends Controller
         return view('cashboxes.open-closed.index');
     }
 
+    public function sales()
+    {
+        return view('sales.vouchers.index');
+    }
+
     public function prueba()
     {
         return SunatService::facturar(1, 'credit');

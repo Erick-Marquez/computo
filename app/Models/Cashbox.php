@@ -44,4 +44,17 @@ class Cashbox extends Model
 
     }
 
+    // *! METODOS RECURRENTES PARA CAJA
+    public function balance()
+    {
+        if( $this->state ) {
+            return $this->openClosedCashboxes()
+                        ->orderBy('opening_date', 'DESC')
+                        ->first()
+                        ->opening_amount;
+        }
+
+        return 0;
+    }
+
 }

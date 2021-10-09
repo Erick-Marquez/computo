@@ -14,7 +14,7 @@ class CreateOpenClosedCashboxDetailsTable extends Migration
     public function up()
     {
         Schema::create('open_closed_cashbox_details', function (Blueprint $table) {
-            $table->id();            
+            $table->id();
             $table->unsignedDecimal('amount', 9, 3);
             $table->enum('type', ['INGRESO', 'EGRESO']); // EGRESO
             $table->string('observation')->nullable();
@@ -24,11 +24,6 @@ class CreateOpenClosedCashboxDetailsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-                
             $table->timestamps();
         });
     }

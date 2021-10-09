@@ -25,4 +25,7 @@ Route::middleware([
     Route::apiResource('cajas', CashboxController::class)->names('api.cajas');
     Route::post('/cashbox/open', [CashboxController::class, 'openCashbox'])->name('api.opencashbox');
     Route::patch('/cashbox/{id}/close', [CashboxController::class, 'closeCashbox'])->name('api.closecashbox');
+    Route::get('/cashbox/detail/{id}', [CashboxController::class, 'cashboxDetail'])->name('api.cashboxdetail');
+    Route::post('/cashbox/{id}/income', [CashboxController::class, 'income'])->name('api.incomeCashbox');
+    Route::post('/cashbox/{id}/expense', [CashboxController::class, 'expense'])->name('api.expenseCashbox');
 });

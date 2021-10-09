@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', 
 Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
+Route::middleware(['auth:sanctum', 'verified'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
@@ -49,11 +50,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
-Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
+// Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
 
 
 
-//Modulo Ventas
+// //Modulo Ventas
 Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherController::class)->names('vouchers');
 Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', QuotationController::class)->names('quotations');
 

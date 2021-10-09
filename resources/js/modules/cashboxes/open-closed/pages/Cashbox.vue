@@ -46,7 +46,7 @@
             <div class="info-contenido">
               <p v-if="cashbox.state">Estado: Aperturado</p>
               <p v-else>Estado: Sin Aperturar</p>
-              <p>Balance: S/. 0.00</p>
+              <p>Balance: S/. {{ cashbox.balance }}</p>
             </div>
           </div>
           <div class="icon">
@@ -54,7 +54,7 @@
           </div>
           <router-link
             v-if="cashbox.state"
-            :to="{ name: 'show-cashbox', params: { id: cashbox.id }}"
+            :to="{ name: 'show-cashbox', params: { id: cashbox.id } }"
             class="small-box-footer"
           >
             Ver caja
@@ -73,8 +73,6 @@
       </div>
     </div>
   </div>
-
-
 
   <!-- MODALES -->
   <div class="modal fade" id="modal-create" aria-hidden="true">
@@ -176,7 +174,7 @@ export default {
         .get("/api/cajas")
         .then((response) => {
           this.cashboxes = response.data.data; // resource creado por laravel
-          console.log(this.cashboxes)
+          console.log(this.cashboxes);
         })
         .catch((error) => {
           this.cashboxes = [];
@@ -219,7 +217,7 @@ export default {
     },
     openCashbox() {
       axios
-        .post('/api/cashbox/open', this.cashbox)
+        .post("/api/cashbox/open", this.cashbox)
         .then((response) => {
           $("#open-cashbox").modal("hide");
           console.log(response.data);

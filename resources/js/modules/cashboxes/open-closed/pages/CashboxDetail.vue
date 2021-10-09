@@ -9,7 +9,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Ventas</span>
-            <span class="info-box-number">1,410</span>
+            <span class="info-box-number">{{ details.balance.sales }}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -24,7 +24,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Ingresos</span>
-            <span class="info-box-number">410</span>
+            <span class="info-box-number">{{ details.balance.incomes }}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -39,7 +39,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Egresos</span>
-            <span class="info-box-number">13,648</span>
+            <span class="info-box-number">{{ details.balance.expenses }}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -58,7 +58,11 @@
         </button>
       </div>
       <div class="col-md-6 col-sm-6 col-12">
-        <button type="button" class="btn btn-danger btn-lg btn-block mb-3">
+        <button
+          type="button"
+          class="btn btn-danger btn-lg btn-block mb-3"
+          @click="showModal('#new-expense')"
+        >
           <i class="fas fa-minus"></i>
           Nuevo Egreso
         </button>
@@ -85,34 +89,29 @@
             <tr>
               <th>Fecha y Hora</th>
               <th>Concepto</th>
-              <th>Comentario</th>
+              <th>Observación</th>
               <th>Monto</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>25 Jul 8:23</td>
-              <td>Venta</td>
-              <td>Efectivo</td>
-              <td>S/. 30.00</td>
-            </tr>
-            <tr>
-              <td>25 Jul 8:23</td>
-              <td>Venta</td>
-              <td>Efectivo</td>
-              <td>S/. 30.00</td>
-            </tr>
-            <tr>
-              <td>25 Jul 8:23</td>
-              <td>Venta</td>
-              <td>Efectivo</td>
-              <td>S/. 30.00</td>
+            <tr v-for="movement in details.movements" :key="movement.id">
+              <td>{{ movement.date }}</td>
+              <td>{{ movement.concept }}</td>
+              <td>{{ movement.observation }}</td>
+              <td>{{ movement.amount }}</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
               <td colspan="3" class="text-right"><strong>Balance:</strong></td>
-              <td>S/. 457.00</td>
+              <td>
+                {{
+                  parseFloat(details.opening_amount, 3) +
+                  parseFloat(details.balance.sales, 3) +
+                  parseFloat(details.balance.incomes, 3) -
+                  parseFloat(details.balance.expenses, 3)
+                }}
+              </td>
             </tr>
           </tfoot>
         </table>
@@ -136,14 +135,14 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form @submit.prevent="newInconme()">
+        <form @submit.prevent="newIncome()">
           <div class="modal-body">
             <div class="form-group">
               <label for="">Importe</label>
               <input
                 type="number"
                 class="form-control"
-                v-model="inconme.amount"
+                v-model="income.amount"
                 required
               />
             </div>
@@ -153,7 +152,7 @@
                 class="form-control"
                 rows="5"
                 placeholder="Observacion..."
-                v-model="inconme.observation"
+                v-model="income.observation"
               ></textarea>
             </div>
           </div>
@@ -182,14 +181,14 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form @submit.prevent="newInconme()">
+        <form @submit.prevent="newExpense()">
           <div class="modal-body">
             <div class="form-group">
               <label for="">Importe</label>
               <input
                 type="number"
                 class="form-control"
-                v-model="inconme.amount"
+                v-model="expense.amount"
                 required
               />
             </div>
@@ -199,7 +198,7 @@
                 class="form-control"
                 rows="5"
                 placeholder="Observacion..."
-                v-model="inconme.observation"
+                v-model="expense.observation"
               ></textarea>
             </div>
           </div>
@@ -214,20 +213,63 @@
     </div>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      inconme: {},
+      income: {},
       expense: {},
+      details: {
+        balance: {
+          sales: 0,
+          incomes: 0,
+          expenses: 0,
+        },
+      },
     };
   },
   props: {
     cashbox: Number,
   },
+  created() {
+    this.showDetails();
+  },
   methods: {
-    newInconme() {},
+    async showDetails() {
+      await axios
+        .get(`/api/cashbox/detail/${this.$route.params.id}`)
+        .then((response) => {
+          this.details = response.data;
+          console.log(this.details);
+        })
+        .catch((error) => {
+          this.details = [];
+          console.log(error);
+        });
+    },
+    newIncome() {
+      axios
+        .post(`/api/cashbox/${this.$route.params.id}/income`, this.income)
+        .then((response) => {
+          $("#new-income").modal("hide");
+          this.showDetails();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    newExpense() {
+      axios
+        .post(`/api/cashbox/${this.$route.params.id}/expense`, this.expense)
+        .then((response) => {
+          $("#new-expense").modal("hide");
+          this.showDetails();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     showModal(modal, cashbox = null) {
       if (cashbox !== null) {
         this.cashbox = cashbox;
