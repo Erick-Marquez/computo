@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [We
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 <<<<<<< HEAD
 Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
+<<<<<<< HEAD
 =======
 Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
 Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
@@ -52,20 +53,22 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebContro
 Route::middleware(['auth:sanctum', 'verified'])->get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
 
 >>>>>>> d96b69258282c025b62346e40afa8a8e959159a2
+=======
+Route::middleware(['auth:sanctum', 'verified'])->get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
+Route::middleware(['auth:sanctum', 'verified', 'opening.cashbox'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
+>>>>>>> paloma
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
 
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
-Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
+// Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
 
 
 
-//Modulo Ventas
+// //Modulo Ventas
 Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherController::class)->names('vouchers');
 Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', QuotationController::class)->names('quotations');
 

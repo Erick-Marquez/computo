@@ -112,4 +112,28 @@ class CashboxController extends Controller
 
         return $this->cashboxService->closeCashbox($id, $request->all());
     }
+
+    public function cashboxDetail($id)
+    {
+        return $this->cashboxService->cashboxDetail($id);
+    }
+
+    public function income($id, Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
+
+        return $this->cashboxService->income($id, $request->all());
+    }
+
+    public function expense($id, Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+        ]);
+
+        return $this->cashboxService->expense($id, $request->all());
+    }
+
 }

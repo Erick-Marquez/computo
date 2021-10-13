@@ -14,6 +14,11 @@ class CashboxResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'description' => $this->description,
+            'state' => $this->state,
+            'balance' => $this->balance()
+        ];
     }
 }

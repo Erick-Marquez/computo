@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <button
-      class="btn btn-lg btn-block btn-primary my-2"
+      class="btn btn-lg btn-block btn-dark my-2"
       @click="showModal('#modal-create')"
     >
       <span><i class="fas fa-plus"></i></span>
@@ -14,15 +14,19 @@
         :key="cashbox.id"
       >
         <div
-          :class="[cashbox.state ? 'small-box bg-info' : 'small-box bg-danger']"
+          :class="[
+            cashbox.state
+              ? 'small-box bg-light border border-info'
+              : 'small-box bg-light border border-danger',
+          ]"
         >
           <div class="btn-group float-right">
             <button
               type="button"
               :class="[
                 cashbox.state
-                  ? 'btn btn-info btn-sm dropdown-toggle'
-                  : 'btn btn-danger btn-sm dropdown-toggle',
+                  ? 'btn btn-light btn-sm dropdown-toggle'
+                  : 'btn btn-light btn-sm dropdown-toggle',
               ]"
               data-toggle="dropdown"
               data-offset="-52"
@@ -46,7 +50,7 @@
             <div class="info-contenido">
               <p v-if="cashbox.state">Estado: Aperturado</p>
               <p v-else>Estado: Sin Aperturar</p>
-              <p>Balance: S/. 0.00</p>
+              <p>Balance: S/. {{ cashbox.balance }}</p>
             </div>
           </div>
           <div class="icon">
@@ -54,27 +58,29 @@
           </div>
           <router-link
             v-if="cashbox.state"
-            :to="{ name: 'show-cashbox', params: { id: cashbox.id }}"
-            class="small-box-footer"
+            :to="{ name: 'show-cashbox', params: { id: cashbox.id } }"
+            class="border border-info bg-info small-box-footer"
           >
-            Ver caja
-            <i class="fas fa-arrow-circle-right"></i>
+            <span class="text-white">
+              Ver Caja
+              <i class="fas fa-arrow-circle-right"></i>
+            </span>
           </router-link>
           <a
             v-else
             href="#"
-            class="small-box-footer"
+            class="bg-danger small-box-footer"
             @click="showModal('#open-cashbox', cashbox)"
           >
-            Aperturar Caja
-            <i class="fas fa-door-open"></i>
+            <span class="text-white">
+              Aperturar Caja
+              <i class="fas fa-door-open"></i>
+            </span>
           </a>
         </div>
       </div>
     </div>
   </div>
-
-
 
   <!-- MODALES -->
   <div class="modal fade" id="modal-create" aria-hidden="true">
@@ -176,7 +182,7 @@ export default {
         .get("/api/cajas")
         .then((response) => {
           this.cashboxes = response.data.data; // resource creado por laravel
-          console.log(this.cashboxes)
+          console.log(this.cashboxes);
         })
         .catch((error) => {
           this.cashboxes = [];
@@ -219,7 +225,7 @@ export default {
     },
     openCashbox() {
       axios
-        .post('/api/cashbox/open', this.cashbox)
+        .post("/api/cashbox/open", this.cashbox)
         .then((response) => {
           $("#open-cashbox").modal("hide");
           console.log(response.data);
@@ -244,5 +250,10 @@ export default {
   margin-top: 1em;
   line-height: 0.5;
   font-weight: 300;
+}
+
+.bg-info.small-box-footer {
+  color: #f2f2f2;
+  border: 1px solid #17a2b8;
 }
 </style>

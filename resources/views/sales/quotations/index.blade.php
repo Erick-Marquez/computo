@@ -43,7 +43,7 @@
 
                                             <a class="dropdown-item" href="{{ route('quotations.print', $quotation) }}" target="_blank">
                                                 <i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a>
- 
+
                                         <form action="{{ route('quotations.destroy', $quotation) }}" method="POST">
                                             @csrf
                                             @method('DELETE')

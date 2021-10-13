@@ -85,7 +85,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -127,7 +127,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-light-danger elevation-3',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -248,9 +248,9 @@ return [
         ],
         [
             'text'        => 'Dashboard',
-            'url'         => 'dashboard',
+            'route'       => 'web.dashboard',
             'icon'        => 'fas fa-fw fa-chart-line',
-            'can'         => 'dashboard',
+            //'can'         => 'dashboard',
             'label'       => 4,
             'label_color' => 'success',
         ],
@@ -269,29 +269,29 @@ return [
             'submenu' => [
                 [
                     'text' => 'Comprobantes',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'vouchers.index',
-                    'can'    => 'vouchers.index',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.ventas',
+                    // 'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Anticipo de Venta',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'fas fa-fw',
                     'url'  => '#',
                 ],
                 [
                     'text' => 'Comunicaciones de Baja',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'fas fa-fw',
                     'url'  => '#',
                 ],
                 [
                     'text' => 'Cotización',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'fas fa-fw',
                     'route'  => 'quotations.index',
                     'can'    => 'quotations.index',
                 ],
                 [
                     'text' => 'Garantías',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'fas fa-fw',
                     'url'  => '#',
                 ],
 
@@ -311,7 +311,7 @@ return [
                 [
                     'text' => 'Egresos e Ingresos',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.egresos-ingresos',
                 ],
                 [
                     'text' => 'Por Cobrar',
@@ -572,7 +572,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
@@ -652,7 +652,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js',
                 ],
             ],
         ],
