@@ -22532,7 +22532,7 @@ var routes = [{
     return __webpack_require__.e(/*! import() | inventory   */ "inventory  ").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/index.vue */ "./resources/js/modules/inventory/branches/index.vue"));
   },
   children: [{
-    path: '/',
+    path: '',
     name: 'layout-sucursales',
     component: function component() {
       return __webpack_require__.e(/*! import() | inventoryLayout   */ "inventoryLayout  ").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/pages/layout.vue */ "./resources/js/modules/inventory/branches/pages/layout.vue"));

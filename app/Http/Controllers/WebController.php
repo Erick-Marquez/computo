@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class WebController extends Controller
 {
+
+    public function newSale()
+    {
+        return view('sales.new-sale.index');
+    }
+
     public function familiesLinesBrands()
     {
         return view('catalogs.families-lines-brands.index');

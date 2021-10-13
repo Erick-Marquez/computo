@@ -268,6 +268,12 @@ return [
             'can'     => 'sales',
             'submenu' => [
                 [
+                    'text' => 'Nuevo Comprobante',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.new-sale',
+                    // 'can'    => 'vouchers.index',
+                ],
+                [
                     'text' => 'Comprobantes',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.ventas',

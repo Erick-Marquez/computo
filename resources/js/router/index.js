@@ -8,7 +8,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/inventory/branches/index.vue'),
         children: [
             {
-                path: '/',
+                path: '',
                 name: 'layout-sucursales',
                 component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/inventory/branches/pages/layout.vue'),
             },
