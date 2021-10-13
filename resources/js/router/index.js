@@ -73,6 +73,18 @@ const routes = [
             },
         ]
     },
+    {
+        path: '/dashboard',
+        name: 'dashboard-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/dashboard/dashboard/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'dashboard',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/dashboard/dashboard/pages/Dashboard.vue'),
+            },
+        ]
+    },
 
 ]
 

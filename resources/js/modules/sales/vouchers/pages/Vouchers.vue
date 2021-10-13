@@ -6,7 +6,10 @@
   </div>
 
   <div class="container-fluid">
-    <router-link class="btn btn-lg btn-block btn-primary mb-4" :to="{ name: 'new-voucher' }">
+    <router-link
+      class="btn btn-lg btn-block btn-dark mb-4"
+      :to="{ name: 'new-voucher' }"
+    >
       <i class="fas fa-plus"></i>
       Nueva venta
     </router-link>
@@ -34,7 +37,7 @@
             </div>
           </div>
           <!-- /.card-header -->
-          <div class="card-body table-responsive p-0">
+          <div class="card-body p-0">
             <table class="table table-hover text-nowrap">
               <thead>
                 <tr>
@@ -48,12 +51,45 @@
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>Lorem, ipsum dolor.</td>
+                  <td>Lorem, ipsum dolor.</td>
+                  <td>Lorem, ipsum dolor.</td>
+                  <td>Lorem, ipsum dolor.</td>
+                  <td>Lorem, ipsum dolor.</td>
+                  <td>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-danger dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        Acciones
+                      </button>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                        style=""
+                      >
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
+                        ><a
+                          class="dropdown-item"
+                          href="#"
+                          ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                        ><a
+                          class="dropdown-item"
+                          href="#"
+                          target="_blank"
+                          ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                        >
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>

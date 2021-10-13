@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <button
-      class="btn btn-lg btn-block btn-primary my-2"
+      class="btn btn-lg btn-block btn-dark my-2"
       @click="showModal('#modal-create')"
     >
       <span><i class="fas fa-plus"></i></span>
@@ -14,15 +14,19 @@
         :key="cashbox.id"
       >
         <div
-          :class="[cashbox.state ? 'small-box bg-info' : 'small-box bg-danger']"
+          :class="[
+            cashbox.state
+              ? 'small-box bg-light border border-info'
+              : 'small-box bg-light border border-danger',
+          ]"
         >
           <div class="btn-group float-right">
             <button
               type="button"
               :class="[
                 cashbox.state
-                  ? 'btn btn-info btn-sm dropdown-toggle'
-                  : 'btn btn-danger btn-sm dropdown-toggle',
+                  ? 'btn btn-light btn-sm dropdown-toggle'
+                  : 'btn btn-light btn-sm dropdown-toggle',
               ]"
               data-toggle="dropdown"
               data-offset="-52"
@@ -55,19 +59,23 @@
           <router-link
             v-if="cashbox.state"
             :to="{ name: 'show-cashbox', params: { id: cashbox.id } }"
-            class="small-box-footer"
+            class="border border-info bg-info small-box-footer"
           >
-            Ver caja
-            <i class="fas fa-arrow-circle-right"></i>
+            <span class="text-white">
+              Ver Caja
+              <i class="fas fa-arrow-circle-right"></i>
+            </span>
           </router-link>
           <a
             v-else
             href="#"
-            class="small-box-footer"
+            class="bg-danger small-box-footer"
             @click="showModal('#open-cashbox', cashbox)"
           >
-            Aperturar Caja
-            <i class="fas fa-door-open"></i>
+            <span class="text-white">
+              Aperturar Caja
+              <i class="fas fa-door-open"></i>
+            </span>
           </a>
         </div>
       </div>
@@ -242,5 +250,10 @@ export default {
   margin-top: 1em;
   line-height: 0.5;
   font-weight: 300;
+}
+
+.bg-info.small-box-footer {
+  color: #f2f2f2;
+  border: 1px solid #17a2b8;
 }
 </style>

@@ -40,13 +40,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', 
 Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
-Route::middleware(['auth:sanctum', 'verified'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
+Route::middleware(['auth:sanctum', 'verified'])->get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
+Route::middleware(['auth:sanctum', 'verified', 'opening.cashbox'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
 
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');

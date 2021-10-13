@@ -36,9 +36,19 @@ class WebController extends Controller
         return view('cashboxes.open-closed.index');
     }
 
+    public function expensesIncomes()
+    {
+        return view('cashboxes.expenses-incomes.index');
+    }
+
     public function sales()
     {
         return view('sales.vouchers.index');
+    }
+
+    public function dashboard()
+    {
+        return view('dashboard.index');
     }
 
     public function prueba()
