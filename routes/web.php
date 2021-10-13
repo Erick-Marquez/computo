@@ -43,20 +43,18 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales/productos/{id}
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
-<<<<<<< HEAD
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
-<<<<<<< HEAD
-=======
+
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
 Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
 
->>>>>>> d96b69258282c025b62346e40afa8a8e959159a2
-=======
 Route::middleware(['auth:sanctum', 'verified'])->get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-Route::middleware(['auth:sanctum', 'verified', 'opening.cashbox'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
->>>>>>> paloma
+Route::middleware(['auth:sanctum', 'verified', ])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
+// 'opening.cashbox'
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
@@ -92,11 +90,8 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
     Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
+    Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']);
 
-<<<<<<< HEAD
-=======
-    Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']); 
->>>>>>> d96b69258282c025b62346e40afa8a8e959159a2
 
 
 //Modulo Terceros

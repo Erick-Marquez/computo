@@ -35,7 +35,6 @@ class WebController extends Controller
         return view('inventory.kardex.index');
     }
 
-<<<<<<< HEAD
     public function cashboxes()
     {
         return view('cashboxes.open-closed.index');
@@ -56,10 +55,6 @@ class WebController extends Controller
         return view('dashboard.index');
     }
 
-    public function prueba()
-    {
-        return SunatService::facturar(1, 'credit');
-=======
     public function stockModifications()
     {
         return view('inventory.stock-modifications.index');
@@ -98,7 +93,7 @@ class WebController extends Controller
     }
 
     public function prueba()
-    {    
+    {
         // $data['branch_product_id'] = 1;
         // $data['quantity'] = 2;
         // $data['document'] = "F001" . '-' . "352";
@@ -108,6 +103,5 @@ class WebController extends Controller
 
         // KardexService::purchase($data);
         return SunatService::facturar(1, 'invoice');
->>>>>>> d96b69258282c025b62346e40afa8a8e959159a2
     }
 }

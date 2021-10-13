@@ -1263,7 +1263,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82'
+  baseURL: 'http://computo.test'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1286,7 +1286,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\n  margin-top: 1em;\n  line-height: 0.5;\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\n  color: #f2f2f2;\n  border: 1px solid #17a2b8;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\r\n  margin-top: 1em;\r\n  line-height: 0.5;\r\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\r\n  color: #f2f2f2;\r\n  border: 1px solid #17a2b8;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1310,7 +1310,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\n  background: linear-gradient(to right, #84d9d2, #07cdae)\n}\n.caja-1[data-v-1c35a19d] {\n  background: linear-gradient(to right, #ffbf96, #fe7096)\n}\n.caja-2[data-v-1c35a19d] {\n  background: linear-gradient(to right, #90caf9, #047edf 99%)\n}\n.fas[data-v-1c35a19d] {\n    color: #f2f2f2;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #84d9d2, #07cdae)\n}\n.caja-1[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #ffbf96, #fe7096)\n}\n.caja-2[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #90caf9, #047edf 99%)\n}\n.fas[data-v-1c35a19d] {\r\n    color: #f2f2f2;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
