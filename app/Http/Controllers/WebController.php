@@ -20,7 +20,6 @@ class WebController extends Controller
         return view('catalogs.product-series.index');
     }
 
-
     public function branches()
     {
         return view('inventory.branches.index');
@@ -44,6 +43,33 @@ class WebController extends Controller
     public function devolutions()
     {
         return view('inventory.devolutions.index');
+    }
+
+    /*========Configuracion=========*/
+
+    public function company()
+    {
+        return view('settings.company.index');
+    }
+
+    public function users()
+    {
+        return view('settings.users.index');
+    }
+
+    public function roles()
+    {
+        return view('settings.roles.index');
+    }
+
+    public function series()
+    {
+        return view('settings.series.index');
+    }
+
+    public function currencyExchanges()
+    {
+        return view('settings.currency-exchanges.index');
     }
 
     public function prueba()

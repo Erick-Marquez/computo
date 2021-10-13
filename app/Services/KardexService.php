@@ -172,12 +172,29 @@ class KardexService
             'date' => Carbon::now()->toDateTimeString(),
             'quantity' => $data['quantity'],
             'movement_type' => Kardex::INGRESO,
-            'description' => Kardex::DEVOLUCION,
-            'document' => $data['document'],
+            'description' => Kardex::INVENTARIO_INICIAL,
             'series' => $data['series'],
             'branch_product_id' => $data['branch_product_id'],
             'user_id' => $data['user_id'],
         ]);
+
+        // Actualizar stock de productos
+        $branchProduct = BranchProduct::find($data['branch_product_id']);
+        $branchProduct->stock = $branchProduct->stock + $data['quantity'];
+        $branchProduct->save();
+
+        // Agregar las series si maneja serie
+        if ($branchProduct->manager_series) { //Comprobar si maneja series
+            foreach ($data['series'] as $key => $serie) { // Iterar cada serie del array
+
+                // Agregar las series
+                BranchProductSerie::create([
+                    'serie' => $serie,
+                    'branch_product_id' => $data['branch_product_id']
+                ]);
+
+            }
+        }
     }
 
 }

@@ -27,7 +27,7 @@
                 <div class="option__contenedor" >
                     <div>
                         <p v-for="filSearch in  elementoFiltradoSearch" :key="filSearch"
-                        @click="seleccionarSearch(filSearch)">{{filSearch.name}}- {{filSearch.brand}}</p>
+                        @click="seleccionarSearch(filSearch)">{{filSearch.name}} - {{filSearch.brand}}</p>
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@ export default {
        seleccionarSearch(e){
             console.log(e.id)
             this.table ={}
-            this.filtradoSearch= e.name
+            this.filtradoSearch= e.name + ' - ' + e.brand
             BaseUrl.get(`/kardex/${e.id}`).then( resp=>{
                 this.table=resp.data.data
                 this.saldo = 0

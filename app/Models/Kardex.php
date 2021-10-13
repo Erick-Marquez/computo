@@ -15,6 +15,7 @@ class Kardex extends Model
     const COMPRA = 'COMPRA';
     const MODIFICA_STOCK = 'MODIFICA STOCK';
     const MOVIMIENTO_SUCURSAL = 'MOVIMIENTO SUCURSAL';
+    const INVENTARIO_INICIAL = 'INVENTARIO INICIAL';
     const DEVOLUCION = 'DEVOLUCION';
     const BAJA = 'BAJA';
 

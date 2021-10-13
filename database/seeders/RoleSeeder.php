@@ -139,6 +139,12 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'series.create', 'description' => 'Crear Serie'])->syncRoles([$role1]);
             Permission::create(['name' => 'series.edit', 'description' => 'Editar Serie'])->syncRoles([$role1]);
             Permission::create(['name' => 'series.destroy', 'description' => 'Eliminar Serie'])->syncRoles([$role1]);
+
+            //Currency Exchanges Permissions
+            Permission::create(['name' => 'currency-exchanges.index', 'description' => 'Ver lista de Camnio de Divisas'])->syncRoles([$role1]);
+            Permission::create(['name' => 'currency-exchanges.create', 'description' => 'Crear Cambio de Divisa'])->syncRoles([$role1]);
+            Permission::create(['name' => 'currency-exchanges.edit', 'description' => 'Editar Cambio de Divisa'])->syncRoles([$role1]);
+            Permission::create(['name' => 'currency-exchanges.destroy', 'description' => 'Eliminar Cambio de Divisa'])->syncRoles([$role1]);
         
     }
 }

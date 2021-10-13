@@ -136,7 +136,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       console.log(e.id);
       this.table = {};
-      this.filtradoSearch = e.name;
+      this.filtradoSearch = e.name + ' - ' + e.brand;
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/kardex/".concat(e.id)).then(function (resp) {
         _this4.table = resp.data.data;
         _this4.saldo = 0;
@@ -277,7 +277,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.seleccionarSearch(filSearch);
       }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.name) + "- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.brand), 9
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.name) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.brand), 9
     /* TEXT, PROPS */
     , _hoisted_11);
   }), 128

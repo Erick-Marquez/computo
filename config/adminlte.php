@@ -508,6 +508,12 @@ return [
                     'route'  => 'series.index',
                     'can'    => 'series.index',
                 ],
+                [
+                    'text'   => 'Cambio de Divisas',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'web.currency-exchanges',
+                    'can'    => 'currency-exchanges.index',
+                ],
             ],
         ],    
 

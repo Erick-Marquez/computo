@@ -39,12 +39,14 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
-//Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales/productos/{id}', [WebController::class, 'branches']);
+Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales/productos/{id}', [WebController::class, 'branches']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
 Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
 
 
 Route::get('/prueba', [WebController::class, 'prueba']);

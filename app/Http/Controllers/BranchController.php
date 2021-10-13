@@ -114,9 +114,9 @@ class BranchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function products(Branch $branch)  
+    public function products($branch)  
     {
-        $branchProducts = $branch->branchProducts;
+        $branchProducts = BranchProduct::where('branch_id', $branch)->with('product.brandLine.brand')->get();
         return BranchProductResource::collection($branchProducts);
     }
 
