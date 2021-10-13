@@ -24,14 +24,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {},
+  components: {
+    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default
+  },
   data: function data() {
     return {
       caja: {
@@ -54,7 +58,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("/api/cajas").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/api/cajas").then(function (response) {
                   _this.cashboxes = response.data.data; // resource creado por laravel
 
                   // resource creado por laravel
@@ -74,7 +78,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     createCashbox: function createCashbox() {
       var _this2 = this;
 
-      axios.post("/api/cajas", this.caja).then(function (response) {
+      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cajas", this.caja).then(function (response) {
         $("#modal-create").modal("hide");
 
         _this2.showCashboxes();
@@ -95,7 +99,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.isConfirmed) {
-          axios["delete"]("/api/cajas/".concat(id)).then(function (response) {
+          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.delete("/api/cajas/".concat(id)).then(function (response) {
             _this3.showCashboxes();
           })["catch"](function (error) {
             console.log(error);
@@ -107,7 +111,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     openCashbox: function openCashbox() {
       var _this4 = this;
 
-      axios.post("/api/cashbox/open", this.cashbox).then(function (response) {
+      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cashbox/open", this.cashbox).then(function (response) {
         $("#open-cashbox").modal("hide");
         console.log(response.data);
 

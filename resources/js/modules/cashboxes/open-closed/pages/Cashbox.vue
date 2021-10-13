@@ -162,8 +162,9 @@
 </template>
 
 <script>
+import BaseUrl from '../../../../api/BaseUrl';
 export default {
-  components: {},
+  components: {BaseUrl},
   data() {
     return {
       caja: {
@@ -178,9 +179,7 @@ export default {
   },
   methods: {
     async showCashboxes() {
-      await axios
-        .get("/api/cajas")
-        .then((response) => {
+      await  BaseUrl.get("/api/cajas").then((response) => {
           this.cashboxes = response.data.data; // resource creado por laravel
           console.log(this.cashboxes);
         })
@@ -189,9 +188,7 @@ export default {
         });
     },
     createCashbox() {
-      axios
-        .post("/api/cajas", this.caja)
-        .then((response) => {
+      BaseUrl.post("/api/cajas", this.caja).then((response) => {
           $("#modal-create").modal("hide");
           this.showCashboxes();
         })
@@ -210,9 +207,7 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
-            .delete(`/api/cajas/${id}`)
-            .then((response) => {
+          BaseUrl.delete(`/api/cajas/${id}`).then((response) => {
               this.showCashboxes();
             })
             .catch((error) => {
@@ -224,9 +219,7 @@ export default {
       });
     },
     openCashbox() {
-      axios
-        .post("/api/cashbox/open", this.cashbox)
-        .then((response) => {
+      BaseUrl.post("/api/cashbox/open", this.cashbox).then((response) => {
           $("#open-cashbox").modal("hide");
           console.log(response.data);
           this.showCashboxes();
