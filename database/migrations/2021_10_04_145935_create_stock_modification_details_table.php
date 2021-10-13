@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKardexTable extends Migration
+class CreateStockModificationDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,21 @@ class CreateKardexTable extends Migration
      */
     public function up()
     {
-        Schema::create('kardex', function (Blueprint $table) {
+        Schema::create('stock_modification_details', function (Blueprint $table) {
             $table->id();
-            $table->date('date')->nullable(); // FECHA DE EMISION
             $table->bigInteger('quantity')->nullable();
-            $table->enum('movement_type', ['INGRESO', 'SALIDA']);
-            $table->enum('description', ['VENTA', 'MODIFICA STOCK', 'COMPRA', 'MOVIMIENTO SUCURSAL', 'INVENTARIO INICIAL', 'DEVOLUCION', 'BAJA']);
-            $table->string('document')->nullable();
+            $table->enum('operation', ['SUMA', 'RESTA']);
             $table->json('series')->nullable();
+
+            $table->foreignId('stock_modification_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreignId('branch_product_id')
                 ->constrained('branch_product')
                 ->onUpdate('cascade');
 
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            
             $table->timestamps();
         });
     }
@@ -42,6 +39,6 @@ class CreateKardexTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kardex');
+        Schema::dropIfExists('stock_modification_details');
     }
 }

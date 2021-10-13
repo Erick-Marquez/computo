@@ -106,9 +106,9 @@ class NumberLetterService
         }
 
         if(empty($decimales)){
-            $valor_convertido = rtrim($converted) . ' ' . strtoupper($moneda);
+            $valor_convertido = rtrim($converted) . ' CON ' . '00/100 ' . strtoupper($moneda);
         } else {
-            $valor_convertido = rtrim($converted) . ' ' . strtoupper($moneda) . ' CON ' . rtrim($decimales) . ' ' . strtoupper($centimos);
+            $valor_convertido = rtrim($converted) . ' CON ' . rtrim($decNumberStr) . '/100 ' . strtoupper($moneda);
         }
 
         return $valor_convertido;

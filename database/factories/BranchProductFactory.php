@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Branch;
 use App\Models\BranchProduct;
+use App\Models\IgvType;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BranchProductFactory extends Factory
@@ -22,7 +25,10 @@ class BranchProductFactory extends Factory
     public function definition()
     {
         return [
-            
+            'stock' => $this->faker->numerify('##'),
+            'igv_type_id' => 8,
+            'product_id' => Product::all()->random()->id,
+            'branch_id' => Branch::all()->random()->id
         ];
     }
 }

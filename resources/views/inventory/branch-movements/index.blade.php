@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <index-kardex></index-kardex>
+    Movimiento
 @stop
 
 @section('css')

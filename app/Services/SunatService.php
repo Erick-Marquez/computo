@@ -32,12 +32,25 @@ class SunatService
 
     public static function facturar($id, $type)
     {   
+        // self::$message = [
+        //     'xml' => [
+        //         'creado' => null,
+        //         'firmado' => null
+        //     ],
+        //     'zip' => null,
+        //     'send' => null,
+        //     'response' => [
+        //         "cod" => null,
+        //         'message' => null,
+        //         'hash_cdr' => null
+        //     ]
+        // ];
         self::template($id, $type);
         self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
         self::signXml();
         self::zipXml();
         self::sendSunat();
-        dd(self::$message);
+        return self::$message;
     }
 
     public static function getSale($id)
@@ -90,7 +103,7 @@ class SunatService
         $xml = $dom->saveXML();
         // Se guarda el string como tipo xml 
         Storage::disk('local')->put(self::$directoryXml.self::$nameXml, $xml);
-        self::$message['xml']['creado'] = "si";
+        self::$message['xml']['creado'] = true;
 
     }
 
@@ -109,7 +122,7 @@ class SunatService
 
         // Guardo el xml firmado
         Storage::disk('local')->put(self::$directoryXml.self::$nameXml, $xmlSigned);
-        self::$message['xml']['firmado'] = "si";
+        self::$message['xml']['firmado'] = true;
     }
 
     public static function zipXml()
@@ -123,7 +136,7 @@ class SunatService
             $zip->addFile($xmlSignedPath, self::$nameXml); //Origen , Nombre Destino
             $zip->close();
         }
-        self::$message['zip'] = "si";
+        self::$message['zip'] = true;
         
     }
 
@@ -188,6 +201,7 @@ class SunatService
 
         
         if ($httpCode == 200) {
+            self::$message['send'] = true;
             $doc = new DOMDocument();
             $doc->loadXML($response);
             if (isset($doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
@@ -196,18 +210,17 @@ class SunatService
                 $cdr = base64_decode($cdr); // Descodificar la respuesta
                 // Guardo el archivo cdr
                 Storage::disk('local')->put(self::$directoryCdr.'R-'.self::$nameZip, $cdr);
-                self::$message['envio'] = "Si";
                 self::getCdr();
 
             } else {
-                self::$message['respuesta']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue;
-                self::$message['respuesta']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue;
+                self::$message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue;
+                self::$message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue;
                 $codigo = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
                 $message = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
             }
             
         } else {
-            self::$message['envio'] = "Problema de conexion";
+            self::$message['send'] = "Problema de conexion";
         }
         curl_close($ch);
 
@@ -226,9 +239,9 @@ class SunatService
         //=============hash CDR=================
         $docCdr = new DOMDocument();
         $docCdr->load($zipCdrPath.'R-'.self::$nameXml);
-        self::$message['respuesta']['cod'] = $docCdr->getElementsByTagName('ResponseCode')->item(0)->nodeValue;
-        self::$message['respuesta']['message'] = $docCdr->getElementsByTagName('Description')->item(0)->nodeValue;
-        self::$message['respuesta']['hash_cdr'] = $docCdr->getElementsByTagName('DigestValue')->item(0)->nodeValue;
+        self::$message['response']['cod'] = $docCdr->getElementsByTagName('ResponseCode')->item(0)->nodeValue;
+        self::$message['response']['message'] = $docCdr->getElementsByTagName('Description')->item(0)->nodeValue;
+        self::$message['response']['hash_cdr'] = $docCdr->getElementsByTagName('DigestValue')->item(0)->nodeValue;
     }
 
     public static function template($id, $type)
@@ -254,6 +267,7 @@ class SunatService
             break;
 
             case 'invoice':
+                
                 // Obtener datos nesesarios para la factura
                 self::getSale($id);
                 // Obtener los nombres de los archivos

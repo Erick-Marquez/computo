@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <index-kardex></index-kardex>
+    Cambios de divisas
 @stop
 
 @section('css')
@@ -11,7 +11,5 @@
 @stop
 
 @section('js')
-    <script>
-        console.log('Hi!');
-    </script>
+
 @stop

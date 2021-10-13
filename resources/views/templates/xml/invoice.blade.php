@@ -18,7 +18,7 @@
     <cbc:IssueTime>00:00:00</cbc:IssueTime>
     <cbc:DueDate>{{ $sale->date_due }}</cbc:DueDate>
     <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale->serie->voucherType->cod }}</cbc:InvoiceTypeCode>
-    <cbc:Note languageLocaleID="1000">SON SESENTA  CON 00/100</cbc:Note>
+    <cbc:Note languageLocaleID="1000">{{ \App\Services\NumberLetterService::convert(round($sale->total, 2), 'SOLES') }}</cbc:Note>
     <cbc:DocumentCurrencyCode listID="ISO 4217 Alpha" listName="Currency" listAgencyName="United Nations Economic Commission for Europe">PEN</cbc:DocumentCurrencyCode>
     <cbc:LineCountNumeric>{{ count($sale->saleDetails) }}</cbc:LineCountNumeric>
     <cac:Signature>

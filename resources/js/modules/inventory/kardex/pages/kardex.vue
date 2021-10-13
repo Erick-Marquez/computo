@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="pagina">
     <form >
         <div class=" form__element form__select">
             <label class="label">LOCAL:</label>
@@ -7,16 +7,16 @@
                 <div class="option__contenedor" v-if=ocultar>
                     <input type="text"  v-model="filtrado" @keyup="filtrar" class="inputSearch">
                     <div v-if="filtrado.length<1" @click="seleccionar($event)">
-                        <p v-for="element in  select" :key="element">{{element}}</p>
+                        <p v-for="element in  select" :key="element">{{element.description}}</p>
                     </div>
                     <div v-if="filtrado.length>=1" @click="seleccionar($event)">
-                        <p v-for="fil in elementoFiltrado" :key="fil">{{fil}}</p>
+                        <p v-for="fil in elementoFiltrado" :key="fil">{{fil.description}}</p>
                     </div>
                 </div>
             </div>
             <div class="select" @click="ocultarOptions">
                 <p class="selectP">{{seleccionado}}</p>
-                <!-- <img src="../../../img/abajo.svg" :class="{'rotate':ocultar}"> -->
+                <!-- <img src="../../../../img/abajo.svg" :class="{'rotate':ocultar}"> -->
             </div>
         </div>
         <div class="search">
@@ -25,35 +25,39 @@
                      @click="ocultarSearch" class="inputContent">
             <div class="option__relative">
                 <div class="option__contenedor" >
-                    <div @click="seleccionarSearch($event)">
-                        <p v-for="filSearch in  elementoFiltradoSearch" :key="filSearch">{{filSearch}}</p>
+                    <div>
+                        <p v-for="filSearch in  elementoFiltradoSearch" :key="filSearch"
+                        @click="seleccionarSearch(filSearch)">{{filSearch.name}} - {{filSearch.brand}}</p>
                     </div>
                 </div>
             </div>
         </div>
-  </form>
-  <table>
-      <thead>
-          <tr>
-              <td>Fecha</td>
-              <td>Tipo Doc.</td>
-              <td>Nro. Doc.</td>
-              <td>Entradas</td>
-              <td>Salidas</td>
-              <td>Saldo</td>
-          </tr>
-      </thead>
-      <tbody>
-          <tr v-for="tab in table" :key="tab.id">
-              <td>{{tab.fecha}}</td>
-              <td>{{tab.tipo}}</td>
-              <td>{{tab.doc}}</td>
-              <td :class="{'colorActive':tab.entrada>0}">{{tab.entrada}}</td>
-              <td :class="{'colorActive':tab.salida>0}">{{tab.salida}}</td>
-              <td :class="{'colorActive':tab.saldo>0}">{{tab.saldo}}</td>
-          </tr>
-      </tbody>
-  </table>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <td>fecha.</td>
+                <td>Nro. Doc.</td>
+                <td>series</td>
+                <td>Description</td>
+                <td>Entrada</td>
+                <td>Salida</td>
+                <td>Saldo</td>
+            </tr>
+        </thead>
+        <tbody>
+            {{ saldo=0 }}
+            <tr v-for="tab in table" :key="tab.id">
+                <td>{{ tab.date }}</td>
+                <td>{{ tab.document===null ? "-" : tab.document }}</td>
+                <td>{{ tab.series }}</td> 
+                <td>{{ tab.description }}</td>
+                <td>{{ tab.movement_type=='INGRESO' ? tab.quantity : "-"}}</td>
+                <td>{{ tab.movement_type=='SALIDA' ? tab.quantity : "-"}}</td>
+                <td>{{ tab.movement_type=='INGRESO' ? saldo+=tab.quantity : saldo-=tab.quantity}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
   
 </template>
@@ -66,23 +70,16 @@ export default {
        
         await BaseUrl.get(`/branches`).then( resp=>{
             const datos=resp.data.data
-            const names=[]
-            const objeto =[]
-            datos.forEach(element => {
-               names.push(element.description)
-               const date = {name:element.description,id:element.id}
-               objeto.push(date)
-            })
-            this.select=names
+            this.select=resp.data.data
             this.dates=datos
        })
-       
+        
         
    },
    data(){
        return{
            select:{},
-           selectSearch:[],
+           selectSearch:{},
            ocultar:false,
            filtrado:'',
            filtradoSearch:'',
@@ -91,8 +88,8 @@ export default {
            elementoFiltradoSearch:[],
            dates: {},
            products:{},
-           movs:{},
-           table:[],
+           table:{},
+           saldo: 0,
        }
    },
    mounted(){
@@ -108,14 +105,6 @@ export default {
                this.elementoFiltradoSearch=''
             }
         })
-        // axios.get(`http://localhost:3000/products`).then( resp =>{
-             
-        //      this.products=resp.data
-        //  })
-        // axios.get(`http://localhost:3000/movimiento`).then( resp =>{
-             
-        //      this.movs=resp.data
-        //  }) 
     },
    methods:{
        cod(a, b){
@@ -125,75 +114,63 @@ export default {
         
        },
        filtrar(){
-            const mayus=this.filtrado.toUpperCase()
-            this.elementoFiltrado = this.select.filter(arr => arr.startsWith(mayus))
+            let palabraFiltrar = this.filtrado.toLowerCase();
+            let clientesRespaldo = this.select
+            let clientesFiltrados = clientesRespaldo.filter(clientes =>
+                (clientes.description.toLowerCase().indexOf(palabraFiltrar) !== -1) 
+            );
+            this.elementoFiltrado = clientesFiltrados
         },
         filtrarSearch(){
-            const mayusSearch=this. filtradoSearch.toUpperCase()
-             if(mayusSearch===''){
-                 this.elementoFiltradoSearch=''
-             }else{
-                 this.elementoFiltradoSearch = this.selectSearch.filter(arr => arr.startsWith(mayusSearch))
-             }
+            let clientesRespaldo = this.selectSearch
+            let palabraFiltrar = this.filtradoSearch.toLowerCase();
+                if(palabraFiltrar===''){
+                    this.elementoFiltradoSearch=''
+                }else{
+                    this.elementoFiltradoSearch = clientesRespaldo.filter(clientes =>
+                    (clientes.name.toLowerCase().indexOf(palabraFiltrar) !== -1) 
+                );
+            }
         },
         seleccionar(e){
             this.filtradoSearch=''
             this.seleccionado= e.target.textContent
             this.dates.forEach( element=>{
-                if(this.cod(this.seleccionado,element.name)){                          
-                    BaseUrl.get(`branches/products/${element.id}`).then( resp=>{
-                        this.selectSearch=[]
-                        console.log(resp.data)
+                if(this.cod(this.seleccionado,element.description)){    
+                          
+                   BaseUrl.get(`/branches/products/${element.id}`).then( resp=>{
+                       
                         this.products=resp.data.data
-                        //  let productos=resp.data
-                         for (const key in this.products) {
-                            this.selectSearch.push(this.products[key]['name'])
-                        }
+                        this.selectSearch= resp.data.data
+                        
                     })
                 } 
             })
             this.ocultar=!this.ocultar
         },
-        seleccionarSearch(e){
-            this.table =[]
-            this.filtradoSearch= e.target.textContent
-            this.products.forEach(product =>{
-                if(this.cod(this.filtradoSearch,product.name)){       
-                    BaseUrl.get(`/movimiento?idProduct=${product.id}`).then( resp=>{
-                        console.log(resp.data)
-                        this.movs=resp.data
-                        this.movs.forEach( tab =>{
-                        tab.entrada = parseInt(tab.entrada) || 0
-                        tab.salida = parseInt(tab.salida) || 0
-                        tab.saldo =tab.entrada - tab.salida
-                        this.table.push(tab)
-                    })
-                    })
-                }
+       seleccionarSearch(e){
+            console.log(e.id)
+            this.table ={}
+            this.filtradoSearch= e.name + ' - ' + e.brand
+            BaseUrl.get(`/kardex/${e.id}`).then( resp=>{
+                this.table=resp.data.data
+                this.saldo = 0
             })
-             console.log(`FiltradoSearch: ${this.elementoFiltradoSearch}`)
             this.elementoFiltradoSearch=''
-        },
-        toUpper(){
-             const uppercased = this. select.map(name => name.toUpperCase());
-             this. select=uppercased
-             const uppercasedSearch = this.selectSearch.map(name => name.toUpperCase());
-              this. selectSearch=uppercasedSearch
         },
         ocultarOptions(){
             this.ocultar=!this.ocultar
-            this.toUpper()
         },
-        ocultarSearch(){
-            this.toUpper()
-        }
 
    }
 }
 </script>
 
 <style scoped>
-    .container{
+    .pagina{
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
         padding-top: 25px;
         padding-bottom: 25px;
         box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;
