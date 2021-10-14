@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-4 col-sm-6 col-12">
         <div class="info-box">
           <span class="info-box-icon bg-info">
@@ -11,11 +11,8 @@
             <span class="info-box-text">Ventas</span>
             <span class="info-box-number">{{ details.balance.sales }}</span>
           </div>
-          <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
       </div>
-      <!-- /.col -->
       <div class="col-md-4 col-sm-6 col-12">
         <div class="info-box">
           <span class="info-box-icon bg-success">
@@ -26,11 +23,8 @@
             <span class="info-box-text">Ingresos</span>
             <span class="info-box-number">{{ details.balance.incomes }}</span>
           </div>
-          <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
       </div>
-      <!-- /.col -->
       <div class="col-md-4 col-sm-6 col-12">
         <div class="info-box">
           <span class="info-box-icon bg-warning">
@@ -41,16 +35,99 @@
             <span class="info-box-text">Egresos</span>
             <span class="info-box-number">{{ details.balance.expenses }}</span>
           </div>
-          <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-md-6 d-flex align-items-stretch flex-column">
+        <div class="card bg-light d-flex flex-fill">
+          <div class="card-header border-bottom-0 text-center">
+            <h4>
+              <strong>{{ details.cashbox_description }}</strong> - Resumen de
+              apertura
+            </h4>
+          </div>
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col-7">
+                <p class="lead"><b>Cajero: </b> {{ details.user_name }}</p>
+                <p class="lead">
+                  <b>Fecha de apertura: </b> {{ details.opening_date }}
+                </p>
+                <p class="lead">
+                  <b>Monto de apertura: </b> S/. {{ details.opening_amount }}
+                </p>
+              </div>
+              <div class="col-5 text-center">
+                <img
+                  src="https://adminlte.io/themes/v3/dist/img/user4-128x128.jpg"
+                  alt="user-avatar"
+                  class="img-circle img-fluid"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-navy">
+                <i class="fas fa-money-check-alt"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Ventas</span>
+                <span class="info-box-number">{{ details.balance.sales }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-teal">
+                <i class="fas fa-hand-holding-usd"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Ingresos</span>
+                <span class="info-box-number">{{
+                  details.balance.incomes
+                }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-maroon">
+                <i class="fas fa-file-invoice-dollar"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Egresos</span>
+                <span class="info-box-number">{{
+                  details.balance.expenses
+                }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6 col-sm-6 col-12">
         <button
           type="button"
-          class="btn btn-primary btn-lg btn-block mb-3"
+          class="btn btn-dark btn-lg btn-block mb-3"
           @click="showModal('#new-income')"
         >
           <i class="fas fa-plus"></i>
@@ -166,6 +243,13 @@
       </div>
     </div>
   </div>
+  <button
+    class="btn-outline-danger btn-lg btn-block mb-4"
+    @click="closeCashbox"
+  >
+    <i class="fas fa-door-closed"></i>
+    Cerrar Caja
+  </button>
 
   <div class="modal fade" id="new-expense" aria-hidden="true">
     <div class="modal-dialog">
@@ -214,8 +298,10 @@
   </div>
 </template>
 <script>
+import BaseUrl from "../../../../api/BaseUrl";
 import axios from "axios";
 export default {
+  components: { BaseUrl },
   data() {
     return {
       income: {},
@@ -227,18 +313,17 @@ export default {
           expenses: 0,
         },
       },
+      cashbox: {},
     };
   },
   props: {
-    cashbox: Number,
   },
   created() {
     this.showDetails();
   },
   methods: {
     async showDetails() {
-      await axios
-        .get(`/api/cashbox/detail/${this.$route.params.id}`)
+      await BaseUrl.get(`/api/cashbox/detail/${this.$route.params.id}`)
         .then((response) => {
           this.details = response.data;
           console.log(this.details);
@@ -248,9 +333,11 @@ export default {
           console.log(error);
         });
     },
-    newIncome() {
-      axios
-        .post(`/api/cashbox/${this.$route.params.id}/income`, this.income)
+    async newIncome() {
+      await BaseUrl.post(
+        `/api/cashbox/${this.$route.params.id}/income`,
+        this.income
+      )
         .then((response) => {
           $("#new-income").modal("hide");
           this.showDetails();
@@ -259,9 +346,11 @@ export default {
           console.log(error);
         });
     },
-    newExpense() {
-      axios
-        .post(`/api/cashbox/${this.$route.params.id}/expense`, this.expense)
+    async newExpense() {
+      await BaseUrl.post(
+        `/api/cashbox/${this.$route.params.id}/expense`,
+        this.expense
+      )
         .then((response) => {
           $("#new-expense").modal("hide");
           this.showDetails();
@@ -269,6 +358,36 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    async closeCashbox() {
+      Swal.fire({
+        title: "¿Esta seguro que desea cerrar caja?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Cerrar!",
+      }).then((result) => {
+        BaseUrl.patch(
+          `/api/cashbox/${this.$route.params.id}/close`,
+          this.cashbox
+        )
+          .then((response) => {
+            $("#new-expense").modal("hide");
+            this.showDetails();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        if (result.isConfirmed) {
+          this.$router.push({ name: "layout-cashbox" });
+          Swal.fire(
+            "Cerrado!",
+            "Su caja se cerro satisfactoriamente.",
+            "success"
+          );
+        }
+      });
     },
     showModal(modal, cashbox = null) {
       if (cashbox !== null) {

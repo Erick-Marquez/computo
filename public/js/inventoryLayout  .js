@@ -78,47 +78,102 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     createCashbox: function createCashbox() {
       var _this2 = this;
 
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cajas", this.caja).then(function (response) {
-        $("#modal-create").modal("hide");
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cajas", _this2.caja).then(function (response) {
+                  $("#modal-create").modal("hide");
 
-        _this2.showCashboxes();
-      })["catch"](function (error) {
-        console.log(error);
-      });
+                  _this2.showCashboxes();
+                })["catch"](function (error) {
+                  console.log(error.response.data);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     },
     deleteCashbox: function deleteCashbox(id) {
       var _this3 = this;
 
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.delete("/api/cajas/".concat(id)).then(function (response) {
-            _this3.showCashboxes();
-          })["catch"](function (error) {
-            console.log(error);
-          });
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        }
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return Swal.fire({
+                  title: "Are you sure?",
+                  text: "You won't be able to revert this!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!"
+                }).then(function (result) {
+                  if (result.isConfirmed) {
+                    _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.delete("/api/cajas/".concat(id)).then(function (response) {
+                      _this3.showCashboxes();
+                    })["catch"](function (error) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Something went wrong!",
+                        footer: '<a href="">Why do I have this issue?</a>'
+                      });
+                      console.log(error);
+                    });
+                    Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                  }
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
     },
     openCashbox: function openCashbox() {
       var _this4 = this;
 
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cashbox/open", this.cashbox).then(function (response) {
-        $("#open-cashbox").modal("hide");
-        console.log(response.data);
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/cashbox/open", _this4.cashbox).then(function (response) {
+                  $("#open-cashbox").modal("hide");
+                  console.log(response.data);
 
-        _this4.showCashboxes();
-      })["catch"](function (error) {
-        console.log(error);
-      });
+                  _this4.showCashboxes();
+                })["catch"](function (error) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.response.data.message,
+                    footer: '<a href="">Llevame a mi caja!!!</a>'
+                  });
+                  $("#open-cashbox").modal("hide");
+                  console.log(error.response.data);
+                });
+
+              case 2:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
     },
     showModal: function showModal(modal) {
       var cashbox = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -1104,7 +1159,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.crearFamilia && $options.crearFamilia.apply($options, arguments);
         }, ["prevent"]))
-      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"submit\" value=\"Guardar\" class=\"form__guardar\" \r\n                        @click.prevent=\"$emit( 'data', datos )\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"submit\" value=\"Guardar\" class=\"form__guardar\"\n                        @click.prevent=\"$emit( 'data', datos )\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "modal__cerrar",
         onClick: _cache[6] || (_cache[6] = function () {
           return $options.showModal && $options.showModal.apply($options, arguments);
@@ -1267,7 +1322,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82'
+  baseURL: 'http://computo.test'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1290,7 +1345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\r\n  margin-top: 1em;\r\n  line-height: 0.5;\r\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\r\n  color: #f2f2f2;\r\n  border: 1px solid #17a2b8;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\n  margin-top: 1em;\n  line-height: 0.5;\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\n  color: #f2f2f2;\n  border: 1px solid #17a2b8;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1386,7 +1441,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.boton[data-v-1733c7d6]{\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 145px;\r\n    height: 50px;\r\n    border: none;\r\n    background-color: transparent;\r\n    transition: all 600ms;\r\n    margin-left: 30px;\r\n    margin-bottom: 20px;\n}\n.boton:hover p[data-v-1733c7d6],.boton:hover .boton__img[data-v-1733c7d6]{\r\n    box-shadow: 0 0 5px 0 rgb(0,123,255);\n}\n.boton p[data-v-1733c7d6]{\r\n    border: 2px solid rgb(0,123,255);\r\n    padding: 5px 20px;\r\n    margin: 0;\r\n    border-top-left-radius: 15px;\r\n    font-size: bold;\r\n    background-color: #fff;\r\n    color: rgb(0,123,255);\n}\n.boton__img[data-v-1733c7d6]{\r\n    width: 30%;\r\n     border: 2px solid rgb(0,123,255);\r\n    border-top-right-radius: 15px;\r\n    border-bottom-right-radius: 15px;\r\n    padding: 10px;\r\n    background-color: #fff;\n}\n.boton__img img[data-v-1733c7d6]{\r\n    display: block;\r\n    width: 100%;\n}\n.modal-overlay[data-v-1733c7d6]{\r\n    height: 100%;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    z-index: 100;\r\n    background-color: rgba(0, 0, 0, 0.6);\n}\n.modal[data-v-1733c7d6]{\r\n    display: block;\r\n    position: absolute;\r\n    top: 56px;\r\n    right: 0;\r\n    width: 80%;\r\n    height:100vh;\r\n    transform: translateX(23%);\r\n    background-color: #fff;\r\n    padding: 20px;\r\n    border-radius: 15px;\r\n    z-index: 200;\n}\n.modal h1[data-v-1733c7d6]{\r\n    text-align: center;\n}\n.modal__cerrar[data-v-1733c7d6]{\r\n    width: 40px;\r\n    height: 40px;\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    padding: 5px;\r\n    border-radius: 50%;\r\n    border: none;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    background-color: rgb(233, 67, 67);\n}\n.modal__cerrar img[data-v-1733c7d6]{\r\n    display: block;\r\n    width: 50%;\n}\nform[data-v-1733c7d6]{\r\n    width: 100%;\r\n    height: 100%;\n}\n.form__contenedor[data-v-1733c7d6]{\r\n    width: 100%;\r\n    height: 75%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: space-around;\n}\n.form__element[data-v-1733c7d6]{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\n}\n.form__guardar[data-v-1733c7d6]{\r\n    border: none;\r\n    border-radius: 5px;\r\n    width: 25%;\r\n    padding: 10px 15px;\r\n    background-color: rgb(0,123,255);\r\n    color: #fff;\r\n    font-size: bold;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.boton[data-v-1733c7d6]{\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    width: 145px;\n    height: 50px;\n    border: none;\n    background-color: transparent;\n    transition: all 600ms;\n    margin-left: 30px;\n    margin-bottom: 20px;\n}\n.boton:hover p[data-v-1733c7d6],.boton:hover .boton__img[data-v-1733c7d6]{\n    box-shadow: 0 0 5px 0 rgb(0,123,255);\n}\n.boton p[data-v-1733c7d6]{\n    border: 2px solid rgb(0,123,255);\n    padding: 5px 20px;\n    margin: 0;\n    border-top-left-radius: 15px;\n    font-size: bold;\n    background-color: #fff;\n    color: rgb(0,123,255);\n}\n.boton__img[data-v-1733c7d6]{\n    width: 30%;\n     border: 2px solid rgb(0,123,255);\n    border-top-right-radius: 15px;\n    border-bottom-right-radius: 15px;\n    padding: 10px;\n    background-color: #fff;\n}\n.boton__img img[data-v-1733c7d6]{\n    display: block;\n    width: 100%;\n}\n.modal-overlay[data-v-1733c7d6]{\n    height: 100%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    z-index: 100;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n.modal[data-v-1733c7d6]{\n    display: block;\n    position: absolute;\n    top: 56px;\n    right: 0;\n    width: 80%;\n    height:100vh;\n    transform: translateX(23%);\n    background-color: #fff;\n    padding: 20px;\n    border-radius: 15px;\n    z-index: 200;\n}\n.modal h1[data-v-1733c7d6]{\n    text-align: center;\n}\n.modal__cerrar[data-v-1733c7d6]{\n    width: 40px;\n    height: 40px;\n    position: absolute;\n    top: 0;\n    right: 0;\n    padding: 5px;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    background-color: rgb(233, 67, 67);\n}\n.modal__cerrar img[data-v-1733c7d6]{\n    display: block;\n    width: 50%;\n}\nform[data-v-1733c7d6]{\n    width: 100%;\n    height: 100%;\n}\n.form__contenedor[data-v-1733c7d6]{\n    width: 100%;\n    height: 75%;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-around;\n}\n.form__element[data-v-1733c7d6]{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.form__guardar[data-v-1733c7d6]{\n    border: none;\n    border-radius: 5px;\n    width: 25%;\n    padding: 10px 15px;\n    background-color: rgb(0,123,255);\n    color: #fff;\n    font-size: bold;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1410,7 +1465,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.pagina[data-v-47ef982b]{\r\n        width: 95%;\r\n\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        background-color: rgb(255, 255, 255);\r\n        margin-bottom: 50px;\r\n        padding-top: 15px;\r\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\r\n        border-radius: 5px;\n}\nh1[data-v-47ef982b]{\r\n        font-size: 1.4rem;\r\n        border-bottom: 1px solid rgb(172,173,182);\r\n        color: rgb(172,173,182); \r\n        font-weight: bold;\r\n        transform: translateY(-10px);\r\n        margin-bottom: 25px;\r\n        width: 95%;\r\n         margin-left: auto;\r\n        margin-right: auto;\n}\ntable[data-v-47ef982b]{\r\n        width: 93%;\r\n        border-collapse: separate;\r\n        border-spacing: 0px 2px;\r\n        margin-left: auto;\r\n        margin-right: auto;\n}\nthead tr[data-v-47ef982b]{\r\n        color: rgb(172,173,182);\n}\ntbody tr[data-v-47ef982b]{\r\n        background-color: rgb(255, 255, 255);\r\n        /* box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px; */\r\n        transition: all 300ms;\r\n         color: rgb(65, 65, 65);\n}\ntd[data-v-47ef982b]{\r\n         padding: 10px 0 10px 10px;\n}\ntbody td[data-v-47ef982b]:first-of-type{\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\r\n        width: 50px;\n}\ntd[data-v-47ef982b]{\r\n        border-bottom: 1px solid rgb(230,230,230);\n}\nthead td[data-v-47ef982b]{\r\n        border-bottom: 1px solid rgb(151, 149, 149);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pagina[data-v-47ef982b]{\n        width: 95%;\n\n        margin-left: auto;\n        margin-right: auto;\n        background-color: rgb(255, 255, 255);\n        margin-bottom: 50px;\n        padding-top: 15px;\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\n        border-radius: 5px;\n}\nh1[data-v-47ef982b]{\n        font-size: 1.4rem;\n        border-bottom: 1px solid rgb(172,173,182);\n        color: rgb(172,173,182);\n        font-weight: bold;\n        transform: translateY(-10px);\n        margin-bottom: 25px;\n        width: 95%;\n         margin-left: auto;\n        margin-right: auto;\n}\ntable[data-v-47ef982b]{\n        width: 93%;\n        border-collapse: separate;\n        border-spacing: 0px 2px;\n        margin-left: auto;\n        margin-right: auto;\n}\nthead tr[data-v-47ef982b]{\n        color: rgb(172,173,182);\n}\ntbody tr[data-v-47ef982b]{\n        background-color: rgb(255, 255, 255);\n        /* box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px; */\n        transition: all 300ms;\n         color: rgb(65, 65, 65);\n}\ntd[data-v-47ef982b]{\n         padding: 10px 0 10px 10px;\n}\ntbody td[data-v-47ef982b]:first-of-type{\n        color: rgb(60, 112, 255);\n        font-weight: bold;\n        width: 50px;\n}\ntd[data-v-47ef982b]{\n        border-bottom: 1px solid rgb(230,230,230);\n}\nthead td[data-v-47ef982b]{\n        border-bottom: 1px solid rgb(151, 149, 149);\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -6,7 +6,11 @@ use App\Models\Cashbox;
 use App\Models\OpenClosedCashbox;
 use App\Models\OpenClosedCashboxDetail;
 use App\Models\Sale;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\isNull;
 
 class CashboxService
 {
@@ -16,23 +20,29 @@ class CashboxService
         $cashbox = Cashbox::findOrFail($request['id']); //  Busco la caja en la bd
 
         if ($cashbox['state']) {  //  Verifico si esta aperturada o no
-
             return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
-                'message' => 'Esta Caja ya fue aperturada'
+                'message' => 'Esta caja ya fue aperturada'
+            ], 405);
+        }
+
+        if (!is_null(auth()->user()->cashbox_id)) {
+            return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
+                'message' => 'Usted ya aperturo otra caja',
+                'cashbox_id' => is_null(auth()->user()->cashbox_id)
             ], 405);
         }
 
         //  Si la caja no esta aperturada, se procede a crear su apertura
-
-        $user = auth()->user(); //  recupero la sesión
-
-        $data['user_id'] = $user->id;
+        $data['user_id'] = auth()->user()->id;
         $data['state'] = true;
         $data['opening_date'] = Carbon::now()->toDateTimeString();
         $data['opening_amount'] = $request['opening_amount'];
         $data['cashbox_id'] = $request['id'];
 
+
         try {
+            User::findOrFail(auth()->user()->id)->update(['cashbox_id' => $request['id']]);
+
             $openClosedCashbox = OpenClosedCashbox::create($data); //  Creo la Apertura
 
             $cashbox->update(['state' => true]); //  Le doy un estado de TRUE - Aperturada a la caja
@@ -56,19 +66,23 @@ class CashboxService
             ], 405);
         }
 
-        $user = auth()->user(); //  recupero la sesión
-        $data['user_id'] = $user->id;
+        $data['closing_date'] = Carbon::now()->toDateTimeString();
+        $data['user_id'] = auth()->user()->id; //  recupero la sesión
         $data['state'] = false;
         $data['cashbox_id'] = $id;
 
-        //  Actualizo cerrando la caja
-        $openClosedCashbox = $cashbox->openClosedCashboxes
-            ->update($data)
-            ->where('closing_date', null);
+        try {
+            //  Actualizo cerrando la caja
+            $openClosedCashbox = $cashbox->openClosedCashboxes
+                                        ->update($data)
+                                        ->where('closing_date', null);
 
-        $cashbox->update(['state' => false]); //  Le doy un estado de FALSE - Cajas cerrada
+            $cashbox->update(['state' => false]); //  Le doy un estado de FALSE - Cajas cerrada
 
-        return $openClosedCashbox; //  Devuelvo los datos del cierre de caja
+            return $openClosedCashbox; //  Devuelvo los datos del cierre de caja
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     public function recoverOpening($id)
@@ -93,30 +107,31 @@ class CashboxService
             $occ = $this->recoverOpening($id);
 
             $balance = [
-              "sales" => $occ->sales()->sum('total'),
-              "incomes" => $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
-              "expenses" => $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount')
+                "sales" => $occ->sales()->sum('total'),
+                "incomes" => $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
+                "expenses" => $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount')
             ];
 
             $sales = $occ->sales()
-                        ->select('created_at as date', 'observation', 'total as amount')
-                        ->get()
-                        ->each(function($item, $key) {
-                            return $item['concept'] = 'VENTA';
-                        });
+                ->select('created_at as date', 'observation', 'total as amount')
+                ->get()
+                ->each(function ($item, $key) {
+                    return $item['concept'] = 'VENTA';
+                });
 
             $occd = $occ->openClosedCashboxDetails()
-                        ->select('created_at as date', 'observation', 'amount', 'type as concept')
-                        ->get();
+                ->select('created_at as date', 'observation', 'amount', 'type as concept')
+                ->get();
 
             $movements = $sales->mergeRecursive($occd)->sortBy(['create_at', 'desc']);
 
             return response()->json([
+                'cashbox_description' => $occ->cashbox->description,
                 'cashbox_id' => $id,
                 'opening_id' => $occ['id'],
                 'opening_amount' => $occ['opening_amount'],
-                'opening_date' => $occ['opening_date'],
-                'user' => $occ->user->name,
+                'opening_date' => date("F j, Y, g:i a", strtotime($occ['opening_date'])),
+                'user_name' => $occ->user->name,
                 'movements' => $movements,
                 'balance' => $balance,
             ]);

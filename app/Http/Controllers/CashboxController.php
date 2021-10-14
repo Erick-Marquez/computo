@@ -102,7 +102,6 @@ class CashboxController extends Controller
     public function closeCashbox($id, Request $request)
     {
         $request->validate([
-            'closing_date' => 'required|date',
             'closing_amount' => 'required|numeric',
             'state' => 'required|boolean',
             'cashbox_id' => 'required|exists:cashboxes,id',

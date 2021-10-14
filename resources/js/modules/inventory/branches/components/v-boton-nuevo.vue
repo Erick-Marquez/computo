@@ -12,12 +12,12 @@
                     <!-- <input type="text"  id="cod" v-model="crearUsuario.description"> -->
                     <input type="text"  id="cod" v-model="crearUsuario.name">
                 </div>
-                
+
                 <div class="form__desc form__element">
                     <label for="desc">Telefono:</label>
                     <!-- <input type="text" placeholder="Descripción" id="desc" required v-model="crearUsuario.telephone"> -->
                     <input type="text" placeholder="Descripción" id="desc" required v-model="crearUsuario.address">
-                    
+
                 </div>
                 <div class="form__element">
                     <label for="desc">Dirección:</label>
@@ -30,10 +30,10 @@
                     <input type="text" placeholder="Descripción" id="desc" required v-model="crearUsuario.ubigeo">
                 </div>
                 <div class="form__element" @click.prevent="$emit('recargar')">
-                    <input type="submit" value="Guardar" class="form__guardar" 
+                    <input type="submit" value="Guardar" class="form__guardar"
                          @click.prevent="crearFamilia">
                 </div>
-                <!-- <input type="submit" value="Guardar" class="form__guardar" 
+                <!-- <input type="submit" value="Guardar" class="form__guardar"
                         @click.prevent="$emit( 'data', datos )"> -->
             </div>
         </form>
@@ -68,9 +68,9 @@ export default {
         }
     },
     methods:{
-        
+
         showModal(){
-          this.show =!this.show 
+          this.show =!this.show
         },
         crearFamilia(){
              BaseUrl.post(`/locales`,this.crearUsuario).then(response => {

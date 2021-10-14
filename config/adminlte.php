@@ -313,6 +313,7 @@ return [
                     'text' => 'Aperturas y Cierres',
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.cajas',
+                    'active' => ['cajas/detalle/*']
                 ],
                 [
                     'text' => 'Egresos e Ingresos',

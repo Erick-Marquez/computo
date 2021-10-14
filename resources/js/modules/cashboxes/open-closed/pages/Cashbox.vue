@@ -162,9 +162,9 @@
 </template>
 
 <script>
-import BaseUrl from '../../../../api/BaseUrl';
+import BaseUrl from "../../../../api/BaseUrl";
 export default {
-  components: {BaseUrl},
+  components: { BaseUrl },
   data() {
     return {
       caja: {
@@ -179,7 +179,8 @@ export default {
   },
   methods: {
     async showCashboxes() {
-      await  BaseUrl.get("/api/cajas").then((response) => {
+      await BaseUrl.get("/api/cajas")
+        .then((response) => {
           this.cashboxes = response.data.data; // resource creado por laravel
           console.log(this.cashboxes);
         })
@@ -187,17 +188,18 @@ export default {
           this.cashboxes = [];
         });
     },
-    createCashbox() {
-      BaseUrl.post("/api/cajas", this.caja).then((response) => {
+    async createCashbox() {
+      await BaseUrl.post("/api/cajas", this.caja)
+        .then((response) => {
           $("#modal-create").modal("hide");
           this.showCashboxes();
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response.data);
         });
     },
-    deleteCashbox(id) {
-      Swal.fire({
+    async deleteCashbox(id) {
+      await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -205,12 +207,21 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
+      })
+      .then((result) => {
         if (result.isConfirmed) {
-          BaseUrl.delete(`/api/cajas/${id}`).then((response) => {
+          BaseUrl.delete(`/api/cajas/${id}`)
+            .then((response) => {
               this.showCashboxes();
             })
             .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+                footer: '<a href="">Why do I have this issue?</a>',
+              });
+
               console.log(error);
             });
 
@@ -218,14 +229,24 @@ export default {
         }
       });
     },
-    openCashbox() {
-      BaseUrl.post("/api/cashbox/open", this.cashbox).then((response) => {
+    async openCashbox() {
+      await BaseUrl.post("/api/cashbox/open", this.cashbox)
+        .then((response) => {
           $("#open-cashbox").modal("hide");
           console.log(response.data);
           this.showCashboxes();
         })
         .catch((error) => {
-          console.log(error);
+
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+            footer: '<a href="">Llevame a mi caja!!!</a>',
+          });
+          $("#open-cashbox").modal("hide");
+
+          console.log(error.response.data);
         });
     },
     showModal(modal, cashbox = null) {

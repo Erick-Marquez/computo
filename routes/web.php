@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [We
 Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
+Route::middleware(['auth:sanctum', 'verified'])->get('/cajas/detalle/{id}', [WebController::class, 'cashboxes']);
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');

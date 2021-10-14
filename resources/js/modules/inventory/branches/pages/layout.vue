@@ -79,11 +79,11 @@ export default {
                     Swal.fire(
                     '¡Borrado!',
                     'El dato fue borrado',
-                    )           
+                    )
                 }
             })
-            
-           
+
+
         }
     }
 }
@@ -104,7 +104,7 @@ export default {
     h1{
         font-size: 1.4rem;
         border-bottom: 1px solid rgb(172,173,182);
-        color: rgb(172,173,182); 
+        color: rgb(172,173,182);
         font-weight: bold;
         transform: translateY(-10px);
         margin-bottom: 25px;
@@ -118,10 +118,10 @@ export default {
         border-spacing: 0px 2px;
         margin-left: auto;
         margin-right: auto;
-        
+
     }
     thead tr{
-        color: rgb(172,173,182);  
+        color: rgb(172,173,182);
     }
     tbody tr{
         background-color: rgb(255, 255, 255);
@@ -139,7 +139,7 @@ export default {
     }
     td{
         border-bottom: 1px solid rgb(230,230,230);
-       
+
     }
     thead td{
         border-bottom: 1px solid rgb(151, 149, 149);
