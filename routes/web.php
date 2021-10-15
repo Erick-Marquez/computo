@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/cambio-de-divisas', [WebC
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
 Route::middleware(['auth:sanctum', 'verified'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
-Route::middleware(['auth:sanctum', 'verified'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+Route::middleware(['auth:sanctum', 'verified', 'opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
 // 'opening.cashbox'
 
 Route::get('/prueba', [WebController::class, 'prueba']);

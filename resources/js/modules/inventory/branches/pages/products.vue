@@ -9,6 +9,7 @@
         <td>Descripción</td>
         <td>Stock</td>
         <td>Precio</td>
+        <td>Precio 2</td>
         <td>Acciones</td>
       </tr>
     </thead>
@@ -19,7 +20,8 @@
         <td>{{dato.name}}</td>
         <td>{{dato.description}}</td>
         <td>{{dato.stock}}</td>
-        <td>{{dato.precio}}</td>
+        <td>{{dato.sale_price}}</td>
+        <td>{{dato.referential_sale_price_one}}</td>
         <td>Eliminar</td>
       </tr>
     </tbody>
@@ -56,7 +58,7 @@ export default {
 <style scoped>
   .pagina{
         width: 95%;
-        
+
         margin-left: auto;
         margin-right: auto;
         background-color: rgb(255, 255, 255);
@@ -68,7 +70,7 @@ export default {
     h1{
         font-size: 1.4rem;
         border-bottom: 1px solid rgb(172,173,182);
-        color: rgb(172,173,182); 
+        color: rgb(172,173,182);
         font-weight: bold;
         transform: translateY(-10px);
         margin-bottom: 25px;
@@ -82,10 +84,10 @@ export default {
         border-spacing: 0px 2px;
         margin-left: auto;
         margin-right: auto;
-        
+
     }
     thead tr{
-        color: rgb(172,173,182);  
+        color: rgb(172,173,182);
     }
     tbody tr{
         background-color: rgb(255, 255, 255);
@@ -107,7 +109,7 @@ export default {
     } */
     td{
         border-bottom: 1px solid rgb(230,230,230);
-       
+
     }
     thead td{
         border-bottom: 1px solid rgb(151, 149, 149);

@@ -11,6 +11,21 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=script&lang=js":
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=script&lang=js ***!
@@ -502,6 +517,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<button class=\"btn btn-dark btn-block btn-lg mb-4\">Nuevo movimiento</button><div class=\"card\"><div class=\"card-header\"><h3 class=\"card-title\">Responsive Hover Table</h3><div class=\"card-tools\"><div class=\"input-group input-group-sm\" style=\"width:150px;\"><input type=\"text\" name=\"table_search\" class=\"form-control float-right\" placeholder=\"Search\"><div class=\"input-group-append\"><button type=\"submit\" class=\"btn btn-default\"><i class=\"fas fa-search\"></i></button></div></div></div></div><!-- /.card-header --><div class=\"card-body table-responsive p-0\"><table class=\"table table-hover text-nowrap\"><thead><tr><th>ID</th><th>User</th><th>Date</th><th>Status</th><th>Reason</th></tr></thead><tbody><tr><td>183</td><td>John Doe</td><td>11-7-2014</td><td><span class=\"tag tag-success\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>219</td><td>Alexander Pierce</td><td>11-7-2014</td><td><span class=\"tag tag-warning\">Pending</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>657</td><td>Bob Doe</td><td>11-7-2014</td><td><span class=\"tag tag-primary\">Approved</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr><tr><td>175</td><td>Mike Doe</td><td>11-7-2014</td><td><span class=\"tag tag-danger\">Denied</span></td><td> Bacon ipsum dolor sit amet salami venison chicken flank fatback doner. </td></tr></tbody></table></div><!-- /.card-body --></div>", 2);
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return _hoisted_1;
+}
 
 /***/ }),
 
@@ -1159,7 +1196,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.crearFamilia && $options.crearFamilia.apply($options, arguments);
         }, ["prevent"]))
-      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"submit\" value=\"Guardar\" class=\"form__guardar\"\n                        @click.prevent=\"$emit( 'data', datos )\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"submit\" value=\"Guardar\" class=\"form__guardar\"\r\n                        @click.prevent=\"$emit( 'data', datos )\"> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "modal__cerrar",
         onClick: _cache[6] || (_cache[6] = function () {
           return $options.showModal && $options.showModal.apply($options, arguments);
@@ -1345,7 +1382,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\n  margin-top: 1em;\n  line-height: 0.5;\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\n  color: #f2f2f2;\n  border: 1px solid #17a2b8;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\r\n  margin-top: 1em;\r\n  line-height: 0.5;\r\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\r\n  color: #f2f2f2;\r\n  border: 1px solid #17a2b8;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1441,7 +1478,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.boton[data-v-1733c7d6]{\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    width: 145px;\n    height: 50px;\n    border: none;\n    background-color: transparent;\n    transition: all 600ms;\n    margin-left: 30px;\n    margin-bottom: 20px;\n}\n.boton:hover p[data-v-1733c7d6],.boton:hover .boton__img[data-v-1733c7d6]{\n    box-shadow: 0 0 5px 0 rgb(0,123,255);\n}\n.boton p[data-v-1733c7d6]{\n    border: 2px solid rgb(0,123,255);\n    padding: 5px 20px;\n    margin: 0;\n    border-top-left-radius: 15px;\n    font-size: bold;\n    background-color: #fff;\n    color: rgb(0,123,255);\n}\n.boton__img[data-v-1733c7d6]{\n    width: 30%;\n     border: 2px solid rgb(0,123,255);\n    border-top-right-radius: 15px;\n    border-bottom-right-radius: 15px;\n    padding: 10px;\n    background-color: #fff;\n}\n.boton__img img[data-v-1733c7d6]{\n    display: block;\n    width: 100%;\n}\n.modal-overlay[data-v-1733c7d6]{\n    height: 100%;\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    z-index: 100;\n    background-color: rgba(0, 0, 0, 0.6);\n}\n.modal[data-v-1733c7d6]{\n    display: block;\n    position: absolute;\n    top: 56px;\n    right: 0;\n    width: 80%;\n    height:100vh;\n    transform: translateX(23%);\n    background-color: #fff;\n    padding: 20px;\n    border-radius: 15px;\n    z-index: 200;\n}\n.modal h1[data-v-1733c7d6]{\n    text-align: center;\n}\n.modal__cerrar[data-v-1733c7d6]{\n    width: 40px;\n    height: 40px;\n    position: absolute;\n    top: 0;\n    right: 0;\n    padding: 5px;\n    border-radius: 50%;\n    border: none;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    background-color: rgb(233, 67, 67);\n}\n.modal__cerrar img[data-v-1733c7d6]{\n    display: block;\n    width: 50%;\n}\nform[data-v-1733c7d6]{\n    width: 100%;\n    height: 100%;\n}\n.form__contenedor[data-v-1733c7d6]{\n    width: 100%;\n    height: 75%;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-around;\n}\n.form__element[data-v-1733c7d6]{\n    width: 100%;\n    display: flex;\n    flex-direction: column;\n}\n.form__guardar[data-v-1733c7d6]{\n    border: none;\n    border-radius: 5px;\n    width: 25%;\n    padding: 10px 15px;\n    background-color: rgb(0,123,255);\n    color: #fff;\n    font-size: bold;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.boton[data-v-1733c7d6]{\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 145px;\r\n    height: 50px;\r\n    border: none;\r\n    background-color: transparent;\r\n    transition: all 600ms;\r\n    margin-left: 30px;\r\n    margin-bottom: 20px;\n}\n.boton:hover p[data-v-1733c7d6],.boton:hover .boton__img[data-v-1733c7d6]{\r\n    box-shadow: 0 0 5px 0 rgb(0,123,255);\n}\n.boton p[data-v-1733c7d6]{\r\n    border: 2px solid rgb(0,123,255);\r\n    padding: 5px 20px;\r\n    margin: 0;\r\n    border-top-left-radius: 15px;\r\n    font-size: bold;\r\n    background-color: #fff;\r\n    color: rgb(0,123,255);\n}\n.boton__img[data-v-1733c7d6]{\r\n    width: 30%;\r\n     border: 2px solid rgb(0,123,255);\r\n    border-top-right-radius: 15px;\r\n    border-bottom-right-radius: 15px;\r\n    padding: 10px;\r\n    background-color: #fff;\n}\n.boton__img img[data-v-1733c7d6]{\r\n    display: block;\r\n    width: 100%;\n}\n.modal-overlay[data-v-1733c7d6]{\r\n    height: 100%;\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    bottom: 0;\r\n    right: 0;\r\n    z-index: 100;\r\n    background-color: rgba(0, 0, 0, 0.6);\n}\n.modal[data-v-1733c7d6]{\r\n    display: block;\r\n    position: absolute;\r\n    top: 56px;\r\n    right: 0;\r\n    width: 80%;\r\n    height:100vh;\r\n    transform: translateX(23%);\r\n    background-color: #fff;\r\n    padding: 20px;\r\n    border-radius: 15px;\r\n    z-index: 200;\n}\n.modal h1[data-v-1733c7d6]{\r\n    text-align: center;\n}\n.modal__cerrar[data-v-1733c7d6]{\r\n    width: 40px;\r\n    height: 40px;\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0;\r\n    padding: 5px;\r\n    border-radius: 50%;\r\n    border: none;\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    background-color: rgb(233, 67, 67);\n}\n.modal__cerrar img[data-v-1733c7d6]{\r\n    display: block;\r\n    width: 50%;\n}\nform[data-v-1733c7d6]{\r\n    width: 100%;\r\n    height: 100%;\n}\n.form__contenedor[data-v-1733c7d6]{\r\n    width: 100%;\r\n    height: 75%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: space-around;\n}\n.form__element[data-v-1733c7d6]{\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\n}\n.form__guardar[data-v-1733c7d6]{\r\n    border: none;\r\n    border-radius: 5px;\r\n    width: 25%;\r\n    padding: 10px 15px;\r\n    background-color: rgb(0,123,255);\r\n    color: #fff;\r\n    font-size: bold;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1465,7 +1502,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.pagina[data-v-47ef982b]{\n        width: 95%;\n\n        margin-left: auto;\n        margin-right: auto;\n        background-color: rgb(255, 255, 255);\n        margin-bottom: 50px;\n        padding-top: 15px;\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\n        border-radius: 5px;\n}\nh1[data-v-47ef982b]{\n        font-size: 1.4rem;\n        border-bottom: 1px solid rgb(172,173,182);\n        color: rgb(172,173,182);\n        font-weight: bold;\n        transform: translateY(-10px);\n        margin-bottom: 25px;\n        width: 95%;\n         margin-left: auto;\n        margin-right: auto;\n}\ntable[data-v-47ef982b]{\n        width: 93%;\n        border-collapse: separate;\n        border-spacing: 0px 2px;\n        margin-left: auto;\n        margin-right: auto;\n}\nthead tr[data-v-47ef982b]{\n        color: rgb(172,173,182);\n}\ntbody tr[data-v-47ef982b]{\n        background-color: rgb(255, 255, 255);\n        /* box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px; */\n        transition: all 300ms;\n         color: rgb(65, 65, 65);\n}\ntd[data-v-47ef982b]{\n         padding: 10px 0 10px 10px;\n}\ntbody td[data-v-47ef982b]:first-of-type{\n        color: rgb(60, 112, 255);\n        font-weight: bold;\n        width: 50px;\n}\ntd[data-v-47ef982b]{\n        border-bottom: 1px solid rgb(230,230,230);\n}\nthead td[data-v-47ef982b]{\n        border-bottom: 1px solid rgb(151, 149, 149);\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pagina[data-v-47ef982b]{\r\n        width: 95%;\r\n\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        background-color: rgb(255, 255, 255);\r\n        margin-bottom: 50px;\r\n        padding-top: 15px;\r\n        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;\r\n        border-radius: 5px;\n}\nh1[data-v-47ef982b]{\r\n        font-size: 1.4rem;\r\n        border-bottom: 1px solid rgb(172,173,182);\r\n        color: rgb(172,173,182);\r\n        font-weight: bold;\r\n        transform: translateY(-10px);\r\n        margin-bottom: 25px;\r\n        width: 95%;\r\n         margin-left: auto;\r\n        margin-right: auto;\n}\ntable[data-v-47ef982b]{\r\n        width: 93%;\r\n        border-collapse: separate;\r\n        border-spacing: 0px 2px;\r\n        margin-left: auto;\r\n        margin-right: auto;\n}\nthead tr[data-v-47ef982b]{\r\n        color: rgb(172,173,182);\n}\ntbody tr[data-v-47ef982b]{\r\n        background-color: rgb(255, 255, 255);\r\n        /* box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px; */\r\n        transition: all 300ms;\r\n         color: rgb(65, 65, 65);\n}\ntd[data-v-47ef982b]{\r\n         padding: 10px 0 10px 10px;\n}\ntbody td[data-v-47ef982b]:first-of-type{\r\n        color: rgb(60, 112, 255);\r\n        font-weight: bold;\r\n        width: 50px;\n}\ntd[data-v-47ef982b]{\r\n        border-bottom: 1px solid rgb(230,230,230);\n}\nthead td[data-v-47ef982b]{\r\n        border-bottom: 1px solid rgb(151, 149, 149);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2771,6 +2808,32 @@ module.exports = function (list, options) {
 
 /***/ }),
 
+/***/ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ExpensesIncomes.vue?vue&type=template&id=0674d71c */ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c");
+/* harmony import */ var _ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExpensesIncomes.vue?vue&type=script&lang=js */ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js");
+
+
+
+_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__.render
+/* hot reload */
+if (false) {}
+
+_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+
+/***/ }),
+
 /***/ "./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue ***!
@@ -2977,6 +3040,22 @@ _Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__fil
 
 /***/ }),
 
+/***/ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js ***!
+  \***********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ExpensesIncomes.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=script&lang=js":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=script&lang=js ***!
@@ -3086,6 +3165,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Vouchers.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/sales/vouchers/pages/Vouchers.vue?vue&type=script&lang=js");
  
+
+/***/ }),
+
+/***/ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./ExpensesIncomes.vue?vue&type=template&id=0674d71c */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c");
+
 
 /***/ }),
 

@@ -57,6 +57,18 @@ const routes = [
         ]
     },
     {
+        path: '/egresos-ingresos',
+        name: 'egresos-ingresos-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/expenses-incomes/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'layout-egresos-ingresos',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue'),
+            },
+        ]
+    },
+    {
         path: '/ventas',
         name: 'ventas-index',
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/vouchers/index.vue'),
