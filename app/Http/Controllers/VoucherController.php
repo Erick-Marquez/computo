@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchProductResource;
+use App\Http\Resources\BranchProductSerieResource;
+use App\Http\Resources\IdentificationDocumentResource;
+use App\Http\Resources\SerieResource;
+use App\Http\Resources\VoucherTypeResource;
+use App\Models\BranchProduct;
+use App\Models\BranchProductSerie;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\Sale;
@@ -194,5 +201,35 @@ class VoucherController extends Controller
         //setPaper(array(0,0,220,700)
 
         return $pdf->stream();
+    }
+
+    public function voucherTypes()
+    {
+        $voucherTypes = VoucherType::offset(0)->limit(3)->get();
+        return VoucherTypeResource::collection($voucherTypes);
+    }
+
+    public function series($id)
+    {
+        $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', $id)->get();
+        return SerieResource::collection($series);
+    }
+
+    public function identificationDocuments()
+    {
+        $identificationDocuments = IdentificationDocument::all();
+        return IdentificationDocumentResource::collection($identificationDocuments);
+    }
+
+    public function products()  
+    {
+        $branchProducts = BranchProduct::where('branch_id', auth()->user()->branch_id)->with('product.brandLine.brand')->get();
+        return BranchProductResource::collection($branchProducts);
+    }
+
+    public function productSeries($id)  
+    {
+        $branchProductSeries = BranchProductSerie::where('branch_product_id', $id)->where('active', true)->where('sold', false)->get();
+        return BranchProductSerieResource::collection($branchProductSeries);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\BranchProduct;
+use App\Models\VoucherType;
 use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
@@ -108,6 +110,9 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        return SunatService::facturar(1, 'invoice');
+        // return SunatService::facturar(1, 'invoice');
+
+        $branch = VoucherType::find(1);
+        return $branch->branches;
     }
 }

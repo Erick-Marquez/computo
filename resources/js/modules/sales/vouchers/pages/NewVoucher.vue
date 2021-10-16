@@ -13,13 +13,11 @@
               <i class="text-danger fas fa-file-invoice"></i>
               Tipo comprobante
             </label>
-            <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
+            <select v-model="voucherTypeSelect" v-on:change="loadSeries" class="form-control rounded-pill">
+              <option v-for="voucherType in voucherTypes" :key="voucherType.id" :value="voucherType.id">{{ voucherType.description }}</option>
             </select>
           </div>
         </div>
-
         <!-- SERIE -->
         <div class="col-md-4">
           <div class="form-group">
@@ -27,7 +25,9 @@
               <i class="text-danger fas fa-barcode"></i>
               Serie</label
             >
-            <input type="text" class="form-control rounded-pill" />
+            <select v-model="serieSelect" v-on:change="loadCurrentNumber" id="" class="form-control rounded-pill">
+              <option v-for="serie in series" :key="serie.id" :value="serie.id">{{ serie.serie }}</option>
+            </select>
           </div>
         </div>
 
@@ -38,7 +38,7 @@
               <i class="text-danger fas fa-hashtag"></i>
               N° Comprobante</label
             >
-            <input type="text" class="form-control rounded-pill" />
+            <input v-model="currentNumber" type="text" class="form-control rounded-pill" />
           </div>
         </div>
       </div>
@@ -53,8 +53,7 @@
               Tipo documento
             </label>
             <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
+              <option v-for="identificationDocument in identificationDocuments" :key="identificationDocument.id" :value="identificationDocuments.id">{{ identificationDocument.description }}</option>
             </select>
           </div>
         </div>
@@ -139,23 +138,63 @@
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
-        <div class="col-md">
+        <div class="col-md ">
           <h4>
             <i class="text-danger fas fa-box"></i>
             Productos
           </h4>
-          <div class="input-group">
-            <input
-              type="search"
-              class="form-control rounded-pill form-control rounded-pill-lg"
-              placeholder="Escribe tu producto o código"
-            />
+          <div class="">
+            <input type="search"  v-model="productSearch" @keyup="searchProducts" 
+                      class="form-control rounded-pill form-control rounded-pill-lg" placeholder="Escribe tu producto o código">
+            <div class="option__relative">
+              <div class="option__contenedor" >
+                <div>
+                  <table table class="table table-sm table-bordered table-hover bg-white shadow-lg">
+                    <thead v-if="productSearchFilter.length > 0" class="thead-dark text-center">
+                      <tr>
+                        <td>Nombre</td>
+                        <td>Marca</td>
+                        <td>Precio 1</td>
+                        <td>Precio 2</td>
+                        <td>Precio 3</td>
+                        <td>Stock</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="filSearch in productSearchFilter" :key="filSearch">
+                        <td>{{ filSearch.name }}</td>
+                        <td class="col-2 text-center">{{ filSearch.brand }}</td>
+                        <td class="col-2 text-center">
+                          <input class="btn btn-sm btn-success w-50" type="button" :value="filSearch.sale_price" v-on:click="priceOne(filSearch)">
+                        </td> 
+                        <td class="col-2 text-center">
+                          <input class="btn btn-sm btn-warning w-50" type="button" :value="filSearch.referential_sale_price_one" v-on:click="priceTwo(filSearch)">
+                        </td>
+                        <td class="col-2 text-center">
+                          <input class="btn btn-sm btn-info w-50" type="button" :value="filSearch.referential_sale_price_two" v-on:click="priceThree(filSearch)">
+                        </td>
+                        <td class="col-1 text-center">{{ filSearch.stock }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
+
+        <!-- PARA EL CALCULO DE TOTALES-->
+        <div v-show="false">
+          {{ taxed = 0 }}
+          {{ exonerated = 0 }}
+          {{ subtotal = 0 }}
+          {{ total = 0 }}
+        </div>
+    
         <div class="col-12 table-responsive mt-4">
           <table class="table table-striped">
             <thead>
@@ -163,77 +202,84 @@
                 <th style="width: 40%">Descripción</th>
                 <th style="width: 20%">Tipo IGV</th>
                 <th style="width: 3%">Cantidad</th>
-                <th style="width: 10%">Precio</th>
-                <th style="width: 10%">Sub Total</th>
-                <th style="width: 10%">Total</th>
+                <th style="width: 8%">Descuento</th>
+                <th style="width: 8%">Precio</th>
+                <th style="width: 8%">Sub Total</th>
+                <th style="width: 8%">Total</th>
                 <th style="width: 5%">Series</th>
                 <th style="width: 3%"></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td></td>
+              <tr v-for="(detail, index) in saleData.detail" :key="detail">
+                <td>
+                  {{ detail.description }} - {{ detail.cod }}
+                </td>
 
                 <td>
-                    <select name="" id="" class="form-control rounded-pill">
-                        <option value="" default>Gravada</option>
-                        <option value="">Exonerada</option>
-                    </select>
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" value="Exonerado" disabled>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border"
-                    type="text"
-                    name=""
-                    id=""
-                  />
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-on:change="addSeries(index)" v-model="detail.quantity">
                 </td>
                 <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount">
                 </td>
                 <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.sale_price" disabled>
                 </td>
                 <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" disabled :value="(detail.quantity * detail.sale_price) - detail.discount">
                 </td>
                 <td>
-                  <button class="btn btn-dark btn-sm">Series</button>
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" disabled :value="(detail.quantity * detail.sale_price) - detail.discount">
                 </td>
                 <td>
-                  <button class="btn btn-flat bg-light">
+                  <button class="btn btn-dark btn-sm" data-toggle="modal" :data-target="'#seriesModal'+index">Series</button>
+                </td>
+                <td>
+                  <button class="btn btn-flat bg-light" v-on:click="deleteItem(index)">
                     <i class="text-danger fas fa-trash"></i>
                   </button>
                 </td>
+                
+                <!-- Modal Serie -->
+                <div class="modal fade" :id="'seriesModal'+index" tabindex="-1" role="dialog" aria-labelledby="seriesModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="seriesModalLabel">Registrar series para {{ detail.description }} - {{ detail.cod }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row m-3" v-for="(obj, j) in detail.series" :key="obj">
+                          <input type="text" class="form-control" placeholder="Serie" v-model="obj.serie" @keyup="searchProductSeries(index, j)">
+                          <div class="">
+                            <div class="">
+                              <div>
+                                <p v-for="filSerieSearch in productSerieSearchFilter[index][j]" :key="filSerieSearch"
+                                @click="selectSerieSearch(filSerieSearch, index, j)">{{ filSerieSearch.serie }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CALCULANDO TOTALES-->
+                <div v-show="false">
+                  {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
+                  {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
+                </div>
+
               </tr>
             </tbody>
           </table>
@@ -245,22 +291,28 @@
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md">
               <div class="form-group">
                 <label for="">Descuento</label>
-                <input class="form-control rounded-pill" type="text" />
+                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.discount">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md">
               <div class="form-group">
                 <label for="">Total Recibido S/.</label>
-                <input class="form-control rounded-pill" type="text" />
+                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.recived">
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md">
               <div class="form-group">
                 <label for="">Vuelto S/.</label>
-                <input class="form-control rounded-pill" type="text" />
+                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.change">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="">Aplica Garantia</label>
+                <input class=" form-control form-check-input bg-danger" type="checkbox" v-model="saleData.voucher.warranty">
               </div>
             </div>
           </div>
@@ -268,13 +320,7 @@
             <div class="col-md">
               <div class="form-group">
                 <h4>Observación</h4>
-                <textarea
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="4"
-                  class="form-control rounded-pill px-5"
-                ></textarea>
+                <textarea cols="30" rows="4" class="form-control rounded-pill px-5" v-model="saleData.voucher.observation"></textarea>
               </div>
             </div>
           </div>
@@ -283,21 +329,21 @@
           <div class="table-responsive">
             <table class="table">
               <tbody>
+                <tr v-show="taxed > 0">
+                  <th>Gravada (18%)</th>
+                  <td>S/. {{ taxed }}</td>
+                </tr>
+                <tr v-show="exonerated > 0">
+                  <th>Exonerado</th>
+                  <td>S/. {{ exonerated }}</td>
+                </tr>
                 <tr>
                   <th>Subtotal:</th>
-                  <td>$250.30</td>
-                </tr>
-                <tr>
-                  <th>Tax (9.3%)</th>
-                  <td>$10.34</td>
-                </tr>
-                <tr>
-                  <th>Shipping:</th>
-                  <td>$5.80</td>
+                  <td>S/. {{ subtotal }}</td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>$265.24</td>
+                  <td>S/. {{ total }}</td>
                 </tr>
               </tbody>
             </table>
@@ -332,7 +378,224 @@
 </template>
 
 <script>
-export default {};
+import BaseUrl from "../../../../api/BaseUrl";
+export default {
+  components: { BaseUrl },
+  async created() {
+    await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
+      this.voucherTypes = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
+      this.identificationDocuments = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/products`).then((resp) => {
+      this.products = resp.data.data;
+    });
+
+  },
+  data() {
+    return {
+      voucherTypeSelect: 1,
+      serieSelect: null,
+      currentNumber: "Selecciona una serie",
+
+      productSearch:'',
+      productSearchFilter: [],
+      productSerieSearchFilter: [],
+      voucherTypes: {},
+      series: {},
+
+      identificationDocuments: {},
+      products: {},
+      productSeries: [],
+      saleData: {
+        customer: {
+          identification_document: '6',
+          number_document: '20604209987',
+          name:'Razón social de tu cliente',
+          email:'email_cliente@gmail.com',
+          address: '',
+          ubigeo: '',
+          sexo: '',
+          birth_date: '',
+          phone: ''
+        },
+        voucher: {
+          document_type: '01',
+          moneda: 'PEN',
+          date_issue: '10/05/2020',
+          discount: 0,
+          observation: 'Hola',
+          recived: 20,
+          change: 5,
+          warranty: true
+        },
+        detail: []
+      },
+    };
+  },
+  mounted(){
+    const contain = document.querySelector('.card')
+    contain.addEventListener('click', (e)=> {
+      if (e.target.className !='inputContent') {
+        this.productSearchFilter=''
+      }
+    })
+  },
+  methods:{
+    loadSeries(){
+      BaseUrl.get(`api/sales/series/${this.voucherTypeSelect}`).then( resp=>{
+        this.series = resp.data.data;
+      })
+    },
+    loadCurrentNumber(){
+      let serieBackup = this.series
+      let serieFilter = serieBackup.filter(series =>
+        series.id == this.serieSelect
+      );
+      this.currentNumber = serieFilter[0].current_number + 1
+    },
+    searchProducts(){
+      console.log(this.saleData)
+      console.log(this.productSeries)
+      console.log(this.productSerieSearchFilter)
+      
+      let produtsBackup = this.products
+      let wordFilter = this.productSearch.toLowerCase();
+
+      if(wordFilter===''){
+        this.productSearchFilter=''
+      }else{
+        this.productSearchFilter = produtsBackup.filter(products =>
+          (products.name.toLowerCase().indexOf(wordFilter) !== -1) 
+        );
+      }
+
+    },
+    searchProductSeries(i, j){
+      let produtSeriesBackup = this.productSeries[i]
+      let wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
+
+      if(wordFilter===''){
+        this.productSerieSearchFilter[i][j] = ''
+      }else{
+        this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(productSeries =>
+          (productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1) 
+        )
+        if (this.productSerieSearchFilter[i][j].length === 0) {
+          this.productSerieSearchFilter[i][j] = [{serie: 'No hay resultados'}]
+        }
+      }
+    
+    },
+    priceOne(filSearch){
+      this.productSerieSearchFilter.push([])
+
+      const product = {
+        product_id : filSearch.id,
+        cod : filSearch.cod,
+        affect_icbper : false,
+        igv_type_id : 10,
+        discount : 0,
+        description : filSearch.name,
+        sale_price : filSearch.sale_price,
+        quantity : 1,
+        series : []
+      }
+
+      const series = {
+        id: '',
+        serie: ''
+      }
+      product.series.push(series)
+
+      this.saleData.detail.push(product)
+
+      this.productSearch = ''
+
+      this.getSeries(filSearch.id)
+    },
+    priceTwo(filSearch){
+      this.productSerieSearchFilter.push([])
+
+      const product = {
+        product_id : filSearch.id,
+        cod : filSearch.cod,
+        affect_icbper : false,
+        igv_type_id : 10,
+        discount : 0,
+        description : filSearch.name,
+        sale_price : filSearch.referential_sale_price_one,
+        quantity : 1,
+        series : []
+      }
+
+      const series = {
+        id: '',
+        serie: ''
+      }
+      product.series.push(series)
+
+      this.saleData.detail.push(product)
+
+      this.productSearch = ''
+    },
+    priceThree(filSearch){
+      this.productSerieSearchFilter.push([])
+
+      const product = {
+        product_id : filSearch.id,
+        cod : filSearch.cod,
+        affect_icbper : false,
+        igv_type_id : 10,
+        discount : 0,
+        description : filSearch.name,
+        sale_price : filSearch.referential_sale_price_two,
+        quantity : 1,
+        series : []
+      }
+
+      const series = {
+        id: '',
+        serie: ''
+      }
+      product.series.push(series)
+
+      this.saleData.detail.push(product)
+
+      this.productSearch = ''
+    },
+    selectSerieSearch(filSerieSearch, i, j){
+      this.saleData.detail[i].series[j].id = filSerieSearch.id
+      this.saleData.detail[i].series[j].serie = filSerieSearch.serie
+      this.productSerieSearchFilter[i][j] = ''
+    },
+    deleteItem(index){
+      this.saleData.detail.splice(index, 1);
+      this.productSeries.splice(index, 1);
+      this.productSerieSearchFilter.splice(index, 1);
+    },
+    addSeries(index){
+      const temp = []
+
+      for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
+        const series = {
+          id: '',
+          serie: ''
+        }
+        temp.push(series) 
+      }
+      this.saleData.detail[index].series = temp
+    },
+    getSeries(id){
+      BaseUrl.get(`api/sales/products/series/${id}`).then( resp=>{
+        this.productSeries.push(resp.data.data);
+      })
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -355,5 +618,55 @@ export default {};
 label {
   color: rgba(48, 48, 48, 0.774);
   font-weight: 300;
+}
+.option__relative{
+  position: relative;
+  z-index: 99;
+}
+.option__contenedor{
+  box-sizing: border-box;
+  border-radius: 5px;
+  width: 100%;
+  max-height: 200px;
+  box-shadow: 0 0 2px 0 rgb(128,189,255);
+  background-color: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  overflow-y: scroll;
+  position: absolute;
+  z-index: 100;
+}
+.option__contenedor input,.search input{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*border-color: #93a8c3;*/
+  outline-color: rgb(128,189,255);
+  border-style: solid;
+  border-width: 1px;
+  /*color:rgb(172,173,182)*/
+}
+.option__contenedor table{
+  width: 100%;
+  padding:8px 10px ;
+  margin: 0;
+}
+.option__contenedor::-webkit-scrollbar{
+  width: 7px;
+  background-color: rgb(128,189,255)
+}
+.option__contenedor::-webkit-scrollbar-thumb{
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border-right: 1px solid rgb(128,189,255);
+  border-left: 1px solid rgb(128,189,255);
+}
+.search .option__contenedor{
+  top: 0;
+}
+.search input{
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
 }
 </style>

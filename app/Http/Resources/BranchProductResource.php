@@ -16,6 +16,7 @@ class BranchProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'cod' => $this->cod,
             'name' => $this->product->name,
             'brand' => $this->product->brandLine->brand->description,
             'sale_price' => $this->sale_price,

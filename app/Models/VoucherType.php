@@ -16,6 +16,10 @@ class VoucherType extends Model
 
     protected $table = "voucher_types";
 
+    protected $allowIncluded = ['series'];
+    protected $allowFilter = ['id', 'description'];
+    protected $allowSort = ['id', 'description'];
+
     public function series()
     {
         return $this->hasMany(Serie::class);

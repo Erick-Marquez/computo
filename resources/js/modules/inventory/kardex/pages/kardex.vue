@@ -66,7 +66,7 @@
 import BaseUrl from '../../../../api/BaseUrl'
 export default {
     components:{BaseUrl},
-   async created(){
+    async created(){
        
         await BaseUrl.get(`/branches`).then( resp=>{
             const datos=resp.data.data
@@ -75,7 +75,7 @@ export default {
        })
         
         
-   },
+    },
    data(){
        return{
            select:{},
@@ -99,7 +99,7 @@ export default {
                 this.ocultar= false;
             }
         })
-        const contain = document.querySelector('.content')
+        const contain = document.querySelector('.pagina')
         contain.addEventListener('click', (e)=> {
             if (e.target.className !='inputContent') {
                this.elementoFiltradoSearch=''

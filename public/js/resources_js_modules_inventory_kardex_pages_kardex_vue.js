@@ -83,7 +83,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.ocultar = false;
       }
     });
-    var contain = document.querySelector('.content');
+    var contain = document.querySelector('.pagina');
     contain.addEventListener('click', function (e) {
       if (e.target.className != 'inputContent') {
         _this2.elementoFiltradoSearch = '';
