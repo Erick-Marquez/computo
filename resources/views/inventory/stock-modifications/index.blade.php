@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    Modificaciones
+    <index-modification-stock/>
 @stop
 
 @section('css')

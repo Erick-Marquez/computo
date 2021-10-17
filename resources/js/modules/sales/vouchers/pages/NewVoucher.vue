@@ -300,7 +300,7 @@
             <div class="col-md">
               <div class="form-group">
                 <label for="">Total Recibido S/.</label>
-                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.recived">
+                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.received_money">
               </div>
             </div>
             <div class="col-md">
@@ -361,9 +361,11 @@
             class="btn btn-default"
             ><i class="fas fa-print"></i> Print</a
           > -->
-          <button type="button" class="btn btn-dark float-right">
-            <i class="far fa-credit-card"></i> Guarda Documento Electronico
-          </button>
+          <form @submit.prevent="createSale()">
+            <button type="submit" class="btn btn-dark float-right">
+              <i class="far fa-credit-card"></i> Guarda Documento Electronico
+            </button>
+          </form>
           <!-- <button
             type="button"
             class="btn btn-primary float-right"
@@ -375,6 +377,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -412,6 +415,7 @@ export default {
       productSeries: [],
       saleData: {
         customer: {
+          customer_id: 1,
           identification_document: '6',
           number_document: '20604209987',
           name:'Razón social de tu cliente',
@@ -424,11 +428,13 @@ export default {
         },
         voucher: {
           document_type: '01',
+          serie_id: '',
           moneda: 'PEN',
-          date_issue: '10/05/2020',
+          date_issue: '2021-10-17', //Año - mes - dia
+          date_due: '2021-10-18',
           discount: 0,
           observation: 'Hola',
-          recived: 20,
+          received_money: 20,
           change: 5,
           warranty: true
         },
@@ -458,10 +464,7 @@ export default {
       this.currentNumber = serieFilter[0].current_number + 1
     },
     searchProducts(){
-      console.log(this.saleData)
-      console.log(this.productSeries)
-      console.log(this.productSerieSearchFilter)
-      
+        
       let produtsBackup = this.products
       let wordFilter = this.productSearch.toLowerCase();
 
@@ -497,7 +500,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 10,
+        igv_type_id : 8,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.sale_price,
@@ -524,7 +527,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 10,
+        igv_type_id : 8,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_one,
@@ -541,6 +544,8 @@ export default {
       this.saleData.detail.push(product)
 
       this.productSearch = ''
+
+      this.getSeries(filSearch.id)
     },
     priceThree(filSearch){
       this.productSerieSearchFilter.push([])
@@ -549,7 +554,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 10,
+        igv_type_id : 8,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_two,
@@ -566,6 +571,8 @@ export default {
       this.saleData.detail.push(product)
 
       this.productSearch = ''
+
+      this.getSeries(filSearch.id)
     },
     selectSerieSearch(filSerieSearch, i, j){
       this.saleData.detail[i].series[j].id = filSerieSearch.id
@@ -579,7 +586,6 @@ export default {
     },
     addSeries(index){
       const temp = []
-
       for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
         const series = {
           id: '',
@@ -593,7 +599,16 @@ export default {
       BaseUrl.get(`api/sales/products/series/${id}`).then( resp=>{
         this.productSeries.push(resp.data.data);
       })
-    }
+    },
+    createSale() {
+      this.saleData.voucher.serie_id = this.serieSelect
+      BaseUrl.post("/api/sales", this.saleData).then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
   }
 };
 </script>

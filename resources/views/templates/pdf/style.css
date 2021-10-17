@@ -152,6 +152,10 @@ a{
     font-weight: 400;
     padding-left: 10px;
 }
+.compra__hash span{
+    font-size: 0.7rem;
+    font-weight: 450 !important;
+}
 
 .resumen > p{
     font-weight: bold;

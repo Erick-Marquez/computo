@@ -45,8 +45,6 @@
                     <td>FECHA DE EMISIÓN</td>
                     <td>CONDICIÓN DE PAGO</td>
                     <td>TIPO DE MONEDA</td>
-                    <td>NÚMERO DE GUÍA</td>
-                    <td>ORDEN DE COMPRA</td>
                 </tr>
             </thead>
             <tbody>
@@ -54,8 +52,6 @@
                     <td>{{ $head->created_at }}</td>
                     <td>EFECTIVO</td>
                     <td>Soles</td>
-                    <td></td>
-                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -82,7 +78,7 @@
                     </tr>
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert(152.54, 'SOLES') }}</td>
+                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert($head->total, 'SOLES') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -98,10 +94,6 @@
                 <td>
                     <div class="compra__texto">
                         <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
-                        <div class="compra__hash">
-                            <p>Hash: </p>
-                            <p></p>
-                        </div>
                     </div>
                 </td>
                 <td>
@@ -128,6 +120,12 @@
                             <p class="total__precio">S/ {{ $head->total }}</p>
                         </div>
                     </div>
+                </td>
+            </tr>
+            <tr class="observacion">
+                <td colspan="3">
+                    <p><span>Hash: </span></p>
+                    <p class="compra__hash"><span >{{$head->hash_cdr }}</span></p   >
                 </td>
             </tr>
             <tr class="observacion">

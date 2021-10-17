@@ -40,6 +40,22 @@ const routes = [
         ]
     },
     {
+        path: '/modificacion-stock',
+        name: 'modification-stock-index',
+        component: () => import('../modules/inventory/modification-stock/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'layout-modification-stock',
+                component: () => import('../modules/inventory/modification-stock/pages/layout.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'layout-modification-stock' }
+            }
+        ]
+    },
+    {
         path: '/cajas',
         name: 'cajas-index',
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/open-closed/index.vue'),

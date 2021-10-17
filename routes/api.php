@@ -38,4 +38,6 @@ Route::middleware([
     Route::get('/sales/products', [VoucherController::class, 'products'])->name('api.sales.products');
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
 
+    Route::post('/sales', [VoucherController::class, 'store'])->name('api.sales.store');
+    Route::get('/sales', [VoucherController::class, 'index'])->name('api.sales.index');
 });

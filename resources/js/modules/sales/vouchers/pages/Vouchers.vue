@@ -50,12 +50,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
+                <tr v-for="sale in sales" :key="sale.id">
+                  <td>{{ sale.date_issue }}</td>
+                  <td>{{ sale.serie.voucher_type.description }}</td>
+                  <td>{{ sale.document_number }}</td>
+                  <td>{{ sale.customer.name }}</td>
+                  <td>{{ sale.total }}</td>
                   <td>
                     <div class="dropdown">
                       <button
@@ -83,7 +83,7 @@
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                         ><a
                           class="dropdown-item"
-                          href="#"
+                          :href="'print/vouchers/A4/' + sale.id"
                           target="_blank"
                           ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                         >
@@ -103,7 +103,25 @@
 </template>
 
 <script>
-export default {};
+import BaseUrl from '../../../../api/BaseUrl.js'
+export default {
+  components:{BaseUrl},
+  async created(){
+    const id=this.$route.params.id
+    await BaseUrl.get(`api/sales`).then( resp=>{
+      console.log(resp.data)
+      this.sales=resp.data.data
+    })
+  },
+  data(){
+    return{
+      sales:{}
+    }
+  },
+  methods:{
+    
+  }
+}
 </script>
 
 <style>

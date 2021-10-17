@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\IdentificationDocumentResource;
+use App\Http\Resources\SaleResource;
 use App\Http\Resources\SerieResource;
 use App\Http\Resources\VoucherTypeResource;
 use App\Models\BranchProduct;
@@ -17,8 +18,10 @@ use App\Models\Serie;
 use App\Models\VoucherType;
 use App\Services\KardexService;
 use App\Services\NumberLetterService;
+use App\Services\SunatService;
 use Illuminate\Http\Request;
 
+use Carbon\Carbon;
 use PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -31,8 +34,8 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Sale::all();
-        return view('sales.vouchers.index', compact('vouchers'));
+        $vouchers = Sale::with('serie.voucherType', 'customer')->get();
+        return SaleResource::collection($vouchers);
     }
 
     /**
@@ -57,20 +60,25 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->detail[0]['series'][0]['serie']
+        $serie = Serie::find($request->voucher['serie_id']);
+        $serie->current_number = $serie->current_number + 1;
+        $serie->save();
 
-        $document_number = Serie::find($request->serie_id)->current_number + 1;
+        
+
         $sale = Sale::create([
-            'document_number' => $document_number,
-            'date_issue' => $request->date_issue,
-            'date_due' => $request->date_due,
+            'document_number' => $serie->current_number,
+            'date_issue' => $request->voucher['date_issue'],
+            'date_due' => $request->voucher['date_due'],
 
-            'observation' => $request->observation,
-            'recived_money' => $request->recived_money,
-            'change' => $request->change,
+            'observation' => $request->voucher['observation'],
+            'received_money' => $request->voucher['received_money'],
+            'change' => $request->voucher['change'],
 
-            'serie_id' => $request->serie_id,
-            'customer_id' => $request->customer_id,
-            'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
+            'serie_id' => $request->voucher['serie_id'],
+            'customer_id' => $request->customer['customer_id'],
+            //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
         
@@ -83,15 +91,22 @@ class VoucherController extends Controller
         $totalTaxedSale = 0;
         $totalSale = 0;
 
-        for ($i = 0; $i < count($request->branch_product_id); $i++) { 
+        for ($i = 0; $i < count($request->detail); $i++) { 
+
+            $productSeries = [];
+
+            for ($j=0; $j < count($request->detail[$i]['series']) ; $j++) { 
+                array_push($productSeries, $request->detail[$i]['series'][$j]['serie']);
+            }
+            
 
             //$product = BranchProduct::find($request->branch_product_id[$i]);
 
             $total_igv = 0;
 
             // Totales del detalle venta
-            $subtotal = $request->quantity[$i] * $request->price[$i];
-            $total = $request->quantity[$i] * $request->price[$i];
+            $subtotal = $request->detail[$i]['quantity'] * $request->detail[$i]['sale_price'];
+            $total = $request->detail[$i]['quantity'] * $request->detail[$i]['sale_price'];
 
             // Suma en cadena para la venta
             $totalSale += $total;
@@ -99,25 +114,26 @@ class VoucherController extends Controller
             $totalExoneratedSale += $subtotal;
 
             SaleDetail::create([
-                'price' => $request->price[$i],
-                'quantity' => $request->quantity[$i],
+                'price' => $request->detail[$i]['sale_price'],
+                'quantity' => $request->detail[$i]['quantity'],
                 'total_igv' => $total_igv,
                 'subtotal' => $subtotal,
                 'total' => $total,
                 //'discount' => $request->discount[$i],
+                'series' => $productSeries,
                 'sale_id' => $sale->id,
-                'branch_product_id' => $request->branch_product_id[$i],
-                'igv_type_id' => 8,
+                'branch_product_id' => $request->detail[$i]['product_id'],
+                'igv_type_id' => $request->detail[$i]['igv_type_id'],
             ]);
 
 
-            $data['branch_product_id'] = $request->branch_product_id[$i];
-            $data['quantity'] = $request->quantity[$i];
+            $data['branch_product_id'] = $request->detail[$i]['product_id'];
+            $data['quantity'] = $request->detail[$i]['quantity'];
             $data['document'] = $sale->serie->serie . '-' . $sale->document_number;
-            $data['series'] = $request->serie[$i];
+            $data['series'] = $request->detail[$i]['series'];
             $data['user_id'] = auth()->user()->id;
             
-            $kardex = KardexService::sale($data);
+            KardexService::sale($data);
         }
         
         $sale->update([
@@ -130,7 +146,16 @@ class VoucherController extends Controller
             'total' => $totalSale
         ]);
         // Enviar a Sunat
-        return redirect()->route('vouchers.index');
+
+        $sunat = SunatService::facturar($sale->id, 'invoice');
+
+        $sale->update([
+            'send_sunat' => $sunat['send'],
+            'response_sunat' => true,
+            'description_sunat_cdr' => $sunat['response']['message'],
+            'hash_cdr' => $sunat['response']['hash_cdr']
+        ]);
+        return $sale;
         
     }
 
@@ -184,6 +209,19 @@ class VoucherController extends Controller
         $company = [];
         $head = Sale::find($sale->id);
         $details = $head->saleDetails;
+
+        // $text = join('|', [
+        //     $this->company->number,
+        //     $this->document->document_type_id,
+        //     $this->document->series,
+        //     $this->document->number,
+        //     $this->document->total_igv,
+        //     $this->document->total,
+        //     $this->document->date_of_issue->format('Y-m-d'),
+        //     $customer->identity_document_type_id,
+        //     $customer->number,
+        //     $this->document->hash
+        // ]);
 
         $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
         if ($type == 'A4') {

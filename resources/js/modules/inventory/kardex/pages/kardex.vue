@@ -50,7 +50,12 @@
             <tr v-for="tab in table" :key="tab.id">
                 <td>{{ tab.date }}</td>
                 <td>{{ tab.document===null ? "-" : tab.document }}</td>
-                <td>{{ tab.series }}</td> 
+                <td class="tool">
+                    series
+                    <span class="tool-box">
+                        <span v-for="serie in tab.series" :key="serie">{{serie}}</span>
+                    </span>
+                </td>
                 <td>{{ tab.description }}</td>
                 <td>{{ tab.movement_type=='INGRESO' ? tab.quantity : "-"}}</td>
                 <td>{{ tab.movement_type=='SALIDA' ? tab.quantity : "-"}}</td>
@@ -141,7 +146,7 @@ export default {
                    BaseUrl.get(`/branches/products/${element.id}`).then( resp=>{
                        
                         this.products=resp.data.data
-                        this.selectSearch= resp.data.data
+                        this.selectSearch= resp.data.data.slice(0,10)
                         
                     })
                 } 
@@ -226,7 +231,7 @@ export default {
         border-radius: 5px;
         width: 100%;
         max-height: 200px;
-        box-shadow: 0 0 2px 0 rgb(128,189,255);
+        box-shadow: 0 0 2px 0 rgb(222, 34, 69);
         background-color: #fff;
         box-sizing: border-box;
         cursor: pointer;
@@ -240,7 +245,7 @@ export default {
         margin-left: auto;
         margin-right: auto;
         border-color: #93a8c3;
-        outline-color: rgb(128,189,255);
+        outline-color: rgb(222, 34, 69);
         border-style: solid;
         border-width: 1px;
         color:rgb(172,173,182)
@@ -250,7 +255,7 @@ export default {
         margin: 0;
     }
     .option__contenedor p:hover{
-        background-color: rgb(0, 116, 240);
+        background-color: rgb(222, 34, 69);
         color: #fff;
     }
     .form__select input{
@@ -261,13 +266,13 @@ export default {
     }
     .option__contenedor::-webkit-scrollbar{
         width: 7px;
-        background-color: rgb(128,189,255)
+        background-color: rgb(222, 34, 69)
     }
     .option__contenedor::-webkit-scrollbar-thumb{
         background-color: rgb(255, 255, 255);
         border-radius: 10px;
-        border-right: 1px solid rgb(128,189,255);
-        border-left: 1px solid rgb(128,189,255);
+        border-right: 1px solid rgb(222, 34, 69);
+        border-left: 1px solid rgb(222, 34, 69);
     }
     .option__relative{
         position: relative;
@@ -328,5 +333,48 @@ export default {
     td.colorActive{
         color: rgb(60, 112, 255);
         font-weight: bold;
+    }
+    .tool{
+	font-weight: normal;
+	color: rgb(222, 34, 69);
+	text-decoration: none;
+	position: relative;
+    cursor: pointer;
+    }
+
+    .tool:hover {
+        text-decoration: underline;
+    }
+
+    .tool:hover .tool-box {
+        opacity: 1;
+    }
+
+    .tool-box {
+        opacity: 0;
+        position: absolute;
+        background: rgb(222, 34, 69);
+        line-height: 20px;
+        z-index: 500;
+        text-align: center;
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        left: 20px;
+        bottom: 40px;
+    }
+    .tool-box span{
+        display: block;
+    }
+    .tool-box::after {
+        content: "";
+        display: block;
+        border-top: 7px solid rgb(222, 34, 69);
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        position: absolute;
+        bottom: -7px;
+        left: calc(50% - 7px);
     }
 </style>

@@ -4,28 +4,31 @@ import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
             :class="{'acciones--select':( accionShow)}">
         <span>Acción</span>
         <div class="acciones__img">
+
         </div>
     </button>
     <div class="options" >
     <div class="options__absolute" :class="{'options--show': (functionShow(getId) && panelShow)}" >
         <div class="options__element">
             <p>MOSTRAR</p>
-            <i class="col-1 mr-3 fas fa-eye"></i>
+
         </div>
         
             <div class="options__element" >
             <p>EDITAR1</p>
-            <i class="far fa-edit"></i>
+
         </div>
         <router-link :to="{ name:'show-product' ,params:{id:getId}}">
             <div class="options__element" >
                 <p>VER PRODUCTOS</p>
+
             </div>
         </router-link>
         <div @click="$emit('delete',getId)">
             <div class="options__element option__delete" @click.prevent="deleteDate">
                 <p>Eliminar</p>
-        </div>
+                <i class="fas fa-trash-alt"></i>
+            </div>
         </div>
         </div>
     </div>
@@ -39,7 +42,7 @@ export default {
         id:Number,
         datosLista:{}
     },
-     emits:['delete'],
+    emits:['delete'],
     computed:{
         getId(){
             return this.id || 0
@@ -122,7 +125,7 @@ export default {
     z-index: 10;
     /* border-color: #3498db; */
     color: #fff;
-    box-shadow: 0 0 40px 40px rgb(43, 126, 216) inset, 0 0 0 0 rgb(43, 126, 216);
+    box-shadow: 0 0 40px 40px rgb(222, 34, 69) inset, 0 0 0 0 rgb(222, 34, 69);
     transition: all 350ms ease-in-out;
     
 }
@@ -131,8 +134,8 @@ export default {
 } */
 
 .acciones--select{
-    color: rgb(0,123,255);
-    box-shadow: 0 0 3px 0 rgb(43, 126, 216) inset, 0 0 3px 1px rgb(43, 126, 216);
+    color: rgb(222, 34, 69);
+    box-shadow: 0 0 3px 0 rgb(222, 34, 69) inset, 0 0 3px 1px rgb(222, 34, 69);
 }
 .acciones__img img{
    transition: all 600ms;

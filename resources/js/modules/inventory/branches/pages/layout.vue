@@ -14,7 +14,7 @@
               </tr>
           </thead>
           <tbody>
-              <tr v-for="date in datos" :key="date">
+              <tr v-for="date in datos" :key="date" @load="cargado">
                   <td >{{date.id}}</td>
                   <td >{{date.description}}</td>
                   <td >{{date.direction}}</td>
@@ -41,19 +41,15 @@ export default {
     async created(){
        await BaseUrl.get(`/branches`).then(resp =>{
             this.datos=resp.data.data
-            console.log(resp)
-        }).catch(error =>{
-            console.log(error)
         })
     },
      data(){
         return{
-            datos:{}
+            datos:{},
         }
     },
     methods:{
         async nuevosDatos(){
-            console.log(this.datos)
             await BaseUrl.get(`/branches`).then(response => {
                 this.datos=response.data.data
                 console.log(response)
@@ -81,10 +77,8 @@ export default {
                     'El dato fue borrado',
                     )           
                 }
-            })
-            
-           
-        }
+            }) 
+        },
     }
 }
 </script>
@@ -92,8 +86,7 @@ export default {
 <style scoped>
     .pagina{
         width: 95%;
-
-        margin-left: auto;
+         margin-left: auto;
         margin-right: auto;
         background-color: rgb(255, 255, 255);
         margin-bottom: 50px;
@@ -103,14 +96,15 @@ export default {
     }
     h1{
         font-size: 1.4rem;
-        border-bottom: 1px solid rgb(172,173,182);
+        border-bottom: 1px solid rgb(222, 34, 69);
         color: rgb(172,173,182); 
         font-weight: bold;
         transform: translateY(-10px);
         margin-bottom: 25px;
         width: 95%;
-         margin-left: auto;
+        margin-left: auto;
         margin-right: auto;
+        padding: 10px 0;
     }
     table{
         width: 93%;
@@ -133,7 +127,7 @@ export default {
          padding: 10px 0 10px 10px;
     }
     tbody td:first-of-type{
-        color: rgb(60, 112, 255);
+        color: rgb(222, 34, 69);
         font-weight: bold;
         width: 50px;
     }

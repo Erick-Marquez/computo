@@ -105,7 +105,7 @@ class BranchController extends Controller
     public function destroy(Branch $branch)
     {
         $branch->delete();
-        return redirect()->route('branches.index');
+        return $branch;
     }
 
     /**
@@ -130,6 +130,6 @@ class BranchController extends Controller
     {
         $branch = $branchProduct->branch;
         $branchProduct->delete();
-        return redirect()->route('branches.products', $branch);
+        return $branchProduct;
     }
 }
