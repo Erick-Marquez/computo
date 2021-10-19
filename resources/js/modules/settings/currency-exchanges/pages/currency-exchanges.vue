@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Comprobantes</h1>
+      <h1>Cambios de Divisas</h1>
     </div>
   </div>
 
@@ -11,13 +11,13 @@
       :to="{ name: 'new-voucher' }"
     >
       <i class="fas fa-plus"></i>
-      Nueva venta
+      Nuevo Cambio de Divisa
     </router-link>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de comprobantes</h3>
+            <h3 class="card-title">Lista de Cambios de Divisas</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -42,20 +42,14 @@
               <thead>
                 <tr>
                   <th>Fecha</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-                  <th>Cliente</th>
-                  <th>Total</th>
+                  <th>Tipo de cambio</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="sale in sales" :key="sale.id">
-                  <td>{{ sale.date_issue }}</td>
-                  <td>{{ sale.serie.voucher_type.description }}</td>
-                  <td>{{ sale.document_number }}</td>
-                  <td>{{ sale.customer.name }}</td>
-                  <td>{{ sale.total }}</td>
+                <tr v-for="currencyExchange in currencyExchanges" :key="currencyExchange.id">
+                  <td>{{ currencyExchange.date }}</td>
+                  <td>{{ currencyExchange.change }}</td>
                   <td>
                     <div class="dropdown">
                       <button
@@ -81,17 +75,6 @@
                           class="dropdown-item"
                           href="#"
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                        ><a
-                          class="dropdown-item"
-                          :href="'print/vouchers/A4/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          :href="'print/vouchers/WARRANTY/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
                         >
                       </div>
                     </div>
@@ -113,14 +96,13 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   async created(){
-    await BaseUrl.get(`api/sales`).then( resp=>{
-      console.log(resp.data)
-      this.sales=resp.data.data
+    await BaseUrl.get(`api/currencyexchanges`).then( resp=>{
+      this.currencyExchanges=resp.data.data
     })
   },
   data(){
     return{
-      sales:{}
+      currencyExchanges:{}
     }
   },
   methods:{

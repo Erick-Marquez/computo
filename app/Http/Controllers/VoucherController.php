@@ -10,6 +10,7 @@ use App\Http\Resources\SerieResource;
 use App\Http\Resources\VoucherTypeResource;
 use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\Sale;
@@ -155,6 +156,7 @@ class VoucherController extends Controller
             'description_sunat_cdr' => $sunat['response']['message'],
             'hash_cdr' => $sunat['response']['hash_cdr']
         ]);
+
         return $sale;
         
     }
@@ -206,24 +208,25 @@ class VoucherController extends Controller
 
     public function print($type, Sale $sale)
     {
-        $company = [];
-        $head = Sale::find($sale->id);
+        $company = Company::find(1);
+        $head = Sale::where('id', $sale->id)->with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType')->firstOrFail();
         $details = $head->saleDetails;
 
-        // $text = join('|', [
-        //     $this->company->number,
-        //     $this->document->document_type_id,
-        //     $this->document->series,
-        //     $this->document->number,
-        //     $this->document->total_igv,
-        //     $this->document->total,
-        //     $this->document->date_of_issue->format('Y-m-d'),
-        //     $customer->identity_document_type_id,
-        //     $customer->number,
-        //     $this->document->hash
-        // ]);
+        $text = join('|', [
+            $company->ruc,
+            $head->serie->voucherType->cod,
+            $head->serie->serie,
+            $head->document_number,
+            $head->total_igv,
+            $head->total,
+            $head->date_issue,
+            $head->customer->identificationDocument->cod,
+            $head->customer->document,
+            $head->hash_cdr
+        ]);
 
-        $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
+
         if ($type == 'A4') {
             $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuotationResource;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
@@ -19,19 +20,8 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $quotations = Quotation::all();
-        return view('sales.quotations.index', compact('quotations'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $customers = Customer::all();
-        return view('sales.quotations.create', compact('customers'));
+        $quotations = Quotation::with('customer', 'user')->get();
+        return QuotationResource::collection($quotations);
     }
 
     /**

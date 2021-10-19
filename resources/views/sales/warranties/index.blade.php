@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-    <index-quotations></index-quotations>
+    <index-warranties></index-warranties>
 @stop
 
 @section('css')

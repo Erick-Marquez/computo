@@ -2,14 +2,17 @@
 
 @section('title', 'Dashboard')
 
+@section('content_header')
+@stop
+
 @section('content')
-    Cambios de divisas
+    <index-currency-exchanges></index-currency-exchanges>
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-
+    <script>
+    </script>
 @stop

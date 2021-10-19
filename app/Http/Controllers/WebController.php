@@ -18,6 +18,16 @@ class WebController extends Controller
         return view('sales.new-sale.index');
     }
 
+    public function quotations()
+    {
+        return view('sales.quotations.index');
+    }
+
+    public function warranties()
+    {
+        return view('sales.warranties.index');
+    }
+
     public function familiesLinesBrands()
     {
         return view('catalogs.families-lines-brands.index');

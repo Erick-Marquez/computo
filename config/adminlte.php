@@ -292,13 +292,15 @@ return [
                 [
                     'text' => 'Cotización',
                     'icon' => 'fas fa-fw',
-                    'route'  => 'quotations.index',
+                    'route'  => 'web.quotations',
                     'can'    => 'quotations.index',
+                    'active' => ['cotizaciones', 'nueva-cotizacion'] 
                 ],
                 [
                     'text' => 'Garantías',
                     'icon' => 'fas fa-fw',
-                    'url'  => '#',
+                    'route'  => 'web.warranties',
+                    //'can'    => 'quotations.index',
                 ],
 
             ],
@@ -404,6 +406,7 @@ return [
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.branches',
                     'can'    => 'branches.index',
+                    'active' => ['sucursales', 'regex:@^sucursales/productos/[0-9]+$@'] 
                 ],
                 [
                     'text'   => 'Movimiento de Sucursal',
@@ -505,7 +508,7 @@ return [
                 [
                     'text'   => 'Roles',
                     'icon'   => 'fas fa-fw ',
-                    'route'  => 'roles.index',
+                    'route'  => 'web.roles',
                     'can'    => 'roles.index',
                 ],
                 [

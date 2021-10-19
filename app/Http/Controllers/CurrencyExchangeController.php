@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\RoleResource;
+use App\Http\Resources\CurrencyExchangeResource;
+use App\Models\CurrencyExchange;
 use Illuminate\Http\Request;
-use Spatie\Permission\Contracts\Permission as ContractsPermission;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
-class RoleController extends Controller
+class CurrencyExchangeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +15,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
-        $roles = Role::all();
-        return RoleResource::collection($roles);
+        $currencyExchanges = CurrencyExchange::all();
+        return CurrencyExchangeResource::collection($currencyExchanges);
     }
 
     /**
@@ -30,8 +27,6 @@ class RoleController extends Controller
     public function create()
     {
         //
-        $permissions = Permission::all();
-        return view('settings.roles.create', compact('permissions'));
     }
 
     /**
@@ -43,15 +38,6 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        $role = Role::create($request->all());
-
-        $role->permissions()->sync($request->permissions);
-
-        return redirect()->route('roles.index');
     }
 
     /**
@@ -60,10 +46,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show($id)
     {
         //
-        return view('settings.roles.show');
     }
 
     /**
@@ -72,11 +57,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
         //
-        $permissions = Permission::all();
-        return view('settings.roles.edit', compact('role', 'permissions'));
     }
 
     /**
@@ -86,19 +69,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
         //
-        $request->validate([
-            'name' => 'required'
-        ]);
-
-        $role->update($request->all());
-
-        $role->permissions()->sync($request->permissions);
-
-        return redirect()->route('roles.index');
-
     }
 
     /**
@@ -107,10 +80,8 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
         //
-        $role->delete();
-        return redirect()->route('roles.index')->with('delete','Ok');
     }
 }

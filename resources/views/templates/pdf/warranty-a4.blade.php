@@ -41,7 +41,11 @@
                         <td>{{ $i+1 }}</td>
                         <td>codigo</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->branchProduct->product->name  }}</td>
+                        <td>{{ $detail->branchProduct->product->name  }} - Series: 
+                            @foreach ($detail->series as $serie)
+                                ({{ $serie }})
+                            @endforeach
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

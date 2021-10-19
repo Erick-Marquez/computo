@@ -1,23 +1,23 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Comprobantes</h1>
+      <h1>Roles</h1>
     </div>
   </div>
 
   <div class="container-fluid">
     <router-link
       class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-voucher' }"
+      :to="{ name: 'roles-create' }"
     >
       <i class="fas fa-plus"></i>
-      Nueva venta
+      Nuevo Rol
     </router-link>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de comprobantes</h3>
+            <h3 class="card-title">Lista de Roles</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -41,21 +41,15 @@
             <table class="table table-hover text-nowrap">
               <thead>
                 <tr>
-                  <th>Fecha</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-                  <th>Cliente</th>
-                  <th>Total</th>
+                  <th>ID</th>
+                  <th>Nombre del Rol</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="sale in sales" :key="sale.id">
-                  <td>{{ sale.date_issue }}</td>
-                  <td>{{ sale.serie.voucher_type.description }}</td>
-                  <td>{{ sale.document_number }}</td>
-                  <td>{{ sale.customer.name }}</td>
-                  <td>{{ sale.total }}</td>
+                <tr v-for="rol in roles" :key="rol.id">
+                  <td>{{ rol.id }}</td>
+                  <td>{{ rol.name }}</td>
                   <td>
                     <div class="dropdown">
                       <button
@@ -81,17 +75,11 @@
                           class="dropdown-item"
                           href="#"
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                        ><a
-                          class="dropdown-item"
-                          :href="'print/vouchers/A4/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                         >
                         <a
                           class="dropdown-item"
-                          :href="'print/vouchers/WARRANTY/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
+                          href="#"
+                          ><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a
                         >
                       </div>
                     </div>
@@ -106,6 +94,45 @@
       </div>
     </div>
   </div>
+
+  <!-- MODALES -->
+  <div class="modal fade" id="modal-create" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Crear nueva Caja</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="createCashbox()">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Nombre de la caja</label>
+              <input
+                id="description"
+                type="text"
+                class="form-control"
+                v-model="caja.description"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -113,14 +140,13 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   async created(){
-    await BaseUrl.get(`api/sales`).then( resp=>{
-      console.log(resp.data)
-      this.sales=resp.data.data
+    await BaseUrl.get(`api/roles`).then( resp=>{
+      this.roles=resp.data.data
     })
   },
   data(){
     return{
-      sales:{}
+      roles:{}
     }
   },
   methods:{

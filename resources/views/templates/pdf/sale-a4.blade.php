@@ -70,7 +70,11 @@
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->branchProduct->product->name  }}</td>
+                        <td>{{ $detail->branchProduct->product->name  }} - Series: 
+                            @foreach ($detail->series as $serie)
+                                ({{ $serie }})
+                            @endforeach
+                        </td>
                         <td>S/ {{ $detail->price }}</td>
                         <td>UNIDADES</td>
                         <td>Exonerado</td>

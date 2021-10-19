@@ -35,26 +35,38 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-// Rutas Web
-Route::middleware(['auth:sanctum', 'verified'])->get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
-Route::middleware(['auth:sanctum', 'verified'])->get('/sucursales/productos/{id}', [WebController::class, 'branches']);
+    //Sale
+    Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
+    Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
+    Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+    Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
+    Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
+    
+    Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
-Route::middleware(['auth:sanctum', 'verified'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
+    Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
+
+    Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
+    Route::get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
+
+    Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
+    Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
+
+    Route::get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
-Route::middleware(['auth:sanctum', 'verified'])->get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
+    Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
+    Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
+    //Settings
+    Route::get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
+    Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-Route::middleware(['auth:sanctum', 'verified'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
-Route::middleware(['auth:sanctum', 'verified'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+});
+
 // 'opening.cashbox'
 
 Route::get('/prueba', [WebController::class, 'prueba']);
@@ -69,7 +81,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sal
 
 // //Modulo Ventas
 Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherController::class)->names('vouchers');
-Route::middleware(['auth:sanctum', 'verified'])->resource('quotations', QuotationController::class)->names('quotations');
 
 
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
@@ -104,5 +115,5 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('providers', ProviderC
 
 //Modulo Configuracion
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class)->names('users');
-Route::middleware(['auth:sanctum', 'verified'])->resource('roles', RoleController::class)->names('roles');
+// Route::middleware(['auth:sanctum', 'verified'])->resource('roles', RoleController::class)->names('roles');
 Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series')->parameters(['series' => 'serie']);

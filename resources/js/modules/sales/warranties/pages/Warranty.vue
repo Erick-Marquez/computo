@@ -1,23 +1,16 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Comprobantes</h1>
+      <h1>Garantias</h1>
     </div>
   </div>
 
   <div class="container-fluid">
-    <router-link
-      class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-voucher' }"
-    >
-      <i class="fas fa-plus"></i>
-      Nueva venta
-    </router-link>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de comprobantes</h3>
+            <h3 class="card-title">Lista de Garantias</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
