@@ -77,9 +77,7 @@ class VoucherTypeSeeder extends Seeder
 
         DB::table('identification_documents')->insert([
             ['cod' => '1','description' => 'DNI'],
-            ['cod' => '6','description' => 'RUC'],
-            ['cod' => '7','description' => 'PASAPORTE'],
-            ['cod' => '4','description' => 'CARNET DE EXTRANJERIA']
+            ['cod' => '6','description' => 'RUC']
         ]);
 
         DB::table('series')->insert([

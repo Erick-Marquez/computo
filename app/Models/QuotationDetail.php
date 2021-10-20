@@ -12,8 +12,10 @@ class QuotationDetail extends Model
     protected $fillable = [
         'price',
         'quantity',
+        'discount',
+        'total',
         'quotation_id',
-        'product_id'
+        'branch_product_id'
     ];
 
     public function quotation()
@@ -21,8 +23,8 @@ class QuotationDetail extends Model
         return $this->belongsTo(Quotation::class);
     }
 
-    public function product()
+    public function branchProduct()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(BranchProduct::class);
     }
 }

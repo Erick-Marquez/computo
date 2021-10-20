@@ -28,6 +28,8 @@ class CreateSalesTable extends Migration
             $table->decimal('total_taxed', 12, 3)->default(0);
             $table->unsignedDecimal('total', 12, 3)->default(0);
 
+            $table->boolean('have_warranty')->default(false);
+
             $table->string('observation')->nullable();
             $table->decimal('received_money', 9, 3)->nullable();
             $table->decimal('change', 9, 3)->nullable();

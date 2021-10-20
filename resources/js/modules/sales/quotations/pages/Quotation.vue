@@ -83,15 +83,9 @@
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                         ><a
                           class="dropdown-item"
-                          :href="'print/vouchers/A4/' + quotation.id"
+                          :href="'print/quotations/' + quotation.id"
                           target="_blank"
                           ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          :href="'print/vouchers/WARRANTY/' + quotation.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
                         >
                       </div>
                     </div>

@@ -37,7 +37,7 @@ Route::middleware([
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
-
+    Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
 
     Route::apiResource('cajas', CashboxController::class)->names('api.cajas');
     Route::post('/cashbox/open', [CashboxController::class, 'openCashbox'])->name('api.opencashbox');

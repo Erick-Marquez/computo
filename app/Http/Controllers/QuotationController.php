@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuotationResource;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
@@ -32,36 +33,42 @@ class QuotationController extends Controller
      */
     public function store(Request $request)
     {
+        // Obtener la numeracion siguiente
+        $documentNumber = Quotation::select("document_number")->latest()->first();
+        $documentNumber = $documentNumber != null ? $documentNumber->document_number + 1 : 1;
+
         $quotation = Quotation::create([
-            'total' => $request->cod,
-            'observation' => $request->observation,
-            'customer_id' => $request->customer_id,
+            'observation' => $request->quotation['observation'],
+            'document_number' => $documentNumber,
+            'discount' => $request->quotation['discount'],
+            'customer_id' => $request->customer['customer_id'],
             'user_id' => auth()->user()->id
         ]);
+
         
         $totalQuotation = 0;
 
-        for ($i=0; $i < count($request->product_id); $i++) { 
+        foreach ($request->detail as $key => $detail) {
 
-            $total = $request->quantity[$i] * $request->price[$i];
-
+            $total = $detail['quantity'] * $detail['sale_price'];
             $totalQuotation = $totalQuotation + $total;
 
             $quotationDetails = QuotationDetail::create([
-                'price' => $request->cod,
-                'quantity' => $request->quantity[$i],
+                'price' => $detail['sale_price'],
+                'quantity' => $detail['quantity'],
+                'discount' => $detail['discount'],
                 'total' => $total,
                 'quotation_id' => $quotation->id,
-                'product_id' => $request->product_id[$i]
+                'branch_product_id' => $detail['product_id']
             ]);
         }
         
         $quotation->update([
-            'total' => $totalQuotation
+            'total' => $totalQuotation - $request->quotation['discount']
         ]);
 
 
-        return redirect()->route('quotations.index');
+        return $quotation;
     }
 
     /**
@@ -111,8 +118,9 @@ class QuotationController extends Controller
 
     public function print(Quotation $quotation)
     {
-        $company = [];
-        $head = Quotation::find($quotation->id);
+        $company = Company::find(1);
+        $head = Quotation::where('id', $quotation->id)->with('quotationDetails.branchProduct.product', 'customer.identificationDocument')->firstOrFail();
+        
         $details = $head->quotationDetails;
 
         $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));

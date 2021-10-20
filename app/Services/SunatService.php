@@ -213,10 +213,9 @@ class SunatService
                 self::getCdr();
 
             } else {
-                self::$message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue;
-                self::$message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue;
-                $codigo = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
-                $message = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
+                self::$message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
+                self::$message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
+                self::$message['response']['hash_cdr'] = "Error";
             }
             
         } else {

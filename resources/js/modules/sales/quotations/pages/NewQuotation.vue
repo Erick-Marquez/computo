@@ -154,6 +154,7 @@
           {{ exonerated = 0 }}
           {{ subtotal = 0 }}
           {{ total = 0 }}
+          {{ discount = 0 }}
         </div>
     
         <div class="col-12 table-responsive mt-4">
@@ -170,7 +171,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(detail, index) in saleData.detail" :key="detail">
+              <tr v-for="(detail, index) in quotationData.detail" :key="detail">
                 <td>
                   {{ detail.description }} - {{ detail.cod }}
                 </td>
@@ -178,7 +179,7 @@
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.quantity">
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount">
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount" v-on:change="activateOrDesactivateGlobalDiscount" :disabled = "activateDetailDiscount">
                 </td>
                 <td>
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.sale_price" disabled>
@@ -200,6 +201,7 @@
                   {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
                   {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
                   {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ discount += (detail.discount * 1) }}
                 </div>
 
               </tr>
@@ -216,13 +218,13 @@
             <div class="col-md">
               <div class="form-group">
                 <label for="">Descuento</label>
-                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.discount">
+                <input class="form-control rounded-pill" type="text" v-model="quotationData.quotation.discount" v-on:change="activateOrDesactivateDetailDiscount" :disabled = "activateGlobalDiscount">
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
                 <label for="">Aplica Garantia</label>
-                <input class=" form-control form-check-input bg-danger" type="checkbox" v-model="saleData.voucher.warranty">
+                <input class=" form-control form-check-input bg-danger" type="checkbox" v-model="quotationData.quotation.warranty">
               </div>
             </div>
           </div>
@@ -230,7 +232,7 @@
             <div class="col-md">
               <div class="form-group">
                 <h4>Observación</h4>
-                <textarea cols="30" rows="4" class="form-control rounded-pill px-5" v-model="saleData.voucher.observation"></textarea>
+                <textarea cols="30" rows="4" class="form-control rounded-pill px-5" v-model="quotationData.quotation.observation"></textarea>
               </div>
             </div>
           </div>
@@ -239,13 +241,17 @@
           <div class="table-responsive">
             <table class="table">
               <tbody>
-                <tr>
+                <tr v-show="quotationData.quotation.discount > 0">
                   <th>Descuento:</th>
-                  <td>S/. {{ total }}</td>
+                  <td>S/. {{ quotationData.quotation.discount }}</td>
+                </tr>
+                <tr v-show="discount > 0">
+                  <th>Descuento:</th>
+                  <td>S/. {{ discount }}</td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>S/. {{ total }}</td>
+                  <td>S/. {{ total - quotationData.quotation.discount }}</td>
                 </tr>
               </tbody>
             </table>
@@ -256,7 +262,7 @@
       <!-- Resumen de ventas -->
       <div class="row no-print">
         <div class="col-12">
-          <form @submit.prevent="createSale()">
+          <form @submit.prevent="createQuotation()">
             <button type="submit" class="btn btn-dark float-right">
               <i class="far fa-credit-card"></i> Guardar Cotización
             </button>
@@ -273,9 +279,6 @@ import BaseUrl from "../../../../api/BaseUrl";
 export default {
   components: { BaseUrl },
   async created() {
-    await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
-      this.voucherTypes = resp.data.data;
-    });
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
       this.identificationDocuments = resp.data.data;
@@ -288,20 +291,16 @@ export default {
   },
   data() {
     return {
-      voucherTypeSelect: 1,
-      serieSelect: null,
-      currentNumber: "Selecciona una serie",
 
       productSearch:'',
       productSearchFilter: [],
-      productSerieSearchFilter: [],
-      voucherTypes: {},
-      series: {},
+
+      activateGlobalDiscount: false,
+      activateDetailDiscount: false,
 
       identificationDocuments: {},
       products: {},
-      productSeries: [],
-      saleData: {
+      quotationData: {
         customer: {
           customer_id: 1,
           identification_document: '6',
@@ -314,16 +313,9 @@ export default {
           birth_date: '',
           phone: ''
         },
-        voucher: {
-          document_type: '01',
-          serie_id: '',
-          moneda: 'PEN',
-          date_issue: '2021-10-17', //Año - mes - dia
-          date_due: '2021-10-18',
+        quotation: {
           discount: 0,
           observation: 'Hola',
-          received_money: 20,
-          change: 5,
           warranty: true
         },
         detail: []
@@ -339,18 +331,7 @@ export default {
     })
   },
   methods:{
-    loadSeries(){
-      BaseUrl.get(`api/sales/series/${this.voucherTypeSelect}`).then( resp=>{
-        this.series = resp.data.data;
-      })
-    },
-    loadCurrentNumber(){
-      let serieBackup = this.series
-      let serieFilter = serieBackup.filter(series =>
-        series.id == this.serieSelect
-      );
-      this.currentNumber = serieFilter[0].current_number + 1
-    },
+
     searchProducts(){
         
       let produtsBackup = this.products
@@ -365,24 +346,7 @@ export default {
       }
 
     },
-    searchProductSeries(i, j){
-      let produtSeriesBackup = this.productSeries[i]
-      let wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
-
-      if(wordFilter===''){
-        this.productSerieSearchFilter[i][j] = ''
-      }else{
-        this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(productSeries =>
-          (productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1) 
-        )
-        if (this.productSerieSearchFilter[i][j].length === 0) {
-          this.productSerieSearchFilter[i][j] = [{serie: 'No hay resultados'}]
-        }
-      }
-    
-    },
     priceOne(filSearch){
-      this.productSerieSearchFilter.push([])
 
       const product = {
         product_id : filSearch.id,
@@ -393,23 +357,13 @@ export default {
         description : filSearch.name,
         sale_price : filSearch.sale_price,
         quantity : 1,
-        series : []
       }
 
-      const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
-
-      this.saleData.detail.push(product)
+      this.quotationData.detail.push(product)
 
       this.productSearch = ''
-
-      this.getSeries(filSearch.id)
     },
     priceTwo(filSearch){
-      this.productSerieSearchFilter.push([])
 
       const product = {
         product_id : filSearch.id,
@@ -420,23 +374,14 @@ export default {
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_one,
         quantity : 1,
-        series : []
       }
 
-      const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
-
-      this.saleData.detail.push(product)
+      this.quotationData.detail.push(product)
 
       this.productSearch = ''
 
-      this.getSeries(filSearch.id)
     },
     priceThree(filSearch){
-      this.productSerieSearchFilter.push([])
 
       const product = {
         product_id : filSearch.id,
@@ -447,50 +392,38 @@ export default {
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_two,
         quantity : 1,
-        series : []
       }
 
-      const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
-
-      this.saleData.detail.push(product)
+      this.quotationData.detail.push(product)
 
       this.productSearch = ''
 
-      this.getSeries(filSearch.id)
-    },
-    selectSerieSearch(filSerieSearch, i, j){
-      this.saleData.detail[i].series[j].id = filSerieSearch.id
-      this.saleData.detail[i].series[j].serie = filSerieSearch.serie
-      this.productSerieSearchFilter[i][j] = ''
     },
     deleteItem(index){
-      this.saleData.detail.splice(index, 1);
-      this.productSeries.splice(index, 1);
-      this.productSerieSearchFilter.splice(index, 1);
+      this.quotationData.detail.splice(index, 1);
     },
-    addSeries(index){
-      const temp = []
-      for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
-        const series = {
-          id: '',
-          serie: ''
-        }
-        temp.push(series) 
-      }
-      this.saleData.detail[index].series = temp
-    },
-    getSeries(id){
-      BaseUrl.get(`api/sales/products/series/${id}`).then( resp=>{
-        this.productSeries.push(resp.data.data);
+    activateOrDesactivateGlobalDiscount() {
+      // recorrer el array detalle en busca de un descuento
+      let discount = 0
+      this.quotationData.detail.forEach( e => {
+        discount += (e.discount * 1)
       })
+
+      // Si descuento es mayor a cero entonces se desactiva el descuento global
+      // de lo contrario se activa el descuento global
+      this.activateGlobalDiscount = discount > 0 ? true : false
+
     },
-    createSale() {
-      this.saleData.voucher.serie_id = this.serieSelect
-      BaseUrl.post("/api/sales", this.saleData).then((response) => {
+    activateOrDesactivateDetailDiscount() {
+
+      // Si descuento es mayor a cero entonces se desactiva el descuento global
+      // de lo contrario se activa el descuento global
+      this.activateDetailDiscount = this.quotationData.quotation.discount > 0 ? true : false
+
+    },
+    createQuotation() {
+
+      BaseUrl.post("/api/quotations", this.quotationData).then((response) => {
         console.log(response);
       })
       .catch((error) => {

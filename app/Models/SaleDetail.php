@@ -13,6 +13,7 @@ class SaleDetail extends Model
         'price',
         'quantity',
         'unit_price',
+        'discount',
         'total_igv',
         'subtotal',
         'total',

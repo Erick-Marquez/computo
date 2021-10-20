@@ -37,6 +37,7 @@ Route::get('/', function () {
 });
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
+    Route::get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
     //Sale
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
@@ -67,20 +68,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 });
 
-// 'opening.cashbox'
-
 Route::get('/prueba', [WebController::class, 'prueba']);
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
 
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
 Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
-
-
-
-// //Modulo Ventas
-Route::middleware(['auth:sanctum', 'verified'])->resource('vouchers', VoucherController::class)->names('vouchers');
 
 
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
@@ -110,10 +102,7 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
 Route::middleware(['auth:sanctum', 'verified'])->resource('customers', CustomerController::class)->names('customers');
 Route::middleware(['auth:sanctum', 'verified'])->resource('providers', ProviderController::class)->names('providers');
 
-//Rutas en español
-//Route::middleware(['auth:sanctum', 'verified'])->get('usuarios/{user}/editar', [UserController::class, 'edit'])->name('users.edit');
 
 //Modulo Configuracion
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class)->names('users');
-// Route::middleware(['auth:sanctum', 'verified'])->resource('roles', RoleController::class)->names('roles');
 Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series')->parameters(['series' => 'serie']);

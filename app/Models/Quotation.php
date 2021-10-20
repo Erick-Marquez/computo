@@ -11,6 +11,7 @@ class Quotation extends Model
 
     protected $fillable = [
         'document_number',
+        'discount',
         'total',
         'observation',
         'customer_id',

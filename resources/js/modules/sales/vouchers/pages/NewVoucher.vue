@@ -193,6 +193,7 @@
           {{ exonerated = 0 }}
           {{ subtotal = 0 }}
           {{ total = 0 }}
+          {{ discount = 0 }}
         </div>
     
         <div class="col-12 table-responsive mt-4">
@@ -223,7 +224,7 @@
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-on:change="addSeries(index)" v-model="detail.quantity">
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount">
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount" v-on:change="activateOrDesactivateGlobalDiscount" :disabled = "activateDetailDiscount">
                 </td>
                 <td>
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.sale_price" disabled>
@@ -278,14 +279,13 @@
                   {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
                   {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
                   {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ discount +=  (detail.discount * 1) }}
                 </div>
-
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
@@ -294,7 +294,7 @@
             <div class="col-md">
               <div class="form-group">
                 <label for="">Descuento</label>
-                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.discount">
+                <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.discount" v-on:change="activateOrDesactivateDetailDiscount" :disabled = "activateGlobalDiscount">
               </div>
             </div>
             <div class="col-md">
@@ -341,9 +341,17 @@
                   <th>Subtotal:</th>
                   <td>S/. {{ subtotal }}</td>
                 </tr>
+                <tr v-show="saleData.voucher.discount > 0">
+                  <th>Descuento</th>
+                  <td>S/. {{ saleData.voucher.discount }}</td>
+                </tr>
+                <tr v-show="discount > 0">
+                  <th>Descuento</th>
+                  <td>S/. {{ discount }}</td>
+                </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>S/. {{ total }}</td>
+                  <td>S/. {{ total - saleData.voucher.discount }}</td>
                 </tr>
               </tbody>
             </table>
@@ -409,6 +417,9 @@ export default {
       productSerieSearchFilter: [],
       voucherTypes: {},
       series: {},
+      
+      activateGlobalDiscount: false,
+      activateDetailDiscount: false,
 
       identificationDocuments: {},
       products: {},
@@ -584,6 +595,27 @@ export default {
       this.productSeries.splice(index, 1);
       this.productSerieSearchFilter.splice(index, 1);
     },
+
+    activateOrDesactivateGlobalDiscount() {
+      // recorrer el array detalle en busca de un descuento
+      let discount = 0
+      this.saleData.detail.forEach( e => {
+        discount += (e.discount * 1)
+      })
+
+      // Si descuento es mayor a cero entonces se desactiva el descuento global
+      // de lo contrario se activa el descuento global
+      this.activateGlobalDiscount = discount > 0 ? true : false
+
+    },
+    activateOrDesactivateDetailDiscount() {
+
+      // Si descuento es mayor a cero entonces se desactiva el descuento global
+      // de lo contrario se activa el descuento global
+      this.activateDetailDiscount = this.saleData.voucher.discount > 0 ? true : false
+
+    },
+
     addSeries(index){
       const temp = []
       for (let i = 0; i < this.saleData.detail[index].quantity; i++) {

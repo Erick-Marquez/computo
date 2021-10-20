@@ -74,6 +74,7 @@ class VoucherController extends Controller
             'date_due' => $request->voucher['date_due'],
 
             'observation' => $request->voucher['observation'],
+            'discount' => $request->voucher['discount'],
             'received_money' => $request->voucher['received_money'],
             'change' => $request->voucher['change'],
 
@@ -99,9 +100,6 @@ class VoucherController extends Controller
             for ($j=0; $j < count($request->detail[$i]['series']) ; $j++) { 
                 array_push($productSeries, $request->detail[$i]['series'][$j]['serie']);
             }
-            
-
-            //$product = BranchProduct::find($request->branch_product_id[$i]);
 
             $total_igv = 0;
 
@@ -157,7 +155,7 @@ class VoucherController extends Controller
             'hash_cdr' => $sunat['response']['hash_cdr']
         ]);
 
-        return $sale;
+        return $sunat;
         
     }
 

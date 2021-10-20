@@ -16,8 +16,11 @@ class CreateQuotationsTable extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('document_number')->nullable();
+            $table->unsignedDecimal('discount', 12, 3)->nullable();
             $table->unsignedDecimal('total', 9,3)->nullable();
             $table->string('observation')->nullable();
+            
+            $table->boolean('have_warranty')->default(false);
             
             
             $table->foreignId('customer_id')

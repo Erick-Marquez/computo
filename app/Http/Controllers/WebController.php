@@ -120,9 +120,6 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        // return SunatService::facturar(1, 'invoice');
-
-        $branch = VoucherType::find(1);
-        return $branch->branches;
+        return SunatService::facturar(1, 'invoice');
     }
 }

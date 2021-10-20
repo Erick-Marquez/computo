@@ -15,20 +15,20 @@
             <img src="storage/logo.jpg" alt="este es el logo del negocio">
         </div>
         <div class="titular">
-            <h1>DEMO COMPUTO</h1>
-            <p class="titular__distrito">JR 28 DE JULIO 190 -</p>
-            <p class="titular__ciudad">Huánuco, Huánuco, Huánuco</p>
+            <h1>{{ $company->name }}</h1>
+            <p class="titular__distrito">{{ $company->address }}</p>
+            <p class="titular__ciudad"></p>
             <div class="titular__elemento">
                 {{-- <img src="img/phone-call.svg" alt="telefono"> --}}
-                <p class="telefono__numero"> Tel: 987654321</p>
+                <p class="telefono__numero"> Tel: {{ $company->phone }}</p>
             </div>
             <a href="#" class="correo titular__elemento">
                 {{-- <img src="img/email.svg" alt="correo"> --}}
-                <p class="correo__dir">computo@gmail.com</p>
+                <p class="correo__dir">{{ $company->email }}</p>
             </a>
         </div>
         <div class="ruc">
-            <p class="ruc__primero">R.U.C. 10758534427</p>
+            <p class="ruc__primero">R.U.C. {{ $company->ruc }}</p>
             <p class="ruc__segundo">COTIZACIÓN</p>
             <p class="ruc__numero">{{ str_pad($head->document_number, 8, '0', STR_PAD_LEFT) }}</p>
         </div>
@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>07-09-2021 / 00:00 AM</td>
+                    <td>{{ $head->created_at }}</td>
                     <td>EFECTIVO</td>
                     <td>Soles</td>
                     <td></td>
@@ -74,7 +74,7 @@
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->product->name }}</td>
+                        <td>{{ $detail->branchProduct->product->name  }}</td>
                         <td>S/ {{ $detail->price }}</td>
                         <td>UNIDADES</td>
                         <td>Exonerado</td>
@@ -82,7 +82,7 @@
                     </tr>
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6">SON TRESCIENTOS CON 00/100 SOLES</td>
+                    <td colspan="6">SON {{ \App\Services\NumberLetterService::convert($head->total, 'SOLES') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -98,10 +98,6 @@
                 <td>
                     <div class="compra__texto">
                         <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
-                        <div class="compra__hash">
-                            <p>Hash: </p>
-                            <p></p>
-                        </div>
                     </div>
                 </td>
                 <td>
@@ -109,19 +105,19 @@
                         <p>RESUMEN:</p>
                         <div class="resumen__elemento">
                             <p>Gravada:</p>
-                            <p class="gravada__precio">S/ 0.00</p>
+                            <p class="gravada__precio">S/ 0.000</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>Exonerado:</p>
-                            <p class="exonerado__precio">S/ 300.00</p>
+                            <p class="exonerado__precio">S/ 0.000</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>IGV (18.00%):</p>
-                            <p class="igv__precio">S/ 0.00</p>
+                            <p class="igv__precio">S/ 0.000</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>Descuento Total:</p>
-                            <p class="descuento__precio">S/ 0000000.00</p>
+                            <p class="descuento__precio">S/ {{ $head->discount }}</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>Total:</p>

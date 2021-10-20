@@ -17,6 +17,7 @@ class CreateQuotationDetailsTable extends Migration
             $table->id();
             $table->unsignedDecimal('price', 9,3)->nullable();
             $table->bigInteger('quantity')->nullable();
+            $table->unsignedDecimal('discount', 12, 3)->nullable();
             $table->unsignedDecimal('total', 9,3)->nullable();
 
             $table->foreignId('quotation_id')
@@ -24,10 +25,10 @@ class CreateQuotationDetailsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('product_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignId('branch_product_id')
+                ->constrained('branch_product')
+                ->onUpdate('cascade');
+
             $table->timestamps();
         });
     }
