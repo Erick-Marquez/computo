@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BranchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CashboxController;
@@ -60,11 +61,8 @@ Route::middleware([
     Route::post('/cashbox/{id}/expense', [CashboxController::class, 'expense'])->name('api.expenseCashbox');
 
 
-    
-
-    
-
-    
+    //------------------------Inventory----------------------
+    Route::get('branches', [BranchController::class, 'index'])->name('api.branches.index');
 
     //------------------------Settings-----------------------
     //Roles

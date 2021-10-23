@@ -38,67 +38,69 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-                  <th>Cliente</th>
-                  <th>Total</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="sale in sales" :key="sale.id">
-                  <td>{{ sale.date_issue }}</td>
-                  <td>{{ sale.serie.voucher_type.description }}</td>
-                  <td>{{ sale.document_number }}</td>
-                  <td>{{ sale.customer.name }}</td>
-                  <td>{{ sale.total }}</td>
-                  <td>
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-danger dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Acciones
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                        style=""
-                      >
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                        ><a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                        ><a
-                          class="dropdown-item"
-                          :href="'print/vouchers/A4/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo de documento</th>
+                    <th>Número de documento</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="sale in sales" :key="sale.id">
+                    <td>{{ sale.date_issue }}</td>
+                    <td>{{ sale.serie.voucher_type.description }}</td>
+                    <td>{{ sale.document_number }}</td>
+                    <td>{{ sale.customer.name }}</td>
+                    <td>{{ sale.total }}</td>
+                    <td>
+                      <div class="dropdown">
+                        <button
+                          class="btn btn-danger dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
                         >
-                        <a
-                          class="dropdown-item"
-                          :href="'print/vouchers/WARRANTY/' + sale.id"
-                          target="_blank"
-                          ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
+                          Acciones
+                        </button>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                          style=""
                         >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
+                          ><a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                          ><a
+                            class="dropdown-item"
+                            :href="'print/vouchers/A4/' + sale.id"
+                            target="_blank"
+                            ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            :href="'print/vouchers/WARRANTY/' + sale.id"
+                            target="_blank"
+                            ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
+                          >
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- /.card-body -->
         </div>

@@ -22862,15 +22862,15 @@ var routes = [
   }]
 }, {
   path: '/sucursales',
-  name: 'sucursales-index',
+  name: 'branches-index',
   component: function component() {
     return __webpack_require__.e(/*! import() | inventory   */ "inventory  ").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/index.vue */ "./resources/js/modules/inventory/branches/index.vue"));
   },
   children: [{
     path: '',
-    name: 'layout-sucursales',
+    name: 'branch-list',
     component: function component() {
-      return __webpack_require__.e(/*! import() | inventoryLayout   */ "inventoryLayout  ").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/pages/layout.vue */ "./resources/js/modules/inventory/branches/pages/layout.vue"));
+      return __webpack_require__.e(/*! import() | inventoryLayout   */ "inventoryLayout  ").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/pages/Branches.vue */ "./resources/js/modules/inventory/branches/pages/Branches.vue"));
     }
   }, {
     path: 'productos/:id',
@@ -22881,7 +22881,7 @@ var routes = [
   }, {
     path: '',
     redirect: {
-      name: 'layout-sucursales'
+      name: 'branch-list'
     }
   }]
 }, {

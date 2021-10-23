@@ -1,23 +1,24 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Cotizaciones</h1>
+      <h1>Sucursales</h1>
     </div>
   </div>
 
   <div class="container-fluid">
+
     <router-link
       class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-quotation' }"
+      :to="{ name: 'new-voucher' }"
     >
       <i class="fas fa-plus"></i>
-      Nueva Cotización
+      Nueva Sucursal
     </router-link>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de Cotizaciones</h3>
+            <h3 class="card-title">Lista de Sucursales</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -42,21 +43,19 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>Usuario</th>
-                    <th>Fecha</th>
-                    <th>Número de cotización</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
+                    <th>ID</th>
+                    <th>Descripción</th>
+                    <th>Dirección</th>
+                    <th>Telefono</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="quotation in quotations" :key="quotation.id">
-                    <td>{{ quotation.user.name }}</td>
-                    <td>{{ quotation.updated_at }}</td>
-                    <td>{{ quotation.document_number }}</td>
-                    <td>{{ quotation.customer.name }}</td>
-                    <td>{{ quotation.total }}</td>
+                  <tr v-for="branch in branches" :key="branch.id">
+                    <td>{{ branch.id }}</td>
+                    <td>{{ branch.description }}</td>
+                    <td>{{ branch.direction }}</td>
+                    <td>{{ branch.phone }}</td>
                     <td>
                       <div class="dropdown">
                         <button
@@ -77,16 +76,23 @@
                           <a
                             class="dropdown-item"
                             href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                          ><a
-                            class="dropdown-item"
-                            href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                          ><a
+                          >
+                          <router-link class="dropdown-item" :to="{ name:'show-product' ,params:{id:branch.id}}">
+                            <i class="col-1 mr-3 fas fa-edit fas fa-plus"></i>
+                            Productos
+                          </router-link>
+                          <a
                             class="dropdown-item"
-                            :href="'print/quotations/' + quotation.id"
+                            :href="'print/vouchers/A4/' + branch.id"
                             target="_blank"
                             ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                          >
+                          <a
+                            class="dropdown-item"
+                            :href="'print/vouchers/WARRANTY/' + branch.id"
+                            target="_blank"
+                            ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
                           >
                         </div>
                       </div>
@@ -109,14 +115,14 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   async created(){
-    await BaseUrl.get(`api/quotations`).then( resp=>{
+    await BaseUrl.get(`api/branches`).then( resp=>{
       console.log(resp.data)
-      this.quotations=resp.data.data
+      this.branches=resp.data.data
     })
   },
   data(){
     return{
-      quotations:{}
+      branches:{}
     }
   },
   methods:{

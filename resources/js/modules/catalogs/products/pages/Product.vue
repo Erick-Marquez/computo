@@ -38,56 +38,58 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Codigo</th>
-                  <th>Nombre</th>
-                  <th>Marca</th>
-                  <th>Price</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="product in products" :key="product.id">
-                  <td>{{ product.id }}</td>
-                  <td>{{ product.cod }}</td>
-                  <td>{{ product.name }}</td>
-                  <td>{{ product.description }}</td>
-                  <td>{{ product.referential_sale_price }}</td>
-                  <td>
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-danger dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Acciones
-                      </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                        style=""
-                      >
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                        ><a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Price</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="product in products" :key="product.id">
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.cod }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.referential_sale_price }}</td>
+                    <td>
+                      <div class="dropdown">
+                        <button
+                          class="btn btn-danger dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
                         >
+                          Acciones
+                        </button>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                          style=""
+                        >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
+                          ><a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                          >
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- /.card-body -->
         </div>

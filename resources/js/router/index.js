@@ -84,13 +84,13 @@ const routes = [
 
     {
         path: '/sucursales',
-        name: 'sucursales-index',
+        name: 'branches-index',
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/inventory/branches/index.vue'),
         children: [
             {
                 path: '',
-                name: 'layout-sucursales',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/inventory/branches/pages/layout.vue'),
+                name: 'branch-list',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/inventory/branches/pages/Branches.vue'),
             },
             {
                 path: 'productos/:id',
@@ -99,7 +99,7 @@ const routes = [
             },
             {
                 path: '',
-                redirect: { name: 'layout-sucursales' }
+                redirect: { name: 'branch-list' }
             }
         ]
     },

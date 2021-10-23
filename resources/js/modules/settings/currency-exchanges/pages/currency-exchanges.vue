@@ -57,32 +57,34 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Tipo de cambio</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="currencyExchange in currencyExchanges" :key="currencyExchange.id">
-                  <td>{{ currencyExchange.date }}</td>
-                  <td>{{ currencyExchange.change }}</td>
-                  <td>
-                    <div class="dropdown">
-                      <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Acciones
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-edit', currencyExchange)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
-                        <a class="dropdown-item" href="#" @click="deleteCurrencyExchange(currencyExchange.id)"><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a>
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo de cambio</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="currencyExchange in currencyExchanges" :key="currencyExchange.id">
+                    <td>{{ currencyExchange.date }}</td>
+                    <td>{{ currencyExchange.change }}</td>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Acciones
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-edit', currencyExchange)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
+                          <a class="dropdown-item" href="#" @click="deleteCurrencyExchange(currencyExchange.id)"><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- /.card-body -->
         </div>
