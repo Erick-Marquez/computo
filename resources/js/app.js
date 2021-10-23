@@ -19,6 +19,9 @@ import indexVoucher from './modules/sales/vouchers/index.vue';
 import indexQuotation from './modules/sales/quotations/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
+/* Catalogs */
+import indexProduct from './modules/catalogs/products/index.vue';
+
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
 
 import indexDashboard from './modules/dashboard/dashboard/index.vue';
@@ -33,6 +36,9 @@ const app = createApp({});
 app.component('index-vouchers', indexVoucher);
 app.component('index-quotations', indexQuotation);
 app.component('index-warranties', indexWarranty);
+
+/* Catalogs */
+app.component('index-products', indexProduct);
 
 app.component('index-kardex', indexKardex);
 app.component('index-modification-stock', indexModificactionStock);

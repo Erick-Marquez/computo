@@ -52,12 +52,9 @@ export default {
         async nuevosDatos(){
             await BaseUrl.get(`/branches`).then(response => {
                 this.datos=response.data.data
-                console.log(response)
             });
-            console.log('nuevos datos')
         },
         deleteDate(getId){
-            console.log(getId)
             Swal.fire({
                 title: '¿Estas seguro?',
                 text: "No se podrá revertir",

@@ -279,11 +279,11 @@ return [
                     'route'  => 'web.ventas',
                     // 'can'    => 'vouchers.index',
                 ],
-                [
-                    'text' => 'Anticipo de Venta',
-                    'icon' => 'fas fa-fw',
-                    'url'  => '#',
-                ],
+                // [
+                //     'text' => 'Anticipo de Venta',
+                //     'icon' => 'fas fa-fw',
+                //     'url'  => '#',
+                // ],
                 [
                     'text' => 'Comunicaciones de Baja',
                     'icon' => 'fas fa-fw',
@@ -344,29 +344,30 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.families-lines-brands',
                 ],
-                [
-                    'text' => 'Familias',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'families.index',
-                    'can'    => 'families.index',
-                ],
-                [
-                    'text' => 'Lineas',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'lines.index',
-                    'can'    => 'lines.index',
-                ],
-                [
-                    'text' => 'Marcas',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'brands.index',
-                    'can'    => 'brands.index',
-                ],
+                // [
+                //     'text' => 'Familias',
+                //     'icon' => 'fas fa-fw ',
+                //     'route'  => 'families.index',
+                //     'can'    => 'families.index',
+                // ],
+                // [
+                //     'text' => 'Lineas',
+                //     'icon' => 'fas fa-fw ',
+                //     'route'  => 'lines.index',
+                //     'can'    => 'lines.index',
+                // ],
+                // [
+                //     'text' => 'Marcas',
+                //     'icon' => 'fas fa-fw ',
+                //     'route'  => 'brands.index',
+                //     'can'    => 'brands.index',
+                // ],
                 [
                     'text' => 'Productos',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'products.index',
+                    'route'  => 'web.products',
                     'can'    => 'products.index',
+                    'active' => ['productos', 'nuevo-producto'] 
                 ],
                 [
                     'text' => 'Series',

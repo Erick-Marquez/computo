@@ -14,6 +14,9 @@ class Quotation extends Model
         'discount',
         'total',
         'observation',
+
+        'have_warranty',
+        
         'customer_id',
         'user_id'
     ];

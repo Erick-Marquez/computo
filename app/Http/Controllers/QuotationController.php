@@ -41,6 +41,7 @@ class QuotationController extends Controller
             'observation' => $request->quotation['observation'],
             'document_number' => $documentNumber,
             'discount' => $request->quotation['discount'],
+            'have_warranty' => $request->quotation['warranty'],
             'customer_id' => $request->customer['customer_id'],
             'user_id' => auth()->user()->id
         ]);
@@ -123,25 +124,20 @@ class QuotationController extends Controller
         
         $details = $head->quotationDetails;
 
-        $qr = base64_encode(QrCode::format('png')->size(200)->generate('Hola'));
+        $text = join('|', [
+            $company->ruc,
+            'Cotizacion N°' . $head->document_number,
+            $head->total,
+            $head->customer->identificationDocument->cod,
+            $head->customer->document,
+        ]);
+
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
     
 
         $pdf = PDF::loadView('templates.pdf.quotation-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
 
-        
 
-        // $text = join('|', [
-        //     $this->company->number,
-        //     $this->document->document_type_id,
-        //     $this->document->series,
-        //     $this->document->number,
-        //     $this->document->total_igv,
-        //     $this->document->total,
-        //     $this->document->date_of_issue->format('Y-m-d'),
-        //     $customer->identity_document_type_id,
-        //     $customer->number,
-        //     $this->document->hash
-        // ]);
 
         // TICKET
         //setPaper(array(0,0,220,700)

@@ -113,7 +113,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       } else {
         this.elementoFiltradoSearch = clientesRespaldo.filter(function (clientes) {
           return clientes.name.toLowerCase().indexOf(palabraFiltrar) !== -1;
-        });
+        }).slice(0, 10);
       }
     },
     seleccionar: function seleccionar(e) {
@@ -125,7 +125,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (_this3.cod(_this3.seleccionado, element.description)) {
           _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/branches/products/".concat(element.id)).then(function (resp) {
             _this3.products = resp.data.data;
-            _this3.selectSearch = resp.data.data.slice(0, 10);
+            _this3.selectSearch = resp.data.data;
           });
         }
       });

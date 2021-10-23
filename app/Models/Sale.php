@@ -25,6 +25,8 @@ class Sale extends Model
         'received_money',
         'change',
 
+        'have_warranty',
+
         'send_sunat',
         'response_sunat',
         'description_sunat_cdr',

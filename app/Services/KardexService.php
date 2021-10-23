@@ -15,6 +15,7 @@ class KardexService
 
         $productSeries = [];
 
+        // Convertir en array
         for ($i=0; $i < count($data['series']) ; $i++) { 
             array_push($productSeries, $data['series'][$i]['serie']);
         }

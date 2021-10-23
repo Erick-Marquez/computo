@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\IdentificationDocumentResource;
+use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SaleResource;
 use App\Http\Resources\SerieResource;
 use App\Http\Resources\VoucherTypeResource;
@@ -13,6 +14,7 @@ use App\Models\BranchProductSerie;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Serie;
@@ -270,5 +272,11 @@ class VoucherController extends Controller
     {
         $branchProductSeries = BranchProductSerie::where('branch_product_id', $id)->where('active', true)->where('sold', false)->get();
         return BranchProductSerieResource::collection($branchProductSeries);
+    }
+
+    public function quotation($id)  
+    {
+        $quotation = Quotation::where('document_number', $id)->with('quotationDetails.branchProduct.product')->get();
+        return QuotationResource::collection($quotation);
     }
 }

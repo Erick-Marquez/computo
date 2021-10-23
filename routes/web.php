@@ -47,17 +47,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     
     Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
 
+    //CashBoxes
+    Route::get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
 
+    //Catalogs
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
+    Route::get('/productos', [WebController::class, 'products'])->name('web.products');
+    Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
 
+    //Inventory
     Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
     Route::get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
 
     Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
     Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
-
-    Route::get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
-
 
     Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
     Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');

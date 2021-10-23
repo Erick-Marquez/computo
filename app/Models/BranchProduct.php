@@ -12,9 +12,13 @@ class BranchProduct extends Model
     protected $fillable = [
         //'cod',
         'stock',
-        'price',
+        'referential_purchase_price',
+        'sale_price',
+        'referential_sale_price_one',
+        'referential_sale_price_two',
         'manager_series',
         'active',
+        'igv_type_id',
         'branch_id',
         'product_id',
     ];
@@ -31,8 +35,14 @@ class BranchProduct extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function igvType() 
+    {
+        return $this->belongsTo(IgvType::class);
+    }
+
     public function branchProductSeries()
     {
         return $this->hasMany(BranchProductSerie::class);
     }
+
 }

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CashboxController;
 use App\Http\Controllers\CurrencyExchangeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VoucherController;
@@ -34,10 +35,22 @@ Route::middleware([
     Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
     Route::get('/sales/products', [VoucherController::class, 'products'])->name('api.sales.products');
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
+    Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
+    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
+    Route::get('/sales/quotation/{id}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
+
+    //Products
+    Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
+    Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
+    Route::get('products/branches', [ProductController::class, 'branches'])->name('api.products.branches');
+    Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
+    Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
+    Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
+
 
     Route::apiResource('cajas', CashboxController::class)->names('api.cajas');
     Route::post('/cashbox/open', [CashboxController::class, 'openCashbox'])->name('api.opencashbox');
@@ -47,8 +60,7 @@ Route::middleware([
     Route::post('/cashbox/{id}/expense', [CashboxController::class, 'expense'])->name('api.expenseCashbox');
 
 
-    Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
-    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
+    
 
     
 
@@ -59,5 +71,6 @@ Route::middleware([
     Route::get('/roles', [RoleController::class, 'index'])->name('api.role.index');
 
     //Currency Exchanges
-    Route::get('/currencyexchanges', [CurrencyExchangeController::class, 'index'])->name('api.currencyexchanges.index');
+    Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
+    Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
 });

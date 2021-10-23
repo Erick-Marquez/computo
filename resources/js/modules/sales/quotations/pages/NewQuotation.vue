@@ -4,6 +4,20 @@
   </div>
   <div class="card">
     <div class="card-body">
+      <div class="row">
+        <!-- TIPO DE COMPROBANTE -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-calendar-times"></i>
+              Valido Hasta
+            </label>
+            <input type="date" name="" id="">
+          </div>
+        </div>
+        
+      </div>
+
       <h4>Documento de identidad</h4>
       <div class="row">
         <!-- TIPO DOCUMENTO -->
@@ -176,7 +190,7 @@
                   {{ detail.description }} - {{ detail.cod }}
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.quantity">
+                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.quantity" @keypress="onlyNumber($event)">
                 </td>
                 <td>
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount" v-on:change="activateOrDesactivateGlobalDiscount" :disabled = "activateDetailDiscount">
@@ -201,7 +215,7 @@
                   {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
                   {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
                   {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
-                  {{ discount += (detail.discount * 1) }}
+                  {{ discount += parseFloat(detail.discount) }}
                 </div>
 
               </tr>
@@ -315,7 +329,7 @@ export default {
         },
         quotation: {
           discount: 0,
-          observation: 'Hola',
+          observation: '',
           warranty: true
         },
         detail: []
@@ -424,12 +438,25 @@ export default {
     createQuotation() {
 
       BaseUrl.post("/api/quotations", this.quotationData).then((response) => {
-        console.log(response);
+        console.log(response)
+        this.$router.push({ name: 'quotation-list' })
       })
       .catch((error) => {
         console.log(error);
       });
     },
+
+    onlyNumber(evt){ // peace of code from internet xd
+      
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      console.log(charCode)
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    }
   }
 };
 </script>

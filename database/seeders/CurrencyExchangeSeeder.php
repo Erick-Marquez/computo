@@ -16,7 +16,7 @@ class CurrencyExchangeSeeder extends Seeder
     public function run()
     {
         DB::table('currency_exchanges')->insert([
-            ['date' => Carbon::now()->toDateTimeString(), 'change' => 1]
+            ['date' => Carbon::now()->toDateTimeString(), 'change' => 3.97]
         ]);
     }
 }

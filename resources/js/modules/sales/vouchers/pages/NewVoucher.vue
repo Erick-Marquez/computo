@@ -1,6 +1,20 @@
 <template>
   <div class="content-header">
-    <h3>Registrar Nueva Venta</h3>
+    <div class="row mb-2">
+      <div class="col-sm-8">
+        <h3>Registrar Nueva Venta</h3>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <input type="text" placeholder="n° cotización" class="form-control" v-model="numberQuotation">
+          <div class="input-group-append">
+            <button class="btn btn-danger" @click="getQuotation">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="card">
     <div class="card-body">
@@ -38,7 +52,7 @@
               <i class="text-danger fas fa-hashtag"></i>
               N° Comprobante</label
             >
-            <input v-model="currentNumber" type="text" class="form-control rounded-pill" />
+            <input v-model="currentNumber" type="text" class="form-control rounded-pill" disabled>
           </div>
         </div>
       </div>
@@ -279,7 +293,7 @@
                   {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
                   {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
                   {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
-                  {{ discount +=  (detail.discount * 1) }}
+                  {{ discount +=  parseFloat(detail.discount) }}
                 </div>
               </tr>
             </tbody>
@@ -390,6 +404,7 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import QuotationVue from '../../quotations/pages/Quotation.vue';
 export default {
   components: { BaseUrl },
   async created() {
@@ -408,7 +423,9 @@ export default {
   },
   data() {
     return {
-      voucherTypeSelect: 1,
+      numberQuotation: null,
+
+      voucherTypeSelect: null,
       serieSelect: null,
       currentNumber: "Selecciona una serie",
 
@@ -444,9 +461,9 @@ export default {
           date_issue: '2021-10-17', //Año - mes - dia
           date_due: '2021-10-18',
           discount: 0,
-          observation: 'Hola',
-          received_money: 20,
-          change: 5,
+          observation: '',
+          received_money: 0,
+          change: 0,
           warranty: true
         },
         detail: []
@@ -484,7 +501,7 @@ export default {
       }else{
         this.productSearchFilter = produtsBackup.filter(products =>
           (products.name.toLowerCase().indexOf(wordFilter) !== -1) 
-        );
+        ).slice(0,10);
       }
 
     },
@@ -641,6 +658,51 @@ export default {
         console.log(error);
       });
     },
+    getQuotation(){
+
+      this.saleData.detail = []
+
+      BaseUrl.get(`api/sales/quotation/${this.numberQuotation}`).then( resp=>{
+
+        let quotation = resp.data.data[0]
+        
+        this.saleData.voucher.discount = quotation.discount
+        this.saleData.voucher.warranty = Boolean(quotation.have_warranty)
+        this.saleData.voucher.observation = quotation.observation
+
+        quotation.quotation_details.forEach((e, index) => {
+
+          this.productSerieSearchFilter.push([])
+
+          const product = {
+            product_id : e.id,
+            cod : e.branch_product.product.cod,
+            affect_icbper : false,
+            igv_type_id : 8,
+            discount : e.discount,
+            description : e.branch_product.product.name,
+            sale_price : e.price,
+            quantity : e.quantity,
+            series : []
+          }
+
+          this.saleData.detail.push(product)
+
+          this.getSeries(e.id)
+
+          //Añadir series
+          this.addSeries(index)
+
+          //Activar descuento
+          this.activateOrDesactivateGlobalDiscount()
+          this.activateOrDesactivateDetailDiscount()
+        });
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
   }
 };
 </script>

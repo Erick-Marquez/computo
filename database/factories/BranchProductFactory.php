@@ -27,6 +27,9 @@ class BranchProductFactory extends Factory
         return [
             'stock' => $this->faker->numerify('##'),
             'igv_type_id' => 8,
+            'sale_price' => $this->faker->randomFloat(3, 20, 500),
+            'referential_sale_price_one' => $this->faker->randomFloat(3, 20, 500),
+            'referential_sale_price_two' => $this->faker->randomFloat(3, 20, 500),
             'product_id' => Product::all()->random()->id,
             'branch_id' => Branch::all()->random()->id
         ];

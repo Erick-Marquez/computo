@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\BranchProduct;
+use App\Models\CurrencyExchange;
 use App\Models\VoucherType;
 use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class WebController extends Controller
@@ -28,15 +30,23 @@ class WebController extends Controller
         return view('sales.warranties.index');
     }
 
+    //Catalogs
     public function familiesLinesBrands()
     {
         return view('catalogs.families-lines-brands.index');
+    }
+
+    public function products()
+    {
+        return view('catalogs.products.index');
     }
 
     public function productSeries()
     {
         return view('catalogs.product-series.index');
     }
+
+
 
     public function branches()
     {
@@ -120,6 +130,17 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        return SunatService::facturar(1, 'invoice');
+        // return SunatService::facturar(1, 'invoice');
+        $currencyExchange = CurrencyExchange::latest()->first()->change;
+        $branchProducts = BranchProduct::select(
+            DB::raw(
+                'id, 
+                ROUND(sale_price * ' .$currencyExchange.',3) as sale_price_dollar,
+                ROUND(referential_sale_price_one * ' .$currencyExchange.',3) as sale_price_dollar_one,
+                ROUND(referential_sale_price_two * ' .$currencyExchange.',3) as sale_price_dollar_two'
+                )
+        )->get();
+
+        return $branchProducts;
     }
 }

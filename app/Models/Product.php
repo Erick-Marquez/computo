@@ -13,14 +13,24 @@ class Product extends Model
         'cod',
         'name',
         'description',
-        'price',
+        'referential_purchase_price',
+        'referential_sale_price',
+        'referential_sale_price_one',
+        'referential_sale_price_two',
+        'manager_series',
         'active',
+        'igv_type_id',
         'brand_line_id'
     ];
 
     public function brandLine()
     {
         return $this->belongsTo(BrandLine::class);
+    }
+
+    public function igvType()
+    {
+        return $this->belongsTo(IgvType::class);
     }
 
     public function branches()

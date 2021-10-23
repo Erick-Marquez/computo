@@ -134,7 +134,7 @@ export default {
                 }else{
                     this.elementoFiltradoSearch = clientesRespaldo.filter(clientes =>
                     (clientes.name.toLowerCase().indexOf(palabraFiltrar) !== -1) 
-                );
+                ).slice(0,10);
             }
         },
         seleccionar(e){
@@ -146,7 +146,7 @@ export default {
                    BaseUrl.get(`/branches/products/${element.id}`).then( resp=>{
                        
                         this.products=resp.data.data
-                        this.selectSearch= resp.data.data.slice(0,10)
+                        this.selectSearch= resp.data.data
                         
                     })
                 } 

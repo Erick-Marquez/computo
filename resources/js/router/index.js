@@ -59,6 +59,29 @@ const routes = [
         ]
     },
 
+    /* Catalogs */
+    {
+        path: '/productos',
+        name: 'product-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/catalogs/products/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'product-list',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/catalogs/products/pages/Product.vue'),
+            },
+            {
+                path: '/nuevo-producto',
+                name: 'new-product',
+                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/catalogs/products/pages/NewProduct.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'product-list' }
+            }
+        ]
+    },
+
     {
         path: '/sucursales',
         name: 'sucursales-index',
