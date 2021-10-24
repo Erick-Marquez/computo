@@ -30,6 +30,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cashbox_id',
+        'branch_id'
     ];
 
     /**
@@ -73,7 +75,7 @@ class User extends Authenticatable
     }
 
     public function adminlte_image(){
-        
-        return auth()->user()->profile_photo_url; 
+
+        return auth()->user()->profile_photo_url;
     }
 }

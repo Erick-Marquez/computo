@@ -315,6 +315,7 @@ return [
                     'text' => 'Aperturas y Cierres',
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.cajas',
+                    'active' => ['cajas/detalle/*']
                 ],
                 [
                     'text' => 'Egresos e Ingresos',
@@ -392,7 +393,7 @@ return [
                 [
                     'text' => 'Registros de Compras',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route' => 'web.compras'
                 ],
             ],
         ],
@@ -478,14 +479,12 @@ return [
                 [
                     'text' => 'Clientes',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'customers.index',
-                    'can'    => 'customers.index',
+                    'route'  => 'web.clientes',
                 ],
                 [
                     'text' => 'Proveedores',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'providers.index',
-                    'can'    => 'providers.index',
+                    'route'  => 'web.proveedores',
                 ],
             ],
         ],

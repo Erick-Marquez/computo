@@ -8,6 +8,7 @@ use App\Models\Cashbox;
 use App\Services\CashboxService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CashboxController extends Controller
 {
@@ -57,7 +58,6 @@ class CashboxController extends Controller
      */
     public function show(Cashbox $cashbox)
     {
-        //
     }
 
     /**
@@ -69,7 +69,15 @@ class CashboxController extends Controller
      */
     public function update(Request $request, Cashbox $cashbox)
     {
-        //
+        $request->validate([
+            'description' => 'string|min:5|required'
+        ]);
+
+        $cashbox->update($request->all());
+
+        return response()->json([
+            'message' => 'Actualización completada'
+        ]);
     }
 
     /**
@@ -102,12 +110,9 @@ class CashboxController extends Controller
     public function closeCashbox($id, Request $request)
     {
         $request->validate([
-            'closing_date' => 'required|date',
-            'closing_amount' => 'required|numeric',
-            'state' => 'required|boolean',
-            'cashbox_id' => 'required|exists:cashboxes,id',
-            'opening_date' => 'prohibited',
-            'opening_amount' => 'prohibited',
+            'id' => 'exists:open_closed_cashboxes,id',
+            'cashbox_id' => 'exists:cashboxes,id',
+            'user_id' => 'exists:users,id'
         ]);
 
         return $this->cashboxService->closeCashbox($id, $request->all());
@@ -118,22 +123,15 @@ class CashboxController extends Controller
         return $this->cashboxService->cashboxDetail($id);
     }
 
-    public function income($id, Request $request)
+    public function movement($id, Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:0',
+            'type' => ['required', Rule::in(['INGRESO', 'EGRESO'])],
+            'amount' => 'required|min:0|numeric',
+            'observation' => 'required|min:10|string',
         ]);
 
-        return $this->cashboxService->income($id, $request->all());
-    }
-
-    public function expense($id, Request $request)
-    {
-        $request->validate([
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        return $this->cashboxService->expense($id, $request->all());
+        return $this->cashboxService->movement($id, $request->all());
     }
 
 }

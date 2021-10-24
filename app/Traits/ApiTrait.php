@@ -13,7 +13,7 @@ trait ApiTrait{
         if (empty($this->allowIncluded) || empty(request('included'))) {
             return;
         }
-        
+
         $relations = explode(',', request('included'));
 
         $allowIncluded = collect($this->allowIncluded);

@@ -9,6 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseIncomeController;
+use App\Http\Controllers\IdentificationDocumentController;
+use App\Http\Controllers\ProviderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,13 +57,29 @@ Route::middleware([
     Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
 
 
-    Route::apiResource('cajas', CashboxController::class)->names('api.cajas');
+    Route::apiResource('cajas', CashboxController::class)->parameters([
+        'cajas' => 'cashbox'
+    ])->names('api.cajas');
+
     Route::post('/cashbox/open', [CashboxController::class, 'openCashbox'])->name('api.opencashbox');
     Route::patch('/cashbox/{id}/close', [CashboxController::class, 'closeCashbox'])->name('api.closecashbox');
     Route::get('/cashbox/detail/{id}', [CashboxController::class, 'cashboxDetail'])->name('api.cashboxdetail');
-    Route::post('/cashbox/{id}/income', [CashboxController::class, 'income'])->name('api.incomeCashbox');
-    Route::post('/cashbox/{id}/expense', [CashboxController::class, 'expense'])->name('api.expenseCashbox');
+    Route::post('/cashbox/{id}/movement', [CashboxController::class, 'movement'])->name('api.movementCashbox');
 
+    Route::apiResource('egresos-ingresos', ExpenseIncomeController::class)->parameters([
+        'egresos-ingresos' => 'expenseIncome'
+    ])->names('api.egresos-ingresos');
+
+    Route::apiResource('tipos-documentos', IdentificationDocumentController::class)->names('api.tipos-documentos');
+    Route::get('/data-document/{cod}/{number}', [IdentificationDocumentController::class, 'getDataApi'])->name('api.data-document');
+
+    Route::apiResource('clientes', CustomerController::class)->parameters([
+        'clientes' => 'customer'
+    ])->names('api.clientes');
+
+    Route::apiResource('proveedores', ProviderController::class)->parameters([
+        'proveedores' => 'provider'
+    ])->names('api.proveedores');
 
     //------------------------Inventory----------------------
     Route::get('branches', [BranchController::class, 'index'])->name('api.branches.index');

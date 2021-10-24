@@ -20,11 +20,8 @@ class IsCashboxOpening
 
         if ( is_null($cashbox) ) {
 
-            // return response()->json([
-            //     'message' => 'Usted no aperturo ninguna caja'
-            // ]);
+            return redirect()->route('web.cajas')->with('status', 'Tiene que aperturar una caja primero');           ;
 
-            return redirect()->back()->with('status', 'Tiene que aperturar una caja primero');           ;
         }
 
         return $next($request);

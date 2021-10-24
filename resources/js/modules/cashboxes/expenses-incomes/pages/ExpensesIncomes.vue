@@ -1,13 +1,168 @@
 <template>
-  HOLA TODO BIEN
+  <!-- BOTON PARA NUEVO MOVIMIENTO -->
+  <button
+    class="btn btn-dark btn-block btn-lg mb-4"
+    data-toggle="modal"
+    data-target="#new-movement"
+  >
+    Nuevo movimiento
+  </button>
+
+  <form @submit.prevent="createMovement()">
+    <NewMovementVue :movement="movement" :errors="errors" />
+  </form>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Responsive Hover Table</h3>
+
+      <div class="card-tools">
+        <div class="input-group input-group-sm" style="width: 150px">
+          <input
+            type="text"
+            name="table_search"
+            class="form-control float-right"
+            placeholder="Search"
+          />
+
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-default">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0">
+      <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Monto</th>
+            <th>Tipo</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="movement in movements" :key="movement.id">
+            <td>{{ movement.date }}</td>
+            <td>{{ movement.user }}</td>
+            <td>{{ movement.amount }}</td>
+            <td>{{ movement.type }}</td>
+            <td>
+              {{ movement.observation }}
+            </td>
+            <td>
+              <div class="dropdown">
+                <button
+                  class="btn btn-danger dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Acciones
+                </button>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                  style=""
+                >
+                  <a class="dropdown-item" href="#"
+                    ><i class="col-1 mr-3 fas fa-edit"></i>
+                    Editar
+                  </a>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    @click="deleteMovement(movement.id)"
+                  >
+                    <i class="col-1 mr-3 fas fa-trash"></i>
+                    Eliminar
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
 </template>
 
 <script>
-export default {
+import BaseUrl from "../../../../api/BaseUrl";
+import NewMovementVue from "../../components/NewMovement.vue";
 
-}
+export default {
+  components: { BaseUrl, NewMovementVue },
+  data() {
+    return {
+      movement: {
+        type: "EGRESO",
+      },
+      movements: [],
+      errors: {},
+    };
+  },
+  created() {
+    this.showMovements();
+  },
+  methods: {
+    async showMovements() {
+      await BaseUrl.get("api/egresos-ingresos")
+        .then((response) => {
+          this.movements = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    },
+    async createMovement() {
+      await BaseUrl.post("/api/egresos-ingresos", this.movement)
+        .then((response) => {
+          console.log(response.data);
+          this.showMovements();
+          this.errors = {};
+          this.movement = {type: "EGRESO"};
+
+          $('#new-movement').modal('hide');
+        })
+        .catch((error) => {
+          console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
+        });
+    },
+    async deleteMovement(id) {
+      Swal.fire({
+        title: "Estas seguro que desea eliminar este movimiento?",
+        text: "Esta accion no puede ser revertida!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#343a40",
+        cancelButtonColor: "#ee1919",
+        confirmButtonText: "Si, Borralo!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          BaseUrl.delete(`/api/egresos-ingresos/` + id)
+            .then((response) => {
+              console.log(response.data);
+              Swal.fire("Deleted!", "Su movimiento fue eliminado.", "success");
+              this.showMovements();
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+            });
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>

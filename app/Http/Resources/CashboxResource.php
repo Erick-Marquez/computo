@@ -18,7 +18,7 @@ class CashboxResource extends JsonResource
             'id' => $this->id,
             'description' => $this->description,
             'state' => $this->state,
-            'balance' => $this->balance()
+            'balance' => $this->balance($this->id)
         ];
     }
 }

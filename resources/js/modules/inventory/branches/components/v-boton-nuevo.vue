@@ -15,20 +15,27 @@
                    </div>
                    <div class="form__text">
                         <label for="cod">Descripción:</label>
-                        <input type="text"  id="cod" v-model="crearUsuario.description" 
+                        <input type="text"  id="cod" v-model="crearUsuario.description"
                             @focus="focus1($event)" @blur="blur1($event)">
                    </div>
                 </div>
-                
+
                 <div class="form__desc form__element">
+<<<<<<< HEAD
                     <div class="i">
                         <i class="fas fa-phone-alt"></i>
                     </div>
                     <div class="form__text">
                         <label for="desc">Telefono:</label>
-                        <input type="text"  id="desc" required 
+                        <input type="text"  id="desc" required
                         v-model="crearUsuario.direction"  @focus="focus1($event)" @blur="blur1($event)">
                     </div>
+=======
+                    <label for="desc">Telefono:</label>
+                    <!-- <input type="text" placeholder="Descripción" id="desc" required v-model="crearUsuario.telephone"> -->
+                    <input type="text" placeholder="Descripción" id="desc" required v-model="crearUsuario.address">
+
+>>>>>>> paloma
                 </div>
                 <div class="form__element">
                     <div class="i">
@@ -36,7 +43,7 @@
                     </div>
                     <div class="form__text">
                         <label for="adrres">Dirección:</label>
-                        <input type="text" id="adrres" required 
+                        <input type="text" id="adrres" required
                         v-model="crearUsuario.phone"  @focus="focus1($event)" @blur="blur1($event)">
                     </div>
                 </div>
@@ -46,16 +53,16 @@
                     </div>
                     <div class="form__text">
                         <label for="ubigeo">Ubigeo:</label>
-                        <input type="text"  id="ubigeo" required 
+                        <input type="text"  id="ubigeo" required
                         v-model="crearUsuario.ubigeo"  @focus="focus1($event)" @blur="blur1($event)">
                     </div>
                 </div>
                  <div class="form__element" @click.prevent="$emit('recargar')">
-                    <input type="submit" value="Guardar" class="form__guardar" 
+                    <input type="submit" value="Guardar" class="form__guardar"
                          @click.prevent="crearFamilia">
                 </div>
             </div>
-           
+
         </form>
         <button class="modal__cerrar" @click="showModal">
 
@@ -90,6 +97,7 @@ export default {
         }
     },
     methods:{
+<<<<<<< HEAD
         focus1(e){
             let label = e.target.previousElementSibling
             let img =label.parentElement.previousElementSibling
@@ -107,11 +115,14 @@ export default {
                 label.classList.remove('label--top')
                 img.classList.remove('i--rojo')
             }
-            
+
             padre.classList.remove('ancho')
         },
+=======
+
+>>>>>>> paloma
         showModal(){
-          this.show =!this.show 
+          this.show =!this.show
         },
         crearFamilia(){
              BaseUrl.post(`/branches`,this.crearUsuario).then(response => {
@@ -228,7 +239,7 @@ export default {
 .form{
     width: 100%;
     height: 100%;
-    
+
 }
 .form__contenedor{
     width: 100%;
@@ -323,7 +334,7 @@ export default {
   opacity: 0;
   transform: translateX(-30px);
 }
-/*se omite x lo mismo 
+/*se omite x lo mismo
 .fade-enter-to{
   opacity: 1;
 } */
@@ -331,7 +342,7 @@ export default {
   transition: all .6s ease;
 }
 /* se omite xq opacity 1 es una propiedad predeterminada asi que en este caso se omite ,pero no pasa con
-todas las propiedades 
+todas las propiedades
 .fade-leave-from{
   opacity: 0;
 } */

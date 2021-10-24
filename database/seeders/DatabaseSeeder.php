@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
 
         \App\Models\Provider::factory(10)->create();
-        \App\Models\Customer::factory(10)->create();
+        \App\Models\Customer::factory(10000)->create();
         $this->call(UserSeeder::class);
         $this->call(CurrencyExchangeSeeder::class);
 

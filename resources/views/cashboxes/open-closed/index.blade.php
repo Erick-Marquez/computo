@@ -5,9 +5,7 @@
 @section('content_header')
     <h1>Cajas y aperturas</h1>
     @if (session('status'))
-        <div class="alert bg-danger">
-            {{ session('status') }}
-        </div>
+        <input id="isCashboxOpening" type="hidden" name="" value="{{ session('status') }}">
     @endif
 @stop
 
@@ -20,5 +18,13 @@
 
 @section('js')
     <script>
+        let ico = document.getElementById('isCashboxOpening');
+        if (ico !== null) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: ico.value,
+            })
+        }
     </script>
 @stop

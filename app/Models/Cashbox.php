@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CashboxService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,19 +40,11 @@ class Cashbox extends Model
         return 'no tiene balance';
     }
 
-    public function userCurrently($id)
-    {
-
-    }
-
     // *! METODOS RECURRENTES PARA CAJA
-    public function balance()
+    public function balance($id)
     {
         if( $this->state ) {
-            return $this->openClosedCashboxes()
-                        ->orderBy('opening_date', 'DESC')
-                        ->first()
-                        ->opening_amount;
+            return CashboxService::balance($id);
         }
 
         return 0;

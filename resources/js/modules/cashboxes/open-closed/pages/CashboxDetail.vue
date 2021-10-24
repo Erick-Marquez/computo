@@ -1,73 +1,100 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-4 col-sm-6 col-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-info">
-            <i class="fas fa-money-check-alt"></i>
-          </span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Ventas</span>
-            <span class="info-box-number">{{ details.balance.sales }}</span>
+      <div class="col-md-6 d-flex align-items-stretch flex-column">
+        <div class="card bg-white d-flex flex-fill">
+          <div class="card-header border-bottom-0 text-center">
+            <h4>
+              <strong>{{ details.cashbox_description }}</strong> - Resumen de
+              apertura
+            </h4>
           </div>
-          <!-- /.info-box-content -->
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col-7">
+                <p class="lead"><b>Cajero: </b> {{ details.user_name }}</p>
+                <p class="lead">
+                  <b>Fecha de apertura: </b> {{ details.opening_date }}
+                </p>
+                <p class="lead">
+                  <b>Monto de apertura: </b> S/. {{ details.opening_amount }}
+                </p>
+              </div>
+              <div class="col-5 text-center">
+                <img
+                  src="https://adminlte.io/themes/v3/dist/img/user4-128x128.jpg"
+                  alt="user-avatar"
+                  class="img-circle img-fluid"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- /.info-box -->
       </div>
-      <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-success">
-            <i class="fas fa-hand-holding-usd"></i>
-          </span>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-navy">
+                <i class="fas fa-money-check-alt"></i>
+              </span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Ingresos</span>
-            <span class="info-box-number">{{ details.balance.incomes }}</span>
+              <div class="info-box-content">
+                <span class="info-box-text">Ventas</span>
+                <span class="info-box-number">{{ details.balance.sales }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
           </div>
-          <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-12">
-        <div class="info-box">
-          <span class="info-box-icon bg-warning">
-            <i class="fas fa-file-invoice-dollar"></i>
-          </span>
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-teal">
+                <i class="fas fa-hand-holding-usd"></i>
+              </span>
 
-          <div class="info-box-content">
-            <span class="info-box-text">Egresos</span>
-            <span class="info-box-number">{{ details.balance.expenses }}</span>
+              <div class="info-box-content">
+                <span class="info-box-text">Ingresos</span>
+                <span class="info-box-number">{{
+                  details.balance.incomes
+                }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
           </div>
-          <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
+        <div class="row">
+          <div class="col-md">
+            <div class="info-box">
+              <span class="info-box-icon bg-maroon">
+                <i class="fas fa-file-invoice-dollar"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Egresos</span>
+                <span class="info-box-number">{{
+                  details.balance.expenses
+                }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6 col-sm-6 col-12">
-        <button
-          type="button"
-          class="btn btn-primary btn-lg btn-block mb-3"
-          @click="showModal('#new-income')"
-        >
-          <i class="fas fa-plus"></i>
-          Nuevo Ingreso
-        </button>
-      </div>
-      <div class="col-md-6 col-sm-6 col-12">
-        <button
-          type="button"
-          class="btn btn-danger btn-lg btn-block mb-3"
-          @click="showModal('#new-expense')"
-        >
-          <i class="fas fa-minus"></i>
-          Nuevo Egreso
-        </button>
-      </div>
-    </div>
+    <button
+      class="btn btn-dark btn-block btn-lg mb-4"
+      data-toggle="modal"
+      data-target="#new-movement"
+    >
+      Nuevo movimiento
+    </button>
+
+    <form @submit.prevent="newMovement">
+      <NewMovementVue :movement="movement" :errors="errors" />
+    </form>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Detalle de balance de caja</h3>
@@ -119,156 +146,98 @@
       <!-- /.card-body -->
     </div>
   </div>
-
-  <!-- Modales -->
-  <div class="modal fade" id="new-income" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Nuevo Ingreso</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form @submit.prevent="newIncome()">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="">Importe</label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="income.amount"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="">Observacion</label>
-              <textarea
-                class="form-control"
-                rows="5"
-                placeholder="Observacion..."
-                v-model="income.observation"
-              ></textarea>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Cerrar
-            </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="new-expense" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Nuevo Egreso</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <form @submit.prevent="newExpense()">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="">Importe</label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="expense.amount"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="">Observacion</label>
-              <textarea
-                class="form-control"
-                rows="5"
-                placeholder="Observacion..."
-                v-model="expense.observation"
-              ></textarea>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Cerrar
-            </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <button
+    class="btn-outline-danger btn-lg btn-block mb-4"
+    @click="closeCashbox"
+  >
+    <i class="fas fa-door-closed"></i>
+    Cerrar Caja
+  </button>
 </template>
 <script>
-import axios from "axios";
+import BaseUrl from "../../../../api/BaseUrl";
+import NewMovementVue from "../../components/NewMovement.vue";
+
 export default {
+  components: { BaseUrl, NewMovementVue },
   data() {
     return {
-      income: {},
-      expense: {},
+      movement: {
+        type: "EGRESO",
+      },
       details: {
+        opening_date: {},
         balance: {
           sales: 0,
           incomes: 0,
           expenses: 0,
         },
       },
+      openClosedCashbox: {},
+      movements: [],
+      errors: {},
     };
   },
-  props: {
-    cashbox: Number,
-  },
+  props: {},
   created() {
     this.showDetails();
   },
   methods: {
     async showDetails() {
-      await axios
-        .get(`/api/cashbox/detail/${this.$route.params.id}`)
+      await BaseUrl.get(`/api/cashbox/detail/${this.$route.params.id}`)
         .then((response) => {
           this.details = response.data;
-          console.log(this.details);
+
+          this.openClosedCashbox.id = this.details.opening_id;
+          this.openClosedCashbox.user_id = this.details.user_id;
+          this.openClosedCashbox.cashbox_id = this.details.cashbox_id;
         })
         .catch((error) => {
           this.details = [];
           console.log(error);
         });
     },
-    newIncome() {
-      axios
-        .post(`/api/cashbox/${this.$route.params.id}/income`, this.income)
+    async newMovement() {
+      await BaseUrl.post(
+        `/api/cashbox/${this.$route.params.id}/movement`,
+        this.movement
+      )
         .then((response) => {
-          $("#new-income").modal("hide");
+          console.log(response.data);
           this.showDetails();
+          $("#new-movement").modal("hide");
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response);
         });
     },
-    newExpense() {
-      axios
-        .post(`/api/cashbox/${this.$route.params.id}/expense`, this.expense)
-        .then((response) => {
-          $("#new-expense").modal("hide");
-          this.showDetails();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async closeCashbox() {
+      Swal.fire({
+        title: "¿Esta seguro que desea cerrar caja?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Cerrar!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          BaseUrl.patch(
+            `/api/cashbox/${this.openClosedCashbox.id}/close`,
+            this.openClosedCashbox
+          )
+            .then((response) => {
+              this.$router.push({ name: "layout-cashbox" });
+              Swal.fire(
+                "Cerrado!",
+                "Su caja se cerro satisfactoriamente.",
+                "success"
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      });
     },
     showModal(modal, cashbox = null) {
       if (cashbox !== null) {

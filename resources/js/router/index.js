@@ -153,6 +153,18 @@ const routes = [
         ]
     },
     {
+        path: '/egresos-ingresos',
+        name: 'egresos-ingresos-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/expenses-incomes/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'layout-egresos-ingresos',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue'),
+            },
+        ]
+    },
+    {
         path: '/dashboard',
         name: 'dashboard-index',
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/dashboard/dashboard/index.vue'),
@@ -183,6 +195,23 @@ const routes = [
         ]
     },
     {
+        path: '/compras',
+        name: 'compras-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'purchase-list',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/purchases/purchases/pages/Purchases.vue'),
+            },
+            {
+                path: '/nueva-compra',
+                name: 'new-purchase',
+                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/pages/NewPurchase.vue'),
+            },
+        ]
+    },
+    {
         path: '/cambio-de-divisas',
         name: 'currency-exchanges-index',
         component: () => import('../modules/settings/currency-exchanges/index.vue'),
@@ -196,6 +225,23 @@ const routes = [
                 path: '',
                 redirect: { name: 'currency-exchanges' }
             }
+        ]
+    },
+    {
+        path: '/terceros',
+        name: 'terceros-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/third-parties/index.vue'),
+        children: [
+            {
+                path: '/proveedores',
+                name: 'proveedores',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/providers/pages/Providers.vue'),
+            },
+            {
+                path: '/clientes',
+                name: 'clientes',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/customers/pages/Customers.vue'),
+            },
         ]
     },
 

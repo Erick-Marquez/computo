@@ -1,13 +1,14 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Clientes')
 
 @section('content_header')
     <h1>Lista de Clientes</h1>
 @stop
 
 @section('content')
-    <div class="card">
+    <index-customers></index-customers>
+    {{-- <div class="card">
         <div class="card-header">
             <a class="btn btn-secondary" href="{{ route('customers.create') }}">Nuevo</a>
         </div>
@@ -55,15 +56,11 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-    <script>
-        console.log('Hi!');
-    </script>
 @stop

@@ -1,7 +1,5 @@
 require('./bootstrap');
-
 import Alpine from 'alpinejs';
-
 window.Alpine = Alpine;
 
 Alpine.start();
@@ -23,8 +21,11 @@ import indexWarranty from './modules/sales/warranties/index.vue';
 import indexProduct from './modules/catalogs/products/index.vue';
 
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
-
+import indexExpensesIncomes from './modules/cashboxes/expenses-incomes/index.vue';
+import indexPurchase from './modules/purchases/purchases/index.vue';
 import indexDashboard from './modules/dashboard/dashboard/index.vue';
+import indexProviders from './modules/third-parties/providers/index.vue'
+import indexCustomers from './modules/third-parties/customers/index.vue'
 
 /* Settings */
 import indexRoles from './modules/settings/roles/index.vue';
@@ -44,8 +45,11 @@ app.component('index-kardex', indexKardex);
 app.component('index-modification-stock', indexModificactionStock);
 app.component('index-branches', indexBranches);
 app.component('index-cashboxes', indexCashbox);
-
+app.component('index-expenses-incomes', indexExpensesIncomes);
+app.component('index-purchases', indexPurchase);
 app.component('index-dashboard', indexDashboard);
+app.component('index-providers', indexProviders);
+app.component('index-customers', indexCustomers);
 
 /* Settings */
 app.component('index-roles', indexRoles);

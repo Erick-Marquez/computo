@@ -507,7 +507,7 @@ form {
   opacity: 0;
   transform: translateX(10px);
 }
-/*se omite x lo mismo 
+/*se omite x lo mismo
 .fade-enter-to{
   opacity: 1;
 } */
@@ -516,7 +516,7 @@ form {
   transition: all 0.6s ease;
 }
 /* se omite xq opacity 1 es una propiedad predeterminada asi que en este caso se omite ,pero no pasa con
-todas las propiedades 
+todas las propiedades
 .fade-leave-from{
   opacity: 0;
 } */
@@ -525,3 +525,4 @@ todas las propiedades
   opacity: 0;
 }
 </style>
+

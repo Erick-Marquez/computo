@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-
+    <index-expenses-incomes></index-expenses-incomes>
 @stop
 
 @section('css')

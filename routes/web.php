@@ -41,19 +41,30 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Sale
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
-    Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+    Route::middleware(['opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
-    
+
     Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
 
     //CashBoxes
     Route::get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
+    Route::get('/cajas/detalle/{id}', [WebController::class, 'cashboxes']);
 
     //Catalogs
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+
+        //Rutas egresos-ingresos
+    Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
+
+    // Rutas compras
+    Route::get('/compras', [WebController::class, 'purchases'])->name('web.compras');
+
+    // Rutas Terceros
+    Route::get('/proveedores', [WebController::class, 'providers'])->name('web.proveedores');
+    Route::get('/clientes', [WebController::class, 'customers'])->name('web.clientes');
 
     //Inventory
     Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
@@ -73,6 +84,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
+
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
 Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
@@ -87,9 +99,6 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('brands', BrandControl
 Route::middleware(['auth:sanctum', 'verified'])->resource('products', ProductController::class)->names('products');
 Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', ProductSerieController::class)->names('product-series')->parameters(['product-series' => 'productSerie']);
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
-
-
-//Modulo Compras
 
 
 //Modulo Inventario

@@ -35,7 +35,14 @@
               <i class="fas fa-bars"></i>
             </button>
             <div class="dropdown-menu" role="menu" style="">
-              <a href="#" class="dropdown-item">Editar</a>
+              <a
+                href="#"
+                data-toggle="modal"
+                data-target="#modal-edit"
+                @click="editCashbox(cashbox)"
+                class="dropdown-item"
+                >Editar</a
+              >
               <div class="dropdown-divider"></div>
               <a
                 @click="deleteCashbox(cashbox.id)"
@@ -111,10 +118,49 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ACTUALIZAR CAJA -->
+  <div class="modal fade" id="modal-edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Editar Caja</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="updateCashbox">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Nombre de la caja</label>
+              <input
+                id="description"
+                type="text"
+                class="form-control"
+                v-model="cashbox.description"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
           </div>
         </form>
       </div>
@@ -150,10 +196,10 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
           </div>
         </form>
       </div>
@@ -162,9 +208,9 @@
 </template>
 
 <script>
-import BaseUrl from '../../../../api/BaseUrl';
+import BaseUrl from "../../../../api/BaseUrl";
 export default {
-  components: {BaseUrl},
+  components: { BaseUrl },
   data() {
     return {
       caja: {
@@ -179,7 +225,8 @@ export default {
   },
   methods: {
     async showCashboxes() {
-      await  BaseUrl.get("/api/cajas").then((response) => {
+      await BaseUrl.get("/api/cajas")
+        .then((response) => {
           this.cashboxes = response.data.data; // resource creado por laravel
           console.log(this.cashboxes);
         })
@@ -187,17 +234,19 @@ export default {
           this.cashboxes = [];
         });
     },
-    createCashbox() {
-      BaseUrl.post("/api/cajas", this.caja).then((response) => {
+    async createCashbox() {
+      await BaseUrl.post("/api/cajas", this.caja)
+        .then((response) => {
           $("#modal-create").modal("hide");
           this.showCashboxes();
+          this.caja = {};
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response.data);
         });
     },
-    deleteCashbox(id) {
-      Swal.fire({
+    async deleteCashbox(id) {
+      await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
         icon: "warning",
@@ -207,10 +256,18 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          BaseUrl.delete(`/api/cajas/${id}`).then((response) => {
+          BaseUrl.delete(`/api/cajas/${id}`)
+            .then((response) => {
               this.showCashboxes();
             })
             .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+                footer: '<a href="">Why do I have this issue?</a>',
+              });
+
               console.log(error);
             });
 
@@ -218,14 +275,37 @@ export default {
         }
       });
     },
-    openCashbox() {
-      BaseUrl.post("/api/cashbox/open", this.cashbox).then((response) => {
+    async openCashbox() {
+      await BaseUrl.post("/api/cashbox/open", this.cashbox)
+        .then((response) => {
           $("#open-cashbox").modal("hide");
           console.log(response.data);
           this.showCashboxes();
         })
         .catch((error) => {
-          console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+            footer: '<a href="">Llevame a mi caja!!!</a>',
+          });
+          $("#open-cashbox").modal("hide");
+
+          console.log(error.response.data);
+        });
+    },
+    editCashbox(cashbox) {
+        this.cashbox = cashbox;
+    },
+    async updateCashbox() {
+      BaseUrl.put(`/api/cajas/${this.cashbox.id}`, this.cashbox)
+        .then((response) => {
+            console.log(response.data);
+            this.showCashboxes();
+            $('#modal-edit').modal('hide');
+        })
+        .catch((error) => {
+            console.log(error.response)
         });
     },
     showModal(modal, cashbox = null) {
