@@ -13,7 +13,10 @@ import indexBranches from './modules/inventory/branches/index.vue';
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
 import indexExpensesIncomes from './modules/cashboxes/expenses-incomes/index.vue';
 import indexVoucher from './modules/sales/vouchers/index.vue';
+import indexPurchase from './modules/purchases/purchases/index.vue';
 import indexDashboard from './modules/dashboard/dashboard/index.vue';
+import indexProviders from './modules/third-parties/providers/index.vue'
+import indexCustomers from './modules/third-parties/customers/index.vue'
 
 const app = createApp({});
 
@@ -22,6 +25,9 @@ app.component('index-branches', indexBranches);
 app.component('index-cashboxes', indexCashbox);
 app.component('index-expenses-incomes', indexExpensesIncomes);
 app.component('index-vouchers', indexVoucher);
+app.component('index-purchases', indexPurchase);
 app.component('index-dashboard', indexDashboard);
+app.component('index-providers', indexProviders);
+app.component('index-customers', indexCustomers);
 
 app.use(router).mount('#app');

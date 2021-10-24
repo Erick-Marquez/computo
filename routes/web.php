@@ -58,9 +58,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/ventas', [WebController::
 Route::middleware(['auth:sanctum', 'verified', 'opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
 // 'opening.cashbox'
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/compras', [WebController::class, 'purchases'])->name('web.compras');
+
 Route::get('/prueba', [WebController::class, 'prueba']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/proveedores', [WebController::class, 'providers'])->name('web.proveedores');
+Route::middleware(['auth:sanctum', 'verified'])->get('/clientes', [WebController::class, 'customers'])->name('web.clientes');
 
 //Rutas imprimir
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');

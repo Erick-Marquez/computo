@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProviderResource;
 use App\Models\IdentificationDocument;
 use App\Models\Provider;
 use Illuminate\Http\Request;
@@ -15,19 +16,12 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $providers = Provider::all();
-        return view('third-parties.providers.index', compact('providers'));
-    }
+        $customers = Provider::included()
+                                ->filter()
+                                ->sort()
+                                ->getOrPaginate();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $identification_documents = IdentificationDocument::all();
-        return view('third-parties.providers.create', compact('identification_documents'));
+        return ProviderResource::collection($customers);
     }
 
     /**
@@ -44,17 +38,11 @@ class ProviderController extends Controller
             'identification_document_id' => 'required'
         ]);
 
-        provider::create([
-            'name' => $request->name,
-            'comercial_name' => $request->comercial_name,
-            'document' => $request->document,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'address' => $request->address,
-            'identification_document_id' => $request->identification_document_id,
-        ]);
+        Provider::create($request->all());
 
-        return redirect()->route('providers.index');
+        return response()->json([
+            'message' => 'cliente creado'
+        ]);
     }
 
     /**
@@ -109,6 +97,8 @@ class ProviderController extends Controller
     public function destroy(Provider $provider)
     {
         $provider->delete();
-        return redirect()->route('providers.index');
+        return response()->json([
+            'message' => 'proveedor eliminado'
+        ]);
     }
 }

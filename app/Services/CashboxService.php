@@ -55,37 +55,43 @@ class CashboxService
         // return response()->json($data);
     }
 
-    public function closeCashbox($id, $data)
+    public function closeCashbox($id, $request)
     {
-        $cashbox = Cashbox::findOrFail($id); //  Busco la caja en la bd
+        $cashbox = Cashbox::findOrFail($request['cashbox_id']);
 
         if (!$cashbox['state']) {  //  Verifico si esta aperturada o no
-
             return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
-                'message' => 'Esta Caja ya esta cerrada'
+                'message' => 'No puede cerrar esta apertura'
             ], 405);
         }
 
-        $data['closing_date'] = Carbon::now()->toDateTimeString();
-        $data['user_id'] = auth()->user()->id; //  recupero la sesión
-        $data['state'] = false;
-        $data['cashbox_id'] = $id;
+        $user_id = auth()->user()->id;
+
+        if ($user_id != $request['user_id']) {
+            return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
+                'message' => 'Usted no tiene permitido esta acción',
+            ], 405);
+        }
+
+        $user = User::findOrFail($request['user_id']);
+        $request['closing_amount'] = $this->balance($request['cashbox_id']);
+        $request['closing_date'] = Carbon::now()->toDateTimeString();
+        $request['state'] = false;
 
         try {
-            //  Actualizo cerrando la caja
-            $openClosedCashbox = $cashbox->openClosedCashboxes
-                                        ->update($data)
-                                        ->where('closing_date', null);
+            OpenClosedCashbox::findOrFail($id)->update($request);
+            $cashbox->update(['state' => false]);
+            $user->update(['cashbox_id' => null]);
 
-            $cashbox->update(['state' => false]); //  Le doy un estado de FALSE - Cajas cerrada
-
-            return $openClosedCashbox; //  Devuelvo los datos del cierre de caja
+            return response()->json([
+                'message' => 'Actualizado con exito'
+            ]);
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
-    public function recoverOpening($id)
+    public static function recoverOpening($id)
     {
         $cashbox = Cashbox::findOrFail($id);
 
@@ -96,7 +102,7 @@ class CashboxService
             ], 401);
         }
 
-        $openClosedCashbox = $cashbox->openClosedCashboxes->first();
+        $openClosedCashbox = $cashbox->openClosedCashboxes()->orderBy('created_at', 'desc')->first();
 
         return $openClosedCashbox;
     }
@@ -132,6 +138,7 @@ class CashboxService
                 'opening_amount' => $occ['opening_amount'],
                 'opening_date' => date("F j, Y, g:i a", strtotime($occ['opening_date'])),
                 'user_name' => $occ->user->name,
+                'user_id' => $occ->user->id,
                 'movements' => $movements,
                 'balance' => $balance,
             ]);
@@ -140,21 +147,30 @@ class CashboxService
         }
     }
 
-    public function income($id, $data)
+    public static function balance($id)
     {
-        $occ = $this->recoverOpening($id);
-        $data['type'] = 'INGRESO';
-        $occ->openClosedCashboxDetails()->create($data);
+        $occ = CashboxService::recoverOpening($id);
 
-        return response()->json($data);
+        $openingAmount = $occ->opening_amount;
+        $sales = $occ->sales()->sum('total');
+        $incomes = $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount');
+        $expenses = $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount');
+        $purchases = 0;
+
+        $balance = $openingAmount + $sales + $incomes - $expenses - $purchases;
+
+        return $balance;
     }
 
-    public function expense($id, $data)
+    public function movement($id, $data)
     {
         $occ = $this->recoverOpening($id);
-        $data['type'] = 'EGRESO';
-        $occ->openClosedCashboxDetails()->create($data);
 
-        return response()->json($data);
+        try {
+            $occ->openClosedCashboxDetails()->create($data);
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
 }

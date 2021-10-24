@@ -35,7 +35,14 @@
               <i class="fas fa-bars"></i>
             </button>
             <div class="dropdown-menu" role="menu" style="">
-              <a href="#" class="dropdown-item">Editar</a>
+              <a
+                href="#"
+                data-toggle="modal"
+                data-target="#modal-edit"
+                @click="editCashbox(cashbox)"
+                class="dropdown-item"
+                >Editar</a
+              >
               <div class="dropdown-divider"></div>
               <a
                 @click="deleteCashbox(cashbox.id)"
@@ -111,10 +118,49 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ACTUALIZAR CAJA -->
+  <div class="modal fade" id="modal-edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Editar Caja</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="updateCashbox">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="name">Nombre de la caja</label>
+              <input
+                id="description"
+                type="text"
+                class="form-control"
+                v-model="cashbox.description"
+                required
+              />
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
           </div>
         </form>
       </div>
@@ -150,10 +196,10 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
           </div>
         </form>
       </div>
@@ -193,6 +239,7 @@ export default {
         .then((response) => {
           $("#modal-create").modal("hide");
           this.showCashboxes();
+          this.caja = {};
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -207,8 +254,7 @@ export default {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
-      })
-      .then((result) => {
+      }).then((result) => {
         if (result.isConfirmed) {
           BaseUrl.delete(`/api/cajas/${id}`)
             .then((response) => {
@@ -237,7 +283,6 @@ export default {
           this.showCashboxes();
         })
         .catch((error) => {
-
           Swal.fire({
             icon: "error",
             title: "Oops...",
@@ -247,6 +292,20 @@ export default {
           $("#open-cashbox").modal("hide");
 
           console.log(error.response.data);
+        });
+    },
+    editCashbox(cashbox) {
+        this.cashbox = cashbox;
+    },
+    async updateCashbox() {
+      BaseUrl.put(`/api/cajas/${this.cashbox.id}`, this.cashbox)
+        .then((response) => {
+            console.log(response.data);
+            this.showCashboxes();
+            $('#modal-edit').modal('hide');
+        })
+        .catch((error) => {
+            console.log(error.response)
         });
     },
     showModal(modal, cashbox = null) {

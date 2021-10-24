@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use Illuminate\Http\Request;
@@ -15,19 +16,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
-        return view('third-parties.customers.index', compact('customers'));
-    }
+        $customers = Customer::included()
+                                ->filter()
+                                ->sort()
+                                ->getOrPaginate();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $identification_documents = IdentificationDocument::all();
-        return view('third-parties.customers.create', compact('identification_documents'));
+        return CustomerResource::collection($customers);
     }
 
     /**
@@ -44,16 +38,11 @@ class CustomerController extends Controller
             'identification_document_id' => 'required'
         ]);
 
-        Customer::create([
-            'name' => $request->name,
-            'document' => $request->document,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'address' => $request->address,
-            'identification_document_id' => $request->identification_document_id,
-        ]);
+        Customer::create($request->all());
 
-        return redirect()->route('customers.index');
+        return response()->json([
+            'message' => 'cliente creado'
+        ]);
     }
 
     /**
@@ -65,18 +54,6 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        $identification_documents = IdentificationDocument::all();
-        return view('third-parties.customers.edit', compact('customer', 'identification_documents'));
     }
 
     /**
@@ -108,6 +85,8 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->route('customers.index');
+        return response()->json([
+            'message' => 'cliente eliminado'
+        ]);
     }
 }

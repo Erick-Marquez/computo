@@ -1,13 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Compras')
 
 @section('content_header')
-    <h1>Lista de Proveedores</h1>
 @stop
 
 @section('content')
-    <index-providers></index-providers>
+<index-purchases></index-purchases>
 @stop
 
 @section('css')

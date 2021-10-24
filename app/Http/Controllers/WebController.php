@@ -56,9 +56,24 @@ class WebController extends Controller
         return view('sales.vouchers.index');
     }
 
+    public function purchases()
+    {
+        return view('purchases.register-purchases.index');
+    }
+
     public function dashboard()
     {
         return view('dashboard.index');
+    }
+
+    public function providers()
+    {
+        return view('third-parties.providers.index');
+    }
+
+    public function customers()
+    {
+        return view('third-parties.customers.index');
     }
 
     public function stockModifications()

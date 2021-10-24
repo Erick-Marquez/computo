@@ -1,22 +1,7 @@
 <template>
   <div class="content-header">
-    <div class="row mb-2">
-      <div class="col-sm-8">
-        <h3>Registrar Nueva Venta</h3>
-      </div>
-      <div class="col-sm-4">
-        <div class="input-group">
-          <input type="text" placeholder="n° cotización" class="form-control" />
-          <div class="input-group-append">
-            <button class="btn btn-danger">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h3>Registrar Nueva Venta</h3>
   </div>
-
   <div class="card">
     <div class="card-body">
       <h4>Comprobante</h4>
@@ -58,7 +43,99 @@
         </div>
       </div>
 
-      <SearchCustomers :customer="customer" />
+      <h4>Documento de identidad</h4>
+      <div class="row">
+        <!-- TIPO DOCUMENTO -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fas fa-address-card"></i>
+              Tipo documento
+            </label>
+            <select name="" id="" class="form-control rounded-pill">
+              <option value="">Opcion1</option>
+              <option value="">Opcion2</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- N° DOCUMENTO -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fas fa-pen"></i>
+              N° Documento</label
+            >
+            <div class="input-group">
+              <input type="text" class="form-control rounded-pill" />
+              <div class="input-group-append">
+                <button class="btn btn-dark">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOMBRE/RAZON SOCIAL -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-id-badge"></i>
+              Nombre/Razón Social:</label
+            >
+            <input type="text" class="form-control rounded-pill" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- DIRECCIÓN -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-map-marker-alt"></i>
+              Dirección</label
+            >
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              name=""
+              id=""
+            />
+          </div>
+        </div>
+
+        <!-- UBIGEO -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-globe"></i>
+              Ubigeo</label
+            >
+            <select name="" id="" class="form-control rounded-pill">
+              <option value="">Opcion1</option>
+              <option value="">Opcion2</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- N° CELULAR -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-phone"></i>
+              N° Celular</label
+            >
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              name=""
+              id=""
+            />
+          </div>
+        </div>
+      </div>
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
@@ -98,19 +175,13 @@
                 <td></td>
 
                 <td>
-                  <select name="" id="" class="form-control rounded-pill">
-                    <option value="" default>Gravada</option>
-                    <option value="">Exonerada</option>
-                  </select>
+                    <select name="" id="" class="form-control rounded-pill">
+                        <option value="" default>Gravada</option>
+                        <option value="">Exonerada</option>
+                    </select>
                 </td>
                 <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
+                  <input class="form-control rounded-pill form-control rounded-pill-border"
                     type="text"
                     name=""
                     id=""
@@ -261,18 +332,7 @@
 </template>
 
 <script>
-import SearchCustomers from "../../components/SearchCustomers.vue";
-
-export default {
-  components: { SearchCustomers },
-  data() {
-    return {
-      customer: {
-        identification_document_id: 1,
-      },
-    };
-  },
-};
+export default {};
 </script>
 
 <style scoped>

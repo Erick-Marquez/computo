@@ -86,6 +86,23 @@ const routes = [
         ]
     },
     {
+        path: '/compras',
+        name: 'compras-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'purchase-list',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/purchases/purchases/pages/Purchases.vue'),
+            },
+            {
+                path: '/nueva-compra',
+                name: 'new-purchase',
+                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/pages/NewPurchase.vue'),
+            },
+        ]
+    },
+    {
         path: '/dashboard',
         name: 'dashboard-index',
         component: () => import(/* webpackChunkName: "inventory  " */ '../modules/dashboard/dashboard/index.vue'),
@@ -94,6 +111,23 @@ const routes = [
                 path: '',
                 name: 'dashboard',
                 component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/dashboard/dashboard/pages/Dashboard.vue'),
+            },
+        ]
+    },
+    {
+        path: '/terceros',
+        name: 'terceros-index',
+        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/third-parties/index.vue'),
+        children: [
+            {
+                path: '/proveedores',
+                name: 'proveedores',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/providers/pages/Providers.vue'),
+            },
+            {
+                path: '/clientes',
+                name: 'clientes',
+                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/customers/pages/Customers.vue'),
             },
         ]
     },
