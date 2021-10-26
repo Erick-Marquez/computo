@@ -24,9 +24,12 @@ class CreateProductsTable extends Migration
             $table->unsignedDecimal('referential_sale_price_two', 9,3)->nullable();
             $table->boolean('manager_series')->default(false);
             $table->boolean('active')->default(true);
+            $table->string('igv_type_id');
 
-            $table->foreignId('igv_type_id') 
-                ->constrained('igv_types')
+
+            $table->foreign('igv_type_id')
+                ->references('id')
+                ->on('igv_types') 
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

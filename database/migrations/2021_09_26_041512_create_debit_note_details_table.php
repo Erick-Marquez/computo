@@ -23,6 +23,13 @@ class CreateDebitNoteDetailsTable extends Migration
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
             $table->unsignedDecimal('total', 12, 3)->nullable();;
             //$table->unsignedDecimal('discount', 12, 3)->nullable();
+            $table->string('igv_type_id');
+
+
+            $table->foreign('igv_type_id')
+                ->references('id')
+                ->on('igv_types') 
+                ->onUpdate('cascade');
 
             $table->foreignId('debit_note_id')
                 ->constrained()
@@ -31,10 +38,6 @@ class CreateDebitNoteDetailsTable extends Migration
 
             $table->foreignId('branch_product_id')
                 ->constrained('branch_product')
-                ->onUpdate('cascade');
-
-            $table->foreignId('igv_type_id')
-                ->constrained()
                 ->onUpdate('cascade');
             
             $table->timestamps();

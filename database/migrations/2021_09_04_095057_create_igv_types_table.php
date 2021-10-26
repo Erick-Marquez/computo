@@ -14,10 +14,8 @@ class CreateIgvTypesTable extends Migration
     public function up()
     {
         Schema::create('igv_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('cod');
+            $table->string('id')->index();
             $table->string('description');
-            $table->timestamps();
         });
     }
 

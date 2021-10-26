@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
 
     //Settings
+    Route::get('/empresa', [WebController::class, 'company'])->name('web.company');
     Route::get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
     Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
 

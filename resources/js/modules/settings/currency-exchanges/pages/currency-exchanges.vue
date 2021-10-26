@@ -1,23 +1,29 @@
 <template>
   <div class="content-header">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col">
         <h1>Cambios de Divisas</h1>
       </div>
-      <div class="col-sm-4">
+      <div class="col text-center">
         <div class="row">
-          <h5>
-            Fecha
-            <small class="text-muted">{{ currentCurrencyExchange.fecha }}</small>
-          </h5>
-          <h5>
-            Compra
-            <small class="text-muted">{{ currentCurrencyExchange.compra }}</small>
-          </h5>
-          <h5>
-            Venta
-            <small class="text-muted">{{ currentCurrencyExchange.venta }}</small>
-          </h5>
+          <div class="col">
+                <span class="badge bg-maroon">Fecha:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.fecha }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Compra:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.compra }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Venta:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.compra }}
+              </div>
         </div>
       </div>
     </div>
@@ -98,27 +104,34 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Editar Cambio de Divisa</h4>
+          <h4 class="modal-title">Nuevo Cambio de Divisa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <form @submit.prevent="createCurrencyExchange()">
           <div class="modal-body">
-            <div class="row">
-              <h5>
-                Fecha
-                <small class="text-muted">{{ currentCurrencyExchange.fecha }}</small>
-              </h5>
-              <h5>
-                Compra
-                <small class="text-muted">{{ currentCurrencyExchange.compra }}</small>
-              </h5>
-              <h5>
-                Venta
-                <small class="text-muted">{{ currentCurrencyExchange.venta }}</small>
-              </h5>
+            <div class="row text-center">
+              <div class="col">
+                <span class="badge bg-maroon">Fecha:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.fecha }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Compra:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.compra }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Venta:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.compra }}
+              </div>
             </div>
+            <br>
             <div class="form-group">
               <label for="name">Monto de Cambio</label>
               <input type="text" class="form-control" v-model="currencyExchange.change" required>

@@ -20,8 +20,11 @@ class CreateCompanyTable extends Migration
             $table->string('comercial_name')->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable();
-            $table->string('address')->nullable();
+
             $table->string('ubigeo', 6)->nullable();
+            $table->string('urbanization')->nullable();
+            $table->string('address')->nullable();
+            
 
             $table->string('user_sol')->nullable();
             $table->string('password_sol')->nullable();

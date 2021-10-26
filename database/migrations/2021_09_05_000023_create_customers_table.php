@@ -20,9 +20,12 @@ class CreateCustomersTable extends Migration
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
+            $table->string('identification_document_id');
 
-            $table->foreignId('identification_document_id')
-                ->constrained()
+
+            $table->foreign('identification_document_id')
+                ->references('id')
+                ->on('identification_documents') 
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             

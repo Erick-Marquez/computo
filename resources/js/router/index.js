@@ -7,34 +7,34 @@ const routes = [
     {
         path: '/ventas',
         name: 'ventas-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/vouchers/index.vue'),
+        component: () => import('../modules/sales/vouchers/index.vue'),
         children: [
             {
                 path: '',
                 name: 'voucher-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/sales/vouchers/pages/Vouchers.vue'),
+                component: () => import('../modules/sales/vouchers/pages/Vouchers.vue'),
             },
             {
                 path: '/nueva-venta',
                 name: 'new-voucher',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/vouchers/pages/NewVoucher.vue'),
+                component: () => import('../modules/sales/vouchers/pages/NewVoucher.vue'),
             },
         ]
     },
     {
         path: '/cotizaciones',
         name: 'quotations-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/quotations/index.vue'),
+        component: () => import('../modules/sales/quotations/index.vue'),
         children: [
             {
                 path: '',
                 name: 'quotation-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/sales/quotations/pages/Quotation.vue'),
+                component: () => import('../modules/sales/quotations/pages/Quotation.vue'),
             },
             {
                 path: '/nueva-cotizacion',
                 name: 'new-quotation',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/quotations/pages/NewQuotation.vue'),
+                component: () => import('../modules/sales/quotations/pages/NewQuotation.vue'),
             },
             {
                 path: '',
@@ -45,12 +45,12 @@ const routes = [
     {
         path: '/garantias',
         name: 'warranties-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/sales/warranties/index.vue'),
+        component: () => import('../modules/sales/warranties/index.vue'),
         children: [
             {
                 path: '',
                 name: 'warranties-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/sales/warranties/pages/Warranty.vue'),
+                component: () => import('../modules/sales/warranties/pages/Warranty.vue'),
             },
             {
                 path: '',
@@ -63,17 +63,17 @@ const routes = [
     {
         path: '/productos',
         name: 'product-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/catalogs/products/index.vue'),
+        component: () => import('../modules/catalogs/products/index.vue'),
         children: [
             {
                 path: '',
                 name: 'product-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/catalogs/products/pages/Product.vue'),
+                component: () => import('../modules/catalogs/products/pages/Product.vue'),
             },
             {
                 path: '/nuevo-producto',
                 name: 'new-product',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/catalogs/products/pages/NewProduct.vue'),
+                component: () => import('../modules/catalogs/products/pages/NewProduct.vue'),
             },
             {
                 path: '',
@@ -85,17 +85,17 @@ const routes = [
     {
         path: '/sucursales',
         name: 'branches-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/inventory/branches/index.vue'),
+        component: () => import('../modules/inventory/branches/index.vue'),
         children: [
             {
                 path: '',
                 name: 'branch-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/inventory/branches/pages/Branches.vue'),
+                component: () => import('../modules/inventory/branches/pages/Branches.vue'),
             },
             {
                 path: 'productos/:id',
                 name: 'show-product',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/inventory/branches/pages/products.vue'),
+                component: () => import('../modules/inventory/branches/pages/products.vue'),
             },
             {
                 path: '',
@@ -138,41 +138,41 @@ const routes = [
     {
         path: '/cajas',
         name: 'cajas-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/open-closed/index.vue'),
+        component: () => import('../modules/cashboxes/open-closed/index.vue'),
         children: [
             {
                 path: '',
                 name: 'layout-cashbox',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/cashboxes/open-closed/pages/Cashbox.vue'),
+                component: () => import('../modules/cashboxes/open-closed/pages/Cashbox.vue'),
             },
             {
                 path: 'detalle/:id',
                 name: 'show-cashbox',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/open-closed/pages/CashboxDetail.vue'),
+                component: () => import('../modules/cashboxes/open-closed/pages/CashboxDetail.vue'),
             },
         ]
     },
     {
         path: '/egresos-ingresos',
         name: 'egresos-ingresos-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/cashboxes/expenses-incomes/index.vue'),
+        component: () => import('../modules/cashboxes/expenses-incomes/index.vue'),
         children: [
             {
                 path: '',
                 name: 'layout-egresos-ingresos',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue'),
+                component: () => import('../modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue'),
             },
         ]
     },
     {
         path: '/dashboard',
         name: 'dashboard-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/dashboard/dashboard/index.vue'),
+        component: () => import('../modules/dashboard/dashboard/index.vue'),
         children: [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/dashboard/dashboard/pages/Dashboard.vue'),
+                component: () => import('../modules/dashboard/dashboard/pages/Dashboard.vue'),
             },
         ]
     },
@@ -197,18 +197,34 @@ const routes = [
     {
         path: '/compras',
         name: 'compras-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/index.vue'),
+        component: () => import('../modules/purchases/purchases/index.vue'),
         children: [
             {
                 path: '',
                 name: 'purchase-list',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/purchases/purchases/pages/Purchases.vue'),
+                component: () => import('../modules/purchases/purchases/pages/Purchases.vue'),
             },
             {
                 path: '/nueva-compra',
                 name: 'new-purchase',
-                component: () => import(/* webpackChunkName: "inventory  " */ '../modules/purchases/purchases/pages/NewPurchase.vue'),
+                component: () => import('../modules/purchases/purchases/pages/NewPurchase.vue'),
             },
+        ]
+    },
+    {
+        path: '/empresa',
+        name: 'company-index',
+        component: () => import('../modules/settings/company/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'company',
+                component: () => import('../modules/settings/company/pages/company.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'company' }
+            }
         ]
     },
     {
@@ -230,17 +246,17 @@ const routes = [
     {
         path: '/terceros',
         name: 'terceros-index',
-        component: () => import(/* webpackChunkName: "inventory  " */ '../modules/third-parties/index.vue'),
+        component: () => import('../modules/third-parties/index.vue'),
         children: [
             {
                 path: '/proveedores',
                 name: 'proveedores',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/providers/pages/Providers.vue'),
+                component: () => import('../modules/third-parties/providers/pages/Providers.vue'),
             },
             {
                 path: '/clientes',
                 name: 'clientes',
-                component: () => import(/* webpackChunkName: "inventoryLayout  " */ '../modules/third-parties/customers/pages/Customers.vue'),
+                component: () => import('../modules/third-parties/customers/pages/Customers.vue'),
             },
         ]
     },

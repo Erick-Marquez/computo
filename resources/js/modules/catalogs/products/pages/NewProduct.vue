@@ -45,6 +45,7 @@
                   <div class="form-group">
                     <label for="">Marca</label>
                     <select class="form-control" v-model="brand">
+                      <option value="" v-if="line == null">Seleccione una linea</option>
                       <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.description }}</option>
                     </select>
                   </div>
@@ -86,57 +87,60 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">Tipo de cambio</label>
-                    <input type="text" class="form-control" v-model="currencyExchange" @keyup="changePricesSoles()">
+                    <input type="number" class="form-control" v-model="currencyExchange" @keyup="changePricesSoles()">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">P. Compra Soles</label>
-                    <input type="text" class="form-control" v-model="purchasePriceSoles" @keyup="changePurchasePriceDollar()">
+                    <input type="number" class="form-control" v-model="purchasePriceSoles" @keyup="changePurchasePriceDollar()">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">P. Compra Dolares</label>
-                    <input type="text" class="form-control" v-model="purchasePriceDollar" @keyup="changePurchasePriceSoles()">
+                    <input type="number" class="form-control" v-model="purchasePriceDollar" @keyup="changePurchasePriceSoles()">
                   </div>
                 </div>
               </div>
 
               <div class="row">
                 <p class="lead">Precios de venta</p>
-                <table class="table table-bordered">
-                  <thead class="thead-dark text-center">
-                    <tr>
-                      <th scope="col" class="col-md-2">Tipo</th>
-                      <th scope="col">Ganancia(%)</th>
-                      <th scope="col">Soles</th>
-                      <th scope="col">Dolares</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Precio 1</td>
-                      <td><input type="text" class="form-control" v-model="saleGainOne" @keyup="changeSalePriceSolesAndDollarOne()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceOneSoles" @keyup="changeSalePriceDollarAndGainOne()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceOneDollar" @keyup="changeSalePriceSolesAndGainOne()"></td>
-                    </tr>
-                    <tr>
-                      <td>Precio 2</td>
-                      <td><input type="text" class="form-control" v-model="saleGainTwo" @keyup="changeSalePriceSolesAndDollarTwo()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceTwoSoles" @keyup="changeSalePriceDollarAndGainTwo()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceTwoDollar" @keyup="changeSalePriceSolesAndGainTwo()"></td>
-                    </tr>
-                    <tr>
-                      <td>Precio Tarjeta
-                        <small class="text-danger">(Respecto al precio 1)</small>
-                      </td>
-                      <td><input type="text" class="form-control" v-model="saleGainThree" @keyup="changeSalePriceSolesAndDollarThree()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceThreeSoles" @keyup="changeSalePriceDollarAndGainThree()"></td>
-                      <td><input type="text" class="form-control" v-model="salePriceThreeDollar" @keyup="changeSalePriceSolesAndGainThree()"></td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-prices">
+                    <thead class="thead-dark text-center">
+                      <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col" class="col-2">Ganancia(%)</th>
+                        <th scope="col">Soles</th>
+                        <th scope="col">Dolares</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="align-middle">Precio 1</td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainOne" @keyup="changeSalePriceSolesAndDollarOne()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceOneSoles" @keyup="changeSalePriceDollarAndGainOne()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceOneDollar" @keyup="changeSalePriceSolesAndGainOne()"></td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle">Precio 2</td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainTwo" @keyup="changeSalePriceSolesAndDollarTwo()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceTwoSoles" @keyup="changeSalePriceDollarAndGainTwo()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceTwoDollar" @keyup="changeSalePriceSolesAndGainTwo()"></td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle">Precio Tarjeta
+                          <br>
+                          <small class="text-danger">(Respecto al precio 1)</small>
+                        </td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainThree" @keyup="changeSalePriceSolesAndDollarThree()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceThreeSoles" @keyup="changeSalePriceDollarAndGainThree()"></td>
+                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceThreeDollar" @keyup="changeSalePriceSolesAndGainThree()"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -212,14 +216,14 @@
                       <th scope="col" v-if="managerSeries">Series</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="text-center">
                     <template v-for="selectedBranch in selectedBranches" :key="selectedBranch.id">
                       <tr v-if="selectedBranch.isAvailable">
-                        <td>{{ selectedBranch.description }}</td>
-                        <td>
-                          <input type="text" class="form-control" v-model="selectedBranch.quantity" @change="addSeries(selectedBranch)">
+                        <td class="align-middle">{{ selectedBranch.description }}</td>
+                        <td class="align-middle">
+                          <input type="number" class="form-control" v-model="selectedBranch.quantity" @change="addSeries(selectedBranch)">
                         </td>
-                        <td v-if="managerSeries">
+                        <td v-if="managerSeries" class="align-middle">
                           <input type="button" class="btn btn-dark btn-sm btn-series" data-toggle="modal" :data-target="'#seriesModal'+selectedBranch.id" value="Series">
                         </td>
 
@@ -256,7 +260,7 @@
     </div>
   </div>
   <input type="submit" class="btn btn-dark btn-block btn-lg mb-4" value="Guardar Producto">
-  </form>
+</form>
 </template>
 
 <script>
@@ -293,7 +297,7 @@ export default {
       lines : {},
       brands : {},
 
-      line : '',
+      line : null,
       brand : '',
 
       /* Precios */
@@ -489,5 +493,8 @@ export default {
   background: linear-gradient(to right, #292e49, #536976);
   border-top-right-radius: 23px;
   border-bottom-right-radius: 23px;
+}
+.table-prices{
+  min-width: 600px;
 }
 </style>

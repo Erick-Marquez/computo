@@ -10,15 +10,13 @@ class VoucherType extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'description',
-        'active'
     ];
 
     protected $table = "voucher_types";
 
-    protected $allowIncluded = ['series'];
-    protected $allowFilter = ['id', 'description'];
-    protected $allowSort = ['id', 'description'];
+    public $incrementing = false;
 
     public function series()
     {

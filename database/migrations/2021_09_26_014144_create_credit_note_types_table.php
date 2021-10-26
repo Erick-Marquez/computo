@@ -14,8 +14,7 @@ class CreateCreditNoteTypesTable extends Migration
     public function up()
     {
         Schema::create('credit_note_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('cod')->nullable();
+            $table->string('id')->index();
             $table->string('description')->nullable();
         });
     }

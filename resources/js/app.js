@@ -28,6 +28,7 @@ import indexProviders from './modules/third-parties/providers/index.vue'
 import indexCustomers from './modules/third-parties/customers/index.vue'
 
 /* Settings */
+import indexCompany from './modules/settings/company/index.vue';
 import indexRoles from './modules/settings/roles/index.vue';
 import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.vue';
 
@@ -52,6 +53,7 @@ app.component('index-providers', indexProviders);
 app.component('index-customers', indexCustomers);
 
 /* Settings */
+app.component('index-company', indexCompany);
 app.component('index-roles', indexRoles);
 app.component('index-currency-exchanges', indexCurrencyExchanges);
 

@@ -35,6 +35,14 @@ class CreateDebitNotesTable extends Migration
             $table->string('hash_cdr')->nullable();
             $table->boolean('canceled')->default(false);
             
+            $table->string('debit_note_type_id');
+
+
+            $table->foreign('debit_note_type_id')
+                ->references('id')
+                ->on('debit_note_types') 
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             
             $table->foreignId('serie_id')
                 ->constrained()
@@ -44,12 +52,7 @@ class CreateDebitNotesTable extends Migration
             $table->foreignId('sale_id')
                 ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
-            
-            $table->foreignId('debit_note_type_id')->nullable()
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');    
+                ->onDelete('cascade');  
 
             $table->foreignId('user_id')
                 ->constrained()

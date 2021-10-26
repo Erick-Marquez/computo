@@ -11,7 +11,7 @@
             placeholder="n° cotización"
             class="form-control"
             v-model="numberQuotation"
-          />
+          >
           <div class="input-group-append">
             <button class="btn btn-danger" @click="getQuotation">
               <i class="fas fa-search"></i>

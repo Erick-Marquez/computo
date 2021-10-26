@@ -497,7 +497,8 @@ return [
                 [
                     'text'   => 'Empresa',
                     'icon'   => 'fas fa-fw ',
-                    'url'    => '#',
+                    'route'  => 'web.company',
+                    // 'can'    => 'users.index',
                 ],
                 [
                     'text'   => 'Usuarios',
