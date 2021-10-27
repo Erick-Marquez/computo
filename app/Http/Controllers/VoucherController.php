@@ -68,7 +68,7 @@ class VoucherController extends Controller
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
 
-        
+
 
         $sale = Sale::create([
             'document_number' => $serie->current_number,
@@ -81,11 +81,11 @@ class VoucherController extends Controller
             'change' => $request->voucher['change'],
 
             'serie_id' => $request->voucher['serie_id'],
-            'customer_id' => $request->customer['customer_id'],
+            'customer_id' => $request->customer['id'],
             //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
-        
+
 
         $subtotalSale = 0;
         $totalIgvSale = 0;
@@ -95,11 +95,11 @@ class VoucherController extends Controller
         $totalTaxedSale = 0;
         $totalSale = 0;
 
-        for ($i = 0; $i < count($request->detail); $i++) { 
+        for ($i = 0; $i < count($request->detail); $i++) {
 
             $productSeries = [];
 
-            for ($j=0; $j < count($request->detail[$i]['series']) ; $j++) { 
+            for ($j=0; $j < count($request->detail[$i]['series']) ; $j++) {
                 array_push($productSeries, $request->detail[$i]['series'][$j]['serie']);
             }
 
@@ -133,10 +133,10 @@ class VoucherController extends Controller
             $data['document'] = $sale->serie->serie . '-' . $sale->document_number;
             $data['series'] = $request->detail[$i]['series'];
             $data['user_id'] = auth()->user()->id;
-            
+
             KardexService::sale($data);
         }
-        
+
         $sale->update([
             'subtotal' => $subtotalSale,
             'total_igv' => $totalIgvSale,
@@ -159,7 +159,7 @@ class VoucherController extends Controller
         ]);
 
         return $sunat;
-        
+
     }
 
     /**
@@ -237,7 +237,7 @@ class VoucherController extends Controller
         if ($type == 'WARRANTY') {
             $pdf = PDF::loadView('templates.pdf.warranty-a4', compact('company', 'head', 'details'))->setPaper('A4','portrait');
         }
-        
+
 
         // TICKET
         //setPaper(array(0,0,220,700)
@@ -263,19 +263,19 @@ class VoucherController extends Controller
         return IdentificationDocumentResource::collection($identificationDocuments);
     }
 
-    public function products()  
+    public function products()
     {
         $branchProducts = BranchProduct::where('branch_id', auth()->user()->branch_id)->with('product.brandLine.brand')->get();
         return BranchProductResource::collection($branchProducts);
     }
 
-    public function productSeries($id)  
+    public function productSeries($id)
     {
         $branchProductSeries = BranchProductSerie::where('branch_product_id', $id)->where('active', true)->where('sold', false)->get();
         return BranchProductSerieResource::collection($branchProductSeries);
     }
 
-    public function quotation($id)  
+    public function quotation($id)
     {
         $quotation = Quotation::where('document_number', $id)->with('quotationDetails.branchProduct.product')->get();
         return QuotationResource::collection($quotation);

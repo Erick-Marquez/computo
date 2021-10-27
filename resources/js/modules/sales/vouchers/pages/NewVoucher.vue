@@ -3,6 +3,7 @@
     <div class="row mb-2">
       <div class="col-sm-8">
         <h3>Registrar Nueva Venta</h3>
+        {{saleData.customer}}
       </div>
       <div class="col-sm-4">
         <div class="input-group">
@@ -85,7 +86,7 @@
         </div>
       </div>
 
-      <SearchCustomers :customer="customer" />
+      <SearchCustomers :voucherType="voucherTypeSelect" :customer="saleData.customer" />
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
@@ -534,9 +535,6 @@ export default {
   },
   data() {
     return {
-      customer: {
-        identification_document_id: 1,
-      },
       numberQuotation: null,
       contador: 0,
 
@@ -558,16 +556,6 @@ export default {
       productSeries: [],
       saleData: {
         customer: {
-          customer_id: 1,
-          identification_document: "6",
-          number_document: "20604209987",
-          name: "Razón social de tu cliente",
-          email: "email_cliente@gmail.com",
-          address: "",
-          ubigeo: "",
-          sexo: "",
-          birth_date: "",
-          phone: "",
         },
         voucher: {
           document_type: "01",
@@ -775,7 +763,7 @@ export default {
         );
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
       });
     },
     getQuotation(){

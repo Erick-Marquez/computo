@@ -1,5 +1,5 @@
 <template>
-  <h4>Documento de identidad</h4>
+  <h4>Datos del cliente</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
     <div class="col-md-4">
@@ -9,6 +9,14 @@
           Tipo documento
         </label>
         <select
+          v-if="voucherType == '01'"
+          v-model="customer.identification_document_id"
+          class="form-control rounded-pill"
+        >
+          <option value="6" >RUC</option>
+        </select>
+        <select
+          v-else
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
@@ -30,28 +38,27 @@
           <i class="text-danger fas fas fa-pen"></i>
           N° Documento</label
         >
-        <div
-          v-if="
-            customer.identification_document_id == 1 ||
-            customer.identification_document_id == 6
-          "
-          class="input-group"
-        >
+        <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
-            class="form-control rounded-pill"
+            class="form-control rounded-pill-left"
             v-model="customer.document"
             :maxlength="maxLenghDocument"
             @keyup="searchDocument"
+            @blur="toggle = false"
+            @focus="toggle = true"
           />
           <div v-if="!loading" class="input-group-append">
-            <button class="btn btn-dark" @click="getDataApi()">
+            <button
+              class="btn btn-dark rounded-pill-right"
+              @click="getDataApi"
+            >
               <i class="fas fa-search"></i>
             </button>
           </div>
 
           <div v-else class="input-group-append">
-            <button class="btn btn-dark">
+            <button class="btn btn-dark rounded-pill-right">
               <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
@@ -64,16 +71,19 @@
           type="text"
           class="form-control rounded-pill"
           @keyup="searchDocument"
+          @blur="toggle = false"
+          @focus="toggle = true"
         />
 
         <!-- Autocomplete -->
-        <div class="autocomplete mt-0">
+        <div v-show="toggle" class="autocomplete mt-0">
           <ul class="list">
             <li
               class="item"
               @click="setData(customerFind)"
               v-for="customerFind in customers"
               :key="customerFind.id"
+              @mousedown.prevent
             >
               {{ customerFind.document }} - {{ customerFind.name }}
             </li>
@@ -156,15 +166,17 @@ export default {
   components: { BaseUrl },
   data() {
     return {
+      toggle: false,
+      customers: [],
+      type_documents: [],
       searching: {},
-      customers: {},
-      type_documents: {},
       max_length: 8,
       loading: false,
     };
   },
   props: {
     customer: Object,
+    voucherType: String,
   },
   created() {
     this.getTypeDocuments();
@@ -200,7 +212,7 @@ export default {
           this.loading = false;
         });
     },
-    async getCustomers() {
+    async getcustomers() {
       await BaseUrl.get(
         `/api/clientes?filter[document]=${this.customer.document}
                             &filter[identification_document_id]=${this.customer.identification_document_id}
@@ -215,6 +227,7 @@ export default {
         });
     },
     setData(customerFind) {
+      this.customer.id = customerFind.id;
       this.customer.document = customerFind.document;
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
@@ -223,12 +236,18 @@ export default {
     },
     searchDocument() {
       clearTimeout(this.searching);
-      this.searching = setTimeout(this.getCustomers, 200);
+      this.searching = setTimeout(this.getcustomers, 200);
     },
   },
   computed: {
     maxLenghDocument() {
       return this.customer.identification_document_id == 1 ? 8 : 11;
+    },
+    showSearchingData() {
+      return this.customer.identification_document_id == 6 ||
+        this.customer.identification_document_id == 1
+        ? true
+        : false;
     },
     // enableSearchDocument() {
     //   return true
@@ -263,5 +282,15 @@ export default {
 
 .item:hover {
   background: #f2f2f2;
+}
+
+.rounded-pill-left {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+.rounded-pill-right {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 </style>
