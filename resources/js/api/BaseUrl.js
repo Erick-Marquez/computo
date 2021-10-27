@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 const baseUrl = axios.create({
-    baseURL: 'http://computo.test:82/'
+    baseURL: 'http://computo.test/'
 })
 
 export default baseUrl

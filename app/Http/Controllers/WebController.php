@@ -83,6 +83,11 @@ class WebController extends Controller
         return view('purchases.register-purchases.index');
     }
 
+    public function newPurchase()
+    {
+        return view('purchases.register-purchases.new-purchase');
+    }
+
     public function dashboard()
     {
         return view('dashboard.index');
@@ -149,7 +154,7 @@ class WebController extends Controller
         $currencyExchange = CurrencyExchange::latest()->first()->change;
         $branchProducts = BranchProduct::select(
             DB::raw(
-                'id, 
+                'id,
                 ROUND(sale_price * ' .$currencyExchange.',3) as sale_price_dollar,
                 ROUND(referential_sale_price_one * ' .$currencyExchange.',3) as sale_price_dollar_one,
                 ROUND(referential_sale_price_two * ' .$currencyExchange.',3) as sale_price_dollar_two'

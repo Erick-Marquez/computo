@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Rutas compras
     Route::get('/compras', [WebController::class, 'purchases'])->name('web.compras');
+    Route::middleware(['opening.cashbox'])->get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
 
     // Rutas Terceros
     Route::get('/proveedores', [WebController::class, 'providers'])->name('web.proveedores');

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     protected $fillable = [
         'cod',
@@ -22,6 +23,10 @@ class Product extends Model
         'igv_type_id',
         'brand_line_id'
     ];
+
+    protected $allowIncluded = [];
+    protected $allowFilter = ['id', 'name'];
+    protected $allowSort = ['id'];
 
     public function brandLine()
     {
