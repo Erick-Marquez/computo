@@ -225,7 +225,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       voucherTypeSelect: null,
       serieSelect: null,
       currentNumber: "Selecciona una serie",
-      productSearch: '',
+      productSearch: "",
       productSearchFilter: [],
       productSerieSearchFilter: [],
       voucherTypes: {},
@@ -238,25 +238,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       saleData: {
         customer: {
           customer_id: 1,
-          identification_document: '6',
-          number_document: '20604209987',
-          name: 'Razón social de tu cliente',
-          email: 'email_cliente@gmail.com',
-          address: '',
-          ubigeo: '',
-          sexo: '',
-          birth_date: '',
-          phone: ''
+          identification_document: "6",
+          number_document: "20604209987",
+          name: "Razón social de tu cliente",
+          email: "email_cliente@gmail.com",
+          address: "",
+          ubigeo: "",
+          sexo: "",
+          birth_date: "",
+          phone: ""
         },
         voucher: {
-          document_type: '01',
-          serie_id: '',
-          moneda: 'PEN',
-          date_issue: '2021-10-17',
+          document_type: "01",
+          serie_id: "",
+          moneda: "PEN",
+          date_issue: "2021-10-17",
           //Año - mes - dia
-          date_due: '2021-10-18',
+          date_due: "2021-10-18",
           discount: 0,
-          observation: '',
+          observation: "",
           received_money: 0,
           change: 0,
           warranty: true
@@ -268,10 +268,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var _this2 = this;
 
-    var contain = document.querySelector('.card');
-    contain.addEventListener('click', function (e) {
-      if (e.target.className != 'inputContent') {
-        _this2.productSearchFilter = '';
+    var contain = document.querySelector(".card");
+    contain.addEventListener("click", function (e) {
+      if (e.target.className != "inputContent") {
+        _this2.productSearchFilter = "";
       }
     });
   },
@@ -296,8 +296,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var produtsBackup = this.products;
       var wordFilter = this.productSearch.toLowerCase();
 
-      if (wordFilter === '') {
-        this.productSearchFilter = '';
+      if (wordFilter === "") {
+        this.productSearchFilter = "";
       } else {
         this.productSearchFilter = produtsBackup.filter(function (products) {
           return products.name.toLowerCase().indexOf(wordFilter) !== -1;
@@ -308,8 +308,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var produtSeriesBackup = this.productSeries[i];
       var wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
 
-      if (wordFilter === '') {
-        this.productSerieSearchFilter[i][j] = '';
+      if (wordFilter === "") {
+        this.productSerieSearchFilter[i][j] = "";
       } else {
         this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(function (productSeries) {
           return productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1;
@@ -317,7 +317,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (this.productSerieSearchFilter[i][j].length === 0) {
           this.productSerieSearchFilter[i][j] = [{
-            serie: 'No hay resultados'
+            serie: "No hay resultados"
           }];
         }
       }
@@ -336,12 +336,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         series: []
       };
       var series = {
-        id: '',
-        serie: ''
+        id: "",
+        serie: ""
       };
       product.series.push(series);
       this.saleData.detail.push(product);
-      this.productSearch = '';
+      this.productSearch = "";
       this.getSeries(filSearch.id);
     },
     priceTwo: function priceTwo(filSearch) {
@@ -358,12 +358,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         series: []
       };
       var series = {
-        id: '',
-        serie: ''
+        id: "",
+        serie: ""
       };
       product.series.push(series);
       this.saleData.detail.push(product);
-      this.productSearch = '';
+      this.productSearch = "";
       this.getSeries(filSearch.id);
     },
     priceThree: function priceThree(filSearch) {
@@ -380,18 +380,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         series: []
       };
       var series = {
-        id: '',
-        serie: ''
+        id: "",
+        serie: ""
       };
       product.series.push(series);
       this.saleData.detail.push(product);
-      this.productSearch = '';
+      this.productSearch = "";
       this.getSeries(filSearch.id);
     },
     selectSerieSearch: function selectSerieSearch(filSerieSearch, i, j) {
       this.saleData.detail[i].series[j].id = filSerieSearch.id;
       this.saleData.detail[i].series[j].serie = filSerieSearch.serie;
-      this.productSerieSearchFilter[i][j] = '';
+      this.productSerieSearchFilter[i][j] = "";
     },
     deleteItem: function deleteItem(index) {
       this.saleData.detail.splice(index, 1);
@@ -418,8 +418,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       for (var i = 0; i < this.saleData.detail[index].quantity; i++) {
         var series = {
-          id: '',
-          serie: ''
+          id: "",
+          serie: ""
         };
         temp.push(series);
       }
@@ -1439,13 +1439,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.discount > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.total - $data.saleData.voucher.discount), 1
   /* TEXT */
-  )])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\r\n            href=\"invoice-print.html\"\r\n            rel=\"noopener\"\r\n            target=\"_blank\"\r\n            class=\"btn btn-default\"\r\n            ><i class=\"fas fa-print\"></i> Print</a\r\n          > "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  )])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_98, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\n            href=\"invoice-print.html\"\n            rel=\"noopener\"\n            target=\"_blank\"\n            class=\"btn btn-default\"\n            ><i class=\"fas fa-print\"></i> Print</a\n          > "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.createSale();
     }, ["prevent"]))
   }, _hoisted_101, 32
   /* HYDRATE_EVENTS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n            type=\"button\"\r\n            class=\"btn btn-primary float-right\"\r\n            style=\"margin-right: 5px\"\r\n          >\r\n            <i class=\"fas fa-download\"></i> Generate PDF\r\n          </button> ")])])])])], 64
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\n            type=\"button\"\n            class=\"btn btn-primary float-right\"\n            style=\"margin-right: 5px\"\n          >\n            <i class=\"fas fa-download\"></i> Generate PDF\n          </button> ")])])])])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -1467,7 +1467,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1514,7 +1514,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-3837e5aa] {\r\n  border-top-right-radius: 23px;\r\n  border-bottom-right-radius: 23px;\r\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\r\n  background: linear-gradient(\r\n    to right,\r\n    #292e49,\r\n    #536976\r\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-3837e5aa] {\r\n  color: rgba(48, 48, 48, 0.774);\r\n  font-weight: 300;\n}\n.option__relative[data-v-3837e5aa] {\r\n  position: relative;\r\n  z-index: 99;\n}\n.option__contenedor[data-v-3837e5aa] {\r\n  box-sizing: border-box;\r\n  border-radius: 5px;\r\n  width: 100%;\r\n  max-height: 200px;\r\n  box-shadow: 0 0 2px 0 rgb(128, 189, 255);\r\n  background-color: #fff;\r\n  box-sizing: border-box;\r\n  cursor: pointer;\r\n  overflow-y: scroll;\r\n  position: absolute;\r\n  z-index: 100;\n}\n.option__contenedor input[data-v-3837e5aa],\r\n.search input[data-v-3837e5aa] {\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  /*border-color: #93a8c3;*/\r\n  outline-color: rgb(128, 189, 255);\r\n  border-style: solid;\r\n  border-width: 1px;\r\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-3837e5aa] {\r\n  width: 100%;\r\n  padding: 8px 10px;\r\n  margin: 0;\n}\n.option__contenedor[data-v-3837e5aa]::-webkit-scrollbar {\r\n  width: 7px;\r\n  background-color: rgb(128, 189, 255);\n}\n.option__contenedor[data-v-3837e5aa]::-webkit-scrollbar-thumb {\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 10px;\r\n  border-right: 1px solid rgb(128, 189, 255);\r\n  border-left: 1px solid rgb(128, 189, 255);\n}\n.search .option__contenedor[data-v-3837e5aa] {\r\n  top: 0;\n}\n.search input[data-v-3837e5aa] {\r\n  width: 100%;\r\n  height: 40px;\r\n  border-radius: 5px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-3837e5aa] {\n  border-top-right-radius: 23px;\n  border-bottom-right-radius: 23px;\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(\n    to right,\n    #292e49,\n    #536976\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-3837e5aa] {\n  color: rgba(48, 48, 48, 0.774);\n  font-weight: 300;\n}\n.option__relative[data-v-3837e5aa] {\n  position: relative;\n  z-index: 99;\n}\n.option__contenedor[data-v-3837e5aa] {\n  box-sizing: border-box;\n  border-radius: 5px;\n  width: 100%;\n  max-height: 200px;\n  box-shadow: 0 0 2px 0 rgb(128, 189, 255);\n  background-color: #fff;\n  box-sizing: border-box;\n  cursor: pointer;\n  overflow-y: scroll;\n  position: absolute;\n  z-index: 100;\n}\n.option__contenedor input[data-v-3837e5aa],\n.search input[data-v-3837e5aa] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  /*border-color: #93a8c3;*/\n  outline-color: rgb(128, 189, 255);\n  border-style: solid;\n  border-width: 1px;\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-3837e5aa] {\n  width: 100%;\n  padding: 8px 10px;\n  margin: 0;\n}\n.option__contenedor[data-v-3837e5aa]::-webkit-scrollbar {\n  width: 7px;\n  background-color: rgb(128, 189, 255);\n}\n.option__contenedor[data-v-3837e5aa]::-webkit-scrollbar-thumb {\n  background-color: rgb(255, 255, 255);\n  border-radius: 10px;\n  border-right: 1px solid rgb(128, 189, 255);\n  border-left: 1px solid rgb(128, 189, 255);\n}\n.search .option__contenedor[data-v-3837e5aa] {\n  top: 0;\n}\n.search input[data-v-3837e5aa] {\n  width: 100%;\n  height: 40px;\n  border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -11,7 +11,7 @@
             placeholder="n° cotización"
             class="form-control"
             v-model="numberQuotation"
-          >
+          />
           <div class="input-group-append">
             <button class="btn btn-danger" @click="getQuotation">
               <i class="fas fa-search"></i>
@@ -531,11 +531,10 @@ export default {
     await BaseUrl.get(`api/sales/products`).then((resp) => {
       this.products = resp.data.data;
     });
-
   },
   data() {
     return {
-        customer: {
+      customer: {
         identification_document_id: 1,
       },
       numberQuotation: null,
@@ -544,7 +543,7 @@ export default {
       serieSelect: null,
       currentNumber: "Selecciona una serie",
 
-      productSearch:'',
+      productSearch: "",
       productSearchFilter: [],
       productSerieSearchFilter: [],
       voucherTypes: {},
@@ -559,170 +558,172 @@ export default {
       saleData: {
         customer: {
           customer_id: 1,
-          identification_document: '6',
-          number_document: '20604209987',
-          name:'Razón social de tu cliente',
-          email:'email_cliente@gmail.com',
-          address: '',
-          ubigeo: '',
-          sexo: '',
-          birth_date: '',
-          phone: ''
+          identification_document: "6",
+          number_document: "20604209987",
+          name: "Razón social de tu cliente",
+          email: "email_cliente@gmail.com",
+          address: "",
+          ubigeo: "",
+          sexo: "",
+          birth_date: "",
+          phone: "",
         },
         voucher: {
-          document_type: '01',
-          serie_id: '',
-          moneda: 'PEN',
-          date_issue: '2021-10-17', //Año - mes - dia
-          date_due: '2021-10-18',
+          document_type: "01",
+          serie_id: "",
+          moneda: "PEN",
+          date_issue: "2021-10-17", //Año - mes - dia
+          date_due: "2021-10-18",
           discount: 0,
-          observation: '',
+          observation: "",
           received_money: 0,
           change: 0,
-          warranty: true
+          warranty: true,
         },
-        detail: []
+        detail: [],
       },
     };
   },
-  mounted(){
-    const contain = document.querySelector('.card')
-    contain.addEventListener('click', (e)=> {
-      if (e.target.className !='inputContent') {
-        this.productSearchFilter=''
+  mounted() {
+    const contain = document.querySelector(".card");
+    contain.addEventListener("click", (e) => {
+      if (e.target.className != "inputContent") {
+        this.productSearchFilter = "";
       }
-    })
+    });
   },
-  methods:{
-    loadSeries(){
-      BaseUrl.get(`api/sales/series/${this.voucherTypeSelect}`).then( resp=>{
+  methods: {
+    loadSeries() {
+      BaseUrl.get(`api/sales/series/${this.voucherTypeSelect}`).then((resp) => {
         this.series = resp.data.data;
-      })
+      });
     },
-    loadCurrentNumber(){
-      let serieBackup = this.series
-      let serieFilter = serieBackup.filter(series =>
-        series.id == this.serieSelect
+    loadCurrentNumber() {
+      let serieBackup = this.series;
+      let serieFilter = serieBackup.filter(
+        (series) => series.id == this.serieSelect
       );
-      this.currentNumber = serieFilter[0].current_number + 1
+      this.currentNumber = serieFilter[0].current_number + 1;
     },
-    searchProducts(){
-
-      let produtsBackup = this.products
+    searchProducts() {
+      let produtsBackup = this.products;
       let wordFilter = this.productSearch.toLowerCase();
 
-      if(wordFilter===''){
-        this.productSearchFilter=''
-      }else{
-        this.productSearchFilter = produtsBackup.filter(products =>
-          (products.name.toLowerCase().indexOf(wordFilter) !== -1)
-        ).slice(0,10);
+      if (wordFilter === "") {
+        this.productSearchFilter = "";
+      } else {
+        this.productSearchFilter = produtsBackup
+          .filter(
+            (products) => products.name.toLowerCase().indexOf(wordFilter) !== -1
+          )
+          .slice(0, 10);
       }
-
     },
-    searchProductSeries(i, j){
-      let produtSeriesBackup = this.productSeries[i]
+    searchProductSeries(i, j) {
+      let produtSeriesBackup = this.productSeries[i];
       let wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
 
-      if(wordFilter===''){
-        this.productSerieSearchFilter[i][j] = ''
-      }else{
-        this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(productSeries =>
-          (productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1)
-        )
+      if (wordFilter === "") {
+        this.productSerieSearchFilter[i][j] = "";
+      } else {
+        this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(
+          (productSeries) =>
+            productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1
+        );
         if (this.productSerieSearchFilter[i][j].length === 0) {
-          this.productSerieSearchFilter[i][j] = [{serie: 'No hay resultados'}]
+          this.productSerieSearchFilter[i][j] = [
+            { serie: "No hay resultados" },
+          ];
         }
       }
-
     },
-    priceOne(filSearch){
-      this.productSerieSearchFilter.push([])
+    priceOne(filSearch) {
+      this.productSerieSearchFilter.push([]);
 
       const product = {
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : 8,
-        discount : 0,
-        description : filSearch.name,
-        sale_price : filSearch.sale_price,
-        quantity : 1,
-        series : []
-      }
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: 8,
+        discount: 0,
+        description: filSearch.name,
+        sale_price: filSearch.sale_price,
+        quantity: 1,
+        series: [],
+      };
 
       const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
+        id: "",
+        serie: "",
+      };
+      product.series.push(series);
 
-      this.saleData.detail.push(product)
+      this.saleData.detail.push(product);
 
-      this.productSearch = ''
+      this.productSearch = "";
 
-      this.getSeries(filSearch.id)
+      this.getSeries(filSearch.id);
     },
-    priceTwo(filSearch){
-      this.productSerieSearchFilter.push([])
+    priceTwo(filSearch) {
+      this.productSerieSearchFilter.push([]);
 
       const product = {
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : 8,
-        discount : 0,
-        description : filSearch.name,
-        sale_price : filSearch.referential_sale_price_one,
-        quantity : 1,
-        series : []
-      }
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: 8,
+        discount: 0,
+        description: filSearch.name,
+        sale_price: filSearch.referential_sale_price_one,
+        quantity: 1,
+        series: [],
+      };
 
       const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
+        id: "",
+        serie: "",
+      };
+      product.series.push(series);
 
-      this.saleData.detail.push(product)
+      this.saleData.detail.push(product);
 
-      this.productSearch = ''
+      this.productSearch = "";
 
-      this.getSeries(filSearch.id)
+      this.getSeries(filSearch.id);
     },
-    priceThree(filSearch){
-      this.productSerieSearchFilter.push([])
+    priceThree(filSearch) {
+      this.productSerieSearchFilter.push([]);
 
       const product = {
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : 8,
-        discount : 0,
-        description : filSearch.name,
-        sale_price : filSearch.referential_sale_price_two,
-        quantity : 1,
-        series : []
-      }
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: 8,
+        discount: 0,
+        description: filSearch.name,
+        sale_price: filSearch.referential_sale_price_two,
+        quantity: 1,
+        series: [],
+      };
 
       const series = {
-        id: '',
-        serie: ''
-      }
-      product.series.push(series)
+        id: "",
+        serie: "",
+      };
+      product.series.push(series);
 
-      this.saleData.detail.push(product)
+      this.saleData.detail.push(product);
 
-      this.productSearch = ''
+      this.productSearch = "";
 
-      this.getSeries(filSearch.id)
+      this.getSeries(filSearch.id);
     },
-    selectSerieSearch(filSerieSearch, i, j){
-      this.saleData.detail[i].series[j].id = filSerieSearch.id
-      this.saleData.detail[i].series[j].serie = filSerieSearch.serie
-      this.productSerieSearchFilter[i][j] = ''
+    selectSerieSearch(filSerieSearch, i, j) {
+      this.saleData.detail[i].series[j].id = filSerieSearch.id;
+      this.saleData.detail[i].series[j].serie = filSerieSearch.serie;
+      this.productSerieSearchFilter[i][j] = "";
     },
-    deleteItem(index){
+    deleteItem(index) {
       this.saleData.detail.splice(index, 1);
       this.productSeries.splice(index, 1);
       this.productSerieSearchFilter.splice(index, 1);
@@ -730,96 +731,91 @@ export default {
 
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
-      let discount = 0
-      this.saleData.detail.forEach( e => {
-        discount += (e.discount * 1)
-      })
+      let discount = 0;
+      this.saleData.detail.forEach((e) => {
+        discount += e.discount * 1;
+      });
 
       // Si descuento es mayor a cero entonces se desactiva el descuento global
       // de lo contrario se activa el descuento global
-      this.activateGlobalDiscount = discount > 0 ? true : false
-
+      this.activateGlobalDiscount = discount > 0 ? true : false;
     },
     activateOrDesactivateDetailDiscount() {
-
       // Si descuento es mayor a cero entonces se desactiva el descuento global
       // de lo contrario se activa el descuento global
-      this.activateDetailDiscount = this.saleData.voucher.discount > 0 ? true : false
-
+      this.activateDetailDiscount =
+        this.saleData.voucher.discount > 0 ? true : false;
     },
 
-    addSeries(index){
-      const temp = []
+    addSeries(index) {
+      const temp = [];
       for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
         const series = {
-          id: '',
-          serie: ''
-        }
-        temp.push(series)
+          id: "",
+          serie: "",
+        };
+        temp.push(series);
       }
-      this.saleData.detail[index].series = temp
+      this.saleData.detail[index].series = temp;
     },
-    getSeries(id){
-      BaseUrl.get(`api/sales/products/series/${id}`).then( resp=>{
+    getSeries(id) {
+      BaseUrl.get(`api/sales/products/series/${id}`).then((resp) => {
         this.productSeries.push(resp.data.data);
-      })
+      });
     },
     createSale() {
-      this.saleData.voucher.serie_id = this.serieSelect
-      BaseUrl.post("/api/sales", this.saleData).then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    },
-    getQuotation(){
-
-      this.saleData.detail = []
-
-      BaseUrl.get(`api/sales/quotation/${this.numberQuotation}`).then( resp=>{
-
-        let quotation = resp.data.data[0]
-
-        this.saleData.voucher.discount = quotation.discount
-        this.saleData.voucher.warranty = Boolean(quotation.have_warranty)
-        this.saleData.voucher.observation = quotation.observation
-
-        quotation.quotation_details.forEach((e, index) => {
-
-          this.productSerieSearchFilter.push([])
-
-          const product = {
-            product_id : e.id,
-            cod : e.branch_product.product.cod,
-            affect_icbper : false,
-            igv_type_id : 8,
-            discount : e.discount,
-            description : e.branch_product.product.name,
-            sale_price : e.price,
-            quantity : e.quantity,
-            series : []
-          }
-
-          this.saleData.detail.push(product)
-
-          this.getSeries(e.id)
-
-          //Añadir series
-          this.addSeries(index)
-
-          //Activar descuento
-          this.activateOrDesactivateGlobalDiscount()
-          this.activateOrDesactivateDetailDiscount()
+      this.saleData.voucher.serie_id = this.serieSelect;
+      BaseUrl.post("/api/sales", this.saleData)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
         });
+    },
+    getQuotation() {
+      this.saleData.detail = [];
 
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    }
-  }
+      BaseUrl.get(`api/sales/quotation/${this.numberQuotation}`)
+        .then((resp) => {
+          let quotation = resp.data.data[0];
 
+          this.saleData.voucher.discount = quotation.discount;
+          this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
+          this.saleData.voucher.observation = quotation.observation;
+
+          quotation.quotation_details.forEach((e, index) => {
+            this.productSerieSearchFilter.push([]);
+
+            const product = {
+              product_id: e.id,
+              cod: e.branch_product.product.cod,
+              affect_icbper: false,
+              igv_type_id: 8,
+              discount: e.discount,
+              description: e.branch_product.product.name,
+              sale_price: e.price,
+              quantity: e.quantity,
+              series: [],
+            };
+
+            this.saleData.detail.push(product);
+
+            this.getSeries(e.id);
+
+            //Añadir series
+            this.addSeries(index);
+
+            //Activar descuento
+            this.activateOrDesactivateGlobalDiscount();
+            this.activateOrDesactivateDetailDiscount();
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>
 

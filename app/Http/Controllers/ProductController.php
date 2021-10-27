@@ -25,7 +25,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::included()
+                            ->filter()
+                            ->sort()
+                            ->getOrPaginate();
         return ProductResource::collection($products);
     }
 
@@ -37,7 +40,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'name' => 'required',
             'line_id' => 'required',
@@ -83,7 +86,7 @@ class ProductController extends Controller
                     array_push($productSeries, $serie['serie']);
                 }
             }
-            
+
 
             $data['branch_product_id'] = $branchProduct->id;
             $data['quantity'] = $branch['quantity'];
@@ -91,7 +94,6 @@ class ProductController extends Controller
             $data['user_id'] = auth()->user()->id;
 
             KardexService::initialStock($data);
-
         }
 
         return $product;
@@ -138,7 +140,7 @@ class ProductController extends Controller
         ]);
 
         $brandLine = BrandLine::select('id')->where('line_id', $request->line_id)->where('brand_id', $request->brand_id)->first();
-        
+
         $product->update([
             'cod' => $request->cod,
             'name' => $request->name,
@@ -147,7 +149,7 @@ class ProductController extends Controller
             //'active' => $request->active,
             'brand_line_id' => $brandLine->id,
         ]);
-        
+
 
         return redirect()->route('products.index');
     }
@@ -164,23 +166,27 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function branches(){
+    public function branches()
+    {
         $branches = Branch::where('state', true)->get();
         return BranchResource::collection($branches);
     }
 
-    public function lines(){
+    public function lines()
+    {
         $lines = Line::where('active', true)->get();
         return LineResource::collection($lines);
     }
 
-    public function brands($id){
+    public function brands($id)
+    {
         $line = Line::findOrFail($id);
         $brands = $line->brands;
         return LineResource::collection($brands);
     }
 
-    public function currencyExchanges(){
+    public function currencyExchanges()
+    {
         $currencyExchange = CurrencyExchange::latest()->first();
         return $currencyExchange;
     }

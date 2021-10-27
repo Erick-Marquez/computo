@@ -294,7 +294,7 @@ return [
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.quotations',
                     'can'    => 'quotations.index',
-                    'active' => ['cotizaciones', 'nueva-cotizacion'] 
+                    'active' => ['cotizaciones', 'nueva-cotizacion']
                 ],
                 [
                     'text' => 'Garantías',
@@ -368,7 +368,7 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.products',
                     'can'    => 'products.index',
-                    'active' => ['productos', 'nuevo-producto'] 
+                    'active' => ['productos', 'nuevo-producto']
                 ],
                 [
                     'text' => 'Series',
@@ -393,7 +393,8 @@ return [
                 [
                     'text' => 'Registros de Compras',
                     'icon' => 'fas fa-fw ',
-                    'route' => 'web.compras'
+                    'route' => 'web.compras',
+                    'active' => ['nueva-compra']
                 ],
             ],
         ],
@@ -408,7 +409,7 @@ return [
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.branches',
                     'can'    => 'branches.index',
-                    'active' => ['sucursales', 'regex:@^sucursales/productos/[0-9]+$@'] 
+                    'active' => ['sucursales', 'regex:@^sucursales/productos/[0-9]+$@']
                 ],
                 [
                     'text'   => 'Movimiento de Sucursal',
@@ -674,6 +675,31 @@ return [
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
+            ],
+        ],
+        'MomentJs' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js',
+                ],
+            ],
+        ],
+        'Tempus Dominus' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.1/js/tempusdominus-bootstrap-4.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.1/css/tempusdominus-bootstrap-4.min.css',
+                ]
             ],
         ],
         'Pace' => [

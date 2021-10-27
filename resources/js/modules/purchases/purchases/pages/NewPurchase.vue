@@ -1,250 +1,85 @@
 <template>
   <div class="content-header">
-    <h3>Registrar Nueva Venta</h3>
+    <h3>Registrar Nueva Compra</h3>
+    <!-- {{ newPurchase }} -->
   </div>
   <div class="card">
     <div class="card-body">
       <h4>Comprobante</h4>
       <div class="row">
         <!-- TIPO DE COMPROBANTE -->
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="">
               <i class="text-danger fas fa-file-invoice"></i>
               Tipo comprobante
             </label>
-            <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
+            <select
+              v-model="newPurchase.voucher.type"
+              class="form-control rounded-pill"
+            >
+              <option value="03">BOLETA</option>
+              <option value="01">FACTURA</option>
+              <option value="NV">NOTA DE VENTA</option>
             </select>
           </div>
         </div>
 
         <!-- SERIE -->
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="">
               <i class="text-danger fas fa-barcode"></i>
               Serie</label
             >
-            <input type="text" class="form-control rounded-pill" />
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              v-model="newPurchase.voucher.serie"
+            />
           </div>
         </div>
 
         <!-- N° COMPROBANTE -->
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="">
               <i class="text-danger fas fa-hashtag"></i>
               N° Comprobante</label
             >
-            <input type="text" class="form-control rounded-pill" />
-          </div>
-        </div>
-      </div>
-
-      <h4>Documento de identidad</h4>
-      <div class="row">
-        <!-- TIPO DOCUMENTO -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fas fa-address-card"></i>
-              Tipo documento
-            </label>
-            <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- N° DOCUMENTO -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fas fa-pen"></i>
-              N° Documento</label
-            >
-            <div class="input-group">
-              <input type="text" class="form-control rounded-pill" />
-              <div class="input-group-append">
-                <button class="btn btn-dark">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- NOMBRE/RAZON SOCIAL -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-id-badge"></i>
-              Nombre/Razón Social:</label
-            >
-            <input type="text" class="form-control rounded-pill" />
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <!-- DIRECCIÓN -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-map-marker-alt"></i>
-              Dirección</label
-            >
             <input
               type="text"
               class="form-control rounded-pill"
-              name=""
-              id=""
+              v-model="newPurchase.voucher.number"
             />
           </div>
         </div>
 
-        <!-- UBIGEO -->
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-globe"></i>
-              Ubigeo</label
-            >
-            <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- N° CELULAR -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-phone"></i>
-              N° Celular</label
-            >
+            <label><i class="text-danger far fa-calendar-alt"></i>Fecha:</label>
             <input
-              type="text"
+              type="date"
               class="form-control rounded-pill"
-              name=""
-              id=""
+              v-model="newPurchase.voucher.date"
             />
           </div>
         </div>
       </div>
 
-      <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
-      <div class="row">
-        <div class="col-md">
-          <h4>
-            <i class="text-danger fas fa-box"></i>
-            Productos
-          </h4>
-          <div class="input-group">
-            <input
-              type="search"
-              class="form-control rounded-pill form-control rounded-pill-lg"
-              placeholder="Escribe tu producto o código"
-            />
-          </div>
-        </div>
-      </div>
+      <search-provider
+        :provider="newPurchase.provider"
+        :voucherType="newPurchase.voucher.type"
+      ></search-provider>
 
-      <!-- VER PRODUCTOS SELECCIONADOS -->
-      <div class="row">
-        <div class="col-12 table-responsive mt-4">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th style="width: 40%">Descripción</th>
-                <th style="width: 20%">Tipo IGV</th>
-                <th style="width: 3%">Cantidad</th>
-                <th style="width: 10%">Precio</th>
-                <th style="width: 10%">Sub Total</th>
-                <th style="width: 10%">Total</th>
-                <th style="width: 5%">Series</th>
-                <th style="width: 3%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-
-                <td>
-                    <select name="" id="" class="form-control rounded-pill">
-                        <option value="" default>Gravada</option>
-                        <option value="">Exonerada</option>
-                    </select>
-                </td>
-                <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border"
-                    type="text"
-                    name=""
-                    id=""
-                  />
-                </td>
-                <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
-                </td>
-                <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
-                </td>
-                <td>
-                  <input
-                    class="
-                      form-control
-                      rounded-pill
-                      form-control
-                      rounded-pill-border
-                    "
-                    type="text"
-                    name=""
-                    id=""
-                  />
-                </td>
-                <td>
-                  <button class="btn btn-dark btn-sm">Series</button>
-                </td>
-                <td>
-                  <button class="btn btn-flat bg-light">
-                    <i class="text-danger fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <search-products
+        :products="newPurchase.products"
+      ></search-products>
 
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
-          <h4>Detalle Documento</h4>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-4">
               <div class="form-group">
                 <label for="">Descuento</label>
@@ -263,7 +98,7 @@
                 <input class="form-control rounded-pill" type="text" />
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -332,7 +167,28 @@
 </template>
 
 <script>
-export default {};
+import SearchProvider from "../components/SearchProvider.vue";
+import SearchProducts from "../components/SearchProducts.vue";
+
+export default {
+  components: { SearchProvider, SearchProducts },
+  data() {
+    return {
+      newPurchase: {
+        voucher: {
+          type: "03",
+          serie: null,
+          number: null,
+          date: null,
+        },
+        provider: {
+          identification_document_id: 6,
+        },
+        products: {},
+      },
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -355,5 +211,15 @@ export default {};
 label {
   color: rgba(48, 48, 48, 0.774);
   font-weight: 300;
+}
+
+.rounded-pill-left {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+.rounded-pill-right {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 </style>

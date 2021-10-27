@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSaleDetailsTable extends Migration
+class CreatePurchaseDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSaleDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sale_details', function (Blueprint $table) {
+        Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
 
             $table->decimal('price', 12, 3);
@@ -21,18 +21,10 @@ class CreateSaleDetailsTable extends Migration
 
             $table->decimal('total_igv', 12, 3)->default(0);
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
-            $table->unsignedDecimal('total', 12, 3)->nullable();;
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
+            $table->unsignedDecimal('total', 12, 3)->nullable();
             $table->json('series')->nullable();
-            $table->string('igv_type_id');
 
-
-            $table->foreign('igv_type_id')
-                ->references('id')
-                ->on('igv_types')
-                ->onUpdate('cascade');
-
-            $table->foreignId('sale_id')
+            $table->foreignId('purchase_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -52,6 +44,6 @@ class CreateSaleDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_details');
+        Schema::dropIfExists('purchase_details');
     }
 }
