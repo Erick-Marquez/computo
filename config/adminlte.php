@@ -284,11 +284,11 @@ return [
                 //     'icon' => 'fas fa-fw',
                 //     'url'  => '#',
                 // ],
-                [
-                    'text' => 'Comunicaciones de Baja',
-                    'icon' => 'fas fa-fw',
-                    'url'  => '#',
-                ],
+                // [
+                //     'text' => 'Comunicaciones de Baja',
+                //     'icon' => 'fas fa-fw',
+                //     'url'  => '#',
+                // ],
                 [
                     'text' => 'Cotización',
                     'icon' => 'fas fa-fw',
@@ -702,6 +702,7 @@ return [
                 ],
             ],
         ],
+        
     ],
 
     /*
@@ -715,5 +716,5 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
     */
 
-    'livewire' => true,
+    'livewire' => false,
 ];

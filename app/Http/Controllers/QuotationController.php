@@ -42,6 +42,7 @@ class QuotationController extends Controller
             'document_number' => $documentNumber,
             'discount' => $request->quotation['discount'],
             'have_warranty' => $request->quotation['warranty'],
+            'date_due' => $request->quotation['date_due'],
             'customer_id' => $request->customer['customer_id'],
             'user_id' => auth()->user()->id
         ]);

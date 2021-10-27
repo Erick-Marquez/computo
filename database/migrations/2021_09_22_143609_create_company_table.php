@@ -29,7 +29,11 @@ class CreateCompanyTable extends Migration
             $table->string('user_sol')->nullable();
             $table->string('password_sol')->nullable();
 
-            $table->boolean('demo')->default(false); // Si esta en demo true
+            $table->string('electronic_certificate')->nullable();
+            $table->string('password_electronic_certificate')->nullable();
+
+            $table->boolean('demo')->default(true); // Si esta en demo true
+            
             $table->timestamps();
         });
     }

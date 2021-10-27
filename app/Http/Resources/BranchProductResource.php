@@ -24,6 +24,7 @@ class BranchProductResource extends JsonResource
             'referential_sale_price_two' => $this->referential_sale_price_two,
             'referential_purchase_price' => $this->referential_purchase_price,
             'manager_series' => $this->manager_series,
+            'igv_type_id' => $this->igv_type_id,
             'active' => $this->active,
             'stock' => $this->stock,
         ];

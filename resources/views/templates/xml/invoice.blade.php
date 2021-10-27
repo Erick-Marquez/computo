@@ -17,7 +17,7 @@
     <cbc:IssueDate>{{ $sale->date_issue }}</cbc:IssueDate>
     <cbc:IssueTime>00:00:00</cbc:IssueTime>
     <cbc:DueDate>{{ $sale->date_due }}</cbc:DueDate>
-    <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale->serie->voucherType->cod }}</cbc:InvoiceTypeCode>
+    <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale->serie->voucherType->id }}</cbc:InvoiceTypeCode>
     <cbc:Note languageLocaleID="1000">{{ \App\Services\NumberLetterService::convert(round($sale->total, 2), 'SOLES') }}</cbc:Note>
     <cbc:DocumentCurrencyCode listID="ISO 4217 Alpha" listName="Currency" listAgencyName="United Nations Economic Commission for Europe">PEN</cbc:DocumentCurrencyCode>
     <cbc:LineCountNumeric>{{ count($sale->saleDetails) }}</cbc:LineCountNumeric>
@@ -79,16 +79,16 @@
     <cac:AccountingCustomerParty>
         <cac:Party>
             <cac:PartyIdentification>
-                <cbc:ID schemeID="{{ $sale->customer->identificationDocument->cod }}" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:ID>
+                <cbc:ID schemeID="{{ $sale->customer->identificationDocument->id }}" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:ID>
             </cac:PartyIdentification>
             <cac:PartyName>
                 <cbc:Name><![CDATA[{{ $sale->customer->name }}]]></cbc:Name>
             </cac:PartyName>
             <cac:PartyTaxScheme>
                 <cbc:RegistrationName><![CDATA[{{ $sale->customer->name }}]]></cbc:RegistrationName>
-                <cbc:CompanyID schemeID="{{ $sale->customer->identificationDocument->cod }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:CompanyID>
+                <cbc:CompanyID schemeID="{{ $sale->customer->identificationDocument->id }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:CompanyID>
                 <cac:TaxScheme>
-                    <cbc:ID schemeID="{{ $sale->customer->identificationDocument->cod }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:ID>
+                    <cbc:ID schemeID="{{ $sale->customer->identificationDocument->id }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $sale->customer->document }}</cbc:ID>
                 </cac:TaxScheme>
             </cac:PartyTaxScheme>
             <cac:PartyLegalEntity>
@@ -196,7 +196,7 @@
             <cac:TaxSubtotal>
                 <cbc:TaxableAmount currencyID="PEN">{{ round($saleDetail->total, 2) }}</cbc:TaxableAmount>
                 <cbc:TaxAmount currencyID="PEN">{{ round($saleDetail->total_igv, 2) }}</cbc:TaxAmount>
-                @switch($saleDetail->igvType->cod)
+                @switch($saleDetail->igvType->id)
                 @case(10)
                 <cac:TaxCategory>
                     <cbc:ID schemeID="UN/ECE 5305" schemeName="Tax Category Identifier" schemeAgencyName="United Nations Economic Commission for Europe">S</cbc:ID>

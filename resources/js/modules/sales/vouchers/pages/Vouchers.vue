@@ -43,21 +43,52 @@
                 <thead>
                   <tr>
                     <th>Fecha</th>
-                    <th>Tipo de documento</th>
-                    <th>Número de documento</th>
+                    <th>Comprobante</th>
                     <th>Cliente</th>
                     <th>Total</th>
-                    <th>Acciones</th>
+                    <th class="text-center">PDF/Ticket</th>
+                    <th class="text-center">XML</th>
+                    <th class="text-center">CDR</th>
+                    <th class="text-center">Sunat</th>
+                    <th class="text-center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="sale in sales" :key="sale.id">
-                    <td>{{ sale.date_issue }}</td>
-                    <td>{{ sale.serie.voucher_type.description }}</td>
-                    <td>{{ sale.document_number }}</td>
-                    <td>{{ sale.customer.name }}</td>
-                    <td>{{ sale.total }}</td>
-                    <td>
+                    <td class="align-middle">{{ sale.date_issue }}</td>
+                    <td class="align-middle">
+                      <span class="text-muted">{{ sale.serie.voucher_type.description }}: </span>{{ sale.serie.serie }}-{{ sale.document_number }}
+                    </td>
+                    <td class="align-middle">
+                      {{ sale.customer.document }}
+                      <br>
+                      {{ sale.customer.name }}
+                    </td>
+                    <td class="align-middle">S/. {{ sale.total }}</td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/vouchers/A4/' + sale.id">
+                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                      </a>
+                      <a title="Haz Click para Visualizar el Ticket" target="_blank" :href="'print/vouchers/TICKET/' + sale.id">
+                        <img src="../../../../../../public/img/svg/ticket_cpe.svg" style="width: 30px">
+                      </a>
+                      <a title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + sale.id">
+                        <img src="../../../../../../public/img/svg/warranty_cpe.svg" style="width: 30px">
+                      </a>
+                    </td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Descargar el XML" href=""><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
+                    </td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Descargar el CDR" href=""><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
+                    </td>
+                    <td class="align-middle text-center">
+                      <i v-if="sale.state == 'ACEPTADO'" class="text-success fas fa-check"></i>
+                      <i v-else-if="sale.state == 'RECHAZADO'" class="text-danger fas fa-ban"></i>
+                      <i v-else-if="sale.state == 'PENDIENTE'" class="text-success fas fa-sync-alt"></i>
+                      <i v-else-if="sale.state == 'ANULADO'" class="text-danger fas fa-window-close"></i>
+                    </td>
+                    <td class="align-middle text-center">
                       <div class="dropdown">
                         <button
                           class="btn btn-danger dropdown-toggle"
@@ -77,11 +108,11 @@
                           <a
                             class="dropdown-item"
                             href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
+                            ><i class="col-1 mr-3 fas fa-eye"></i>Crear Nota de Crédito</a
                           ><a
                             class="dropdown-item"
                             href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                            ><i class="col-1 mr-3 fas fa-edit"></i>Crear Nota de Débito</a
                           ><a
                             class="dropdown-item"
                             :href="'print/vouchers/A4/' + sale.id"

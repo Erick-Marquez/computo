@@ -4,6 +4,7 @@ use App\Http\Controllers\BranchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CashboxController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurrencyExchangeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuotationController;
@@ -85,6 +86,11 @@ Route::middleware([
     Route::get('branches', [BranchController::class, 'index'])->name('api.branches.index');
 
     //------------------------Settings-----------------------
+
+    //Company
+    Route::get('company', [CompanyController::class, 'index'])->name('api.company.index');
+    Route::put('company/{id}', [CompanyController::class, 'update'])->name('api.company.update');
+
     //Roles
     Route::get('/roles', [RoleController::class, 'index'])->name('api.role.index');
 

@@ -65,6 +65,6 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+        $("[name='my-checkbox']").bootstrapSwitch();
     </script>
 @stop

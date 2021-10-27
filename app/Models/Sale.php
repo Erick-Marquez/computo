@@ -27,6 +27,7 @@ class Sale extends Model
 
         'have_warranty',
 
+        'state',
         'send_sunat',
         'response_sunat',
         'description_sunat_cdr',
@@ -38,6 +39,11 @@ class Sale extends Model
         'open_closed_cashbox_id',
         'user_id'
     ];
+
+    const ACEPTADO = 'ACEPTADO';
+    const RECHAZADO = 'RECHAZADO';
+    const PENDIENTE = 'PENDIENTE';
+    const ANULADO = 'ANULADO';
 
     public function saleDetails()
     {

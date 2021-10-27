@@ -22,7 +22,8 @@ class CreateQuotationsTable extends Migration
             
             $table->boolean('have_warranty')->default(false);
             
-            
+            $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
+
             $table->foreignId('customer_id')
                 ->constrained()
                 ->onUpdate('cascade')

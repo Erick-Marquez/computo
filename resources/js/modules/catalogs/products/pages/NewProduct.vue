@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="createProduct()" @submit="checkForm">
+<form @submit.prevent="createProduct()">
   <div class="row">
     <div class="col-md-7">
       <div class="row">
@@ -87,19 +87,19 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">Tipo de cambio</label>
-                    <input type="number" class="form-control" v-model="currencyExchange" @keyup="changePricesSoles()">
+                    <input type="number" step="0.001" class="form-control" v-model="currencyExchange" @keyup="changePricesSoles()">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">P. Compra Soles</label>
-                    <input type="number" class="form-control" v-model="purchasePriceSoles" @keyup="changePurchasePriceDollar()">
+                    <input type="number" step="0.001" class="form-control" v-model="purchasePriceSoles" @keyup="changePurchasePriceDollar()">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="">P. Compra Dolares</label>
-                    <input type="number" class="form-control" v-model="purchasePriceDollar" @keyup="changePurchasePriceSoles()">
+                    <input type="number" step="0.001" class="form-control" v-model="purchasePriceDollar" @keyup="changePurchasePriceSoles()">
                   </div>
                 </div>
               </div>
@@ -119,24 +119,24 @@
                     <tbody>
                       <tr>
                         <td class="align-middle">Precio 1</td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainOne" @keyup="changeSalePriceSolesAndDollarOne()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceOneSoles" @keyup="changeSalePriceDollarAndGainOne()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceOneDollar" @keyup="changeSalePriceSolesAndGainOne()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="saleGainOne" @keyup="changeSalePriceSolesAndDollarOne()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceOneSoles" @keyup="changeSalePriceDollarAndGainOne()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceOneDollar" @keyup="changeSalePriceSolesAndGainOne()"></td>
                       </tr>
                       <tr>
                         <td class="align-middle">Precio 2</td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainTwo" @keyup="changeSalePriceSolesAndDollarTwo()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceTwoSoles" @keyup="changeSalePriceDollarAndGainTwo()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceTwoDollar" @keyup="changeSalePriceSolesAndGainTwo()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="saleGainTwo" @keyup="changeSalePriceSolesAndDollarTwo()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceTwoSoles" @keyup="changeSalePriceDollarAndGainTwo()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceTwoDollar" @keyup="changeSalePriceSolesAndGainTwo()"></td>
                       </tr>
                       <tr>
                         <td class="align-middle">Precio Tarjeta
                           <br>
                           <small class="text-danger">(Respecto al precio 1)</small>
                         </td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="saleGainThree" @keyup="changeSalePriceSolesAndDollarThree()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceThreeSoles" @keyup="changeSalePriceDollarAndGainThree()"></td>
-                        <td class="align-middle"><input type="number" class="form-control" v-model="salePriceThreeDollar" @keyup="changeSalePriceSolesAndGainThree()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="saleGainThree" @keyup="changeSalePriceSolesAndDollarThree()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceThreeSoles" @keyup="changeSalePriceDollarAndGainThree()"></td>
+                        <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceThreeDollar" @keyup="changeSalePriceSolesAndGainThree()"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -475,9 +475,13 @@ export default {
       BaseUrl.post(`api/products`, product)
       .then( resp => {
         
-        console.log(resp)
+        this.$router.push({ name: "product-list" });
+        Swal.fire(
+          "Producto Creado",
+          "El producto ha sido creado satisfactoriamente",
+          "success"
+        );
 
-        //Swal.fire("Creado", "El Cambio de Divisa ha sido creado", "success");
       })
       .catch((error) => {
         console.log(error);

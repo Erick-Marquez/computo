@@ -222,6 +222,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         identification_document_id: 1
       },
       numberQuotation: null,
+      contador: 0,
       voucherTypeSelect: null,
       serieSelect: null,
       currentNumber: "Selecciona una serie",
@@ -328,7 +329,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         product_id: filSearch.id,
         cod: filSearch.cod,
         affect_icbper: false,
-        igv_type_id: 8,
+        igv_type_id: filSearch.igv_type_id,
         discount: 0,
         description: filSearch.name,
         sale_price: filSearch.sale_price,
@@ -350,7 +351,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         product_id: filSearch.id,
         cod: filSearch.cod,
         affect_icbper: false,
-        igv_type_id: 8,
+        igv_type_id: filSearch.igv_type_id,
         discount: 0,
         description: filSearch.name,
         sale_price: filSearch.referential_sale_price_one,
@@ -372,7 +373,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         product_id: filSearch.id,
         cod: filSearch.cod,
         affect_icbper: false,
-        igv_type_id: 8,
+        igv_type_id: filSearch.igv_type_id,
         discount: 0,
         description: filSearch.name,
         sale_price: filSearch.referential_sale_price_two,
@@ -434,30 +435,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     createSale: function createSale() {
+      var _this6 = this;
+
       this.saleData.voucher.serie_id = this.serieSelect;
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/sales", this.saleData).then(function (response) {
-        console.log(response);
+        _this6.$router.push({
+          name: "voucher-list"
+        });
+
+        Swal.fire("Comprobante Creado", response.data.response.message, "success");
       })["catch"](function (error) {
         console.log(error);
       });
     },
     getQuotation: function getQuotation() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.saleData.detail = [];
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("api/sales/quotation/".concat(this.numberQuotation)).then(function (resp) {
         var quotation = resp.data.data[0];
-        _this6.saleData.voucher.discount = quotation.discount;
-        _this6.saleData.voucher.warranty = Boolean(quotation.have_warranty);
-        _this6.saleData.voucher.observation = quotation.observation;
+        _this7.saleData.voucher.discount = quotation.discount;
+        _this7.saleData.voucher.warranty = Boolean(quotation.have_warranty);
+        _this7.saleData.voucher.observation = quotation.observation;
         quotation.quotation_details.forEach(function (e, index) {
-          _this6.productSerieSearchFilter.push([]);
+          _this7.productSerieSearchFilter.push([]);
 
           var product = {
             product_id: e.id,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
-            igv_type_id: 8,
+            igv_type_id: e.branch_product.product.igv_type_id,
             discount: e.discount,
             description: e.branch_product.product.name,
             sale_price: e.price,
@@ -465,21 +472,69 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             series: []
           };
 
-          _this6.saleData.detail.push(product);
+          _this7.saleData.detail.push(product);
 
-          _this6.getSeries(e.id); //Añadir series
-
-
-          _this6.addSeries(index); //Activar descuento
+          _this7.getSeries(e.id); //Añadir series
 
 
-          _this6.activateOrDesactivateGlobalDiscount();
+          _this7.addSeries(index); //Activar descuento
 
-          _this6.activateOrDesactivateDetailDiscount();
+
+          _this7.activateOrDesactivateGlobalDiscount();
+
+          _this7.activateOrDesactivateDetailDiscount();
         });
+
+        _this7.getQuotationDiscount(0);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    getQuotationDiscount: function getQuotationDiscount(dato) {
+      var _this8 = this;
+
+      if (dato < this.saleData.detail.length) {
+        if (this.saleData.detail[dato].discount > 0) {
+          Swal.fire({
+            title: "Descuento",
+            text: 'Existe un descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, adelante",
+            cancelButtonText: "Cancelar"
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              Swal.fire('Confirmado', 'El descuento para el producto ' + _this8.saleData.detail[dato].description + ' por un total de S/. ' + _this8.saleData.detail[dato].discount + ' ha sido aceptado.', 'success').then(function (result) {
+                if (result.value) {
+                  dato++;
+
+                  _this8.getQuotationDiscount(dato);
+                }
+              });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              var discount = _this8.saleData.detail[dato].discount;
+              _this8.saleData.detail[dato].discount = 0;
+              Swal.fire('Cancelado', 'El descuento para el producto ' + _this8.saleData.detail[dato].description + ' por un total de S/. ' + discount + ' ha sido eliminado.', 'error').then(function (result) {
+                if (result.value) {
+                  dato++;
+
+                  _this8.getQuotationDiscount(dato);
+                }
+              });
+            }
+          });
+        } else {
+          dato++;
+          this.getQuotationDiscount(dato);
+        }
+      } else {
+        //Activar descuento
+        this.activateOrDesactivateGlobalDiscount();
+        this.activateOrDesactivateDetailDiscount();
+        return true;
+      }
     }
   }
 });

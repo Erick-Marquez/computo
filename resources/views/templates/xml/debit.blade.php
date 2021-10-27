@@ -19,13 +19,13 @@
     <cbc:DocumentCurrencyCode listID="ISO 4217 Alpha" listAgencyName="United Nations Economic Commission for Europe" listName="Currency">PEN</cbc:DocumentCurrencyCode>
     <cac:DiscrepancyResponse>
         <cbc:ReferenceID>{{ $debitNote->sale->serie->serie }}-{{ $debitNote->sale->document_number }}</cbc:ReferenceID>
-        <cbc:ResponseCode>{{ $debitNote->debitNoteType->cod }}</cbc:ResponseCode>
+        <cbc:ResponseCode>{{ $debitNote->debitNoteType->id }}</cbc:ResponseCode>
         <cbc:Description>{{ $debitNote->observation }}</cbc:Description>
     </cac:DiscrepancyResponse>
     <cac:BillingReference>
         <cac:InvoiceDocumentReference>
             <cbc:ID>{{ $debitNote->sale->serie->serie }}-{{ $debitNote->sale->document_number }}</cbc:ID>
-            <cbc:DocumentTypeCode>{{ $debitNote->sale->serie->voucherType->cod }}</cbc:DocumentTypeCode>
+            <cbc:DocumentTypeCode>{{ $debitNote->sale->serie->voucherType->id }}</cbc:DocumentTypeCode>
         </cac:InvoiceDocumentReference>
     </cac:BillingReference>
     <cac:AccountingSupplierParty>
@@ -70,16 +70,16 @@
     <cac:AccountingCustomerParty>
         <cac:Party>
             <cac:PartyIdentification>
-                <cbc:ID schemeID="{{ $debitNote->sale->customer->identificationDocument->cod }}" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:ID>
+                <cbc:ID schemeID="{{ $debitNote->sale->customer->identificationDocument->id }}" schemeName="Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:ID>
             </cac:PartyIdentification>
             <cac:PartyName>
                 <cbc:Name><![CDATA[{{ $debitNote->sale->customer->name }}]]></cbc:Name>
             </cac:PartyName>
             <cac:PartyTaxScheme>
                 <cbc:RegistrationName><![CDATA[{{ $debitNote->sale->customer->name }}]]></cbc:RegistrationName>
-                <cbc:CompanyID schemeID="{{ $debitNote->sale->customer->identificationDocument->cod }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:CompanyID>
+                <cbc:CompanyID schemeID="{{ $debitNote->sale->customer->identificationDocument->id }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:CompanyID>
                 <cac:TaxScheme>
-                    <cbc:ID schemeID="{{ $debitNote->sale->customer->identificationDocument->cod }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:ID>
+                    <cbc:ID schemeID="{{ $debitNote->sale->customer->identificationDocument->id }}" schemeName="SUNAT:Identificador de Documento de Identidad" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06">{{ $debitNote->sale->customer->document }}</cbc:ID>
                 </cac:TaxScheme>
             </cac:PartyTaxScheme>
             <cac:PartyLegalEntity>
@@ -192,7 +192,7 @@
             <cac:TaxSubtotal>
                 <cbc:TaxableAmount currencyID="PEN">{{ round($debitNoteDetail->total, 2) }}</cbc:TaxableAmount>
                 <cbc:TaxAmount currencyID="PEN">{{ round($debitNoteDetail->total_igv, 2) }}</cbc:TaxAmount>
-                @switch($debitNoteDetail->igvType->cod)
+                @switch($debitNoteDetail->igvType->id)
                 @case(10)
                 <cac:TaxCategory>
                     <cbc:ID schemeID="UN/ECE 5305" schemeName="Tax Category Identifier" schemeAgencyName="United Nations Economic Commission for Europe">S</cbc:ID>

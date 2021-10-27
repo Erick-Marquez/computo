@@ -44,7 +44,8 @@
                   <tr>
                     <th>Usuario</th>
                     <th>Fecha</th>
-                    <th>Número de cotización</th>
+                    <th>Valido Hasta</th>
+                    <th>Número</th>
                     <th>Cliente</th>
                     <th>Total</th>
                     <th>Acciones</th>
@@ -53,7 +54,16 @@
                 <tbody>
                   <tr v-for="quotation in quotations" :key="quotation.id">
                     <td>{{ quotation.user.name }}</td>
-                    <td>{{ quotation.updated_at }}</td>
+                    <td>{{ quotation.created_at }}</td>
+                    <!-- <td v-show="false">{{ q = new Date(Date.parse(quotation.updated_at)) }}</td>
+                    <td>{{ q.getFullYear() }}-{{ q.getMonth() }}-{{ q.getDate() }}</td> -->
+                    <td>
+                      {{ quotation.date_due }}
+                      <br>
+                      <span :class="getElapsedTimeNumber(quotation.date_due) > 0 ? 'text-success' : 'text-danger'" >
+                        {{ getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Retraso: ' }} {{ getElapsedTime(quotation.date_due) }}
+                      </span>
+                    </td>
                     <td>{{ quotation.document_number }}</td>
                     <td>{{ quotation.customer.name }}</td>
                     <td>{{ quotation.total }}</td>
@@ -110,7 +120,6 @@ export default {
   components:{BaseUrl},
   async created(){
     await BaseUrl.get(`api/quotations`).then( resp=>{
-      console.log(resp.data)
       this.quotations=resp.data.data
     })
   },
@@ -120,7 +129,35 @@ export default {
     }
   },
   methods:{
-    
+    getElapsedTime(endDate){
+
+      let elapsedTime = this.getElapsedTimeNumber(endDate)
+  
+      let seconds = elapsedTime/1000
+      let minutes = seconds/60
+      let hours = minutes/60
+      let days = hours/24
+
+      // Si el numero es positivo esta a tiempo y si es negativo se paso de la fecha
+
+      if (Math.abs(days) >= 1) {
+        return Math.abs(days).toFixed(0)+" días"
+      }
+      else if (Math.abs(hours) >= 1){
+        return Math.abs(hours).toFixed(0)+" horas"
+      }
+      else {
+        return Math.abs(minutes).toFixed(0)+" minutos"
+      }
+
+    },
+    getElapsedTimeNumber(date){
+      let today = Date.now()
+      let tem = new Date(Date.parse(date))
+      tem.setDate(tem.getDate()+1)
+      tem.setHours(0)
+      return tem - today
+    }
   }
 }
 </script>

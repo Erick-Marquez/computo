@@ -11,13 +11,25 @@ class Company extends Model
 
     protected $fillable = [
         'ruc',
+        'name',
         'comercial_name',
         'phone',
         'email',
+        'ubigeo',
+        'urbanization',
         'address',
         'user_sol',
         'password_sol',
+        'electronic_certificate',
+        'password_electronic_certificate',
         'demo'
+    ];
+
+    protected $hidden = [
+        'user_sol',
+        'password_sol',
+        'electronic_certificate',
+        'password_electronic_certificate',
     ];
 
     protected $table = "company";

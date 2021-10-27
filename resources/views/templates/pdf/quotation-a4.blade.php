@@ -54,7 +54,7 @@
                     <td>{{ $head->created_at }}</td>
                     <td>EFECTIVO</td>
                     <td>Soles</td>
-                    <td></td>
+                    <td>{{ $head->date_due }}</td>
                     {{-- <td></td> --}}
                 </tr>
             </tbody>

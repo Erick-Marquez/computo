@@ -152,7 +152,8 @@ class VoucherController extends Controller
 
         $sale->update([
             'send_sunat' => $sunat['send'],
-            'response_sunat' => true,
+            'state' => $sunat['state'],
+            'response_sunat' => $sunat['response_sunat'],
             'description_sunat_cdr' => $sunat['response']['message'],
             'hash_cdr' => $sunat['response']['hash_cdr']
         ]);

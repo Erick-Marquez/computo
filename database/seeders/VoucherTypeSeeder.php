@@ -16,7 +16,7 @@ class VoucherTypeSeeder extends Seeder
     {
         DB::table('company')->insert([
             ['ruc' => '20100066603', 'name' => 'Demo Computo', 'comercial_name' => 'Demo Computo',
-            'address' => 'PRO. HUALLAYCO  NRO. 190   HUáNUCO -  HUáNUCO -  HUANUCO', 'ubigeo' => '100101']
+            'address' => 'PRO. HUALLAYCO  NRO. 190', 'ubigeo' => '100101']
         ]);
 
         DB::table('branches')->insert([

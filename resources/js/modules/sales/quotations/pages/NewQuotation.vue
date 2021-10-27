@@ -12,7 +12,7 @@
               <i class="text-danger fas fa-calendar-times"></i>
               Valido Hasta
             </label>
-            <input type="date" name="" id="">
+            <input type="date" v-model="quotationData.quotation.date_due" required>
           </div>
         </div>
         
@@ -187,7 +187,7 @@
             <tbody>
               <tr v-for="(detail, index) in quotationData.detail" :key="detail">
                 <td>
-                  {{ detail.description }} - {{ detail.cod }}
+                  {{ detail.description }} - {{ detail.brand }} - {{ detail.cod }}
                 </td>
                 <td>
                   <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.quantity" @keypress="onlyNumber($event)">
@@ -330,7 +330,8 @@ export default {
         quotation: {
           discount: 0,
           observation: '',
-          warranty: true
+          warranty: true,
+          date_due: null,
         },
         detail: []
       },
@@ -366,9 +367,10 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : 20,
         discount : 0,
         description : filSearch.name,
+        brand : filSearch.brand,
         sale_price : filSearch.sale_price,
         quantity : 1,
       }
@@ -383,9 +385,10 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : 20,
         discount : 0,
         description : filSearch.name,
+        brand : filSearch.brand,
         sale_price : filSearch.referential_sale_price_one,
         quantity : 1,
       }
@@ -401,9 +404,10 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : 20,
         discount : 0,
         description : filSearch.name,
+        brand : filSearch.brand,
         sale_price : filSearch.referential_sale_price_two,
         quantity : 1,
       }
@@ -439,7 +443,12 @@ export default {
 
       BaseUrl.post("/api/quotations", this.quotationData).then((response) => {
         console.log(response)
-        this.$router.push({ name: 'quotation-list' })
+        this.$router.push({ name: "quotation-list" });
+        Swal.fire(
+          "Cotización Creada",
+          "Se ha creado la Cotizacion N° " + response.data.document_number,
+          "success"
+        );
       })
       .catch((error) => {
         console.log(error);

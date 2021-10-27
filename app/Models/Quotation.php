@@ -16,6 +16,8 @@ class Quotation extends Model
         'observation',
 
         'have_warranty',
+
+        'date_due',
         
         'customer_id',
         'user_id'

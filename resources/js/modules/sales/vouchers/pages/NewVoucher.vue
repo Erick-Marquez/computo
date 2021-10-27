@@ -535,10 +535,11 @@ export default {
   },
   data() {
     return {
-        customer: {
+      customer: {
         identification_document_id: 1,
       },
       numberQuotation: null,
+      contador: 0,
 
       voucherTypeSelect: null,
       serieSelect: null,
@@ -643,7 +644,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : filSearch.igv_type_id,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.sale_price,
@@ -670,7 +671,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : filSearch.igv_type_id,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_one,
@@ -697,7 +698,7 @@ export default {
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 8,
+        igv_type_id : filSearch.igv_type_id,
         discount : 0,
         description : filSearch.name,
         sale_price : filSearch.referential_sale_price_two,
@@ -767,7 +768,12 @@ export default {
     createSale() {
       this.saleData.voucher.serie_id = this.serieSelect
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
-        console.log(response);
+        this.$router.push({ name: "voucher-list" });
+        Swal.fire(
+          "Comprobante Creado",
+          response.data.response.message,
+          "success"
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -786,20 +792,22 @@ export default {
         this.saleData.voucher.observation = quotation.observation
 
         quotation.quotation_details.forEach((e, index) => {
-
+          
           this.productSerieSearchFilter.push([])
 
           const product = {
             product_id : e.id,
             cod : e.branch_product.product.cod,
             affect_icbper : false,
-            igv_type_id : 8,
+            igv_type_id : e.branch_product.product.igv_type_id,
             discount : e.discount,
             description : e.branch_product.product.name,
             sale_price : e.price,
             quantity : e.quantity,
             series : []
           }
+          
+          
 
           this.saleData.detail.push(product)
 
@@ -813,11 +821,72 @@ export default {
           this.activateOrDesactivateDetailDiscount()
         });
 
+        this.getQuotationDiscount(0)
+
+        
+
       })
       .catch((error) => {
         console.log(error);
       });
-    }
+      
+    },
+    getQuotationDiscount(dato){
+
+      if (dato < this.saleData.detail.length) {
+        if (this.saleData.detail[dato].discount > 0) {
+          Swal.fire({
+            title: "Descuento",
+            text: 'Existe un descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, adelante",
+            cancelButtonText: "Cancelar",
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Confirmado',
+                'El descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount + ' ha sido aceptado.',
+                'success'
+              ).then((result) => {
+                if (result.value) {
+                  dato++
+                  this.getQuotationDiscount(dato)
+                }
+              })
+              
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              let discount = this.saleData.detail[dato].discount
+              this.saleData.detail[dato].discount = 0
+              Swal.fire(
+                'Cancelado',
+                'El descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + discount +  ' ha sido eliminado.',
+                'error'
+              ).then((result) => {
+                if (result.value) {
+                  dato++
+                  this.getQuotationDiscount(dato)
+                }
+              })
+            }
+          })
+        }
+        else {
+          dato++
+          this.getQuotationDiscount(dato)
+        }
+      } else {
+        //Activar descuento
+        this.activateOrDesactivateGlobalDiscount()
+        this.activateOrDesactivateDetailDiscount()
+        return true
+      }
+      
+    },
+
   }
 
 };

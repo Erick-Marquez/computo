@@ -108,11 +108,6 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
 
 
 
-//Modulo Terceros
-Route::middleware(['auth:sanctum', 'verified'])->resource('customers', CustomerController::class)->names('customers');
-Route::middleware(['auth:sanctum', 'verified'])->resource('providers', ProviderController::class)->names('providers');
-
-
 //Modulo Configuracion
 Route::middleware(['auth:sanctum', 'verified'])->resource('users', UserController::class)->names('users');
 Route::middleware(['auth:sanctum', 'verified'])->resource('series', SerieController::class)->names('series')->parameters(['series' => 'serie']);

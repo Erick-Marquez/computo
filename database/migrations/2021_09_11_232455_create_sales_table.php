@@ -34,6 +34,7 @@ class CreateSalesTable extends Migration
             $table->decimal('received_money', 9, 3)->nullable();
             $table->decimal('change', 9, 3)->nullable();
 
+            $table->string('state')->nullable();
             $table->boolean('send_sunat')->default(false);
             $table->boolean('response_sunat')->default(false);
             $table->string('description_sunat_cdr')->nullable();
