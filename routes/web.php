@@ -88,6 +88,9 @@ Route::get('/prueba', [WebController::class, 'prueba']);
 Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
 Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
 
+//Rutas descarga
+Route::middleware(['auth:sanctum', 'verified'])->get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
+
 
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 

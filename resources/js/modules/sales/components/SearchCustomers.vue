@@ -196,21 +196,21 @@ export default {
       await BaseUrl.get(
         `/api/data-document/${this.customer.identification_document_id}/${this.customer.document}`
       )
-        .then((response) => {
-          console.log(response.data);
-          this.customer.phone = "";
-          this.customer.address = "";
-          this.customer.address = response.data.address;
-          this.customer.name = response.data.name;
-          this.customer.address = response.data.address;
-          this.customer.phone = response.data.phone;
-        })
-        .catch((error) => {
-          console.log(error.response);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      .then((response) => {
+        console.log(response.data);
+        this.customer.phone = "";
+        this.customer.address = "";
+        this.customer.address = response.data.address;
+        this.customer.name = response.data.name;
+        this.customer.address = response.data.address;
+        this.customer.phone = response.data.phone;
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
     },
     async getcustomers() {
       await BaseUrl.get(

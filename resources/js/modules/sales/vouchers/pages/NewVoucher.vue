@@ -337,7 +337,7 @@
                             placeholder="Serie"
                             v-model="obj.serie"
                             @keyup="searchProductSeries(index, j)"
-                          />
+                          >
                           <div class="">
                             <div class="">
                               <div>
@@ -755,6 +755,7 @@ export default {
     createSale() {
       this.saleData.voucher.serie_id = this.serieSelect
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
+        console.log(response)
         this.$router.push({ name: "voucher-list" });
         Swal.fire(
           "Comprobante Creado",

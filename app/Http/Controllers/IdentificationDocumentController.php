@@ -67,7 +67,6 @@ class IdentificationDocumentController extends Controller
     public function getDataApi($cod, $number)
     {
         $token = env('TOKEN_APIS_PERU');
-
         // return response()->json([
         //     'token' => $token,
         //     'cod' => $cod,

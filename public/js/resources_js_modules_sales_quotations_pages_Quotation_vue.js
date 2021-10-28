@@ -71,8 +71,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var days = hours / 24; // Si el numero es positivo esta a tiempo y si es negativo se paso de la fecha
 
       if (Math.abs(days) >= 1) {
+        if (Math.abs(days).toFixed(0) == 1) {
+          return Math.abs(days).toFixed(0) + " día";
+        }
+
         return Math.abs(days).toFixed(0) + " días";
       } else if (Math.abs(hours) >= 1) {
+        if (Math.abs(hours).toFixed(0) == 1) {
+          return Math.abs(hours).toFixed(0) + " hora";
+        }
+
         return Math.abs(hours).toFixed(0) + " horas";
       } else {
         return Math.abs(minutes).toFixed(0) + " minutos";
@@ -84,6 +92,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       tem.setDate(tem.getDate() + 1);
       tem.setHours(0);
       return tem - today;
+    },
+    getTimestamp: function getTimestamp(date) {
+      var prueba = new Date(Date.parse(date)).toLocaleString('en-US', {
+        timeZone: 'America/Lima'
+      });
+      return prueba;
     }
   }
 });
@@ -224,13 +238,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: quotation.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(quotation.user.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(quotation.created_at), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getTimestamp(quotation.created_at)), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td v-show=\"false\">{{ q = new Date(Date.parse(quotation.updated_at)) }}</td>\r\n                    <td>{{ q.getFullYear() }}-{{ q.getMonth() }}-{{ q.getDate() }}</td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(quotation.date_due) + " ", 1
     /* TEXT */
     ), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.getElapsedTimeNumber(quotation.date_due) > 0 ? 'text-success' : 'text-danger')
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Retraso: ') + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getElapsedTime(quotation.date_due)), 3
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ') + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getElapsedTime(quotation.date_due)), 3
     /* TEXT, CLASS */
     )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(quotation.document_number), 1
     /* TEXT */
@@ -269,7 +283,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

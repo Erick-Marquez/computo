@@ -22,7 +22,7 @@
                 <span class="badge bg-maroon">Venta:</span>
               </div>
               <div class="col">
-                {{ currentCurrencyExchange.compra }}
+                {{ currentCurrencyExchange.venta }}
               </div>
         </div>
       </div>
@@ -128,7 +128,7 @@
                 <span class="badge bg-maroon">Venta:</span>
               </div>
               <div class="col">
-                {{ currentCurrencyExchange.compra }}
+                {{ currentCurrencyExchange.venta }}
               </div>
             </div>
             <br>

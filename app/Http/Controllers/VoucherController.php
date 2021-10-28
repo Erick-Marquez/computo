@@ -63,6 +63,19 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (is_null($request->customer['id'])) {
+            $customer = Customer::create([
+                'name' => $request->customer['name'],
+                'document' => $request->customer['document'],
+                'phone' => $request->customer['phone'],
+                'email' => $request->customer['email'],
+                'address' => $request->customer['address'],
+                'identification_document_id' => $request->customer['identification_document_id'],
+            ]);
+            $request->customer['id'] = $customer->id;
+        }
+        
         // $request->detail[0]['series'][0]['serie']
         $serie = Serie::find($request->voucher['serie_id']);
         $serie->current_number = $serie->current_number + 1;
@@ -215,13 +228,13 @@ class VoucherController extends Controller
 
         $text = join('|', [
             $company->ruc,
-            $head->serie->voucherType->cod,
+            $head->serie->voucherType->id,
             $head->serie->serie,
             $head->document_number,
             $head->total_igv,
             $head->total,
             $head->date_issue,
-            $head->customer->identificationDocument->cod,
+            $head->customer->identificationDocument->id,
             $head->customer->document,
             $head->hash_cdr
         ]);
@@ -243,6 +256,51 @@ class VoucherController extends Controller
         //setPaper(array(0,0,220,700)
 
         return $pdf->stream();
+    }
+
+    public function download($voucherType, $type, Sale $sale)
+    {
+        $company = Company::findorFail(1);
+        $pathToFile = 'app'.DIRECTORY_SEPARATOR.'Facturacion';
+
+        switch ($voucherType) {
+            case '01': // Factura
+                $pathToFile .= DIRECTORY_SEPARATOR.'Factura';
+                break;
+            case '03': //Boleta
+                $pathToFile .= DIRECTORY_SEPARATOR.'Boleta';
+                break;
+            case '07': //Nota de credito
+                $pathToFile .= DIRECTORY_SEPARATOR.'NotaCredito';
+                break;
+            case '08': //Nota de debito
+                $pathToFile .= DIRECTORY_SEPARATOR.'NotaDebito';
+                break;
+            case 'baja':
+                $pathToFile .= DIRECTORY_SEPARATOR.'Baja';
+                break;
+            default:
+                break;
+        }
+
+        
+
+        if ($type == 'xml') {
+            $pathToFile .= DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
+            //nombre del zip del xml del comprabante solicitado
+            $nameZip = $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+           
+            $pathToFile .= $nameZip;
+        }
+        else if ($type == 'cdr') {
+            $pathToFile .= DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+            //nombre del zip del cdr del comprabante solicitado
+            $nameZip = 'R-' . $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+            
+            $pathToFile .= $nameZip;
+        }
+
+        return response()->download(storage_path($pathToFile));
     }
 
     public function voucherTypes()
