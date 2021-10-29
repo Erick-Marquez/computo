@@ -74,9 +74,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="currencyExchange in currencyExchanges" :key="currencyExchange.id">
-                    <td>{{ currencyExchange.date }}</td>
-                    <td>{{ currencyExchange.change }}</td>
-                    <td>
+                    <td class="align-middle">{{ currencyExchange.date }}</td>
+                    <td class="align-middle">{{ currencyExchange.change }}</td>
+                    <td class="align-middle">
                       <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Acciones

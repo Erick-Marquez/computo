@@ -1,4 +1,3 @@
-{!! '<?xml version="1.0" encoding="utf-8" standalone="no"?>' !!}
 <CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
             xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
             xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
@@ -25,7 +24,7 @@
     <cac:BillingReference>
         <cac:InvoiceDocumentReference>
             <cbc:ID>{{ $creditNote->sale->serie->serie }}-{{ $creditNote->sale->document_number }}</cbc:ID>
-            <cbc:DocumentTypeCode>{{ $creditNote->sale->serie->voucherType->id }}</cbc:DocumentTypeCode>
+            <cbc:DocumentTypeCode>{{ $creditNote->sale->serie->voucherType->cod }}</cbc:DocumentTypeCode>
         </cac:InvoiceDocumentReference>
     </cac:BillingReference>
     <cac:AccountingSupplierParty>

@@ -17,9 +17,7 @@
                     id="managerSeriesCheckbox"
                     v-model="managerSeries"
                   >
-                  <label for="managerSeriesCheckbox" class="custom-control-label"
-                    >¿Maneja Series?</label
-                  >
+                  <label for="managerSeriesCheckbox" class="custom-control-label">¿Maneja Series?</label>
                 </div>
               </div>
             </div>

@@ -37,7 +37,19 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Sale::with('serie.voucherType', 'customer')->get();
+        $vouchers = Sale::whereHas('serie', function($q) {
+            $q->where('voucher_type_id', '!=', 3); // 3 id de nota de venta
+        })->with('serie.voucherType', 'customer')->get();
+        
+        return SaleResource::collection($vouchers);
+    }
+
+    public function saleNotes()
+    {
+        $vouchers = Sale::whereHas('serie', function($q) {
+            $q->where('voucher_type_id', '=', 3);
+        })->with('serie.voucherType', 'customer')->get();
+        
         return SaleResource::collection($vouchers);
     }
 
@@ -351,9 +363,9 @@ class VoucherController extends Controller
         return BranchProductSerieResource::collection($branchProductSeries);
     }
 
-    public function quotation($id)
+    public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $id)->with('quotationDetails.branchProduct.product')->get();
-        return QuotationResource::collection($quotation);
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product')->firstOrFail();
+        return QuotationResource::make($quotation);
     }
 }

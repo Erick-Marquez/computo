@@ -24,6 +24,11 @@ class CreateQuotationsTable extends Migration
             
             $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
 
+            $table->foreignId('serie_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+                
             $table->foreignId('customer_id')
                 ->constrained()
                 ->onUpdate('cascade')

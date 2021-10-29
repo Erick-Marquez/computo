@@ -9,7 +9,7 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == '01'"
+          v-if="voucherType == 1"
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
@@ -176,7 +176,7 @@ export default {
   },
   props: {
     customer: Object,
-    voucherType: String,
+    voucherType: Number,
   },
   created() {
     this.getTypeDocuments();

@@ -6,13 +6,7 @@
   </div>
 
   <div class="container-fluid">
-    <router-link
-      class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'roles-create' }"
-    >
-      <i class="fas fa-plus"></i>
-      Nuevo Rol
-    </router-link>
+    
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -118,7 +112,7 @@
                 id="description"
                 type="text"
                 class="form-control"
-                v-model="caja.description"
+                
                 required
               />
             </div>

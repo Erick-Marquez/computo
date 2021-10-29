@@ -22,6 +22,11 @@ class WebController extends Controller
         return view('sales.new-sale.index');
     }
 
+    public function saleNotes()
+    {
+        return view('sales.sale-notes.index');
+    }
+
     public function quotations()
     {
         return view('sales.quotations.index');

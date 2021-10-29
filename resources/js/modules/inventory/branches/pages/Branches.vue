@@ -168,44 +168,49 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Factura Eléctronica</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.invoice" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.invoiceNumber" required></td>
+                            <td class="align-middle">Factura Eléctronica</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.invoice" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.invoiceNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Boleta Eléctronica</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.ticket" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.ticketNumber" required></td>
+                            <td class="align-middle">Boleta Eléctronica</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.ticket" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.ticketNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Nota de Venta Eléctronica</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.saleNote" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.saleNoteNumber" required></td>
+                            <td class="align-middle">Nota de Venta Eléctronica</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.saleNote" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.saleNoteNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Nota de Crédito que modifica una Factura</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.creditNoteInvoice" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.creditNoteInvoiceNumber" required></td>
+                            <td class="align-middle">Nota de Crédito que modifica una Factura</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteInvoice" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteInvoiceNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Nota de Débito que modifica una Factura</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.debitNoteInvoice" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.debitNoteInvoiceNumber" required></td>
+                            <td class="align-middle">Nota de Débito que modifica una Factura</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteInvoice" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteInvoiceNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Nota de Crédito que modifica una Boleta</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.creditNoteTicket" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.creditNoteTicketNumber" required></td>
+                            <td class="align-middle">Nota de Crédito que modifica una Boleta</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteTicket" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteTicketNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Nota de Débito que modifica una Boleta</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.debitNoteTicket" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.debitNoteTicketNumber" required></td>
+                            <td class="align-middle">Nota de Débito que modifica una Boleta</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteTicket" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteTicketNumber" required></td>
                           </tr>
                           <tr>
-                            <td>Cotización</td>
-                            <td><input class="form-control" type="text" v-model="branch.series.quotation" required></td>
-                            <td><input class="form-control" type="text" v-model="branch.series.quotationNumber" required></td>
+                            <td class="align-middle">Cotización</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.quotation" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.quotationNumber" required></td>
+                          </tr>
+                          <tr>
+                            <td class="align-middle">Garantía</td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.warranty" required></td>
+                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.warrantyNumber" required></td>
                           </tr>
                         </tbody>
                       </table>
@@ -243,7 +248,7 @@
           
             <div class="form-group">
               <label for="name">Código SUNAT</label>
-              <input type="text" class="form-control" v-model="branchEdit.codSunat" required>
+              <input type="text" class="form-control" v-model="branchEdit.cod_sunat" required>
             </div>
 
             <div class="form-group">
@@ -263,15 +268,13 @@
 
             <div class="form-group">
               <label for="name">Teléfono</label>
-              <input type="text" class="form-control" v-model="branchEdit.phone" required>
+              <input type="text" class="form-control" v-model="branchEdit.phone">
             </div>
 
           </div>
 
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Cerrar
-            </button>
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
             <button type="submit" class="btn btn-primary">Actualizar</button>
           </div>
         </form>
@@ -313,7 +316,9 @@ export default {
           debitNoteTicket: 'BD01',
           debitNoteTicketNumber: 1,
           quotation: 'C001',
-          quotationNumber: 1
+          quotationNumber: 1,
+          warranty: 'G001',
+          warrantyNumber: 1
         } 
       },
       branchEdit: {}
@@ -327,7 +332,14 @@ export default {
     },
     showModal(modal, branch = null) {
       if (branch !== null) {
-        this.branchEdit = branch;
+
+        this.branchEdit.id = branch.id
+        this.branchEdit.cod_sunat = branch.cod_sunat
+        this.branchEdit.description = branch.description
+        this.branchEdit.direction = branch.direction
+        this.branchEdit.ubigeo = branch.ubigeo
+        this.branchEdit.phone = branch.phone
+
       }
       $(modal).modal("show");
     },
@@ -349,18 +361,20 @@ export default {
       // });
     },
     editBranch(){
-      BaseUrl.put(`api/branch/${this.branchEdit.id}`, this.branchEdit).then( resp => {
+
+      BaseUrl.put(`api/branches/${this.branchEdit.id}`, this.branchEdit).then( resp => {
         
-        console.log(resp)
         $("#modal-edit").modal("hide")
         this.showBranches()
         this.branchEdit = {}
 
         Swal.fire("Actualizado", "La sucursal ha sido actualizado", "success");
+
       })
       .catch((error) => {
         console.log(error);
       });
+
     },
     deleteBranch(id) {
       Swal.fire({

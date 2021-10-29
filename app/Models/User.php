@@ -78,4 +78,9 @@ class User extends Authenticatable
 
         return auth()->user()->profile_photo_url;
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

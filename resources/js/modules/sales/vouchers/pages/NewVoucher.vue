@@ -3,18 +3,38 @@
     <div class="row mb-2">
       <div class="col-sm-8">
         <h3>Registrar Nueva Venta</h3>
-        {{saleData.customer}}
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-2">
+        <div class="row">
+          <label for="" class="col-4 col-form-label col-form-label-sm">
+            <i class="text-danger fas fa-barcode"></i>
+            Serie Cotización
+          </label>
+          <div class="col-8">
+            <select
+              v-model="quotationSerieSelect"
+              class="form-control rounded-pill"
+            >
+              <option v-for="quotationSerie in quotationSeries" :key="quotationSerie.id" :value="quotationSerie.id">
+                {{ quotationSerie.serie }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
         <div class="input-group">
           <input
             type="text"
             placeholder="n° cotización"
             class="form-control"
             v-model="numberQuotation"
-          />
+          >
           <div class="input-group-append">
-            <button class="btn btn-danger" @click="getQuotation">
+            <button
+              class="btn btn-danger rounded-pill-right"
+              @click="getQuotation()"
+            >
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -396,6 +416,44 @@
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
           <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">
+                  <i class="text-danger fas fa-money-bill"></i>
+                  Tipo de pago
+                </label>
+                <select v-model="saleData.voucher.warranty_serie_id" class="form-control rounded-pill">
+                  <option v-for="warrantySerie in warrantySeries" :key="warrantySerie.id" :value="warrantySerie.id">
+                    {{ warrantySerie.serie }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 m-auto">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input custom-control-input-danger"
+                  type="checkbox"
+                  id="managerSeriesCheckbox"
+                  v-model="saleData.voucher.warranty"
+                >
+                <label for="managerSeriesCheckbox" class="custom-control-label">¿Aplica garantía?</label>
+              </div>
+            </div>
+            <div class="col-md-2" v-if="saleData.voucher.warranty">
+              <div class="form-group">
+                <label for="">Serie Garantia</label>
+                <select v-model="saleData.voucher.warranty_serie_id" class="form-control rounded-pill">
+                  <option v-for="warrantySerie in warrantySeries" :key="warrantySerie.id" :value="warrantySerie.id">
+                    {{ warrantySerie.serie }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- Tipo de pago -->
+          <h4>Tipo de Pago</h4>
+          <div class="row">
             <div class="col-md">
               <div class="form-group">
                 <label for="">Descuento</label>
@@ -405,7 +463,7 @@
                   v-model="saleData.voucher.discount"
                   v-on:change="activateOrDesactivateDetailDiscount"
                   :disabled="activateGlobalDiscount"
-                />
+                >
               </div>
             </div>
             <div class="col-md">
@@ -415,7 +473,7 @@
                   class="form-control rounded-pill"
                   type="text"
                   v-model="saleData.voucher.received_money"
-                />
+                >
               </div>
             </div>
             <div class="col-md">
@@ -425,17 +483,8 @@
                   class="form-control rounded-pill"
                   type="text"
                   v-model="saleData.voucher.change"
-                />
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label for="">Aplica Garantia</label>
-                <input
-                  class="form-control form-check-input bg-danger"
-                  type="checkbox"
-                  v-model="saleData.voucher.warranty"
-                />
+                  disabled
+                >
               </div>
             </div>
           </div>
@@ -534,9 +583,23 @@ export default {
     await BaseUrl.get(`api/sales/products`).then((resp) => {
       this.products = resp.data.data;
     });
+
+    await BaseUrl.get(`api/sales/series/8`).then((resp) => {
+      this.quotationSeries = resp.data.data;
+      this.quotationSerieSelect = this.quotationSeries[0].id
+    });
+
+    await BaseUrl.get(`api/sales/series/9`).then((resp) => {
+      this.warrantySeries = resp.data.data;
+      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
+    });
   },
   data() {
     return {
+      warrantySeries: {},
+
+      quotationSerieSelect: null,
+      quotationSeries: {},
       numberQuotation: null,
       contador: 0,
 
@@ -558,6 +621,7 @@ export default {
       productSeries: [],
       saleData: {
         customer: {
+          id: null,
         },
         voucher: {
           document_type: "01",
@@ -569,7 +633,8 @@ export default {
           observation: "",
           received_money: 0,
           change: 0,
-          warranty: true,
+          warranty_serie_id: null,
+          warranty: false,
         },
         detail: [],
       },
@@ -777,9 +842,8 @@ export default {
 
       this.saleData.detail = []
 
-      BaseUrl.get(`api/sales/quotation/${this.numberQuotation}`).then( resp=>{
-
-        let quotation = resp.data.data[0]
+      BaseUrl.get(`api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`).then( resp=>{
+        let quotation = resp.data.data
 
         this.saleData.voucher.discount = quotation.discount
         this.saleData.voucher.warranty = Boolean(quotation.have_warranty)
@@ -801,13 +865,10 @@ export default {
             series : []
           }
 
-
-
           this.saleData.detail.push(product)
 
+          //Obtener y Añadir series
           this.getSeries(e.id)
-
-          //Añadir series
           this.addSeries(index)
 
           //Activar descuento
@@ -816,13 +877,18 @@ export default {
         });
 
         this.getQuotationDiscount(0)
-
-
-
+        
       })
       .catch((error) => {
-        console.log(error);
-      });
+        if (error.response.status == 404) {
+          Swal.fire({
+            title: 'No encontrado', 
+            html: 'No existe la cotización', 
+            icon: 'warning' 
+          });
+        }
+      })
+
 
     },
     getQuotationDiscount(dato){

@@ -254,8 +254,8 @@ class SunatService
                 // Obtener datos nesesarios para la boleta
                 self::getSale($id);
                 // Obtener los nombres de los archivos
-                self::$nameXml = self::$company->ruc.'-'.self::$sale->serie->voucherType->id.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.xml';
-                self::$nameZip = self::$company->ruc.'-'.self::$sale->serie->voucherType->id.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.zip';
+                self::$nameXml = self::$company->ruc.'-'.self::$sale->serie->voucherType->cod.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.xml';
+                self::$nameZip = self::$company->ruc.'-'.self::$sale->serie->voucherType->cod.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.zip';
                 // Crear plantilla xml
                 $sale = self::$sale;
                 $company = self::$company;
@@ -274,8 +274,8 @@ class SunatService
                 // Obtener datos nesesarios para la factura
                 self::getSale($id);
                 // Obtener los nombres de los archivos
-                self::$nameXml = self::$company->ruc.'-'.self::$sale->serie->voucherType->id.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.xml';
-                self::$nameZip = self::$company->ruc.'-'.self::$sale->serie->voucherType->id.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.zip';
+                self::$nameXml = self::$company->ruc.'-'.self::$sale->serie->voucherType->cod.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.xml';
+                self::$nameZip = self::$company->ruc.'-'.self::$sale->serie->voucherType->cod.'-'.self::$sale->serie->serie.'-'.self::$sale->document_number.'.zip';
                 // Crear plantilla xml
                 $sale = self::$sale;
                 $company = self::$company;
@@ -290,8 +290,8 @@ class SunatService
                 // Obtener datos nesesarios para la nota de credito
                 self::getCredit($id);
                 // Obtener los nombres de los archivos
-                self::$nameXml = self::$company->ruc.'-'.self::$creditNote->serie->voucherType->id.'-'.self::$creditNote->serie->serie.'-'.self::$creditNote->document_number.'.xml';
-                self::$nameZip = self::$company->ruc.'-'.self::$creditNote->serie->voucherType->id.'-'.self::$creditNote->serie->serie.'-'.self::$creditNote->document_number.'.zip';
+                self::$nameXml = self::$company->ruc.'-'.self::$creditNote->serie->voucherType->cod.'-'.self::$creditNote->serie->serie.'-'.self::$creditNote->document_number.'.xml';
+                self::$nameZip = self::$company->ruc.'-'.self::$creditNote->serie->voucherType->cod.'-'.self::$creditNote->serie->serie.'-'.self::$creditNote->document_number.'.zip';
                 // Crear plantilla xml
                 $creditNote = self::$creditNote;
                 $company = self::$company;
@@ -306,8 +306,8 @@ class SunatService
                 // Obtener datos nesesarios para la nota de debito
                 self::getDebit($id);
                 // Obtener los nombres de los archivos
-                self::$nameXml = self::$company->ruc.'-'.self::$debitNote->serie->voucherType->id.'-'.self::$debitNote->serie->serie.'-'.self::$debitNote->document_number.'.xml';
-                self::$nameZip = self::$company->ruc.'-'.self::$debitNote->serie->voucherType->id.'-'.self::$debitNote->serie->serie.'-'.self::$debitNote->document_number.'.zip';
+                self::$nameXml = self::$company->ruc.'-'.self::$debitNote->serie->voucherType->cod.'-'.self::$debitNote->serie->serie.'-'.self::$debitNote->document_number.'.xml';
+                self::$nameZip = self::$company->ruc.'-'.self::$debitNote->serie->voucherType->cod.'-'.self::$debitNote->serie->serie.'-'.self::$debitNote->document_number.'.zip';
                 // Crear plantilla xml
                 $debitNote = self::$debitNote;
                 $company = self::$company;

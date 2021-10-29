@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,18 +26,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('settings.users.index', compact('users'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('settings.users.create');
+        $users = User::with('branch', 'roles')->get();
+        return UserResource::collection($users);
     }
 
     /**
@@ -72,18 +63,6 @@ class UserController extends Controller
     public function show(User $user)
     {
         return view('settings.users.show', compact('user'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        $roles = Role::all();
-        return view('settings.users.edit', compact('user', 'roles'));
     }
 
     /**

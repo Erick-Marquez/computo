@@ -279,6 +279,12 @@ return [
                     'route'  => 'web.ventas',
                     // 'can'    => 'vouchers.index',
                 ],
+                [
+                    'text' => 'Notas de Venta',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.sale-notes',
+                    // 'can'    => 'vouchers.index',
+                ],
                 // [
                 //     'text' => 'Anticipo de Venta',
                 //     'icon' => 'fas fa-fw',
@@ -504,7 +510,7 @@ return [
                 [
                     'text'   => 'Usuarios',
                     'icon'   => 'fas fa-fw ',
-                    'route'  => 'users.index',
+                    'route'  => 'web.users',
                     'can'    => 'users.index',
                 ],
                 [
@@ -516,7 +522,7 @@ return [
                 [
                     'text'   => 'Series',
                     'icon'   => 'fas fa-fw ',
-                    'route'  => 'series.index',
+                    'route'  => 'web.series',
                     'can'    => 'series.index',
                 ],
                 [

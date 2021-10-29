@@ -6,7 +6,7 @@
 @stop
 
 @section('content')
-    <index-users></index-users>
+    <index-sale-notes></index-sale-notes>
 @stop
 
 @section('css')
