@@ -1,8 +1,8 @@
 <template>
-  <h4>Datos del proveedor</h4>
+  <h4 class="mb-3">Datos del proveedor</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-address-card"></i>
@@ -51,7 +51,7 @@
           <div v-if="!loading" class="input-group-append">
             <button
               class="btn btn-dark rounded-pill-right"
-              @click="getDataApi"
+              @click.prevent="getDataApi"
             >
               <i class="fas fa-search"></i>
             </button>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- NOMBRE/RAZON SOCIAL -->
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-id-badge"></i>
@@ -110,7 +110,7 @@
 
   <div class="row">
     <!-- DIRECCIÓN -->
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-map-marker-alt"></i>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- UBIGEO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-globe"></i>
@@ -141,7 +141,7 @@
     </div>
 
     <!-- N° CELULAR -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-phone"></i>
@@ -200,7 +200,7 @@ export default {
           console.log(response.data);
           this.provider.phone = "";
           this.provider.address = "";
-          this.provider.address = response.data.address;
+          this.provider.id = null;
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
@@ -227,6 +227,7 @@ export default {
         });
     },
     setData(providerFind) {
+      this.provider.id = providerFind.id;
       this.provider.document = providerFind.document;
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
@@ -235,7 +236,7 @@ export default {
     },
     searchDocument() {
       clearTimeout(this.searching);
-      this.searching = setTimeout(this.getproviders, 200);
+      this.searching = setTimeout(this.getproviders, 300);
     },
   },
   computed: {

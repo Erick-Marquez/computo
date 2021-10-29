@@ -17,8 +17,11 @@
       />
 
       <!-- AUTOCOMPLETE -->
-      <div  class="autocomplete mt-0" v-show="toggle">
-        <table class="table table-hover list" v-show="productsFound.length">
+      <div class="autocomplete mt-0" v-show="toggle">
+        <table
+          class="table table-hover table-bordered list"
+          v-show="productsFound.length"
+        >
           <thead class="bg-danger">
             <tr>
               <th class="w-50">Nombre</th>
@@ -26,17 +29,18 @@
               <th class="w-25">Linea</th>
             </tr>
           </thead>
-          <tbody >
+          <tbody>
             <tr
               class="item"
-              v-for="product in productsFound"
+              v-for="(product, index) in productsFound"
               :key="product.id"
-              @click="setData(product)"
+              @click="setProduct(product)"
               @mousedown.prevent
+              :tabindex="index + 1"
             >
-              <td>{{product.name}}</td>
-              <td>{{product.brand}}</td>
-              <td>{{product.line}}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.brand }}</td>
+              <td>{{ product.line }}</td>
             </tr>
           </tbody>
         </table>
@@ -50,67 +54,126 @@
       <table class="table">
         <thead>
           <tr>
-            <th style="width: 40%">Descripción</th>
-            <th style="width: 20%">Tipo IGV</th>
-            <th style="width: 3%">Cantidad</th>
-            <th style="width: 10%">Precio</th>
-            <th style="width: 10%">Sub Total</th>
-            <th style="width: 10%">Total</th>
-            <th style="width: 5%">Series</th>
-            <th style="width: 3%"></th>
+            <th class="text-center" style="width: 40%">Descripción</th>
+            <th class="text-center" style="width: 20%">Tipo IGV</th>
+            <th class="text-center" style="width: 3%">Cantidad</th>
+            <th class="text-center" style="width: 10%">Precio</th>
+            <th class="text-center" style="width: 10%">Sub Total</th>
+            <th class="text-center" style="width: 10%">Total</th>
+            <th class="text-center" style="width: 5%">Series</th>
+            <th class="text-center" style="width: 3%"></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
+          <tr v-for="(product, index) in products" :key="product.id" >
+            <td class="px-1">
+              {{ product.name }}
+            </td>
 
-            <td>
+            <td class="px-1">
               <select name="" id="" class="form-control rounded-pill">
                 <option value="" default>Gravada</option>
                 <option value="">Exonerada</option>
               </select>
             </td>
-            <td>
+            <td class="px-1">
               <input
-                class="form-control form-control-border p-0"
+                class="form-control form-control-border p-0 text-center"
                 type="text"
-                name=""
-                id=""
+                v-model="product.quantity"
               />
             </td>
-            <td>
+            <td class="px-1">
               <input
-                class="form-control form-control-border p-0"
+                class="form-control form-control-border p-0 text-center"
                 type="text"
-                name=""
-                id=""
+                v-model="product.referential_purchase_price"
               />
             </td>
-            <td>
+            <td class="px-1">
               <input
-                class="form-control form-control-border p-0"
+                class="form-control form-control-border p-0 text-center"
                 type="text"
+                :value="
+                  parseFloat(
+                    (product.referential_purchase_price * product.quantity) /
+                      1.18
+                  ).toFixed(2)
+                "
                 disabled
               />
             </td>
-            <td>
+            <td class="px-1">
               <input
-                class="form-control form-control-border p-0"
+                class="form-control form-control-border p-0 text-center"
                 type="text"
+                :value="product.referential_purchase_price * product.quantity"
                 disabled
               />
             </td>
-            <td>
-              <button class="btn btn-dark btn-sm">Series</button>
+            <td class="px-1">
+              <button
+                @click.prevent="showModalSeries(index)"
+                class="btn btn-dark btn-sm"
+              >
+                Series
+              </button>
             </td>
             <td>
-              <button class="btn btn-flat bg-light">
+              <button
+                class="btn btn-flat bg-light"
+                @click="removeProduct(index)"
+              >
                 <i class="text-danger fas fa-trash"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- MODAL SERIES -->
+  <div
+    class="modal fade"
+    id="modal-series"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Series</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div
+            v-for="(serie, serieIndex) in Number(quantity)"
+            :key="serie.id"
+            class="form-group"
+          >
+            <input
+              class="form-control"
+              type="text"
+              v-model="products[index].series[serieIndex]"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -124,6 +187,8 @@ export default {
       loading: false,
       max_length: 8,
       productName: null,
+      index: null,
+      quantity: null,
       searching: [],
       productsFound: [],
     };
@@ -143,16 +208,43 @@ export default {
           console.log(error.response);
         });
     },
+    showModalSeries(index) {
+      this.index = index;
+      $("#modal-series").modal("show");
+      this.quantity = this.products[this.index].quantity;
+    },
     // metodo para buscar productos
     searchProduct() {
       clearTimeout(this.searching);
-      this.searching = setTimeout(this.getProducts, 200);
+      if (this.productName !== "") {
+        clearTimeout(this.searching);
+        this.searching = setTimeout(this.getProducts, 300);
+      }
     },
 
-    setData(product) {
-        this.productsFound = [];
-        this.product = null;
-    }
+    setProduct(product) {
+      product.quantity = 1;
+      product.referential_purchase_price == null ? product.referential_purchase_price = 0 : false;
+      product.series = [];
+
+      this.productsFound = [];
+      this.productName = null;
+
+      let index = this.products.findIndex(
+        (element) => element.id == product.id
+      );
+
+      if (index == -1) {
+        this.products.push(product);
+      }
+    },
+
+    removeProduct(index) {
+      this.products.splice(index, 1);
+    },
+    subtotal() {
+      return 2;
+    },
   },
   computed: {},
 };

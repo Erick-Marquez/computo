@@ -14,6 +14,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseIncomeController;
 use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,4 +98,7 @@ Route::middleware([
     //Currency Exchanges
     Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
     Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
+
+    //------------------------Purchases-----------------------//
+    Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
 });
