@@ -9,6 +9,11 @@ class Sale extends Model
 {
     use HasFactory;
 
+    const ACEPTADO = 'ACEPTADO';
+    const RECHAZADO = 'RECHAZADO';
+    const PENDIENTE = 'PENDIENTE';
+    const ANULADO = 'ANULADO';
+
     protected $fillable = [
         'document_number',
         'date_issue',
@@ -39,11 +44,6 @@ class Sale extends Model
         'open_closed_cashbox_id',
         'user_id'
     ];
-
-    const ACEPTADO = 'ACEPTADO';
-    const RECHAZADO = 'RECHAZADO';
-    const PENDIENTE = 'PENDIENTE';
-    const ANULADO = 'ANULADO';
 
     public function saleDetails()
     {

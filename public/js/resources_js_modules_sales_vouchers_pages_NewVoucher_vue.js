@@ -200,6 +200,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _context.next = 2;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("api/sales/vouchertypes").then(function (resp) {
                 _this.voucherTypes = resp.data.data;
+                _this.voucherTypeSelect = _this.voucherTypes[0].id;
+
+                _this.loadSeries();
               });
 
             case 2:
@@ -274,6 +277,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("api/sales/series/".concat(this.voucherTypeSelect)).then(function (resp) {
         _this3.series = resp.data.data;
+        _this3.serieSelect = _this3.series[0].id;
+
+        _this3.loadCurrentNumber();
       });
     },
     loadCurrentNumber: function loadCurrentNumber() {
@@ -429,6 +435,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     createSale: function createSale() {
       var _this6 = this;
 
+      this.saleData.voucher.document_type = this.voucherTypeSelect;
       this.saleData.voucher.serie_id = this.serieSelect;
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/sales", this.saleData).then(function (response) {
         console.log(response);
@@ -437,7 +444,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           name: "voucher-list"
         });
 
-        Swal.fire("Comprobante Creado", response.data.response.message, "success");
+        Swal.fire("Comprobante Creado", response.data, "success");
       })["catch"](function (error) {
         console.log(error.response);
       });
@@ -490,27 +497,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (dato < this.saleData.detail.length) {
         if (this.saleData.detail[dato].discount > 0) {
           Swal.fire({
-            title: "Descuento",
-            text: 'Existe un descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount,
+            title: "¿Aceptar Descuento?",
+            html: 'El producto <b>' + this.saleData.detail[dato].description + '</b> ' + 'tiene un precio <b>S/. ' + this.saleData.detail[dato].sale_price + '</b> ' + 'y tiene un descuento por un total de <b>S/. ' + this.saleData.detail[dato].discount + '</b> ' + 'el precio final es de <b>S/. ' + (this.saleData.detail[dato].sale_price - this.saleData.detail[dato].discount) + '</b>',
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, adelante",
-            cancelButtonText: "Cancelar"
+            cancelButtonText: "Cancelar",
+            allowOutsideClick: false
           }).then(function (result) {
             if (result.isConfirmed) {
-              Swal.fire('Confirmado', 'El descuento para el producto ' + _this8.saleData.detail[dato].description + ' por un total de S/. ' + _this8.saleData.detail[dato].discount + ' ha sido aceptado.', 'success').then(function (result) {
+              Swal.fire({
+                title: 'Confirmado',
+                html: 'El descuento para el producto <b>' + _this8.saleData.detail[dato].description + '</b> ' + 'por un total de <b>S/. ' + _this8.saleData.detail[dato].discount + '</b> ' + 'ha sido aceptado el precio final es <b>S/. ' + _this8.saleData.detail[dato].sale_price + '</b>',
+                icon: 'success',
+                allowOutsideClick: false
+              }).then(function (result) {
                 if (result.value) {
                   dato++;
 
                   _this8.getQuotationDiscount(dato);
                 }
               });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.backdrop) {
               var discount = _this8.saleData.detail[dato].discount;
               _this8.saleData.detail[dato].discount = 0;
-              Swal.fire('Cancelado', 'El descuento para el producto ' + _this8.saleData.detail[dato].description + ' por un total de S/. ' + discount + ' ha sido eliminado.', 'error').then(function (result) {
+              Swal.fire({
+                title: 'Cancelado',
+                html: 'El descuento para el producto <b>' + _this8.saleData.detail[dato].description + '</b> ' + 'por un total de <b>S/. ' + discount + '</b> ' + 'ha sido eliminado el precio final es <b>S/. ' + _this8.saleData.detail[dato].sale_price + '</b>',
+                icon: 'error',
+                allowOutsideClick: false
+              }).then(function (result) {
                 if (result.value) {
                   dato++;
 
@@ -1191,11 +1209,11 @@ var _hoisted_95 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_96 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento", -1
+var _hoisted_96 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento Global:", -1
 /* HOISTED */
 );
 
-var _hoisted_97 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento", -1
+var _hoisted_97 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento por Item:", -1
 /* HOISTED */
 );
 

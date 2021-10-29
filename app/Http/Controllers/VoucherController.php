@@ -81,8 +81,6 @@ class VoucherController extends Controller
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
 
-
-
         $sale = Sale::create([
             'document_number' => $serie->current_number,
             'date_issue' => $request->voucher['date_issue'],
@@ -93,12 +91,13 @@ class VoucherController extends Controller
             'received_money' => $request->voucher['received_money'],
             'change' => $request->voucher['change'],
 
+            'have_warranty' => $request->voucher['warranty'], 
+
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
             //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
-
 
         $subtotalSale = 0;
         $totalIgvSale = 0;
@@ -159,19 +158,39 @@ class VoucherController extends Controller
             'total_taxed' => $totalTaxedSale,
             'total' => $totalSale
         ]);
+
         // Enviar a Sunat
+        if ($request->voucher['document_type'] == '01') { // Factura
 
-        $sunat = SunatService::facturar($sale->id, 'invoice');
+            $sunat = SunatService::facturar($sale->id, 'invoice');
 
-        $sale->update([
-            'send_sunat' => $sunat['send'],
-            'state' => $sunat['state'],
-            'response_sunat' => $sunat['response_sunat'],
-            'description_sunat_cdr' => $sunat['response']['message'],
-            'hash_cdr' => $sunat['response']['hash_cdr']
-        ]);
+            $sale->update([
+                'send_sunat' => $sunat['send'],
+                'state' => $sunat['state'],
+                'response_sunat' => $sunat['response_sunat'],
+                'description_sunat_cdr' => $sunat['response']['message'],
+                'hash_cdr' => $sunat['response']['hash_cdr']
+            ]);
+        }
+        elseif ($request->voucher['document_type'] == '03') { // Boleta
+            
+            $sunat = SunatService::facturar($sale->id, 'ticket');
 
-        return $sunat;
+            $sale->update([
+                'send_sunat' => $sunat['send'],
+                'state' => $sunat['state'],
+                'response_sunat' => $sunat['response_sunat'],
+                'description_sunat_cdr' => $sunat['response']['message'],
+                'hash_cdr' => $sunat['response']['hash_cdr']
+            ]);
+        }
+        elseif ($request->voucher['document_type'] == 'NV') {
+
+            return "Nota de Venta Guardada";
+
+        }
+
+        return $sale->description_sunat_cdr;
 
     }
 
@@ -261,6 +280,7 @@ class VoucherController extends Controller
     public function download($voucherType, $type, Sale $sale)
     {
         $company = Company::findorFail(1);
+
         $pathToFile = 'app'.DIRECTORY_SEPARATOR.'Facturacion';
 
         switch ($voucherType) {
@@ -276,14 +296,12 @@ class VoucherController extends Controller
             case '08': //Nota de debito
                 $pathToFile .= DIRECTORY_SEPARATOR.'NotaDebito';
                 break;
-            case 'baja':
+            case 'baja': //Comunicacion de baja
                 $pathToFile .= DIRECTORY_SEPARATOR.'Baja';
                 break;
             default:
                 break;
         }
-
-        
 
         if ($type == 'xml') {
             $pathToFile .= DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;

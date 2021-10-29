@@ -470,11 +470,11 @@
                   <td>S/. {{ subtotal }}</td>
                 </tr>
                 <tr v-show="saleData.voucher.discount > 0">
-                  <th>Descuento</th>
+                  <th>Descuento Global:</th>
                   <td>S/. {{ saleData.voucher.discount }}</td>
                 </tr>
                 <tr v-show="discount > 0">
-                  <th>Descuento</th>
+                  <th>Descuento por Item:</th>
                   <td>S/. {{ discount }}</td>
                 </tr>
                 <tr>
@@ -523,6 +523,8 @@ export default {
   async created() {
     await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
       this.voucherTypes = resp.data.data;
+      this.voucherTypeSelect = this.voucherTypes[0].id
+      this.loadSeries()
     });
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
@@ -585,6 +587,8 @@ export default {
     loadSeries() {
       BaseUrl.get(`api/sales/series/${this.voucherTypeSelect}`).then((resp) => {
         this.series = resp.data.data;
+        this.serieSelect = this.series[0].id
+        this.loadCurrentNumber()
       });
     },
     loadCurrentNumber() {
@@ -753,13 +757,15 @@ export default {
       });
     },
     createSale() {
+
+      this.saleData.voucher.document_type = this.voucherTypeSelect
       this.saleData.voucher.serie_id = this.serieSelect
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
         console.log(response)
         this.$router.push({ name: "voucher-list" });
         Swal.fire(
           "Comprobante Creado",
-          response.data.response.message,
+          response.data,
           "success"
         );
       })
@@ -824,36 +830,46 @@ export default {
       if (dato < this.saleData.detail.length) {
         if (this.saleData.detail[dato].discount > 0) {
           Swal.fire({
-            title: "Descuento",
-            text: 'Existe un descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount,
+            title: "¿Aceptar Descuento?",
+            html: 'El producto <b>' + this.saleData.detail[dato].description + '</b> ' +
+            'tiene un precio <b>S/. ' + this.saleData.detail[dato].sale_price + '</b> ' +
+            'y tiene un descuento por un total de <b>S/. ' + this.saleData.detail[dato].discount + '</b> ' +
+            'el precio final es de <b>S/. ' + (this.saleData.detail[dato].sale_price - this.saleData.detail[dato].discount) + '</b>',
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, adelante",
             cancelButtonText: "Cancelar",
+            allowOutsideClick: false
           })
           .then((result) => {
             if (result.isConfirmed) {
-              Swal.fire(
-                'Confirmado',
-                'El descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + this.saleData.detail[dato].discount + ' ha sido aceptado.',
-                'success'
-              ).then((result) => {
+              Swal.fire({
+                title: 'Confirmado',
+                html: 'El descuento para el producto <b>' + this.saleData.detail[dato].description + '</b> ' + 
+                'por un total de <b>S/. ' + this.saleData.detail[dato].discount + '</b> '  +
+                'ha sido aceptado el precio final es <b>S/. ' + this.saleData.detail[dato].sale_price + '</b>',
+                icon: 'success',
+                allowOutsideClick: false
+              }).then((result) => {
                 if (result.value) {
                   dato++
                   this.getQuotationDiscount(dato)
                 }
               })
 
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            } else if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.backdrop) {
               let discount = this.saleData.detail[dato].discount
               this.saleData.detail[dato].discount = 0
-              Swal.fire(
-                'Cancelado',
-                'El descuento para el producto ' + this.saleData.detail[dato].description + ' por un total de S/. ' + discount +  ' ha sido eliminado.',
-                'error'
-              ).then((result) => {
+              Swal.fire({
+                title: 'Cancelado',
+                html: 'El descuento para el producto <b>' + this.saleData.detail[dato].description + '</b> ' + 
+                'por un total de <b>S/. ' + discount +  '</b> ' + 
+                'ha sido eliminado el precio final es <b>S/. ' + this.saleData.detail[dato].sale_price + '</b>',
+                icon: 'error',
+                allowOutsideClick: false
+              }).then((result) => {
                 if (result.value) {
                   dato++
                   this.getQuotationDiscount(dato)

@@ -6,13 +6,10 @@
   </div>
 
   <div class="container-fluid">
-    <router-link
-      class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-voucher' }"
-    >
+    <a href="nueva-venta" class="btn btn-lg btn-block btn-dark mb-4">
       <i class="fas fa-plus"></i>
       Nueva venta
-    </router-link>
+    </a>
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -60,9 +57,9 @@
                       <span class="text-muted">{{ sale.serie.voucher_type.description }}: </span>{{ sale.serie.serie }}-{{ sale.document_number }}
                     </td>
                     <td class="align-middle">
-                      <span class="badge bg-maroon">{{ sale.customer.identification_document_id = 6 ? "RUC: " : "DNI: " }}</span> {{ sale.customer.document }}
+                      <span class="badge bg-maroon">{{ sale.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ sale.customer.document }}
                       <br>
-                      <span class="badge bg-maroon">Nombre: </span>{{ sale.customer.name }}
+                      <span class="badge bg-maroon">Nombre:</span> {{ sale.customer.name }}
                     </td>
                     <td class="align-middle">S/. {{ sale.total }}</td>
                     <td class="align-middle text-center">
