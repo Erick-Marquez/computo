@@ -9,11 +9,11 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == '01'"
+          v-if="voucherType == 'FACTURA' || voucherType == '01'"
           v-model="provider.identification_document_id"
           class="form-control rounded-pill"
         >
-          <option value="6" >RUC</option>
+          <option value="6">RUC</option>
         </select>
         <select
           v-else
@@ -36,8 +36,8 @@
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-pen"></i>
-          N° Documento</label
-        >
+          N° Documento <span v-show="responseApi" :class="responseApiClass"> | {{ responseApi }} </span>
+        </label>
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
@@ -172,6 +172,7 @@ export default {
       searching: {},
       max_length: 8,
       loading: false,
+      responseApi: null,
     };
   },
   props: {
@@ -204,9 +205,11 @@ export default {
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
+          this.responseApi = "HABIDO";
         })
         .catch((error) => {
           console.log(error.response);
+          this.responseApi = "NO HABIDO";
         })
         .finally(() => {
           this.loading = false;
@@ -249,6 +252,9 @@ export default {
         ? true
         : false;
     },
+    responseApiClass() {
+        return this.responseApi == 'NO HABIDO' ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success"
+    }
     // enableSearchDocument() {
     //   return true
     // },

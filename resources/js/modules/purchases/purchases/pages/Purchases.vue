@@ -42,20 +42,34 @@
               <thead>
                 <tr>
                   <th>Fecha</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
+                  <th>Comprobante</th>
+                  <th>Moneda</th>
                   <th>Proveedor</th>
                   <th>Total</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem, ipsum dolor.</td>
+                <tr v-for="purchase in purchases" :key="purchase.id">
+                  <td>
+                    {{ purchase.date_issue }}
+                  </td>
+                  <td>
+                    <span class="badge badge-danger">
+                      {{ purchase.serie }} - {{ purchase.document_number }}
+                    </span>
+                    <br />
+                    {{ purchase.document_type }}
+                  </td>
+                  <td>
+                    {{ purchase.exchange_rate }}
+                  </td>
+                  <td>
+                    {{ purchase.provider.name }}
+                  </td>
+                  <td>
+                    {{ purchase.total }}
+                  </td>
                   <td>
                     <div class="dropdown">
                       <button
@@ -96,7 +110,29 @@
 </template>
 
 <script>
-export default {};
+import BaseUrl from "../../../../api/BaseUrl";
+
+export default {
+  data() {
+    return {
+      purchases: [],
+    };
+  },
+  mounted() {
+    this.getPurchases();
+  },
+  methods: {
+    async getPurchases() {
+      await BaseUrl.get(`/api/purchases?included=provider&perPage=10`)
+        .then((response) => {
+          this.purchases = response.data.data;
+        })
+        .catch((response) => {
+          console.log(error.response);
+        });
+    },
+  },
+};
 </script>
 
 <style>

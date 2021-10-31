@@ -18,9 +18,9 @@
                 v-model="newPurchase.document_type"
                 class="form-control rounded-pill"
               >
-                <option value="03">BOLETA</option>
-                <option value="01">FACTURA</option>
-                <option value="NV">NOTA DE VENTA</option>
+                <option value="BOLETA">BOLETA</option>
+                <option value="FACTURA">FACTURA</option>
+                <option value="NOTA DE VENTA">NOTA DE VENTA</option>
               </select>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default {
     return {
       newPurchase: {
         handle_exchange_rate: true,
-        document_type: "03",
+        document_type: "BOLETA",
         serie: null,
         document_number: null,
         date_issue: null,

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     protected $fillable = [
         'document_type',
@@ -22,4 +23,23 @@ class Purchase extends Model
         'provider_id',
         'open_closed_cashbox_id'
     ];
+
+    protected $allowIncluded = ['provider'];
+    protected $allowFilter = ['id', 'document_type', 'date_issue', 'provider_id'];
+    protected $allowSort = ['id'];
+
+    public function purchaseDetails()
+    {
+        return $this->hasMany(PurchaseDetail::class);
+    }
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
+    }
+
+    public function openClosedCashbox()
+    {
+        return $this->belongsTo(OpenClosedCashbox::class);
+    }
 }
