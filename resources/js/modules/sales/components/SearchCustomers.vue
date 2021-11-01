@@ -9,7 +9,7 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == '01'"
+          v-if="voucherType == 1"
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
@@ -176,7 +176,7 @@ export default {
   },
   props: {
     customer: Object,
-    voucherType: String,
+    voucherType: Number,
   },
   created() {
     this.getTypeDocuments();
@@ -196,21 +196,21 @@ export default {
       await BaseUrl.get(
         `/api/data-document/${this.customer.identification_document_id}/${this.customer.document}`
       )
-        .then((response) => {
-          console.log(response.data);
-          this.customer.phone = "";
-          this.customer.address = "";
-          this.customer.address = response.data.address;
-          this.customer.name = response.data.name;
-          this.customer.address = response.data.address;
-          this.customer.phone = response.data.phone;
-        })
-        .catch((error) => {
-          console.log(error.response);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      .then((response) => {
+        console.log(response.data);
+        this.customer.phone = "";
+        this.customer.address = "";
+        this.customer.address = response.data.address;
+        this.customer.name = response.data.name;
+        this.customer.address = response.data.address;
+        this.customer.phone = response.data.phone;
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+      .finally(() => {
+        this.loading = false;
+      });
     },
     async getcustomers() {
       await BaseUrl.get(

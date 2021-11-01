@@ -42,32 +42,40 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>Usuario</th>
                     <th>Fecha</th>
-                    <th>Valido Hasta</th>
-                    <th>Número</th>
+                    <th>Cotización</th>
                     <th>Cliente</th>
                     <th>Total</th>
+                    <th>PDF</th>
+                    <th>Valido Hasta</th>
+                    <th>Vendedor</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="quotation in quotations" :key="quotation.id">
-                    <td>{{ quotation.user.name }}</td>
-                    <td>{{ quotation.created_at }}</td>
-                    <!-- <td v-show="false">{{ q = new Date(Date.parse(quotation.updated_at)) }}</td>
-                    <td>{{ q.getFullYear() }}-{{ q.getMonth() }}-{{ q.getDate() }}</td> -->
-                    <td>
+                    <td class="align-middle">{{ getTimestamp(quotation.created_at) }}</td>
+                    <td class="align-middle">{{quotation.serie.serie}}-{{ quotation.document_number }}</td>
+                    <td class="align-middle">
+                      <span class="badge bg-maroon">{{ quotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ quotation.customer.document }}
+                      <br>
+                      <span class="badge bg-maroon">Nombre:</span> {{ quotation.customer.name }}
+                    </td>
+                    <td class="align-middle">S/. {{ quotation.total }}</td>
+                    <td class="align-middle">
+                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + quotation.id">
+                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                      </a>
+                    </td>
+                    <td class="align-middle">
                       {{ quotation.date_due }}
                       <br>
                       <span :class="getElapsedTimeNumber(quotation.date_due) > 0 ? 'text-success' : 'text-danger'" >
-                        {{ getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Retraso: ' }} {{ getElapsedTime(quotation.date_due) }}
+                        {{ getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(quotation.date_due) }}
                       </span>
                     </td>
-                    <td>{{ quotation.document_number }}</td>
-                    <td>{{ quotation.customer.name }}</td>
-                    <td>{{ quotation.total }}</td>
-                    <td>
+                    <td class="align-middle">{{ quotation.user.name }}</td>
+                    <td class="align-middle">
                       <div class="dropdown">
                         <button
                           class="btn btn-danger dropdown-toggle"
@@ -141,9 +149,15 @@ export default {
       // Si el numero es positivo esta a tiempo y si es negativo se paso de la fecha
 
       if (Math.abs(days) >= 1) {
+        if (Math.abs(days).toFixed(0) == 1) {
+          return Math.abs(days).toFixed(0)+" día"
+        }
         return Math.abs(days).toFixed(0)+" días"
       }
       else if (Math.abs(hours) >= 1){
+        if (Math.abs(hours).toFixed(0) == 1) {
+          return Math.abs(hours).toFixed(0)+" hora"
+        }
         return Math.abs(hours).toFixed(0)+" horas"
       }
       else {
@@ -157,6 +171,10 @@ export default {
       tem.setDate(tem.getDate()+1)
       tem.setHours(0)
       return tem - today
+    },
+    getTimestamp(date){
+      let prueba = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
+      return prueba
     }
   }
 }

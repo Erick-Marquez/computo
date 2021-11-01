@@ -15,21 +15,21 @@
             <img src="storage/logo.jpg" alt="este es el logo del negocio">
         </div>
         <div class="titular">
-            <h1>DEMO COMPUTO</h1>
-            <p class="titular__distrito">JR 28 DE JULIO 190 -</p>
-            <p class="titular__ciudad">Huánuco, Huánuco, Huánuco</p>
+            <h1>{{ $company->name }}</h1>
+            <p class="titular__distrito">{{ $company->address }}</p>
+            <p class="titular__ciudad"></p>
             <div class="titular__elemento">
                 {{-- <img src="img/phone-call.svg" alt="telefono"> --}}
-                <p class="telefono__numero"> Tel: 987654321</p>
+                <p class="telefono__numero"> Tel: {{ $company->phone }}</p>
             </div>
             <a href="#" class="correo titular__elemento">
                 {{-- <img src="img/email.svg" alt="correo"> --}}
-                <p class="correo__dir">computo@gmail.com</p>
+                <p class="correo__dir">{{ $company->email }}</p>
             </a>
         </div>
         <div class="ruc">
-            <p class="ruc__primero">R.U.C. 10758534427</p>
-            <p class="ruc__segundo">{{ $head->serie->voucherType->description }} ELECTRÓNICA</p>
+            <p class="ruc__primero">R.U.C. {{ $company->ruc }}</p>
+            <p class="ruc__segundo">{{ $head->serie->voucherType->description }}</p>
             <p class="ruc__numero">{{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
         </div>
     </header>

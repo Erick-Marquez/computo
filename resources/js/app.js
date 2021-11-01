@@ -14,6 +14,7 @@ import indexModificactionStock from './modules/inventory/modification-stock/inde
 
 /* Sales */
 import indexVoucher from './modules/sales/vouchers/index.vue';
+import indexSaleNotes from './modules/sales/sale-notes/index.vue';
 import indexQuotation from './modules/sales/quotations/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
@@ -29,13 +30,16 @@ import indexCustomers from './modules/third-parties/customers/index.vue'
 
 /* Settings */
 import indexCompany from './modules/settings/company/index.vue';
+import indexUsers from './modules/settings/users/index.vue';
 import indexRoles from './modules/settings/roles/index.vue';
+import indexSeries from './modules/settings/series/index.vue';
 import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.vue';
 
 const app = createApp({});
 
 /* Sales */
 app.component('index-vouchers', indexVoucher);
+app.component('index-sale-notes', indexSaleNotes);
 app.component('index-quotations', indexQuotation);
 app.component('index-warranties', indexWarranty);
 
@@ -54,7 +58,9 @@ app.component('index-customers', indexCustomers);
 
 /* Settings */
 app.component('index-company', indexCompany);
+app.component('index-users', indexUsers);
 app.component('index-roles', indexRoles);
+app.component('index-series', indexSeries);
 app.component('index-currency-exchanges', indexCurrencyExchanges);
 
 

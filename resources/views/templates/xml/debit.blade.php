@@ -25,7 +25,7 @@
     <cac:BillingReference>
         <cac:InvoiceDocumentReference>
             <cbc:ID>{{ $debitNote->sale->serie->serie }}-{{ $debitNote->sale->document_number }}</cbc:ID>
-            <cbc:DocumentTypeCode>{{ $debitNote->sale->serie->voucherType->id }}</cbc:DocumentTypeCode>
+            <cbc:DocumentTypeCode>{{ $debitNote->sale->serie->voucherType->cod }}</cbc:DocumentTypeCode>
         </cac:InvoiceDocumentReference>
     </cac:BillingReference>
     <cac:AccountingSupplierParty>

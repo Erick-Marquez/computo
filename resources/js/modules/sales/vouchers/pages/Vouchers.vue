@@ -6,13 +6,10 @@
   </div>
 
   <div class="container-fluid">
-    <router-link
-      class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-voucher' }"
-    >
+    <a href="nueva-venta" class="btn btn-lg btn-block btn-dark mb-4">
       <i class="fas fa-plus"></i>
       Nueva venta
-    </router-link>
+    </a>
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -55,14 +52,14 @@
                 </thead>
                 <tbody>
                   <tr v-for="sale in sales" :key="sale.id">
-                    <td class="align-middle">{{ sale.date_issue }}</td>
+                    <td class="align-middle">{{ getTimestamp(sale.created_at) }}</td>
                     <td class="align-middle">
                       <span class="text-muted">{{ sale.serie.voucher_type.description }}: </span>{{ sale.serie.serie }}-{{ sale.document_number }}
                     </td>
                     <td class="align-middle">
-                      {{ sale.customer.document }}
+                      <span class="badge bg-maroon">{{ sale.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ sale.customer.document }}
                       <br>
-                      {{ sale.customer.name }}
+                      <span class="badge bg-maroon">Nombre:</span> {{ sale.customer.name }}
                     </td>
                     <td class="align-middle">S/. {{ sale.total }}</td>
                     <td class="align-middle text-center">
@@ -77,10 +74,10 @@
                       </a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el XML" href=""><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.id + '/xml/' + sale.id"><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el CDR" href=""><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.id + '/cdr/' + sale.id"><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
                       <i v-if="sale.state == 'ACEPTADO'" class="text-success fas fa-check"></i>
@@ -157,7 +154,10 @@ export default {
     }
   },
   methods:{
-
+    getTimestamp(date){
+      let prueba = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
+      return prueba
+    }
   }
 }
 </script>

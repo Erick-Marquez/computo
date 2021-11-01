@@ -68,12 +68,15 @@ class VoucherTypeSeeder extends Seeder
         ]);
 
         DB::table('voucher_types')->insert([
-            ['id' => '01', 'description' => 'FACTURA'],
-            ['id' => '03', 'description' => 'BOLETA DE VENTA'],
-            ['id' => 'NV', 'description' => 'NOTA DE VENTA'],
-            ['id' => '07', 'description' => 'NOTA DE CRÉDITO'],
-            ['id' => '08', 'description' => 'NOTA DE DÉBITO'],
-            ['id' => 'CT', 'description' => 'COTIZACIÓN'],
+            ['example' => 'F001','cod' => '01', 'description' => 'Factura Eléctronica'],
+            ['example' => 'B001','cod' => '03', 'description' => 'Boleta Eléctronica'],
+            ['example' => 'N001','cod' => null, 'description' => 'Nota de Venta Eléctronica'],
+            ['example' => 'FC01','cod' => '07', 'description' => 'Nota de Crédito que modifica una Factura'],
+            ['example' => 'BC01','cod' => '07', 'description' => 'Nota de Crédito que modifica una Boleta'],
+            ['example' => 'FD01','cod' => '08', 'description' => 'Nota de Débito que modifica una Factura'],
+            ['example' => 'BD01','cod' => '08', 'description' => 'Nota de Débito que modifica una Boleta'],
+            ['example' => 'C001','cod' => null, 'description' => 'Cotización'],
+            ['example' => 'G001','cod' => null, 'description' => 'Garantía'],
         ]);
 
         DB::table('identification_documents')->insert([
@@ -82,32 +85,35 @@ class VoucherTypeSeeder extends Seeder
         ]);
 
         DB::table('series')->insert([
-            ['active' => true, 'serie' => 'F001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '01'],
-            ['active' => true, 'serie' => 'B001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '03'],
-            ['active' => true, 'serie' => 'N001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => 'NV'],
-            ['active' => true, 'serie' => 'FC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'BC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'FD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'BD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'C001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => 'CT'],
+            ['active' => true, 'serie' => 'F001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '1'],
+            ['active' => true, 'serie' => 'B001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '2'],
+            ['active' => true, 'serie' => 'N001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '3'],
+            ['active' => true, 'serie' => 'FC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '4'],
+            ['active' => true, 'serie' => 'BC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '5'],
+            ['active' => true, 'serie' => 'FD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '6'],
+            ['active' => true, 'serie' => 'BD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '7'],
+            ['active' => true, 'serie' => 'C001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '8'],
+            ['active' => true, 'serie' => 'G001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '9'],
 
-            ['active' => true, 'serie' => 'F021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '01'],
-            ['active' => true, 'serie' => 'B021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '03'],
-            ['active' => true, 'serie' => 'N021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => 'NV'],
-            ['active' => true, 'serie' => 'FC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'BC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'FD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'BD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'C021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => 'CT'],
+            ['active' => true, 'serie' => 'F021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '1'],
+            ['active' => true, 'serie' => 'B021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '2'],
+            ['active' => true, 'serie' => 'N021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '3'],
+            ['active' => true, 'serie' => 'FC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '4'],
+            ['active' => true, 'serie' => 'BC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '5'],
+            ['active' => true, 'serie' => 'FD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '6'],
+            ['active' => true, 'serie' => 'BD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '7'],
+            ['active' => true, 'serie' => 'C021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '8'],
+            ['active' => true, 'serie' => 'G021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '9'],
 
-            ['active' => true, 'serie' => 'F031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '01'],
-            ['active' => true, 'serie' => 'B031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '03'],
-            ['active' => true, 'serie' => 'N031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => 'NV'],
-            ['active' => true, 'serie' => 'FC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'BC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '07'],
-            ['active' => true, 'serie' => 'FD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'BD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '08'],
-            ['active' => true, 'serie' => 'C031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => 'CT'],
+            ['active' => true, 'serie' => 'F031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '1'],
+            ['active' => true, 'serie' => 'B031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '2'],
+            ['active' => true, 'serie' => 'N031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '3'],
+            ['active' => true, 'serie' => 'FC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '4'],
+            ['active' => true, 'serie' => 'BC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '5'],
+            ['active' => true, 'serie' => 'FD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '6'],
+            ['active' => true, 'serie' => 'BD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '7'],
+            ['active' => true, 'serie' => 'C031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '8'],
+            ['active' => true, 'serie' => 'G031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '9'],
         ]);
 
         DB::table('families')->insert([

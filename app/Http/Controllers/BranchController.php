@@ -23,16 +23,6 @@ class BranchController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('inventory.branches.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -67,17 +57,6 @@ class BranchController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Branch $branch)
-    {
-        return view('inventory.branches.edit', compact('branch'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,9 +70,16 @@ class BranchController extends Controller
             'direction' => 'required',
         ]);
 
-        $branch->update($request->all());
+        $branch->update([
+            'cod_sunat' => $request->cod_sunat,
+            'description' => $request->description,
+            'direction' => $request->direction,
+            'ubigeo' => $request->ubigeo,
+            'phone' => $request->phone,
+        ]);
 
-        return redirect()->route('branches.index');
+        return $branch;
+
     }
 
     /**

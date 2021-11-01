@@ -19,11 +19,8 @@ class CreateSeriesTable extends Migration
             $table->boolean('active')->default(true);
             $table->bigInteger('current_number'); // 11
 
-            $table->string('voucher_type_id'); // BOLETA
-
-            $table->foreign('voucher_type_id')
-                ->references('id')
-                ->on('voucher_types') 
+            $table->foreignId('voucher_type_id') // BOLETA
+                ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             

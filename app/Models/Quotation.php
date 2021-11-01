@@ -19,6 +19,7 @@ class Quotation extends Model
 
         'date_due',
         
+        'serie_id',
         'customer_id',
         'user_id'
     ];
@@ -28,6 +29,11 @@ class Quotation extends Model
         return $this->hasMany(QuotationDetail::class);
     }
 
+    public function serie()
+    {
+        return $this->belongsTo(Serie::class);
+    }
+    
     public function customer()
     {
         return $this->belongsTo(Customer::class);

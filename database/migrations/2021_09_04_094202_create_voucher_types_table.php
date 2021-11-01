@@ -14,8 +14,11 @@ class CreateVoucherTypesTable extends Migration
     public function up()
     {
         Schema::create('voucher_types', function (Blueprint $table) {
-            $table->string('id')->index();
+            $table->id();
+            $table->string('cod')->nullable();
             $table->string('description');
+            $table->string('example')->nullable();
+
         });
     }
 

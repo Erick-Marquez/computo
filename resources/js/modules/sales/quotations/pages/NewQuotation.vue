@@ -4,6 +4,7 @@
   </div>
   <div class="card">
     <div class="card-body">
+      <h4>Cotización</h4>
       <div class="row">
         <!-- TIPO DE COMPROBANTE -->
         <div class="col-md-4">
@@ -12,104 +13,37 @@
               <i class="text-danger fas fa-calendar-times"></i>
               Valido Hasta
             </label>
-            <input type="date" v-model="quotationData.quotation.date_due" required>
+            <input type="date" class="form-control rounded-pill" v-model="quotationData.quotation.date_due" required>
           </div>
         </div>
-        
-      </div>
-
-      <h4>Documento de identidad</h4>
-      <div class="row">
-        <!-- TIPO DOCUMENTO -->
+        <!-- SERIE -->
         <div class="col-md-4">
           <div class="form-group">
             <label for="">
-              <i class="text-danger fas fas fa-address-card"></i>
-              Tipo documento
+              <i class="text-danger fas fa-barcode"></i>
+              Serie
             </label>
-            <select name="" id="" class="form-control rounded-pill">
-              <option v-for="identificationDocument in identificationDocuments" :key="identificationDocument.id" :value="identificationDocuments.id">{{ identificationDocument.description }}</option>
+            <select v-model="quotationData.quotation.serie_id" class="form-control rounded-pill" @change="getCurrentNumber()">
+              <option v-for="serie in series" :key="serie.id" :value="serie.id">
+                {{ serie.serie }}
+              </option>
             </select>
           </div>
         </div>
 
-        <!-- N° DOCUMENTO -->
+        <!-- N° COMPROBANTE -->
         <div class="col-md-4">
           <div class="form-group">
             <label for="">
-              <i class="text-danger fas fas fa-pen"></i>
-              N° Documento</label
-            >
-            <div class="input-group">
-              <input type="text" class="form-control rounded-pill" />
-              <div class="input-group-append">
-                <button class="btn btn-dark">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- NOMBRE/RAZON SOCIAL -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-id-badge"></i>
-              Nombre/Razón Social:</label
-            >
-            <input type="text" class="form-control rounded-pill" />
+              <i class="text-danger fas fa-hashtag"></i>
+              N° de Cotización
+            </label>
+            <input v-model="currentNumber" type="text" class="form-control rounded-pill" disabled>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <!-- DIRECCIÓN -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-map-marker-alt"></i>
-              Dirección</label
-            >
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              name=""
-              id=""
-            >
-          </div>
-        </div>
-
-        <!-- UBIGEO -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-globe"></i>
-              Ubigeo</label
-            >
-            <select name="" id="" class="form-control rounded-pill">
-              <option value="">Opcion1</option>
-              <option value="">Opcion2</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- N° CELULAR -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-phone"></i>
-              N° Celular</label
-            >
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              name=""
-              id=""
-            >
-          </div>
-        </div>
-      </div>
+      <SearchCustomers :voucherType="2" :customer="quotationData.customer" />
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
@@ -290,8 +224,9 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import SearchCustomers from "../../components/SearchCustomers.vue";
 export default {
-  components: { BaseUrl },
+  components: { BaseUrl, SearchCustomers },
   async created() {
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
@@ -302,9 +237,14 @@ export default {
       this.products = resp.data.data;
     });
 
+    this.getSeries()
+
   },
   data() {
     return {
+
+      series: {},
+      currentNumber: 'Selecciona una serie',
 
       productSearch:'',
       productSearchFilter: [],
@@ -316,22 +256,14 @@ export default {
       products: {},
       quotationData: {
         customer: {
-          customer_id: 1,
-          identification_document: '6',
-          number_document: '20604209987',
-          name:'Razón social de tu cliente',
-          email:'email_cliente@gmail.com',
-          address: '',
-          ubigeo: '',
-          sexo: '',
-          birth_date: '',
-          phone: ''
+          id: null
         },
         quotation: {
           discount: 0,
           observation: '',
           warranty: true,
           date_due: null,
+          serie_id: '',
         },
         detail: []
       },
@@ -347,6 +279,21 @@ export default {
   },
   methods:{
 
+    async getSeries() {
+      await BaseUrl.get(`api/quotations/series`).then((resp) => {
+        this.series = resp.data.data;
+        this.quotationData.quotation.serie_id = this.series[0].id
+        this.getCurrentNumber()
+      });
+    },
+    getCurrentNumber() {
+      let serieBackup = this.series;
+      let serieFilter = serieBackup.filter(
+        (series) => series.id == this.quotationData.quotation.serie_id
+      );
+      this.currentNumber = serieFilter[0].current_number + 1;
+    },
+    
     searchProducts(){
         
       let produtsBackup = this.products
@@ -446,12 +393,12 @@ export default {
         this.$router.push({ name: "quotation-list" });
         Swal.fire(
           "Cotización Creada",
-          "Se ha creado la Cotizacion N° " + response.data.document_number,
+          "Se ha creado la Cotización " + response.data,
           "success"
         );
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
       });
     },
 

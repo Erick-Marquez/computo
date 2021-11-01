@@ -37,7 +37,19 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Sale::with('serie.voucherType', 'customer')->get();
+        $vouchers = Sale::whereHas('serie', function($q) {
+            $q->where('voucher_type_id', '!=', 3); // 3 id de nota de venta
+        })->with('serie.voucherType', 'customer')->get();
+        
+        return SaleResource::collection($vouchers);
+    }
+
+    public function saleNotes()
+    {
+        $vouchers = Sale::whereHas('serie', function($q) {
+            $q->where('voucher_type_id', '=', 3);
+        })->with('serie.voucherType', 'customer')->get();
+        
         return SaleResource::collection($vouchers);
     }
 
@@ -63,12 +75,23 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (is_null($request->customer['id'])) {
+            $customer = Customer::create([
+                'name' => $request->customer['name'],
+                'document' => $request->customer['document'],
+                'phone' => $request->customer['phone'],
+                'email' => $request->customer['email'],
+                'address' => $request->customer['address'],
+                'identification_document_id' => $request->customer['identification_document_id'],
+            ]);
+            $request->customer['id'] = $customer->id;
+        }
+        
         // $request->detail[0]['series'][0]['serie']
         $serie = Serie::find($request->voucher['serie_id']);
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
-
-
 
         $sale = Sale::create([
             'document_number' => $serie->current_number,
@@ -80,12 +103,13 @@ class VoucherController extends Controller
             'received_money' => $request->voucher['received_money'],
             'change' => $request->voucher['change'],
 
+            'have_warranty' => $request->voucher['warranty'], 
+
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
             //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
-
 
         $subtotalSale = 0;
         $totalIgvSale = 0;
@@ -146,19 +170,39 @@ class VoucherController extends Controller
             'total_taxed' => $totalTaxedSale,
             'total' => $totalSale
         ]);
+
         // Enviar a Sunat
+        if ($request->voucher['document_type'] == '01') { // Factura
 
-        $sunat = SunatService::facturar($sale->id, 'invoice');
+            $sunat = SunatService::facturar($sale->id, 'invoice');
 
-        $sale->update([
-            'send_sunat' => $sunat['send'],
-            'state' => $sunat['state'],
-            'response_sunat' => $sunat['response_sunat'],
-            'description_sunat_cdr' => $sunat['response']['message'],
-            'hash_cdr' => $sunat['response']['hash_cdr']
-        ]);
+            $sale->update([
+                'send_sunat' => $sunat['send'],
+                'state' => $sunat['state'],
+                'response_sunat' => $sunat['response_sunat'],
+                'description_sunat_cdr' => $sunat['response']['message'],
+                'hash_cdr' => $sunat['response']['hash_cdr']
+            ]);
+        }
+        elseif ($request->voucher['document_type'] == '03') { // Boleta
+            
+            $sunat = SunatService::facturar($sale->id, 'ticket');
 
-        return $sunat;
+            $sale->update([
+                'send_sunat' => $sunat['send'],
+                'state' => $sunat['state'],
+                'response_sunat' => $sunat['response_sunat'],
+                'description_sunat_cdr' => $sunat['response']['message'],
+                'hash_cdr' => $sunat['response']['hash_cdr']
+            ]);
+        }
+        elseif ($request->voucher['document_type'] == 'NV') {
+
+            return "Nota de Venta Guardada";
+
+        }
+
+        return $sale->description_sunat_cdr;
 
     }
 
@@ -215,13 +259,13 @@ class VoucherController extends Controller
 
         $text = join('|', [
             $company->ruc,
-            $head->serie->voucherType->cod,
+            $head->serie->voucherType->id,
             $head->serie->serie,
             $head->document_number,
             $head->total_igv,
             $head->total,
             $head->date_issue,
-            $head->customer->identificationDocument->cod,
+            $head->customer->identificationDocument->id,
             $head->customer->document,
             $head->hash_cdr
         ]);
@@ -243,6 +287,50 @@ class VoucherController extends Controller
         //setPaper(array(0,0,220,700)
 
         return $pdf->stream();
+    }
+
+    public function download($voucherType, $type, Sale $sale)
+    {
+        $company = Company::findorFail(1);
+
+        $pathToFile = 'app'.DIRECTORY_SEPARATOR.'Facturacion';
+
+        switch ($voucherType) {
+            case '01': // Factura
+                $pathToFile .= DIRECTORY_SEPARATOR.'Factura';
+                break;
+            case '03': //Boleta
+                $pathToFile .= DIRECTORY_SEPARATOR.'Boleta';
+                break;
+            case '07': //Nota de credito
+                $pathToFile .= DIRECTORY_SEPARATOR.'NotaCredito';
+                break;
+            case '08': //Nota de debito
+                $pathToFile .= DIRECTORY_SEPARATOR.'NotaDebito';
+                break;
+            case 'baja': //Comunicacion de baja
+                $pathToFile .= DIRECTORY_SEPARATOR.'Baja';
+                break;
+            default:
+                break;
+        }
+
+        if ($type == 'xml') {
+            $pathToFile .= DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
+            //nombre del zip del xml del comprabante solicitado
+            $nameZip = $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+           
+            $pathToFile .= $nameZip;
+        }
+        else if ($type == 'cdr') {
+            $pathToFile .= DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+            //nombre del zip del cdr del comprabante solicitado
+            $nameZip = 'R-' . $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+            
+            $pathToFile .= $nameZip;
+        }
+
+        return response()->download(storage_path($pathToFile));
     }
 
     public function voucherTypes()
@@ -275,9 +363,9 @@ class VoucherController extends Controller
         return BranchProductSerieResource::collection($branchProductSeries);
     }
 
-    public function quotation($id)
+    public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $id)->with('quotationDetails.branchProduct.product')->get();
-        return QuotationResource::collection($quotation);
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product')->firstOrFail();
+        return QuotationResource::make($quotation);
     }
 }

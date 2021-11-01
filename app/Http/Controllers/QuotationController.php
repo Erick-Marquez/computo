@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuotationResource;
+use App\Http\Resources\SerieResource;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 
 use PDF;
@@ -21,7 +23,7 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $quotations = Quotation::with('customer', 'user')->get();
+        $quotations = Quotation::with('customer', 'user','serie')->get();
         return QuotationResource::collection($quotations);
     }
 
@@ -33,17 +35,33 @@ class QuotationController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (is_null($request->customer['id'])) {
+            $customer = Customer::create([
+                'name' => $request->customer['name'],
+                'document' => $request->customer['document'],
+                'phone' => $request->customer['phone'],
+                'email' => $request->customer['email'],
+                'address' => $request->customer['address'],
+                'identification_document_id' => $request->customer['identification_document_id'],
+            ]);
+            $request->customer['id'] = $customer->id;
+        }
+
         // Obtener la numeracion siguiente
-        $documentNumber = Quotation::select("document_number")->latest()->first();
-        $documentNumber = $documentNumber != null ? $documentNumber->document_number + 1 : 1;
+        $serie = Serie::find($request->quotation['serie_id']);
+        $serie->current_number = $serie->current_number + 1;
+        $serie->save();
 
         $quotation = Quotation::create([
             'observation' => $request->quotation['observation'],
-            'document_number' => $documentNumber,
+            'document_number' => $serie->current_number,
             'discount' => $request->quotation['discount'],
             'have_warranty' => $request->quotation['warranty'],
             'date_due' => $request->quotation['date_due'],
-            'customer_id' => $request->customer['customer_id'],
+
+            'serie_id' => $request->quotation['serie_id'],
+            'customer_id' => $request->customer['id'],
             'user_id' => auth()->user()->id
         ]);
 
@@ -70,7 +88,7 @@ class QuotationController extends Controller
         ]);
 
 
-        return $quotation;
+        return $serie->serie . '-' .$quotation->document_number;
     }
 
     /**
@@ -121,15 +139,17 @@ class QuotationController extends Controller
     public function print(Quotation $quotation)
     {
         $company = Company::find(1);
-        $head = Quotation::where('id', $quotation->id)->with('quotationDetails.branchProduct.product', 'customer.identificationDocument')->firstOrFail();
+        $head = Quotation::where('id', $quotation->id)->with('quotationDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType')->firstOrFail();
         
         $details = $head->quotationDetails;
 
         $text = join('|', [
             $company->ruc,
-            'Cotizacion N°' . $head->document_number,
+            'Cotizacion',
+            $head->serie->serie,
+            $head->document_number,
             $head->total,
-            $head->customer->identificationDocument->cod,
+            $head->customer->identificationDocument->id,
             $head->customer->document,
         ]);
 
@@ -144,5 +164,11 @@ class QuotationController extends Controller
         //setPaper(array(0,0,220,700)
 
         return $pdf->stream();
+    }
+
+    public function series()
+    {
+        $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', 8)->get(); //voucher type 8 = cotizacion
+        return SerieResource::collection($series);
     }
 }

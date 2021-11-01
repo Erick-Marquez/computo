@@ -22,6 +22,18 @@ const routes = [
         ]
     },
     {
+        path: '/notas-de-venta',
+        name: 'sale-notes-index',
+        component: () => import('../modules/sales/sale-notes/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'sale-notes-list',
+                component: () => import('../modules/sales/sale-notes/pages/SaleNotes.vue'),
+            }
+        ]
+    },
+    {
         path: '/cotizaciones',
         name: 'quotations-index',
         component: () => import('../modules/sales/quotations/index.vue'),
@@ -179,22 +191,6 @@ const routes = [
 
     /* Settings */
     {
-        path: '/roles',
-        name: 'roles-index',
-        component: () => import('../modules/settings/roles/index.vue'),
-        children: [
-            {
-                path: '',
-                name: 'roles',
-                component: () => import('../modules/settings/roles/pages/Roles.vue'),
-            },
-            {
-                path: '',
-                redirect: { name: 'roles' }
-            }
-        ]
-    },
-    {
         path: '/compras',
         name: 'compras-index',
         component: () => import('../modules/purchases/purchases/index.vue'),
@@ -224,6 +220,54 @@ const routes = [
             {
                 path: '',
                 redirect: { name: 'company' }
+            }
+        ]
+    },
+    {
+        path: '/usuarios',
+        name: 'users-index',
+        component: () => import('../modules/settings/users/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'users',
+                component: () => import('../modules/settings/users/pages/Users.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'users' }
+            }
+        ]
+    },
+    {
+        path: '/roles',
+        name: 'roles-index',
+        component: () => import('../modules/settings/roles/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'roles',
+                component: () => import('../modules/settings/roles/pages/Roles.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'roles' }
+            }
+        ]
+    },
+    {
+        path: '/series',
+        name: 'serie-index',
+        component: () => import('../modules/settings/series/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'series-list',
+                component: () => import('../modules/settings/series/pages/Series.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'series-list' }
             }
         ]
     },

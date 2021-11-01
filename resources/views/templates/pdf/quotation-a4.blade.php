@@ -29,8 +29,8 @@
         </div>
         <div class="ruc">
             <p class="ruc__primero">R.U.C. {{ $company->ruc }}</p>
-            <p class="ruc__segundo">COTIZACIÓN</p>
-            <p class="ruc__numero">{{ str_pad($head->document_number, 8, '0', STR_PAD_LEFT) }}</p>
+            <p class="ruc__segundo">{{ $head->serie->voucherType->description }}</p>
+            <p class="ruc__numero">{{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
         </div>
     </header>
     <main>
@@ -65,21 +65,27 @@
                     <td>CANT.</td>
                     <td>DESCRIPCIÓN</td>
                     <td>PRECIO</td>
-                    <td>UNID/MED</td>
-                    <td>AFECT.IGV</td>
+                    <td>DESCUENTO</td>
+                    <td>PRECIO</td>
                     <td>IMPORTE</td>
                 </tr>
             </thead>
             <tbody class="detalle">
+                @php
+                    $discount = 0;
+                @endphp
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->branchProduct->product->name  }}</td>
-                        <td>S/ {{ $detail->price }}</td>
-                        <td>UNIDADES</td>
-                        <td>Exonerado</td>
-                        <td>S/ {{ $detail->total }}</td>
+                        <td>S/ {{ round($detail->price, 3) }}</td>
+                        <td>S/. {{ round($detail->discount, 3) }}</td>
+                        <td>S/. {{ round($detail->price, 3) }}</td>
+                        <td>S/. {{ $detail->total - $detail->discount }}</td>
                     </tr>
+                    @php
+                        $discount += $detail->discount;
+                    @endphp
                 @endforeach
                 <tr class="tfood">
                     <td colspan="6">SON {{ \App\Services\NumberLetterService::convert($head->total, 'SOLES') }}</td>
@@ -103,32 +109,26 @@
                 <td>
                     <div class="resumen">
                         <p>RESUMEN:</p>
-                        <div class="resumen__elemento">
-                            <p>Gravada:</p>
-                            <p class="gravada__precio">S/ 0.000</p>
-                        </div>
-                        <div class="resumen__elemento">
-                            <p>Exonerado:</p>
-                            <p class="exonerado__precio">S/ 0.000</p>
-                        </div>
-                        <div class="resumen__elemento">
-                            <p>IGV (18.00%):</p>
-                            <p class="igv__precio">S/ 0.000</p>
-                        </div>
+                        @if ($discount > 0)
+                            <div class="resumen__elemento">
+                                <p>Descuento por Item:</p>
+                                <p class="descuento__precio">S/ {{ round($discount, 3) }}</p>
+                            </div>
+                        @endif
                         <div class="resumen__elemento">
                             <p>Descuento Total:</p>
-                            <p class="descuento__precio">S/ {{ $head->discount }}</p>
+                            <p class="descuento__precio">S/ {{ round($head->discount, 3) }}</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>Total:</p>
-                            <p class="total__precio">S/ {{ $head->total }}</p>
+                            <p class="total__precio">S/ {{ round($head->total - $head->discount - $discount, 3) }}</p>
                         </div>
                     </div>
                 </td>
             </tr>
             <tr class="observacion">
                 <td colspan="3">
-                    <p><span>Observación: </span>{{$head->observation }}</p>
+                    <p><span>Observación: </span>{{ $head->observation }}</p>
                 </td>
             </tr>
         </table>

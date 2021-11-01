@@ -17,6 +17,7 @@ class Branch extends Model
      * @var array
      */
     protected $fillable = [
+        'cod_sunat',
         'description',
         'phone',
         'direction',
