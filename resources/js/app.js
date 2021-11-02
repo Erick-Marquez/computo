@@ -9,7 +9,6 @@ import router from "./router";
 import { createApp } from 'vue';
 
 import Permissions from './mixins/Permissions';
-import { TreeViewPlugin } from "@syncfusion/ej2-vue-navigations";
 
 import indexKardex from './modules/inventory/kardex/index.vue';
 import indexBranches from './modules/inventory/branches/index.vue';
@@ -70,6 +69,5 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 
 
 app.mixin(Permissions);
-app.use(TreeViewPlugin);
 app.use(router).mount('#app');
 
