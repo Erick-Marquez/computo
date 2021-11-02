@@ -1,6 +1,8 @@
 <template>
   <div class="content-header">
     <h1>Dashboard</h1>
+    <div v-if="$can('dashboard')">tu puedes ver el dashboard</div>
+    <div v-if="$can('sales')">tu puedes ver las compras</div>
   </div>
   <div class="row">
     <div class="col-lg-4 col-12">

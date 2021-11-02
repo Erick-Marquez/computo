@@ -271,13 +271,13 @@ return [
                     'text' => 'Nuevo Comprobante',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.new-sale',
-                    // 'can'    => 'vouchers.index',
+                    'can'    => 'sales',
                 ],
                 [
                     'text' => 'Comprobantes',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.ventas',
-                    // 'can'    => 'vouchers.index',
+                    'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Notas de Venta',
@@ -734,7 +734,7 @@ return [
                 ],
             ],
         ],
-        
+
     ],
 
     /*

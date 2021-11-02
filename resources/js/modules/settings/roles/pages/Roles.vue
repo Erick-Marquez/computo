@@ -6,7 +6,6 @@
   </div>
 
   <div class="container-fluid">
-    
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -20,7 +19,7 @@
                   name="table_search"
                   class="form-control float-right"
                   placeholder="Search"
-                >
+                />
 
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default">
@@ -61,18 +60,13 @@
                         aria-labelledby="dropdownMenuButton"
                         style=""
                       >
-                        <a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                        ><a
-                          class="dropdown-item"
-                          href="#"
+                        <router-link class="dropdown-item" :to="{name: 'edit-permissions'}">
+                          <i class="col-1 mr-3 fas fa-eye"></i>Mostrar
+                        </router-link>
+                        <a class="dropdown-item" href="#"
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                         >
-                        <a
-                          class="dropdown-item"
-                          href="#"
+                        <a class="dropdown-item" href="#"
                           ><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a
                         >
                       </div>
@@ -112,7 +106,6 @@
                 id="description"
                 type="text"
                 class="form-control"
-                
                 required
               />
             </div>
@@ -130,23 +123,21 @@
 </template>
 
 <script>
-import BaseUrl from '../../../../api/BaseUrl.js'
+import BaseUrl from "../../../../api/BaseUrl.js";
 export default {
-  components:{BaseUrl},
-  async created(){
-    await BaseUrl.get(`api/roles`).then( resp=>{
-      this.roles=resp.data.data
-    })
+  components: { BaseUrl },
+  async created() {
+    await BaseUrl.get(`api/roles`).then((resp) => {
+      this.roles = resp.data.data;
+    });
   },
-  data(){
-    return{
-      roles:{}
-    }
+  data() {
+    return {
+      roles: {},
+    };
   },
-  methods:{
-    
-  }
-}
+  methods: {},
+};
 </script>
 
 <style>
