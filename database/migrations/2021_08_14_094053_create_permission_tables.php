@@ -25,6 +25,9 @@ class CreatePermissionTables extends Migration
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('description'); // Para que el usuario identifique el permiso que nesecita
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            // $table->integer('level')->default(0);
+            // $table->boolean('has_child')->default(0);
+            // $table->bigInteger('parent')->nullable();
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);

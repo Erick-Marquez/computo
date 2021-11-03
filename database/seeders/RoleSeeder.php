@@ -42,7 +42,8 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
 
         //Cash Register Permissions
-        Permission::create(['name' => 'cash-register', 'description' => 'Ver Caja'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashboxes', 'description' => 'Ver Cajas'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashbox.create', 'description' => 'Crear Caja'])->syncRoles([$role1]);
 
         //Catalogs Permissions
         Permission::create(['name' => 'catalogs', 'description' => 'Ver Catalagos'])->syncRoles([$role1]);

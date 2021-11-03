@@ -1,12 +1,15 @@
 <template>
   <div class="container-fluid">
+      <!-- BOTON PARA CREAR CAJA -->
     <button
       class="btn btn-lg btn-block btn-dark my-2"
       @click="showModal('#modal-create')"
+      v-if="$can('cashbox.create')"
     >
       <span><i class="fas fa-plus"></i></span>
       Agregar Nueva caja
     </button>
+
     <div class="row">
       <div
         class="col-md-3 col-sm-6 col-12"

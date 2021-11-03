@@ -101,7 +101,7 @@ Route::middleware([
     Route::apiResource('users', UserController::class)->names('api.users');
 
     //Roles
-    Route::get('/roles', [RoleController::class, 'index'])->name('api.role.index');
+    Route::apiResource('roles', RoleController::class)->names('api.roles');
 
     //Series
     Route::get('/series', [SerieController::class, 'index'])->name('api.serie.index');

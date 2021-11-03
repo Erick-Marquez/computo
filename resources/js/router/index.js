@@ -250,8 +250,8 @@ const routes = [
                 component: () => import('../modules/settings/roles/pages/Roles.vue'),
             },
             {
-                path: '/edit-permissions',
-                name: 'edit-permissions',
+                path: '/roles/:id',
+                name: 'roles-permissions',
                 component: () => import('../modules/settings/roles/pages/Permissions.vue'),
             },
         ]
