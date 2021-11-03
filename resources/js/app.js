@@ -19,6 +19,7 @@ import indexQuotation from './modules/sales/quotations/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
 /* Catalogs */
+import indexFamiliesLinesBrands from './modules/catalogs/families-lines-brands/index.vue';
 import indexProduct from './modules/catalogs/products/index.vue';
 
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
@@ -44,6 +45,7 @@ app.component('index-quotations', indexQuotation);
 app.component('index-warranties', indexWarranty);
 
 /* Catalogs */
+app.component('index-families-lines-brands', indexFamiliesLinesBrands);
 app.component('index-products', indexProduct);
 
 app.component('index-kardex', indexKardex);

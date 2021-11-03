@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CashboxController;
@@ -12,7 +13,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseIncomeController;
+use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
+use App\Http\Controllers\LineController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UserController;
@@ -54,15 +57,6 @@ Route::middleware([
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
     Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
 
-    //Products
-    Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
-    Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
-    Route::get('products/branches', [ProductController::class, 'branches'])->name('api.products.branches');
-    Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
-    Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
-    Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
-
-
     Route::apiResource('cajas', CashboxController::class)->parameters([
         'cajas' => 'cashbox'
     ])->names('api.cajas');
@@ -86,6 +80,20 @@ Route::middleware([
     Route::apiResource('proveedores', ProviderController::class)->parameters([
         'proveedores' => 'provider'
     ])->names('api.proveedores');
+
+    //------------------------Catalogs-----------------------
+    //Families-Lines-Brands
+    Route::apiResource('families', FamilyController::class)->names('api.families');
+    Route::apiResource('lines', LineController::class)->names('api.lines');
+    Route::apiResource('brands', BrandController::class)->names('api.brands');
+
+    //Products
+    Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
+    Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
+    Route::get('products/branches', [ProductController::class, 'branches'])->name('api.products.branches');
+    Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
+    Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
+    Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
 
     //------------------------Inventory----------------------
     Route::apiResource('branches', BranchController::class)->names('api.branches');

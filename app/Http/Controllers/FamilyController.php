@@ -20,16 +20,6 @@ class FamilyController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('catalogs.families.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -61,17 +51,6 @@ class FamilyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Family $family)
-    {
-        return view('catalogs.families.edit', compact('family'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,7 +63,10 @@ class FamilyController extends Controller
             'description' => 'required'
         ]);
 
-        $family->update($request->all());
+        $family->update([
+            'cod' => $request->cod,
+            'description' => $request->description
+        ]);
 
         return FamilyResource::make($family);
     }

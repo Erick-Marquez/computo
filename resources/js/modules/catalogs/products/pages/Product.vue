@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Prroductos</h1>
+      <h1>Productos</h1>
     </div>
   </div>
 

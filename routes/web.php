@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
 
-        //Rutas egresos-ingresos
+    //Rutas egresos-ingresos
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
 
     // Rutas compras
@@ -83,26 +83,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
     Route::get('/series', [WebController::class, 'series'])->name('web.series');
 
+    //Rutas imprimir
+    Route::get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
+    Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
+
+    //Rutas descarga
+    Route::get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
+
 });
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
 
-//Rutas imprimir
-Route::middleware(['auth:sanctum', 'verified'])->get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
-Route::middleware(['auth:sanctum', 'verified'])->get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
-
-//Rutas descarga
-Route::middleware(['auth:sanctum', 'verified'])->get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
-
-
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 
 //Modulo Catalago
-Route::middleware(['auth:sanctum', 'verified'])->resource('families', FamilyController::class)->names('families');
-Route::middleware(['auth:sanctum', 'verified'])->resource('lines', LineController::class)->names('lines');
-Route::middleware(['auth:sanctum', 'verified'])->resource('brands', BrandController::class)->names('brands');
-Route::middleware(['auth:sanctum', 'verified'])->resource('products', ProductController::class)->names('products');
 Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', ProductSerieController::class)->names('product-series')->parameters(['product-series' => 'productSerie']);
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
 

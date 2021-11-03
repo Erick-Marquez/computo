@@ -24,11 +24,27 @@ class CustomerFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->name(),
-            'document' => $this->faker->unique()->numerify('###########'),
             'phone' => $this->faker->e164PhoneNumber,
             'email' => $this->faker->unique()->freeEmail,
             'address' => $this->faker->address,
-            'identification_document_id' => IdentificationDocument::all()->random()->id
         ];
+    }
+
+    public function customerWithDni(){
+        return $this->state(function (array $attributes) {
+            return [
+                'document' => $this->faker->unique()->numerify('########'),
+                'identification_document_id' => 1
+            ];
+        });
+    }
+
+    public function customerWithRuc(){
+        return $this->state(function (array $attributes) {
+            return [
+                'document' => $this->faker->unique()->numerify('###########'),
+                'identification_document_id' => 6
+            ];
+        });
     }
 }

@@ -72,6 +72,23 @@ const routes = [
     },
 
     /* Catalogs */
+
+    {
+        path: '/familias-lineas-marcas',
+        name: 'families-lines-brands-index',
+        component: () => import('../modules/catalogs/families-lines-brands/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'families-lines-brands-list',
+                component: () => import('../modules/catalogs/families-lines-brands/pages/FamiliesLinesBrands.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'families-lines-brands-list' }
+            }
+        ]
+    },
     {
         path: '/productos',
         name: 'product-index',

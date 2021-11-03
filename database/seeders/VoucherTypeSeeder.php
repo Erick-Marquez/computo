@@ -68,20 +68,26 @@ class VoucherTypeSeeder extends Seeder
         ]);
 
         DB::table('voucher_types')->insert([
-            ['example' => 'F001','cod' => '01', 'description' => 'Factura Eléctronica'],
-            ['example' => 'B001','cod' => '03', 'description' => 'Boleta Eléctronica'],
-            ['example' => 'N001','cod' => null, 'description' => 'Nota de Venta Eléctronica'],
-            ['example' => 'FC01','cod' => '07', 'description' => 'Nota de Crédito que modifica una Factura'],
-            ['example' => 'BC01','cod' => '07', 'description' => 'Nota de Crédito que modifica una Boleta'],
-            ['example' => 'FD01','cod' => '08', 'description' => 'Nota de Débito que modifica una Factura'],
-            ['example' => 'BD01','cod' => '08', 'description' => 'Nota de Débito que modifica una Boleta'],
-            ['example' => 'C001','cod' => null, 'description' => 'Cotización'],
-            ['example' => 'G001','cod' => null, 'description' => 'Garantía'],
+            ['example' => 'F001', 'cod' => '01', 'description' => 'Factura Eléctronica'],
+            ['example' => 'B001', 'cod' => '03', 'description' => 'Boleta Eléctronica'],
+            ['example' => 'N001', 'cod' => null, 'description' => 'Nota de Venta Eléctronica'],
+            ['example' => 'FC01', 'cod' => '07', 'description' => 'Nota de Crédito que modifica una Factura'],
+            ['example' => 'BC01', 'cod' => '07', 'description' => 'Nota de Crédito que modifica una Boleta'],
+            ['example' => 'FD01', 'cod' => '08', 'description' => 'Nota de Débito que modifica una Factura'],
+            ['example' => 'BD01', 'cod' => '08', 'description' => 'Nota de Débito que modifica una Boleta'],
+            ['example' => 'C001', 'cod' => null, 'description' => 'Cotización'],
+            ['example' => 'G001', 'cod' => null, 'description' => 'Garantía'],
         ]);
 
         DB::table('identification_documents')->insert([
-            ['id' => '1','description' => 'DNI'],
-            ['id' => '6','description' => 'RUC']
+            ['id' => '1', 'description' => 'DNI'],
+            ['id' => '6', 'description' => 'RUC']
+        ]);
+
+        DB::table('payment_types')->insert([
+            ['description' => 'Efectivo'],
+            ['description' => 'Tarjeta de Crédito'],
+            ['description' => 'Transferencia bancaria']
         ]);
 
         DB::table('series')->insert([
