@@ -1,19 +1,19 @@
 <template>
-  <h4>Datos del proveedor</h4>
+  <h4 class="mb-3">Datos del proveedor</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-address-card"></i>
           Tipo documento
         </label>
         <select
-          v-if="voucherType == '01'"
+          v-if="voucherType == 'FACTURA' || voucherType == '01'"
           v-model="provider.identification_document_id"
           class="form-control rounded-pill"
         >
-          <option value="6" >RUC</option>
+          <option value="6">RUC</option>
         </select>
         <select
           v-else
@@ -36,8 +36,8 @@
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-pen"></i>
-          N° Documento</label
-        >
+          N° Documento <span v-show="responseApi" :class="responseApiClass"> | {{ responseApi }} </span>
+        </label>
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
@@ -51,7 +51,7 @@
           <div v-if="!loading" class="input-group-append">
             <button
               class="btn btn-dark rounded-pill-right"
-              @click="getDataApi"
+              @click.prevent="getDataApi"
             >
               <i class="fas fa-search"></i>
             </button>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- NOMBRE/RAZON SOCIAL -->
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-id-badge"></i>
@@ -110,7 +110,7 @@
 
   <div class="row">
     <!-- DIRECCIÓN -->
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-map-marker-alt"></i>
@@ -127,7 +127,7 @@
     </div>
 
     <!-- UBIGEO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-globe"></i>
@@ -141,7 +141,7 @@
     </div>
 
     <!-- N° CELULAR -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-phone"></i>
@@ -172,6 +172,7 @@ export default {
       searching: {},
       max_length: 8,
       loading: false,
+      responseApi: null,
     };
   },
   props: {
@@ -200,13 +201,15 @@ export default {
           console.log(response.data);
           this.provider.phone = "";
           this.provider.address = "";
-          this.provider.address = response.data.address;
+          this.provider.id = null;
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
+          this.responseApi = "HABIDO";
         })
         .catch((error) => {
           console.log(error.response);
+          this.responseApi = "NO HABIDO";
         })
         .finally(() => {
           this.loading = false;
@@ -227,6 +230,7 @@ export default {
         });
     },
     setData(providerFind) {
+      this.provider.id = providerFind.id;
       this.provider.document = providerFind.document;
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
@@ -235,7 +239,7 @@ export default {
     },
     searchDocument() {
       clearTimeout(this.searching);
-      this.searching = setTimeout(this.getproviders, 200);
+      this.searching = setTimeout(this.getproviders, 300);
     },
   },
   computed: {
@@ -248,6 +252,9 @@ export default {
         ? true
         : false;
     },
+    responseApiClass() {
+        return this.responseApi == 'NO HABIDO' ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success"
+    }
     // enableSearchDocument() {
     //   return true
     // },

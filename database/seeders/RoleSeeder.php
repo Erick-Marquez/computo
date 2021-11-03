@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
         $role3 = Role::create(['name' => 'Vendedor']);
 
         //Dashboard Permissions
-        Permission::create(['name' => 'dashboard', 'description' => 'Ver Dashboard'])->syncRoles([$role1]);
+        Permission::create(['name' => 'dashboard', 'description' => 'Ver Dashboard'])->syncRoles([$role1, $role2]);
 
         //Profile Permissions
         Permission::create(['name' => 'profile', 'description' => 'Ver Perfil'])->syncRoles([$role1]);
@@ -42,8 +42,9 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
 
         //Cash Register Permissions
-        Permission::create(['name' => 'cash-register', 'description' => 'Ver Caja'])->syncRoles([$role1]);
-        
+        Permission::create(['name' => 'cashboxes', 'description' => 'Ver Cajas'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashbox.create', 'description' => 'Crear Caja'])->syncRoles([$role1]);
+
         //Catalogs Permissions
         Permission::create(['name' => 'catalogs', 'description' => 'Ver Catalagos'])->syncRoles([$role1]);
 
@@ -145,6 +146,6 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'currency-exchanges.create', 'description' => 'Crear Cambio de Divisa'])->syncRoles([$role1]);
             Permission::create(['name' => 'currency-exchanges.edit', 'description' => 'Editar Cambio de Divisa'])->syncRoles([$role1]);
             Permission::create(['name' => 'currency-exchanges.destroy', 'description' => 'Eliminar Cambio de Divisa'])->syncRoles([$role1]);
-        
+
     }
 }

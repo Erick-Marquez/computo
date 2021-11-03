@@ -267,9 +267,10 @@ const routes = [
                 component: () => import('../modules/settings/roles/pages/Roles.vue'),
             },
             {
-                path: '',
-                redirect: { name: 'roles' }
-            }
+                path: '/roles/:id',
+                name: 'roles-permissions',
+                component: () => import('../modules/settings/roles/pages/Permissions.vue'),
+            },
         ]
     },
     {

@@ -6,7 +6,15 @@
   </div>
 
   <div class="container-fluid">
-    
+    <button
+      class="btn btn-dark btn-block btn-lg mb-4"
+      data-toggle="modal"
+      data-target="#new-rol"
+    >
+      <i class="fas fa-plus"></i>
+      Nuevo Rol
+    </button>
+
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -20,7 +28,7 @@
                   name="table_search"
                   class="form-control float-right"
                   placeholder="Search"
-                >
+                />
 
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default">
@@ -61,20 +69,20 @@
                         aria-labelledby="dropdownMenuButton"
                         style=""
                       >
-                        <a
+                        <router-link
                           class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                        ><a
-                          class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                          :to="{ path: `/roles/${rol.id}` }"
                         >
-                        <a
+                          <i class="col-1 mr-3 fas fa-edit"></i>
+                          Editar
+                        </router-link>
+                        <button
                           class="dropdown-item"
-                          href="#"
-                          ><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a
+                          @click="deleteRol(rol.id)"
                         >
+                          <i class="col-1 mr-3 fas fa-trash"></i>
+                          Eliminar
+                        </button>
                       </div>
                     </div>
                   </td>
@@ -89,12 +97,11 @@
     </div>
   </div>
 
-  <!-- MODALES -->
-  <div class="modal fade" id="modal-create" aria-hidden="true">
+  <div class="modal fade" id="new-rol" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Crear nueva Caja</h4>
+          <h4 class="modal-title">Crear Nuevo Rol</h4>
           <button
             type="button"
             class="close"
@@ -104,24 +111,28 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form @submit.prevent="createCashbox()">
+        <form @submit.prevent="createRol()">
           <div class="modal-body">
             <div class="form-group">
-              <label for="name">Nombre de la caja</label>
+              <label for="name">Nombre del Rol</label>
               <input
                 id="description"
                 type="text"
                 class="form-control"
-                
+                v-model="rol.name"
                 required
               />
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-dismiss="modal"
+            >
               Cerrar
             </button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-dark">Guardar</button>
           </div>
         </form>
       </div>
@@ -130,23 +141,66 @@
 </template>
 
 <script>
-import BaseUrl from '../../../../api/BaseUrl.js'
+import BaseUrl from "../../../../api/BaseUrl.js";
 export default {
-  components:{BaseUrl},
-  async created(){
-    await BaseUrl.get(`api/roles`).then( resp=>{
-      this.roles=resp.data.data
-    })
+  components: { BaseUrl },
+  created() {
+    this.getRoles();
   },
-  data(){
-    return{
-      roles:{}
-    }
+  data() {
+    return {
+      roles: {},
+      rol: {
+      },
+    };
   },
-  methods:{
-    
-  }
-}
+  methods: {
+    async getRoles() {
+      await BaseUrl.get(`/api/roles`)
+        .then((response) => {
+          this.roles = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    async createRol() {
+      await BaseUrl.post(`/api/roles`, this.rol)
+        .then((response) => {
+          console.log(response.data);
+          this.rol = {};
+          $("#new-rol").modal("hide");
+          this.getRoles();
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    async deleteRol(id) {
+      Swal.fire({
+        title: "Esta seguro de elimiar este rol?",
+        text: "Este cambio no se puede revertir!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Borralo!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          BaseUrl.delete(`/api/roles/${id}`)
+            .then((response) => {
+              console.log(response.data);
+              Swal.fire("Borrado!", "El Rol fue eliminado.", "success");
+              this.getRoles();
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style>

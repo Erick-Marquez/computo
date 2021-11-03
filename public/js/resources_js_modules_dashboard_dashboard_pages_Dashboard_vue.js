@@ -11,7 +11,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'chart.js/auto'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+Object(function webpackMissingModule() { var e = new Error("Cannot find module 'vue-chart-3'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
+  name: "Home",
+  components: {
+    LineChart: Object(function webpackMissingModule() { var e = new Error("Cannot find module 'vue-chart-3'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())
+  },
+  setup: function setup() {
+    var testData = {
+      labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+      datasets: [{
+        label: "Boletas",
+        fill: true,
+        tension: 0.5,
+        data: [0, 40, 60, 60, 5],
+        backgroundColor: ["rgba(0, 0, 0, 0.1)"],
+        borderColor: "#ee1616"
+      }, {
+        label: "Facturas",
+        fill: true,
+        tension: 0.5,
+        data: [10, 20, 30, 60, 45],
+        backgroundColor: ["rgba(0, 0, 0, 0.1)"],
+        borderColor: "blue"
+      }]
+    };
+    return {
+      testData: testData
+    };
+  }
+}));
 
 /***/ }),
 
@@ -30,12 +64,54 @@ __webpack_require__.r(__webpack_exports__);
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-1c35a19d");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"content-header\" data-v-1c35a19d><h1 data-v-1c35a19d>Dashboard</h1></div><div class=\"row\" data-v-1c35a19d><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-1\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>VENTAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-funnel-dollar\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-2\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>COMPRAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-shopping-basket\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-3\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>CANTIDAD DE PRODUCTOS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-box\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div></div><div class=\"row\" data-v-1c35a19d><div class=\"col-md-6\" data-v-1c35a19d><div class=\"card\" data-v-1c35a19d><div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 1</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div><div class=\"card-body\" style=\"display:block;\" data-v-1c35a19d><div class=\"chart\" data-v-1c35a19d><div class=\"chartjs-size-monitor\" data-v-1c35a19d><div class=\"chartjs-size-monitor-expand\" data-v-1c35a19d><div class=\"\" data-v-1c35a19d></div></div><div class=\"chartjs-size-monitor-shrink\" data-v-1c35a19d><div class=\"\" data-v-1c35a19d></div></div></div><canvas id=\"areaChart\" style=\"min-height:250px;height:250px;max-height:250px;max-width:100%;display:block;width:487px;\" width=\"487\" height=\"250\" class=\"chartjs-render-monitor\" data-v-1c35a19d></canvas></div></div><!-- /.card-body --></div></div><div class=\"col-md-6\" data-v-1c35a19d><div class=\"card\" data-v-1c35a19d><div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 2</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div><div class=\"card-body\" style=\"display:block;\" data-v-1c35a19d><div class=\"chart\" data-v-1c35a19d><div class=\"chartjs-size-monitor\" data-v-1c35a19d><div class=\"chartjs-size-monitor-expand\" data-v-1c35a19d><div class=\"\" data-v-1c35a19d></div></div><div class=\"chartjs-size-monitor-shrink\" data-v-1c35a19d><div class=\"\" data-v-1c35a19d></div></div></div><canvas id=\"areaChart\" style=\"min-height:250px;height:250px;max-height:250px;max-width:100%;display:block;width:487px;\" width=\"487\" height=\"250\" class=\"chartjs-render-monitor\" data-v-1c35a19d></canvas></div></div><!-- /.card-body --></div></div></div>", 3);
+var _hoisted_1 = {
+  "class": "content-header"
+};
+
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Dashboard", -1
+/* HOISTED */
+);
+
+var _hoisted_3 = {
+  key: 0
+};
+var _hoisted_4 = {
+  key: 1
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row\" data-v-1c35a19d><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-1\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>VENTAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-funnel-dollar\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-2\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>COMPRAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-shopping-basket\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-3\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>CANTIDAD DE PRODUCTOS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-box\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div></div>", 1);
+
+var _hoisted_6 = {
+  "class": "row"
+};
+var _hoisted_7 = {
+  "class": "col-md"
+};
+var _hoisted_8 = {
+  "class": "card"
+};
+
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 2</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
+
+var _hoisted_10 = {
+  "class": "card-body",
+  style: {
+    "display": "block"
+  }
+};
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return _hoisted_1;
+  var _component_LineChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LineChart");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, _ctx.$can('dashboard') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, "tu puedes ver el dashboard")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$can('sales') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, "tu puedes ver las compras")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-6\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <h3 class=\"card-title\">Grafico 1</h3>\r\n\r\n          <div class=\"card-tools\">\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-tool\"\r\n              data-card-widget=\"collapse\"\r\n            >\r\n              <i class=\"fas fa-minus\"></i>\r\n            </button>\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-tool\"\r\n              data-card-widget=\"remove\"\r\n            >\r\n              <i class=\"fas fa-times\"></i>\r\n            </button>\r\n          </div>\r\n        </div>\r\n        <div class=\"card-body\" style=\"display: block\">\r\n          <div class=\"chart\">\r\n            <div class=\"chartjs-size-monitor\">\r\n              <div class=\"chartjs-size-monitor-expand\">\r\n                <div class=\"\"></div>\r\n              </div>\r\n              <div class=\"chartjs-size-monitor-shrink\">\r\n                <div class=\"\"></div>\r\n              </div>\r\n            </div>\r\n            <canvas\r\n              id=\"areaChart\"\r\n              style=\"\r\n                min-height: 250px;\r\n                height: 250px;\r\n                max-height: 250px;\r\n                max-width: 100%;\r\n                display: block;\r\n                width: 487px;\r\n              \"\r\n              width=\"487\"\r\n              height=\"250\"\r\n              class=\"chartjs-render-monitor\"\r\n            ></canvas>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+    chartData: _ctx.testData
+  }, null, 8
+  /* PROPS */
+  , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -56,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #84d9d2, #07cdae)\n}\n.caja-1[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #ffbf96, #fe7096)\n}\n.caja-2[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #90caf9, #047edf 99%)\n}\n.fas[data-v-1c35a19d] {\r\n    color: #f2f2f2;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #84d9d2, #07cdae);\n}\n.caja-1[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #ffbf96, #fe7096);\n}\n.caja-2[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #90caf9, #047edf 99%);\n}\n.fas[data-v-1c35a19d] {\r\n  color: #f2f2f2;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

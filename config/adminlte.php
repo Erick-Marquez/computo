@@ -250,7 +250,7 @@ return [
             'text'        => 'Dashboard',
             'route'       => 'web.dashboard',
             'icon'        => 'fas fa-fw fa-chart-line',
-            //'can'         => 'dashboard',
+            'can'         => 'dashboard',
             'label'       => 4,
             'label_color' => 'success',
         ],
@@ -265,19 +265,19 @@ return [
         [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-dollar-sign',
-            'can'     => 'sales',
+            //'can'     => 'sales',
             'submenu' => [
                 [
                     'text' => 'Nuevo Comprobante',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.new-sale',
-                    // 'can'    => 'vouchers.index',
+                    'can'    => 'sales',
                 ],
                 [
                     'text' => 'Comprobantes',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.ventas',
-                    // 'can'    => 'vouchers.index',
+                    'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Notas de Venta',
@@ -315,7 +315,7 @@ return [
         [
             'text'    => 'Caja',
             'icon'    => 'fas fa-fw fa-cash-register',
-            'can'     => 'cash-register',
+            'can'     => 'cashboxes',
             'submenu' => [
                 [
                     'text' => 'Aperturas y Cierres',
@@ -499,7 +499,7 @@ return [
         [
             'text'    => 'Configuración',
             'icon'    => 'fas fa-fw fa-cogs',
-            'can'     => 'settings',
+            // 'can'     => 'settings',
             'submenu' => [
                 [
                     'text'   => 'Empresa',
@@ -511,25 +511,25 @@ return [
                     'text'   => 'Usuarios',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.users',
-                    'can'    => 'users.index',
+                    // 'can'    => 'users.index',
                 ],
                 [
                     'text'   => 'Roles',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.roles',
-                    'can'    => 'roles.index',
+                    // 'can'    => 'roles.index',
                 ],
                 [
                     'text'   => 'Series',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.series',
-                    'can'    => 'series.index',
+                    // 'can'    => 'series.index',
                 ],
                 [
                     'text'   => 'Cambio de Divisas',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.currency-exchanges',
-                    'can'    => 'currency-exchanges.index',
+                    // 'can'    => 'currency-exchanges.index',
                 ],
             ],
         ],
@@ -734,7 +734,7 @@ return [
                 ],
             ],
         ],
-        
+
     ],
 
     /*

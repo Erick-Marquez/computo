@@ -6,7 +6,7 @@
   </div>
 
   <div class="container-fluid">
-    <a href="nueva-venta" class="btn btn-lg btn-block btn-dark mb-4">
+    <a v-if="$can('vouchers.create')" href="nueva-venta" class="btn btn-lg btn-block btn-dark mb-4">
       <i class="fas fa-plus"></i>
       Nueva venta
     </a>

@@ -1,12 +1,10 @@
 require('./bootstrap');
-import Alpine from 'alpinejs';
-window.Alpine = Alpine;
-
-Alpine.start();
 
 import router from "./router";
 
 import { createApp } from 'vue';
+
+import Permissions from './mixins/Permissions';
 
 import indexKardex from './modules/inventory/kardex/index.vue';
 import indexBranches from './modules/inventory/branches/index.vue';
@@ -68,4 +66,6 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 
 
 
+app.mixin(Permissions);
 app.use(router).mount('#app');
+

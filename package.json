@@ -24,6 +24,8 @@
         "vue-loader": "^16.5.0"
     },
     "dependencies": {
+        "chart.js": "^3.6.0",
+        "vue-chart-3": "^0.5.11",
         "vue-router": "^4.0.11"
     }
 }

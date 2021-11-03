@@ -17,6 +17,7 @@ use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UserController;
 
@@ -108,7 +109,7 @@ Route::middleware([
     Route::apiResource('users', UserController::class)->names('api.users');
 
     //Roles
-    Route::get('/roles', [RoleController::class, 'index'])->name('api.role.index');
+    Route::apiResource('roles', RoleController::class)->names('api.roles');
 
     //Series
     Route::get('/series', [SerieController::class, 'index'])->name('api.serie.index');
@@ -118,4 +119,7 @@ Route::middleware([
     //Currency Exchanges
     Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
     Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
+
+    //------------------------Purchases-----------------------//
+    Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
 });

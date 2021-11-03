@@ -18,14 +18,14 @@ class CreatePurchasesTable extends Migration
             $table->string('document_type');
             $table->bigInteger('document_number');
             $table->string('serie');
+            $table->decimal('exchange_rate');
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
             $table->decimal('total_igv', 12, 3)->default(0);
-            $table->decimal('total_exonerated', 12, 3)->default(0);
-            $table->decimal('total_unaffected', 12, 3)->default(0);
-            $table->decimal('total_free', 12, 3)->default(0);
-            $table->decimal('total_taxed', 12, 3)->default(0);
+            // $table->decimal('total_exonerated', 12, 3)->default(0);
+            // $table->decimal('total_unaffected', 12, 3)->default(0);
+            // $table->decimal('total_free', 12, 3)->default(0);
+            // $table->decimal('total_taxed', 12, 3)->default(0);
             $table->unsignedDecimal('total', 12, 3)->default(0);
             $table->string('observation')->nullable();
 
@@ -35,11 +35,6 @@ class CreatePurchasesTable extends Migration
                 ->onDelete('cascade');
 
             $table->foreignId('open_closed_cashbox_id')->nullable()
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-            $table->foreignId('user_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
