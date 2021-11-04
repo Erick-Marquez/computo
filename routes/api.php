@@ -12,6 +12,7 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseIncomeController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UserController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,4 +124,7 @@ Route::middleware([
 
     //------------------------Purchases-----------------------//
     Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
+
+    // Dashboard
+    Route::get('dashboard/vouchers', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
 });

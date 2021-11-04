@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\Sale;
 use Illuminate\Database\Seeder;
 use SebastianBergmann\Type\VoidType;
 
@@ -31,6 +32,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserSeeder::class);
         $this->call(CurrencyExchangeSeeder::class);
+
+        Sale::factory(1000)->create();
 
         //\App\Models\Product::factory(3000)->create();
         //\App\Models\BranchProduct::factory(9000)->create();

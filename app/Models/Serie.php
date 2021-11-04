@@ -27,4 +27,9 @@ class Serie extends Model
     {
         return $this->belongsTo(VoucherType::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

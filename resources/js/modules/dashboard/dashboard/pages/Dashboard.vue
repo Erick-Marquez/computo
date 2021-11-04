@@ -128,48 +128,113 @@
           </div>
         </div>
         <div class="card-body" style="display: block">
-          <LineChart :chartData="testData" />
+          <LineChart :chartData="testData" :options="options" />
         </div>
         <!-- /.card-body -->
       </div>
     </div>
   </div>
+  <button @click="getDataVouchers" class="btn btn-info">model</button>
 </template>
 
 <script>
-import { defineComponent } from "vue";
 import Chart from "chart.js/auto";
 import { LineChart } from "vue-chart-3";
+import BaseUrl from "../../../../api/BaseUrl";
 
-export default defineComponent({
-  name: "Home",
-  components: { LineChart },
-  setup() {
-    const testData = {
-      labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
-      datasets: [
-        {
-          label: "Boletas",
-          fill: true,
-          tension: 0.5,
-          data: [0, 40, 60, 60, 5],
-          backgroundColor: ["rgba(0, 0, 0, 0.1)"],
-          borderColor: "#ee1616",
+export default {
+  name: "Dashboard",
+  components: { LineChart, BaseUrl },
+  data() {
+    return {
+      facturas: [],
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            suggestedMax: 50,
+          },
         },
-        {
-          label: "Facturas",
-          fill: true,
-          tension: 0.5,
-          data: [10, 20, 30, 60, 45],
-          backgroundColor: ["rgba(0, 0, 0, 0.1)"],
-          borderColor: "blue",
-        },
-      ],
+      },
+      testData: {
+        type: "line",
+        labels: [],
+
+        datasets: [
+          {
+            label: "BOLETAS",
+            fill: true,
+            tension: 0.5,
+            data: [],
+            backgroundColor: ["rgba(52, 73, 94, 0.1)"],
+            borderColor: "#34495E",
+          },
+          {
+            label: "FACTURAS",
+            fill: true,
+            tension: 0.5,
+            data: [],
+            backgroundColor: ["rgba(23, 165, 137, 0.1)"],
+            borderColor: "#17A589",
+          },
+          {
+            label: "NV",
+            fill: true,
+            tension: 0.5,
+            data: [10, 20, 30, 60, 45],
+            backgroundColor: ["rgba(203, 67, 53, 0.1)"],
+            borderColor: "#CB4335",
+          },
+        ],
+      },
     };
-
-    return { testData };
   },
-});
+  created() {
+    this.getDataVouchers();
+  },
+  methods: {
+    async getDataVouchers() {
+      await BaseUrl.get(`/api/dashboard/vouchers`)
+        .then((response) => {
+          this.testData.labels = response.data.fechas.reverse();
+          this.testData.datasets[0].data = this.fillDates(
+            response.data.facturas,
+            response.data.fechas
+          );
+          this.testData.datasets[1].data = this.fillDates(
+            response.data.boletas,
+            response.data.fechas
+          );
+          this.testData.datasets[2].data = this.fillDates(
+            response.data.notas_venta,
+            response.data.fechas
+          );
+        })
+        .catch((error) => {
+          this;
+        });
+    },
+    fillDates(vouchers, fechas) {
+      fechas.forEach((fecha) => {
+        const e = vouchers.find((v) => v.x == fecha);
+        e == undefined ? vouchers.push({ x: fecha, y: 0 }) : null;
+      });
+
+      vouchers.sort(function (a, b) {
+        if (a.x > b.x) {
+          return 1;
+        }
+        if (a.x < b.x) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+
+      return vouchers;
+    },
+  },
+};
 </script>
 
 <style scoped>
