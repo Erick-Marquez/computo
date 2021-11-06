@@ -74,10 +74,10 @@
                       </a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.id + '/xml/' + sale.id"><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id"><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.id + '/cdr/' + sale.id"><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/cdr/' + sale.id"><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
                       <i v-if="sale.state == 'ACEPTADO'" class="text-success fas fa-check"></i>

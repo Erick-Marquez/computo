@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SerieRequest;
 use App\Http\Resources\SerieResource;
 use App\Http\Resources\VoucherTypeResource;
 use Illuminate\Http\Request;
@@ -22,31 +23,14 @@ class SerieController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SerieRequest $request)
     {
-        // Falta validar las letras iniciales de las series(hacerlo en un clase request)
-        $request->validate([
-            'serie' => 'required|min:4|max:4|unique:series,serie',
-            'current_number' => 'required|numeric',
-            'voucher_type_id' => 'required',
-            'branch_id' => 'required'
-        ]);
-
+        
         $serie = Serie::create([
             'serie' => $request->serie,
             'current_number' => $request->current_number - 1,

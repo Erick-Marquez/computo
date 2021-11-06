@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CurrencyExchangeRequest;
 use App\Http\Resources\CurrencyExchangeResource;
 use App\Models\CurrencyExchange;
 use Carbon\Carbon;
@@ -27,12 +28,10 @@ class CurrencyExchangeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CurrencyExchangeRequest $request)
     {
         //
-        $request->validate([
-            'change' => 'required|numeric'
-        ]);
+        
 
         $currencyExchange = CurrencyExchange::create([
             'change' => $request->change,
@@ -61,7 +60,7 @@ class CurrencyExchangeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CurrencyExchangeRequest $request, $id)
     {
         $currencyExchange = CurrencyExchange::findOrFail($id);
 
@@ -69,7 +68,7 @@ class CurrencyExchangeController extends Controller
             'change' => $request->change,
             'date' => Carbon::now()->toDateString()
         ]);
-        return $currencyExchange;
+        return response()->json($currencyExchange);
     }
 
     /**

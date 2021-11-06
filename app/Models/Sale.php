@@ -39,6 +39,7 @@ class Sale extends Model
         'hash_cdr',
         'canceled',
 
+        'payment_type_id',
         'serie_id',
         'customer_id',
         'open_closed_cashbox_id',
@@ -53,6 +54,11 @@ class Sale extends Model
     public function serie()
     {
         return $this->belongsTo(Serie::class);
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
     }
 
     public function customer()

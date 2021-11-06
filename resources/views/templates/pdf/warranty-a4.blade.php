@@ -24,7 +24,7 @@
     <main>
         <p class="primer__parrafo">"(NOMBRE DE LA EMPRESA)" empresa líder dedicada a la comercialización de equipos, suministros y accesorios de cómputo, garantiza sus productos en su
             procedencia, legalidad y confiabilidad de rendimiento. Dedicados a suministrar productos de alta calidad tecnológica, "(NOMBRE DE LA EMPRESA)" garantiza el
-            equipo entregado al Sr(a). {{ $head->customer->name }} , con DNI/RUC N° {{ $head->customer->document }}, N° {{ $head->serie->voucherType->description }} ELECTRÓNICA {{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}
+            equipo entregado al Sr(a). {{ $head->customer->name }} , con DNI/RUC N° {{ $head->customer->document }}, N° {{ $head->serie->voucherType->description }} {{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}
         </p>
         <table class="productos">
             <thead>

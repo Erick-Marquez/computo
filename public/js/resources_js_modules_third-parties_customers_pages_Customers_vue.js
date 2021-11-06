@@ -56,7 +56,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/api/tipos-documentos").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/tipos-documentos").then(function (response) {
                   _this.type_documents = response.data;
                 })["catch"](function (error) {
                   console.log(error.response);
@@ -80,7 +80,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _this2.loading = true;
                 _context2.next = 3;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/api/data-document/".concat(_this2.customer.identification_document_id, "/").concat(_this2.customer.document)).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/data-document/".concat(_this2.customer.identification_document_id, "/").concat(_this2.customer.document)).then(function (response) {
                   console.log(response.data);
                   _this2.customer.address = response.data.address;
                   _this2.customer.name = response.data.name;
@@ -137,8 +137,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default,
-    NewCustomer: _components_NewCustomer_vue__WEBPACK_IMPORTED_MODULE_2__.default
+    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"],
+    NewCustomer: _components_NewCustomer_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -165,7 +165,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 _context.next = 3;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.get("/api/clientes?sort=-id&page=".concat(page, "&perPage=10")).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/clientes?sort=-id&page=".concat(page, "&perPage=10")).then(function (response) {
                   _this.customers = response.data.data;
                   _this.links = response.data.meta.links;
                 })["catch"](function (error) {
@@ -189,7 +189,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.post("/api/clientes", _this2.customer).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/clientes", _this2.customer).then(function (response) {
                   console.log(response.data);
                   $("#new-customer").modal("hide");
                   _this2.customer = {};
@@ -220,7 +220,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.isConfirmed) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__.default.delete("/api/clientes/".concat(id)).then(function (response) {
+          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/clientes/".concat(id)).then(function (response) {
             Swal.fire("Deleted!", response.data.message, "success");
 
             _this3.showCustomers();
@@ -1465,16 +1465,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NewCustomer_vue_vue_type_template_id_46bf36d6__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewCustomer.vue?vue&type=template&id=46bf36d6 */ "./resources/js/modules/third-parties/customers/components/NewCustomer.vue?vue&type=template&id=46bf36d6");
 /* harmony import */ var _NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewCustomer.vue?vue&type=script&lang=js */ "./resources/js/modules/third-parties/customers/components/NewCustomer.vue?vue&type=script&lang=js");
+/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
-_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _NewCustomer_vue_vue_type_template_id_46bf36d6__WEBPACK_IMPORTED_MODULE_0__.render
+
+;
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NewCustomer_vue_vue_type_template_id_46bf36d6__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/third-parties/customers/components/NewCustomer.vue"]])
 /* hot reload */
 if (false) {}
 
-_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/modules/third-parties/customers/components/NewCustomer.vue"
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
 
 /***/ }),
 
@@ -1491,16 +1493,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Customers_vue_vue_type_template_id_1f665ca9__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Customers.vue?vue&type=template&id=1f665ca9 */ "./resources/js/modules/third-parties/customers/pages/Customers.vue?vue&type=template&id=1f665ca9");
 /* harmony import */ var _Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Customers.vue?vue&type=script&lang=js */ "./resources/js/modules/third-parties/customers/pages/Customers.vue?vue&type=script&lang=js");
+/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
-_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Customers_vue_vue_type_template_id_1f665ca9__WEBPACK_IMPORTED_MODULE_0__.render
+
+;
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Customers_vue_vue_type_template_id_1f665ca9__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/third-parties/customers/pages/Customers.vue"]])
 /* hot reload */
 if (false) {}
 
-_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "resources/js/modules/third-parties/customers/pages/Customers.vue"
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
 
 /***/ }),
 
@@ -1513,7 +1517,7 @@ _Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__fi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_NewCustomer_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./NewCustomer.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/third-parties/customers/components/NewCustomer.vue?vue&type=script&lang=js");
  
@@ -1529,7 +1533,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Customers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Customers.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/third-parties/customers/pages/Customers.vue?vue&type=script&lang=js");
  

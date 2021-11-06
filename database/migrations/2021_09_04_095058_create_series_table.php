@@ -15,9 +15,13 @@ class CreateSeriesTable extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             $table->id();
+
             $table->string('serie'); //B001
-            $table->boolean('active')->default(true);
             $table->bigInteger('current_number'); // 11
+
+            $table->boolean('active')->default(true);
+            $table->boolean('have_igv')->default(false);
+
 
             $table->foreignId('voucher_type_id') // BOLETA
                 ->constrained()

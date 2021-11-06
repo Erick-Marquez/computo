@@ -422,9 +422,9 @@
                   <i class="text-danger fas fa-money-bill"></i>
                   Tipo de pago
                 </label>
-                <select v-model="saleData.voucher.warranty_serie_id" class="form-control rounded-pill">
-                  <option v-for="warrantySerie in warrantySeries" :key="warrantySerie.id" :value="warrantySerie.id">
-                    {{ warrantySerie.serie }}
+                <select v-model="saleData.voucher.payment_type_id" class="form-control rounded-pill">
+                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                    {{ paymentType.description }}
                   </option>
                 </select>
               </div>
@@ -593,6 +593,12 @@ export default {
       this.warrantySeries = resp.data.data;
       this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
     });
+
+    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
+      this.paymentTypes = resp.data.data;
+      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id
+    });
+
   },
   data() {
     return {
@@ -617,6 +623,7 @@ export default {
       activateDetailDiscount: false,
 
       identificationDocuments: {},
+      paymentTypes: [],
       products: {},
       productSeries: [],
       saleData: {
@@ -635,6 +642,7 @@ export default {
           change: 0,
           warranty_serie_id: null,
           warranty: false,
+          payment_type_id: null,
         },
         detail: [],
       },

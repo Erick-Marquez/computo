@@ -12,6 +12,10 @@ class Serie extends Model
     protected $fillable = [
         'serie',
         'current_number',
+
+        'active',
+        'have_igv',
+        
         'branch_id',
         'voucher_type_id'
     ];

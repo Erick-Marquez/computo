@@ -45,22 +45,24 @@
                   <tr>
                     <th>ID</th>
                     <th>Tipo</th>
-                    <th>Estado</th>
-                    <th>Serie</th>
-                    <th>Numero Actual</th>
-                    <th>Sucursal</th>
-                    <th>Acciones</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center">Serie</th>
+                    <th class="text-center">Numero Actual</th>
+                    <th class="text-center">Sucursal</th>
+                    <th class="text-center">Afectación IGV</th>
+                    <th class="text-center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="serie in series" :key="serie.id">
                     <td class="align-middle">{{ serie.id }}</td>
                     <td class="align-middle">{{ serie.voucher_type.description }}</td>
-                    <td class="align-middle">{{ serie.active == 1 ? 'Activo' : 'Inactivo' }}</td>
-                    <td class="align-middle">{{ serie.serie }}</td>
-                    <td class="align-middle">{{ serie.current_number }}</td>
-                    <td class="align-middle">{{ serie.branch.description }}</td>
-                    <td class="align-middle">
+                    <td class="align-middle text-center">{{ serie.active == 1 ? 'Activo' : 'Inactivo' }}</td>
+                    <td class="align-middle text-center">{{ serie.serie }}</td>
+                    <td class="align-middle text-center">{{ serie.current_number }}</td>
+                    <td class="align-middle text-center">{{ serie.branch.description }}</td>
+                    <td class="align-middle text-center">{{ serie.have_igv == 1 ? 'Si' : 'No' }}</td>
+                    <td class="align-middle text-center">
                       <div class="dropdown">
                         <button
                           class="btn btn-danger dropdown-toggle"
@@ -135,15 +137,25 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="name">Serie</label>
-              <input type="text" class="form-control" v-model="serieCreate.serie" :placeholder="serieExample" required>
+              <label>Serie</label>
+              <input type="text" :class="errorsCreate.serie == null ? 'form-control' : 'form-control is-invalid'" v-model="serieCreate.serie" :placeholder="serieExample" required>
+              <div class="invalid-feedback" v-if="errorsCreate.serie">
+                {{ errorsCreate.serie[0] }}
+              </div>
             </div>
             <div class="form-group">
-              <label for="name">Correlativo Inicial</label>
-              <input type="text" class="form-control" v-model="serieCreate.current_number" required>
+              <label>Correlativo Inicial</label>
+              <input type="number" min="0" class="form-control" v-model="serieCreate.current_number" required>
+            </div>
+            <div v-if="serieCreate.voucher_type_id < 8 " class="form-group">
+              <label>Afectación IGV</label>
+              <div class="custom-control custom-switch custom-switch-on-danger">
+                <input type="checkbox" class="custom-control-input" id="customSwitchCreate" v-model="serieCreate.have_igv">
+                <label class="custom-control-label" for="customSwitchCreate">{{ serieCreate.have_igv ? 'Si' : 'No' }}</label>
+              </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
+          <div class="modal-footer justify-content-between"> 
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
@@ -171,10 +183,14 @@ export default {
       serieCreate: {
         serie: '',
         current_number: 1,
+        have_igv: false,
         voucher_type_id: '',
         branch_id: ''
       },
-      serieExample: 'Selecciona un tipo de documento'
+      serieExample: 'Selecciona un tipo de documento',
+      errorsCreate: {
+        serie: null,
+      }
     }
   },
   methods:{
@@ -206,21 +222,29 @@ export default {
     createSerie(){
       BaseUrl.post(`api/series`, this.serieCreate).then( resp => {
         
-        console.log(resp)
         $("#modal-create").modal("hide")
-        this.showSeries()
+        
+        this.showSeries() //mostrar las nuevas series
+
+        //limpiar el objeto create 
         this.serieCreate = {
           serie: '',
           current_number: 1,
           voucher_type_id: '',
           branch_id: ''
-        },
+        }
         this.serieExample = 'Selecciona un tipo de documento'
+
+        //limpiar el objeto error 
+        errorsCreate = {
+          serie: null,
+        }
+        
         Swal.fire("Creado", "La serie ha sido creada", "success");
       })
       .catch((error) => {
         //Pintar los errores
-        console.log(error.response);
+        this.errorsCreate = error.response.data.errors
       });
     }
   }

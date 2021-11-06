@@ -41,7 +41,11 @@ class CreateSalesTable extends Migration
             $table->string('hash_cdr')->nullable();
             $table->boolean('canceled')->default(false);
             
-            
+            $table->foreignId('payment_type_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->foreignId('serie_id')
                 ->constrained()
                 ->onUpdate('cascade')
