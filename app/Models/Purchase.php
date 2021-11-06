@@ -42,4 +42,13 @@ class Purchase extends Model
     {
         return $this->belongsTo(OpenClosedCashbox::class);
     }
+
+    /**
+     * * METODOS ESTATICOS DEL MODELO
+    */
+
+    public static function getPurchasesToday()
+    {
+        return Purchase::where('date_issue', date('Y-m-d'))->sum('total');
+    }
 }

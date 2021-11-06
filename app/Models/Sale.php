@@ -69,4 +69,13 @@ class Sale extends Model
     {
         return $this->belongsTo(OpenClosedCashbox::class);
     }
+
+    /**
+     * * METODOS ESTATICOS DEL MODELO
+    */
+
+    public static function getSalesToday()
+    {
+        return Sale::where('date_issue', date('Y-m-d'))->sum('total');
+    }
 }

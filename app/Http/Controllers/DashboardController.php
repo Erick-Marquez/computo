@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BranchProduct;
+use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Serie;
 use App\Models\VoucherType;
@@ -62,5 +65,22 @@ class DashboardController extends Controller
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
+    }
+
+    public function widgets()
+    {
+        $branch_id = auth()->user()->branch_id;
+
+        // *ToDo: Agregar el opcc_id del user para que sea global o especifico
+        $purchases = Purchase::getPurchasesToday();
+        $sales = Sale::getSalesToday();
+
+        $products = BranchProduct::getNumberProductsBranch($branch_id);
+
+        return response()->json([
+            'purchases' => $purchases,
+            'sales' => $sales,
+            'products' => $products
+        ]);
     }
 }

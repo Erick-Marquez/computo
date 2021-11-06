@@ -45,7 +45,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      facturas: [],
+      widgets: {},
       options: {
         scales: {
           y: {
@@ -84,6 +84,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   created: function created() {
     this.getDataVouchers();
+    this.getDataWidgets();
   },
   methods: {
     getDataVouchers: function getDataVouchers() {
@@ -135,6 +136,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return 0;
       });
       return vouchers;
+    },
+    getDataWidgets: function getDataWidgets() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"].get("/api/dashboard/widgets").then(function (response) {
+                  console.log(response.data);
+                  _this2.widgets = response.data;
+                })["catch"](function (error) {
+                  console.log(error.response);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
   }
 });
@@ -175,22 +200,133 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   key: 1
 };
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row\" data-v-1c35a19d><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-1\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>VENTAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-funnel-dollar\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-2\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>COMPRAS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-shopping-basket\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div><div class=\"col-lg-4 col-12\" data-v-1c35a19d><!-- small card --><div class=\"small-box bg-success caja-3\" data-v-1c35a19d><div class=\"inner\" data-v-1c35a19d><h3 data-v-1c35a19d>53<sup style=\"font-size:20px;\" data-v-1c35a19d>%</sup></h3><p data-v-1c35a19d>CANTIDAD DE PRODUCTOS</p></div><div class=\"icon\" data-v-1c35a19d><i class=\"fas fa-box\" data-v-1c35a19d></i></div><a href=\"#\" class=\"small-box-footer\" data-v-1c35a19d> Más info <i class=\"fas fa-arrow-circle-right\" data-v-1c35a19d></i></a></div></div></div>", 1);
-
-var _hoisted_6 = {
+var _hoisted_5 = {
   "class": "row"
 };
+var _hoisted_6 = {
+  "class": "col-lg-4 col-12"
+};
 var _hoisted_7 = {
-  "class": "col-md"
+  "class": "small-box bg-success caja-1"
 };
 var _hoisted_8 = {
+  "class": "inner"
+};
+
+var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "VENTAS", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "icon"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-funnel-dollar"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: "#",
+    "class": "small-box-footer"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Más info "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-arrow-circle-right"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_12 = {
+  "class": "col-lg-4 col-12"
+};
+var _hoisted_13 = {
+  "class": "small-box bg-success caja-2"
+};
+var _hoisted_14 = {
+  "class": "inner"
+};
+
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "COMPRAS", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "icon"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-shopping-basket"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: "#",
+    "class": "small-box-footer"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Más info "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-arrow-circle-right"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_18 = {
+  "class": "col-lg-4 col-12"
+};
+var _hoisted_19 = {
+  "class": "small-box bg-success caja-3"
+};
+var _hoisted_20 = {
+  "class": "inner"
+};
+
+var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "CANTIDAD DE PRODUCTOS", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_22 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "icon"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-box"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: "#",
+    "class": "small-box-footer"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Más info "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-arrow-circle-right"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_24 = {
+  "class": "row"
+};
+var _hoisted_25 = {
+  "class": "col-md"
+};
+var _hoisted_26 = {
   "class": "card"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 2</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 2</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
 
-var _hoisted_10 = {
+var _hoisted_28 = {
   "class": "card-body",
   style: {
     "display": "block"
@@ -199,17 +335,18 @@ var _hoisted_10 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_LineChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LineChart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, _ctx.$can('dashboard') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, "tu puedes ver el dashboard")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$can('sales') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, "tu puedes ver las compras")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-6\">\n      <div class=\"card\">\n        <div class=\"card-header\">\n          <h3 class=\"card-title\">Grafico 1</h3>\n\n          <div class=\"card-tools\">\n            <button\n              type=\"button\"\n              class=\"btn btn-tool\"\n              data-card-widget=\"collapse\"\n            >\n              <i class=\"fas fa-minus\"></i>\n            </button>\n            <button\n              type=\"button\"\n              class=\"btn btn-tool\"\n              data-card-widget=\"remove\"\n            >\n              <i class=\"fas fa-times\"></i>\n            </button>\n          </div>\n        </div>\n        <div class=\"card-body\" style=\"display: block\">\n          <div class=\"chart\">\n            <div class=\"chartjs-size-monitor\">\n              <div class=\"chartjs-size-monitor-expand\">\n                <div class=\"\"></div>\n              </div>\n              <div class=\"chartjs-size-monitor-shrink\">\n                <div class=\"\"></div>\n              </div>\n            </div>\n            <canvas\n              id=\"areaChart\"\n              style=\"\n                min-height: 250px;\n                height: 250px;\n                max-height: 250px;\n                max-width: 100%;\n                display: block;\n                width: 487px;\n              \"\n              width=\"487\"\n              height=\"250\"\n              class=\"chartjs-render-monitor\"\n            ></canvas>\n          </div>\n        </div>\n      </div>\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, _ctx.$can('dashboard') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, "tu puedes ver el dashboard")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$can('sales') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, "tu puedes ver las compras")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.sales), 1
+  /* TEXT */
+  ), _hoisted_9]), _hoisted_10, _hoisted_11])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.purchases), 1
+  /* TEXT */
+  ), _hoisted_15]), _hoisted_16, _hoisted_17])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.products), 1
+  /* TEXT */
+  ), _hoisted_21]), _hoisted_22, _hoisted_23])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-6\">\n      <div class=\"card\">\n        <div class=\"card-header\">\n          <h3 class=\"card-title\">Grafico 1</h3>\n\n          <div class=\"card-tools\">\n            <button\n              type=\"button\"\n              class=\"btn btn-tool\"\n              data-card-widget=\"collapse\"\n            >\n              <i class=\"fas fa-minus\"></i>\n            </button>\n            <button\n              type=\"button\"\n              class=\"btn btn-tool\"\n              data-card-widget=\"remove\"\n            >\n              <i class=\"fas fa-times\"></i>\n            </button>\n          </div>\n        </div>\n        <div class=\"card-body\" style=\"display: block\">\n          <div class=\"chart\">\n            <div class=\"chartjs-size-monitor\">\n              <div class=\"chartjs-size-monitor-expand\">\n                <div class=\"\"></div>\n              </div>\n              <div class=\"chartjs-size-monitor-shrink\">\n                <div class=\"\"></div>\n              </div>\n            </div>\n            <canvas\n              id=\"areaChart\"\n              style=\"\n                min-height: 250px;\n                height: 250px;\n                max-height: 250px;\n                max-width: 100%;\n                display: block;\n                width: 487px;\n              \"\n              width=\"487\"\n              height=\"250\"\n              class=\"chartjs-render-monitor\"\n            ></canvas>\n          </div>\n        </div>\n      </div>\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
     chartData: $data.testData,
     options: $data.options
   }, null, 8
   /* PROPS */
-  , ["chartData", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[0] || (_cache[0] = function () {
-      return $options.getDataVouchers && $options.getDataVouchers.apply($options, arguments);
-    }),
-    "class": "btn btn-info"
-  }, "model")], 64
+  , ["chartData", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"getDataWidgets\" class=\"btn btn-info\">model</button> ")], 64
   /* STABLE_FRAGMENT */
   );
 }

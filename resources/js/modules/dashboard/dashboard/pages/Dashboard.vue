@@ -9,7 +9,7 @@
       <!-- small card -->
       <div class="small-box bg-success caja-1">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{ widgets.sales }}</h3>
 
           <p>VENTAS</p>
         </div>
@@ -25,7 +25,7 @@
       <!-- small card -->
       <div class="small-box bg-success caja-2">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{ widgets.purchases }}</h3>
 
           <p>COMPRAS</p>
         </div>
@@ -41,7 +41,7 @@
       <!-- small card -->
       <div class="small-box bg-success caja-3">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{ widgets.products }}</h3>
 
           <p>CANTIDAD DE PRODUCTOS</p>
         </div>
@@ -134,7 +134,7 @@
       </div>
     </div>
   </div>
-  <button @click="getDataVouchers" class="btn btn-info">model</button>
+  <!-- <button @click="getDataWidgets" class="btn btn-info">model</button> -->
 </template>
 
 <script>
@@ -147,7 +147,7 @@ export default {
   components: { LineChart, BaseUrl },
   data() {
     return {
-      facturas: [],
+      widgets: {},
       options: {
         scales: {
           y: {
@@ -191,6 +191,7 @@ export default {
   },
   created() {
     this.getDataVouchers();
+    this.getDataWidgets();
   },
   methods: {
     async getDataVouchers() {
@@ -233,6 +234,17 @@ export default {
 
       return vouchers;
     },
+    async getDataWidgets()
+    {
+        await BaseUrl.get(`/api/dashboard/widgets`)
+        .then(response => {
+            console.log(response.data)
+            this.widgets = response.data;
+        })
+        .catch(error => {
+            console.log(error.response)
+        })
+    }
   },
 };
 </script>

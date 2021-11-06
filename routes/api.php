@@ -127,4 +127,6 @@ Route::middleware([
 
     // Dashboard
     Route::get('dashboard/vouchers', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
+    Route::get('dashboard/widgets', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
+
 });

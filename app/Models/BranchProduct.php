@@ -30,12 +30,12 @@ class BranchProduct extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function branch() 
+    public function branch()
     {
         return $this->belongsTo(Branch::class);
     }
 
-    public function igvType() 
+    public function igvType()
     {
         return $this->belongsTo(IgvType::class);
     }
@@ -43,6 +43,15 @@ class BranchProduct extends Model
     public function branchProductSeries()
     {
         return $this->hasMany(BranchProductSerie::class);
+    }
+
+    /**
+     * * METODOS ESTATICOS DEL MODELO
+    */
+
+    public static function getNumberProductsBranch($branch_id)
+    {
+        return BranchProduct::where('branch_id', $branch_id)->count();
     }
 
 }
