@@ -79,6 +79,7 @@
             <label for="">Monto</label>
             <input
               type="number"
+              step="0.0001"
               class="form-control"
               v-model.number="movement.amount"
             />

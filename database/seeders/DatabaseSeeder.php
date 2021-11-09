@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(VoucherTypeSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(UbigeeSeeder::class);
 
         \App\Models\Provider::factory(10)->create();
 

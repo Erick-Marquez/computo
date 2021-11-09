@@ -16,7 +16,7 @@ class CreateCashboxesTable extends Migration
         Schema::create('cashboxes', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->boolean('state')->default(false);
+            $table->boolean('is_open')->default(false);
 
             $table->foreignId('branch_id')
                 ->constrained()

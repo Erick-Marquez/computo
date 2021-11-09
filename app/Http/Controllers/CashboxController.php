@@ -96,9 +96,11 @@ class CashboxController extends Controller
     // Aperturar caja
     public function openCashbox(Request $request)
     {
+        $request->request->add(['user_id' => auth()->user()->id]);
+
         $request->validate([
+            'id' => 'required|exists:cashboxes,id',
             'opening_amount' => 'required|numeric',
-            'state' => 'required|boolean',
             'closing_date' => 'prohibited',
             'closing_amount' => 'prohibited'
         ]);
@@ -109,6 +111,8 @@ class CashboxController extends Controller
     // Cerrar caja
     public function closeCashbox($id, Request $request)
     {
+        $request->request->add(['user_id' => auth()->user()->id]);
+
         $request->validate([
             'id' => 'exists:open_closed_cashboxes,id',
             'cashbox_id' => 'exists:cashboxes,id',

@@ -26,6 +26,7 @@ class PurchaseService
                 'total' => $request->total,
                 'observation' => $request->observation,
                 'provider_id' => $provider['id'],
+                'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             ]);
 
             $result = $this->updateProductsAndSeries($request->products, $purchase['id']);

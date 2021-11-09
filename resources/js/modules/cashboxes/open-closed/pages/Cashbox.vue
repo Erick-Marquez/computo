@@ -192,6 +192,7 @@
               <input
                 id="description"
                 type="number"
+                step="0.0001"
                 class="form-control"
                 v-model="cashbox.opening_amount"
                 required
@@ -220,7 +221,11 @@ export default {
         description: "",
       },
       cashboxes: [],
-      cashbox: {},
+      cashbox: {
+        id: null,
+        description: '',
+        opening_amount: 0,
+      },
     };
   },
   created() {

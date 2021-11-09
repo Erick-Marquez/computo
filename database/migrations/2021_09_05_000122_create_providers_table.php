@@ -21,6 +21,7 @@ class CreateProvidersTable extends Migration
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
+            $table->string('ubigee')->nullable();
             $table->string('identification_document_id');
 
 

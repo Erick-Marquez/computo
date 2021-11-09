@@ -12,7 +12,7 @@ class Cashbox extends Model
 
     protected $fillable = [
         'description',
-        'state',
+        'is_open',
         'branch_id'
     ];
 
@@ -29,21 +29,12 @@ class Cashbox extends Model
     }
 
     // *TODO: METODOS PARA OBTENER EL BALANCE Y USUARIO DE LA CAJA
-    public function balanceCurrently($id)
-    {
-        $cashbox = Cashbox::findOrFail($id);
-
-        if($cashbox['state']) {
-            return 'si tiene balance';
-        }
-
-        return 'no tiene balance';
-    }
 
     // *! METODOS RECURRENTES PARA CAJA
     public function balance($id)
     {
-        if( $this->state ) {
+
+        if( $this->is_open ) {
             return CashboxService::balance($id);
         }
 

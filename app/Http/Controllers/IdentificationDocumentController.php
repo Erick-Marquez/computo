@@ -80,7 +80,8 @@ class IdentificationDocumentController extends Controller
 
             return response()->json([
                 "name" => $response['razonSocial'],
-                "address" => $response['direccion']
+                "address" => $response['direccion'],
+                "ubigee" => $response['ubigeo']
             ]);
 
         } elseif ($cod == 1) {

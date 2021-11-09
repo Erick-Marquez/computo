@@ -35,6 +35,12 @@ class OpenClosedCashbox extends Model
         return $this->hasMany(Sale::class);
     }
 
+    // RELACION DE UNO A MUCHOs
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
     // RELACION DE UNO A MUCHO
     public function openClosedCashboxDetails()
     {

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row d-flex align-items-center">
       <div class="col-md-6 d-flex align-items-stretch flex-column">
         <div class="card bg-white d-flex flex-fill">
           <div class="card-header border-bottom-0 text-center">
@@ -33,7 +33,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md">
+          <div class="col-md-6">
             <div class="info-box">
               <span class="info-box-icon bg-navy">
                 <i class="fas fa-money-check-alt"></i>
@@ -47,9 +47,23 @@
             </div>
             <!-- /.info-box -->
           </div>
+          <div class="col-md-6">
+            <div class="info-box">
+              <span class="info-box-icon bg-warning">
+                <i class="fas fa-shopping-basket"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">compras</span>
+                <span class="info-box-number">{{ details.balance.purchases }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
         </div>
         <div class="row">
-          <div class="col-md">
+          <div class="col-md-6">
             <div class="info-box">
               <span class="info-box-icon bg-teal">
                 <i class="fas fa-hand-holding-usd"></i>
@@ -64,9 +78,8 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md">
+
+          <div class="col-md-6">
             <div class="info-box">
               <span class="info-box-icon bg-maroon">
                 <i class="fas fa-file-invoice-dollar"></i>
@@ -136,7 +149,8 @@
                   parseFloat(details.opening_amount, 3) +
                   parseFloat(details.balance.sales, 3) +
                   parseFloat(details.balance.incomes, 3) -
-                  parseFloat(details.balance.expenses, 3)
+                  parseFloat(details.balance.expenses, 3) -
+                  parseFloat(details.balance.purchases, 3)
                 }}
               </td>
             </tr>
@@ -171,9 +185,12 @@ export default {
           sales: 0,
           incomes: 0,
           expenses: 0,
+          purchase: 0,
         },
       },
-      openClosedCashbox: {},
+      openClosedCashbox: {
+          id: null,
+      },
       movements: [],
       errors: {},
     };
@@ -205,10 +222,14 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.showDetails();
+          this.errors = {};
+          this.movement = {};
+          this.movement.type = 'EGRESO';
           $("#new-movement").modal("hide");
         })
         .catch((error) => {
           console.log(error.response);
+          this.errors = error.response.data.errors;
         });
     },
     async closeCashbox() {

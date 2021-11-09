@@ -16,9 +16,9 @@ class IsCashboxOpening
      */
     public function handle(Request $request, Closure $next)
     {
-        $cashbox = auth()->user()->cashbox_id;
+        $open_closed_cashbox_id = auth()->user()->open_closed_cashbox_id;
 
-        if ( is_null($cashbox) ) {
+        if ( is_null($open_closed_cashbox_id) ) {
 
             return redirect()->route('web.cajas')->with('status', 'Tiene que aperturar una caja primero');           ;
 

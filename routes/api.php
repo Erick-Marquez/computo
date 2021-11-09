@@ -20,6 +20,7 @@ use App\Http\Controllers\LineController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
+use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -128,5 +129,7 @@ Route::middleware([
     // Dashboard
     Route::get('dashboard/vouchers', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
     Route::get('dashboard/widgets', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
+
+    Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
 
 });

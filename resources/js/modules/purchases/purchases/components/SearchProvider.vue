@@ -133,9 +133,8 @@
           <i class="text-danger fas fa-globe"></i>
           Ubigeo</label
         >
-        <select name="" id="" class="form-control rounded-pill">
-          <option value="">Opcion1</option>
-          <option value="">Opcion2</option>
+        <select v-model="provider.ubigee"  class="form-control rounded-pill" name="">
+            <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.cod">{{ ubigee.place_description }}</option>
         </select>
       </div>
     </div>
@@ -163,13 +162,14 @@
 import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
-  components: { BaseUrl },
+  components: { BaseUrl},
   data() {
     return {
       toggle: false,
       providers: [],
       type_documents: [],
       searching: {},
+      ubigees: [],
       max_length: 8,
       loading: false,
       responseApi: null,
@@ -181,6 +181,7 @@ export default {
   },
   created() {
     this.getTypeDocuments();
+    this.getUbigees();
   },
   methods: {
     async getTypeDocuments() {
@@ -205,6 +206,7 @@ export default {
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
+          this.provider.ubigee = response.data.ubigee;
           this.responseApi = "HABIDO";
         })
         .catch((error) => {
@@ -213,6 +215,15 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+        });
+    },
+    async getUbigees() {
+      await BaseUrl.get(`/api/ubigees`)
+        .then((response) => {
+          this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
         });
     },
     async getproviders() {
@@ -235,6 +246,7 @@ export default {
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
       this.provider.phone = providerFind.phone;
+      this.provider.ubigee = response.data.ubigee;
       this.providers = {};
     },
     searchDocument() {
