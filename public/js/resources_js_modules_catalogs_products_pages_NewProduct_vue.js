@@ -1095,7 +1095,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://localhost/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1118,7 +1118,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-series[data-v-721a95f6] {\r\n  background: linear-gradient(to right, #292e49, #536976);\r\n  border-top-right-radius: 23px;\r\n  border-bottom-right-radius: 23px;\n}\n.table-prices[data-v-721a95f6]{\r\n  min-width: 600px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-series[data-v-721a95f6] {\n  background: linear-gradient(to right, #292e49, #536976);\n  border-top-right-radius: 23px;\n  border-bottom-right-radius: 23px;\n}\n.table-prices[data-v-721a95f6]{\n  min-width: 600px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2288,7 +2288,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NewProduct_vue_vue_type_template_id_721a95f6_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewProduct.vue?vue&type=template&id=721a95f6&scoped=true */ "./resources/js/modules/catalogs/products/pages/NewProduct.vue?vue&type=template&id=721a95f6&scoped=true");
 /* harmony import */ var _NewProduct_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewProduct.vue?vue&type=script&lang=js */ "./resources/js/modules/catalogs/products/pages/NewProduct.vue?vue&type=script&lang=js");
 /* harmony import */ var _NewProduct_vue_vue_type_style_index_0_id_721a95f6_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewProduct.vue?vue&type=style&index=0&id=721a95f6&scoped=true&lang=css */ "./resources/js/modules/catalogs/products/pages/NewProduct.vue?vue&type=style&index=0&id=721a95f6&scoped=true&lang=css");
-/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -2296,7 +2296,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_NewProduct_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NewProduct_vue_vue_type_template_id_721a95f6_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-721a95f6"],['__file',"resources/js/modules/catalogs/products/pages/NewProduct.vue"]])
+const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_NewProduct_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NewProduct_vue_vue_type_template_id_721a95f6_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-721a95f6"],['__file',"resources/js/modules/catalogs/products/pages/NewProduct.vue"]])
 /* hot reload */
 if (false) {}
 

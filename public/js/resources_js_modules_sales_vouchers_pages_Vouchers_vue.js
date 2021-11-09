@@ -427,7 +427,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://localhost/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -444,7 +444,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/pdf_cpe.svg?20a57c59eab72f335c4b320ee80bcb0c");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/pdf_cpe.svg?22505b81a3f67132583a5bce0d205a5b");
 
 /***/ }),
 
@@ -474,7 +474,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/warranty_cpe.svg?ab68db46a9c6a278a38d4871af3dc1f2");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/warranty_cpe.svg?ab294b4ee0b8d8f0a54018cc745012f0");
 
 /***/ }),
 
@@ -489,7 +489,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cdr.svg?20c124f12c047f9adc6652776886235a");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cdr.svg?76aea3817924be8741aec7ffac40d8c8");
 
 /***/ }),
 
@@ -504,7 +504,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cpe.svg?767e5bd0f7658beeb425a67c5d58f838");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cpe.svg?cc57968ed80d143441288d3a2303104c");
 
 /***/ }),
 
@@ -1285,13 +1285,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Vouchers.vue?vue&type=template&id=248899c1 */ "./resources/js/modules/sales/vouchers/pages/Vouchers.vue?vue&type=template&id=248899c1");
 /* harmony import */ var _Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Vouchers.vue?vue&type=script&lang=js */ "./resources/js/modules/sales/vouchers/pages/Vouchers.vue?vue&type=script&lang=js");
-/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/sales/vouchers/pages/Vouchers.vue"]])
+const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/sales/vouchers/pages/Vouchers.vue"]])
 /* hot reload */
 if (false) {}
 

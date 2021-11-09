@@ -624,7 +624,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://localhost/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -647,7 +647,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\r\n/* Input group */\n.et-input-left-group{\r\n  display: grid;\r\n  align-items: center;\r\n  grid-template-columns: auto -webkit-max-content;\r\n  grid-template-columns: auto max-content;\n}\n.et-input-left-group .et-input {\r\n  /* width: 100%; */\r\n  border-top-right-radius: 0;\r\n  border-bottom-right-radius: 0;\n}\n.et-input{\r\n  width: 100%;\r\n  border: 1px solid #ced4da;\r\n  border-radius: 4px;\r\n  outline: none;\r\n  padding: 0 .5rem;\r\n  height: 2.4rem;\r\n  color: #4F4F4F;\n}\n.et-input:focus{\r\n  border: 1px solid #cccccc;\n}\n.et-group-text{\r\n  padding: 0 .5rem;\r\n  height: 2.4rem;\r\n  display: inline;\r\n  margin-left: -1px;\r\n  background-color: #e9ecef;\r\n  border: 1px solid #ced4da !important;\r\n  border-top-right-radius: 4px;\r\n  border-bottom-right-radius: 4px;\n}\r\n/* Boton */\n.et-button{\r\n  color: #4F4F4F;\r\n  border: 1px solid transparent;\r\n  border-radius: 0.25rem;\r\n  opacity: .8;\n}\n.et-button:hover{ opacity: 1\n}\n.et-button:disabled{ opacity: .7\n}\n.file__electronic-certificate {display: none}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/* Input group */\n.et-input-left-group{\n  display: grid;\n  align-items: center;\n  grid-template-columns: auto -webkit-max-content;\n  grid-template-columns: auto max-content;\n}\n.et-input-left-group .et-input {\n  /* width: 100%; */\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.et-input{\n  width: 100%;\n  border: 1px solid #ced4da;\n  border-radius: 4px;\n  outline: none;\n  padding: 0 .5rem;\n  height: 2.4rem;\n  color: #4F4F4F;\n}\n.et-input:focus{\n  border: 1px solid #cccccc;\n}\n.et-group-text{\n  padding: 0 .5rem;\n  height: 2.4rem;\n  display: inline;\n  margin-left: -1px;\n  background-color: #e9ecef;\n  border: 1px solid #ced4da !important;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n/* Boton */\n.et-button{\n  color: #4F4F4F;\n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  opacity: .8;\n}\n.et-button:hover{ opacity: 1\n}\n.et-button:disabled{ opacity: .7\n}\n.file__electronic-certificate {display: none}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1817,7 +1817,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _company_vue_vue_type_template_id_0ddd0bba__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./company.vue?vue&type=template&id=0ddd0bba */ "./resources/js/modules/settings/company/pages/company.vue?vue&type=template&id=0ddd0bba");
 /* harmony import */ var _company_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./company.vue?vue&type=script&lang=js */ "./resources/js/modules/settings/company/pages/company.vue?vue&type=script&lang=js");
 /* harmony import */ var _company_vue_vue_type_style_index_0_id_0ddd0bba_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./company.vue?vue&type=style&index=0&id=0ddd0bba&lang=css */ "./resources/js/modules/settings/company/pages/company.vue?vue&type=style&index=0&id=0ddd0bba&lang=css");
-/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
@@ -1825,7 +1825,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_company_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_company_vue_vue_type_template_id_0ddd0bba__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/settings/company/pages/company.vue"]])
+const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_company_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_company_vue_vue_type_template_id_0ddd0bba__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/settings/company/pages/company.vue"]])
 /* hot reload */
 if (false) {}
 
