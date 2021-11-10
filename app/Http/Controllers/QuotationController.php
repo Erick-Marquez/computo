@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuotationRequest;
 use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SerieResource;
 use App\Models\Company;
@@ -33,8 +34,11 @@ class QuotationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuotationRequest $request)
     {
+        
+        
+        // return $request;
 
         if (is_null($request->customer['id'])) {
             $customer = Customer::create([
@@ -53,40 +57,64 @@ class QuotationController extends Controller
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
 
+        // Crear la cotizacion
         $quotation = Quotation::create([
-            'observation' => $request->quotation['observation'],
+
             'document_number' => $serie->current_number,
-            'discount' => $request->quotation['discount'],
-            'have_warranty' => $request->quotation['warranty'],
             'date_due' => $request->quotation['date_due'],
 
+            'discount' => $request->quotation['discount'],
+
+            'have_warranty' => $request->quotation['warranty'],
+
+            'observation' => $request->quotation['observation'],
+
+            'payment_type_id' => $request->quotation['payment_type_id'],
             'serie_id' => $request->quotation['serie_id'],
             'customer_id' => $request->customer['id'],
             'user_id' => auth()->user()->id
         ]);
 
-        
+        // Variables para los totales de la cotizacion
+        $subtotalQuotation = 0;
+        $totalIgvQuotation = 0;
+        $totalExoneratedQuotation = 0;
+        $totalUnaffectedQuotation = 0;
+        $totalFreeQuotation = 0;
+        $totalTaxedQuotation = 0;
         $totalQuotation = 0;
 
+        // Crear los detalles de la cotizacion
         foreach ($request->detail as $key => $detail) {
 
-            $total = $detail['quantity'] * $detail['sale_price'];
+            $totalIgv = 0;
+            $subtotal = 0;
+
+            $total = ($detail['quantity'] * $detail['sale_price']) - $detail['discount'];
+
+
             $totalQuotation = $totalQuotation + $total;
 
             $quotationDetails = QuotationDetail::create([
+
+                'discount' => $detail['discount'],
                 'price' => $detail['sale_price'],
                 'quantity' => $detail['quantity'],
-                'discount' => $detail['discount'],
+
+                'total_igv' => $totalIgv,
+                'subtotal' => $subtotal,
                 'total' => $total,
+
+                'igv_type_id' => $detail['igv_type_id'],
                 'quotation_id' => $quotation->id,
                 'branch_product_id' => $detail['product_id']
+
             ]);
         }
         
         $quotation->update([
             'total' => $totalQuotation - $request->quotation['discount']
         ]);
-
 
         return $serie->serie . '-' .$quotation->document_number;
     }

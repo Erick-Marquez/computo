@@ -10,12 +10,19 @@ class QuotationDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+
+        'discount',
         'price',
         'quantity',
-        'discount',
+
+        'total_igv',
+        'subtotal',
         'total',
+
+        'igv_type_id',
         'quotation_id',
         'branch_product_id'
+
     ];
 
     public function quotation()
@@ -27,4 +34,10 @@ class QuotationDetail extends Model
     {
         return $this->belongsTo(BranchProduct::class);
     }
+
+    public function igvType()
+    {
+        return $this->belongsTo(IgvType::class);
+    }
+
 }

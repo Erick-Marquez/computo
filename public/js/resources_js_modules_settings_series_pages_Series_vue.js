@@ -167,7 +167,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         };
         _this6.serieExample = 'Selecciona un tipo de documento'; //limpiar el objeto error 
 
-        errorsCreate = {
+        _this6.errorsCreate = {
           serie: null
         };
         Swal.fire("Creado", "La serie ha sido creada", "success");

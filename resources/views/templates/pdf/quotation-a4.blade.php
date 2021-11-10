@@ -64,7 +64,7 @@
                 <tr>
                     <td>CANT.</td>
                     <td>DESCRIPCIÓN</td>
-                    <td>PRECIO</td>
+                    <td>AFECT.IGV</td>
                     <td>DESCUENTO</td>
                     <td>PRECIO</td>
                     <td>IMPORTE</td>
@@ -78,10 +78,10 @@
                     <tr>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->branchProduct->product->name  }}</td>
-                        <td>S/ {{ round($detail->price, 3) }}</td>
+                        <td>{{ $detail->igvType->description }}</td>
                         <td>S/. {{ round($detail->discount, 3) }}</td>
                         <td>S/. {{ round($detail->price, 3) }}</td>
-                        <td>S/. {{ $detail->total - $detail->discount }}</td>
+                        <td>S/. {{ $detail->total }}</td>
                     </tr>
                     @php
                         $discount += $detail->discount;
@@ -115,13 +115,15 @@
                                 <p class="descuento__precio">S/ {{ round($discount, 3) }}</p>
                             </div>
                         @endif
-                        <div class="resumen__elemento">
-                            <p>Descuento Total:</p>
-                            <p class="descuento__precio">S/ {{ round($head->discount, 3) }}</p>
-                        </div>
+                        @if ($head->discount > 0)
+                            <div class="resumen__elemento">
+                                <p>Descuento Total:</p>
+                                <p class="descuento__precio">S/ {{ round($head->discount, 3) }}</p>
+                            </div>
+                        @endif
                         <div class="resumen__elemento">
                             <p>Total:</p>
-                            <p class="total__precio">S/ {{ round($head->total - $head->discount - $discount, 3) }}</p>
+                            <p class="total__precio">S/ {{ round($head->total - $head->discount, 3) }}</p>
                         </div>
                     </div>
                 </td>

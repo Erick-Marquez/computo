@@ -134,7 +134,7 @@
             <br>
             <div class="form-group">
               <label for="name">Monto de Cambio</label>
-              <input type="number" min="0" class="form-control" v-model="currencyExchange.change" required>
+              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchange.change" required>
             </div>
           </div>
           
@@ -184,7 +184,7 @@
             <br>
             <div class="form-group">
               <label for="name">Monto de Cambio</label>
-              <input type="number" min="0" class="form-control" v-model="currencyExchangeEdit.change" required>
+              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchangeEdit.change" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">

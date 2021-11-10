@@ -223,7 +223,6 @@ export default {
       BaseUrl.post(`api/series`, this.serieCreate).then( resp => {
         
         $("#modal-create").modal("hide")
-        
         this.showSeries() //mostrar las nuevas series
 
         //limpiar el objeto create 
@@ -233,14 +232,17 @@ export default {
           voucher_type_id: '',
           branch_id: ''
         }
+
         this.serieExample = 'Selecciona un tipo de documento'
 
         //limpiar el objeto error 
-        errorsCreate = {
+        this.errorsCreate = {
           serie: null,
         }
         
-        Swal.fire("Creado", "La serie ha sido creada", "success");
+        Swal.fire("Creado", "La serie ha sido creada", "success")
+
+        
       })
       .catch((error) => {
         //Pintar los errores

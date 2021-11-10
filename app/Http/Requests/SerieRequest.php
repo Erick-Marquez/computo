@@ -35,10 +35,9 @@ class SerieRequest extends FormRequest
             9 => 'regex:/^[G]/'           // Garantía
         ];
 
-
         return [
             'serie' => ['required', 'size:4', 'unique:series,serie', $serieRules[$this->voucher_type_id]],
-            'current_number' => 'required|numeric',
+            'current_number' => 'required|integer',
             'voucher_type_id' => 'required',
             'branch_id' => 'required'
         ];

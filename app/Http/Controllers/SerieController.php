@@ -30,10 +30,11 @@ class SerieController extends Controller
      */
     public function store(SerieRequest $request)
     {
-        
+    
         $serie = Serie::create([
             'serie' => $request->serie,
             'current_number' => $request->current_number - 1,
+            'have_igv' => $request->have_igv,
             'voucher_type_id' => $request->voucher_type_id,
             'branch_id' => $request->branch_id
         ]);

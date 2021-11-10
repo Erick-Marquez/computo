@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\IdentificationDocumentResource;
+use App\Http\Resources\IgvTypeResource;
 use App\Http\Resources\PaymentTypeResource;
 use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SaleResource;
@@ -13,8 +14,10 @@ use App\Http\Resources\VoucherTypeResource;
 use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
 use App\Models\Company;
+use App\Models\CurrencyExchange;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\IgvType;
 use App\Models\PaymentType;
 use App\Models\Quotation;
 use App\Models\Sale;
@@ -315,6 +318,12 @@ class VoucherController extends Controller
     {
         $voucherTypes = VoucherType::offset(0)->limit(3)->get();
         return VoucherTypeResource::collection($voucherTypes);
+    }
+
+    public function igvTypes()
+    {
+        $igvTypes = IgvType::all();
+        return IgvTypeResource::collection($igvTypes);
     }
 
     public function series($id)

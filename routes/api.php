@@ -46,6 +46,7 @@ Route::middleware([
     Route::get('/sales', [VoucherController::class, 'index'])->name('api.sales.index');
     Route::get('/sales/salenotes', [VoucherController::class, 'saleNotes'])->name('api.sales.saleNotes');
     Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
+    Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes');
     Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes');
     Route::get('/sales/products', [VoucherController::class, 'products'])->name('api.sales.products');
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
