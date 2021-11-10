@@ -13,7 +13,10 @@
               <i class="text-danger fas fa-calendar-times"></i>
               Valido Hasta
             </label>
-            <input type="date" class="form-control rounded-pill" v-model="quotationData.quotation.date_due" required>
+            <input type="date" :class="'form-control rounded-pill' + (errorsCreate['quotation.date_due'] == null ? '' : ' is-invalid')" v-model="quotationData.quotation.date_due" required>
+            <div class="invalid-feedback" v-if="errorsCreate['quotation.date_due'] ">
+              {{ errorsCreate['quotation.date_due'][0] }}
+            </div>
           </div>
         </div>
         <!-- SERIE -->
@@ -23,11 +26,14 @@
               <i class="text-danger fas fa-barcode"></i>
               Serie
             </label>
-            <select v-model="quotationData.quotation.serie_id" class="form-control rounded-pill" @change="getCurrentNumber()">
+            <select v-model="quotationData.quotation.serie_id" :class="'form-control rounded-pill' + (errorsCreate['quotation.serie_id'] == null ? '' : ' is-invalid')" @change="getCurrentNumber()">
               <option v-for="serie in series" :key="serie.id" :value="serie.id">
                 {{ serie.serie }}
               </option>
             </select>
+            <div class="invalid-feedback" v-if="errorsCreate['quotation.serie_id'] ">
+              {{ errorsCreate['quotation.serie_id'][0] }}
+            </div>
           </div>
         </div>
 
@@ -53,8 +59,7 @@
             Productos
           </h4>
           <div class="">
-            <input type="search"  v-model="productSearch" @keyup="searchProducts" 
-                      class="form-control rounded-pill form-control rounded-pill-lg" placeholder="Escribe tu producto o código">
+            <input type="search"  v-model="productSearch" @keyup="searchProducts" class="form-control rounded-pill form-control rounded-pill-lg" placeholder="Escribe tu producto o código">
             <div class="option__relative">
               <div class="option__contenedor" >
                 <div>
@@ -74,13 +79,13 @@
                         <td>{{ filSearch.name }}</td>
                         <td class="col-2 text-center">{{ filSearch.brand }}</td>
                         <td class="col-2 text-center">
-                          <input class="btn btn-sm btn-success w-50" type="button" :value="filSearch.sale_price" v-on:click="priceOne(filSearch)">
+                          <input class="btn btn-sm btn-success w-50" type="button" :value="filSearch.sale_price" @click="priceOne(filSearch)">
                         </td> 
                         <td class="col-2 text-center">
-                          <input class="btn btn-sm btn-warning w-50" type="button" :value="filSearch.referential_sale_price_one" v-on:click="priceTwo(filSearch)">
+                          <input class="btn btn-sm btn-warning w-50" type="button" :value="filSearch.referential_sale_price_one" @click="priceTwo(filSearch)">
                         </td>
                         <td class="col-2 text-center">
-                          <input class="btn btn-sm btn-info w-50" type="button" :value="filSearch.referential_sale_price_two" v-on:click="priceThree(filSearch)">
+                          <input class="btn btn-sm btn-info w-50" type="button" :value="filSearch.referential_sale_price_two" @click="priceThree(filSearch)">
                         </td>
                         <td class="col-1 text-center">{{ filSearch.stock }}</td>
                       </tr>
@@ -95,63 +100,67 @@
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
-
-        <!-- PARA EL CALCULO DE TOTALES-->
-        <div v-show="false">
-          {{ taxed = 0 }}
-          {{ exonerated = 0 }}
-          {{ subtotal = 0 }}
-          {{ total = 0 }}
-          {{ discount = 0 }}
-        </div>
-    
         <div class="col-12 table-responsive mt-4">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th style="width: 40%">Descripción</th>
-                <th style="width: 8%">Cantidad</th>
-                <th style="width: 10%">Descuento</th>
-                <th style="width: 13%">Precio</th>
-                <th style="width: 13%">Sub Total</th>
-                <th style="width: 13%">Total</th>
+                <th style="width: 20%">Tipo IGV</th>
+                <th style="width: 3%">Cantidad</th>
+                <th style="width: 8%">Descuento</th>
+                <th style="width: 8%">Precio</th>
+                <th style="width: 8%">Sub Total</th>
+                <th style="width: 8%">Total</th>
                 <th style="width: 3%"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(detail, index) in quotationData.detail" :key="detail">
                 <td>
-                  {{ detail.description }} - {{ detail.brand }} - {{ detail.cod }}
+                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.product_id'] == null ? '' : ' is-invalid')" type="text" :value="detail.description + ' - ' + detail.brand + ' - ' + detail.cod" disabled>
+                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.product_id']">
+                    {{ errorsCreate['detail.'+ index +'.product_id'][0] }}
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.quantity" @keypress="onlyNumber($event)">
+                  <select v-model="detail.igv_type_id" :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.igv_type_id'] == null ? '' : ' is-invalid')" @change="getTotals()">
+                    <option v-for="igvType in igvTypes" :key="igvType.id" :value="igvType.id">
+                      {{ igvType.description }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.igv_type_id']">
+                    {{ errorsCreate['detail.'+ index +'.igv_type_id'][0] }}
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.discount" v-on:change="activateOrDesactivateGlobalDiscount" :disabled = "activateDetailDiscount">
+                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.quantity'] == null ? '' : ' is-invalid')" type="number" min="1" v-model="detail.quantity" @input="getTotals()">
+                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.quantity']">
+                    {{ errorsCreate['detail.'+ index +'.quantity'][0] }}
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" v-model="detail.sale_price" disabled>
+                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="detail.discount" @change="activateOrDesactivateGlobalDiscount" :disabled="activateDetailDiscount" @input="getTotals()">
+                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.discount']">
+                    {{ errorsCreate['detail.'+ index +'.discount'][0] }}
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" disabled :value="(detail.quantity * detail.sale_price) - detail.discount">
+                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.sale_price'] == null ? '' : ' is-invalid')" type="text" v-model="detail.sale_price" disabled>
+                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.sale_price']">
+                    {{ errorsCreate['detail.'+ index +'.sale_price'][0] }}
+                  </div>
                 </td>
                 <td>
-                  <input class="form-control rounded-pill form-control rounded-pill-border" type="text" disabled :value="(detail.quantity * detail.sale_price) - detail.discount">
+                  <input class="form-control rounded-pill" type="text" disabled :value="detail.subtotal">
                 </td>
                 <td>
-                  <button class="btn btn-flat bg-light" v-on:click="deleteItem(index)">
+                  <input class="form-control rounded-pill" type="text" disabled :value="detail.total">
+                </td>
+                <td>
+                  <button class="btn btn-flat bg-light" @click="deleteItem(index)">
                     <i class="text-danger fas fa-trash"></i>
                   </button>
                 </td>
-
-                <!-- CALCULANDO TOTALES-->
-                <div v-show="false">
-                  {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount}}
-                  {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
-                  {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
-                  {{ discount += parseFloat(detail.discount) }}
-                </div>
-
               </tr>
             </tbody>
           </table>
@@ -165,21 +174,55 @@
           <div class="row">
             <div class="col-md">
               <div class="form-group">
-                <label for="">Descuento</label>
-                <input class="form-control rounded-pill" type="text" v-model="quotationData.quotation.discount" v-on:change="activateOrDesactivateDetailDiscount" :disabled = "activateGlobalDiscount">
+                <label for="">
+                  <i class="text-danger fas fa-money-bill"></i>
+                  Tipo de pago
+                </label>
+                <select v-model="quotationData.quotation.payment_type_id" :class="'form-control rounded-pill' + (errorsCreate['quotation.payment_type_id'] == null ? '' : ' is-invalid')">
+                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                    {{ paymentType.description }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" v-if="errorsCreate['quotation.payment_type_id'] ">
+                  {{ errorsCreate['quotation.payment_type_id'][0] }}
+                </div>
               </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md">
               <div class="form-group">
-                <label for="">Aplica Garantia</label>
-                <input class=" form-control form-check-input bg-danger" type="checkbox" v-model="quotationData.quotation.warranty">
+                <label for="">
+                  <i class="text-danger fas fa-tags"></i>
+                  Descuento
+                </label>
+                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="quotationData.quotation.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
+                <div class="invalid-feedback" v-if="errorsCreate['quotation.discount'] ">
+                  {{ errorsCreate['quotation.discount'][0] }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-center">
+                <label>
+                  <i class="text-danger fas fa-file-contract"></i>
+                  ¿Aplica garantía?
+                </label>
+                <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
+                  <input type="checkbox" class="custom-control-input" id="customSwitchCreate" v-model="quotationData.quotation.warranty">
+                  <label class="custom-control-label" for="customSwitchCreate">{{ quotationData.quotation.warranty ? 'Si' : 'No' }}</label>
+                </div>
+                <div class="invalid-feedback" v-if="errorsCreate['quotation.warranty'] ">
+                  {{ errorsCreate['quotation.warranty'][0] }}
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md">
               <div class="form-group">
-                <h4>Observación</h4>
+                <label>
+                  <i class="text-danger fas fa-eye"></i>
+                  Observación
+                </label>
                 <textarea cols="30" rows="4" class="form-control rounded-pill px-5" v-model="quotationData.quotation.observation"></textarea>
               </div>
             </div>
@@ -190,16 +233,36 @@
             <table class="table">
               <tbody>
                 <tr v-show="quotationData.quotation.discount > 0">
-                  <th>Descuento:</th>
+                  <th>Descuento global:</th>
                   <td>S/. {{ quotationData.quotation.discount }}</td>
                 </tr>
-                <tr v-show="discount > 0">
-                  <th>Descuento:</th>
-                  <td>S/. {{ discount }}</td>
+                <tr v-show="quotationData.quotation.discountItems > 0">
+                  <th>Descuento por item:</th>
+                  <td>S/. {{ quotationData.quotation.discountItems }}</td>
+                </tr>
+                <tr v-show="quotationData.quotation.totalTaxed > 0">
+                  <th>Gravada:</th>
+                  <td>S/. {{ quotationData.quotation.totalTaxed }}</td>
+                </tr>
+                <tr v-show="quotationData.quotation.totalExonerated > 0">
+                  <th>Exonerada:</th>
+                  <td>S/. {{ quotationData.quotation.totalExonerated }}</td>
+                </tr>
+                <tr v-show="quotationData.quotation.totalUnaffected > 0">
+                  <th>Inafecto:</th>
+                  <td>S/. {{ quotationData.quotation.totalUnaffected }}</td>
+                </tr>
+                <tr v-show="quotationData.quotation.totalFree > 0">
+                  <th>Gratuita:</th>
+                  <td>S/. {{ quotationData.quotation.totalFree }}</td>
+                </tr>
+                <tr v-show="quotationData.quotation.totalIgv > 0">
+                  <th>Igv (18%):</th>
+                  <td>S/. {{ quotationData.quotation.totalIgv }}</td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>S/. {{ total - quotationData.quotation.discount }}</td>
+                  <td>S/. {{ quotationData.quotation.total }}</td>
                 </tr>
               </tbody>
             </table>
@@ -237,6 +300,19 @@ export default {
       this.products = resp.data.data;
     });
 
+    await BaseUrl.get(`api/sales/products`).then((resp) => {
+      this.products = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
+      this.igvTypes = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
+      this.paymentTypes = resp.data.data;
+      this.quotationData.quotation.payment_type_id = this.paymentTypes[0].id
+    });
+
     this.getSeries()
 
   },
@@ -245,6 +321,7 @@ export default {
 
       series: {},
       currentNumber: 'Selecciona una serie',
+      paymentTypes: null,
 
       productSearch:'',
       productSearchFilter: [],
@@ -252,21 +329,37 @@ export default {
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
 
-      identificationDocuments: {},
+      identificationDocuments: [],
+      igvTypes: [],
       products: {},
       quotationData: {
         customer: {
           id: null
         },
         quotation: {
-          discount: 0,
+
+          subtotal : 0,
+          discount : 0,
+          totalIgv : 0,
+          totalExonerated : 0,
+          totalUnaffected : 0,
+          totalFree : 0,
+          totalTaxed : 0,
+          total : 0,
+
+          discountItems: 0,
+
           observation: '',
-          warranty: true,
+          warranty: false,
           date_due: null,
           serie_id: '',
+          payment_type_id: null,
         },
         detail: []
       },
+      errorsCreate: {
+        
+      }
     };
   },
   mounted(){
@@ -311,11 +404,14 @@ export default {
     priceOne(filSearch){
 
       const product = {
+        discount : 0,
+        subtotal: 0,
+        total: 0,
+
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 20,
-        discount : 0,
+        igv_type_id : filSearch.igv_type_id,
         description : filSearch.name,
         brand : filSearch.brand,
         sale_price : filSearch.sale_price,
@@ -325,15 +421,20 @@ export default {
       this.quotationData.detail.push(product)
 
       this.productSearch = ''
+
+      this.getTotals()
     },
     priceTwo(filSearch){
 
       const product = {
+        discount : 0,
+        subtotal: 0,
+        total: 0,
+
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 20,
-        discount : 0,
+        igv_type_id : filSearch.igv_type_id,
         description : filSearch.name,
         brand : filSearch.brand,
         sale_price : filSearch.referential_sale_price_one,
@@ -344,15 +445,20 @@ export default {
 
       this.productSearch = ''
 
+      this.getTotals()
+
     },
     priceThree(filSearch){
 
       const product = {
+        discount : 0,
+        subtotal: 0,
+        total: 0,
+
         product_id : filSearch.id,
         cod : filSearch.cod,
         affect_icbper : false,
-        igv_type_id : 20,
-        discount : 0,
+        igv_type_id : filSearch.igv_type_id,
         description : filSearch.name,
         brand : filSearch.brand,
         sale_price : filSearch.referential_sale_price_two,
@@ -362,6 +468,8 @@ export default {
       this.quotationData.detail.push(product)
 
       this.productSearch = ''
+
+      this.getTotals()
 
     },
     deleteItem(index){
@@ -386,35 +494,147 @@ export default {
       this.activateDetailDiscount = this.quotationData.quotation.discount > 0 ? true : false
 
     },
+    getTotals(){
+
+      this.quotationData.quotation.subtotal = 0
+      this.quotationData.quotation.totalIgv = 0
+      this.quotationData.quotation.totalExonerated = 0
+      this.quotationData.quotation.totalUnaffected = 0
+      this.quotationData.quotation.totalFree = 0
+      this.quotationData.quotation.totalTaxed = 0
+      this.quotationData.quotation.total = 0
+
+      this.quotationData.quotation.discountItems = 0
+
+      // igv constante
+      const igv = 0.18
+
+      this.quotationData.detail.forEach( e => {
+
+        this.quotationData.quotation.discountItems += e.discount
+        // hallar el precio sin igv y total
+        let priceWithoutIgv = e.sale_price / (1 + igv)
+        let total = e.sale_price * e.quantity
+
+        switch (parseInt(e.igv_type_id)) {
+          case 10: //Gravado - Operación Onerosa
+            e.subtotal = parseFloat((priceWithoutIgv * e.quantity).toFixed(2))
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalIgv += parseFloat((total - e.subtotal).toFixed(2))
+            this.quotationData.quotation.totalTaxed += e.subtotal
+            this.quotationData.quotation.total += total
+            break
+          case 11: //[Gratuita] Gravado – Retiro por premio
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 12: //[Gratuita] Gravado – Retiro por donación
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 13: //[Gratuita] Gravado – Retiro
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 14: //[Gratuita] Gravado – Retiro por publicidad
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 15: //[Gratuita] Gravado – Bonificaciones
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 20: //Exonerado - Operación Onerosa
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalExonerated += total
+            this.quotationData.quotation.total += total
+            break
+          case 30: //Inafecto - Operación Onerosa
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalUnaffected += total
+            this.quotationData.quotation.total += total
+            break
+          case 31: //[Gratuita] Inafecto – Retiro por Bonificación
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 32: //[Gratuita] Inafecto – Retiro
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 35: //[Gratuita] Inafecto – Retiro por premio
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 36: //[Gratuita] Inafecto - Retiro por publicidad
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalFree += total
+            break
+          case 40: //Exportación
+            e.subtotal = total
+            this.quotationData.quotation.subtotal += total
+            this.quotationData.quotation.totalUnaffected += total
+            this.quotationData.quotation.total += total
+            break
+        }
+
+        e.total = total
+      })
+
+      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount - this.quotationData.quotation.discountItems
+
+    },
     createQuotation() {
 
       BaseUrl.post("/api/quotations", this.quotationData).then((response) => {
         console.log(response)
-        this.$router.push({ name: "quotation-list" });
-        Swal.fire(
-          "Cotización Creada",
-          "Se ha creado la Cotización " + response.data,
-          "success"
-        );
+
+        this.errorsCreate = {
+        }
+        // this.$router.push({ name: "quotation-list" })
+        // Swal.fire(
+        //   "Cotización Creada",
+        //   "Se ha creado la Cotización " + response.data,
+        //   "success"
+        // )
       })
       .catch((error) => {
-        console.log(error.response);
-      });
-    },
+        console.log(error.response)
+        this.errorsCreate = error.response.data.errors
 
-    onlyNumber(evt){ // peace of code from internet xd
-      
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      console.log(charCode)
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    }
+        if (this.errorsCreate['detail'] != null) {
+          Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
+        }
+      })
+    },
   }
-};
+}
 </script>
 
 <style scoped>

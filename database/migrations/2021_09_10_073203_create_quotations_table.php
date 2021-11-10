@@ -15,14 +15,27 @@ class CreateQuotationsTable extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
+            
             $table->bigInteger('document_number')->nullable();
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
-            $table->unsignedDecimal('total', 9,3)->nullable();
-            $table->string('observation')->nullable();
+            $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
+
+            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('subtotal', 12,3)->default(0);
+            $table->unsignedDecimal('total_igv', 12,3)->default(0);
+            $table->unsignedDecimal('total_exonerated', 12,3)->default(0);
+            $table->unsignedDecimal('total_unaffected', 12,3)->default(0);
+            $table->unsignedDecimal('total_free', 12,3)->default(0);
+            $table->unsignedDecimal('total_taxed', 12,3)->default(0);
+            $table->unsignedDecimal('total', 12,3)->default(0);
             
             $table->boolean('have_warranty')->default(false);
+
+            $table->string('observation')->nullable();
             
-            $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
+            $table->foreignId('payment_type_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreignId('serie_id')
                 ->constrained()

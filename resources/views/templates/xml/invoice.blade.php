@@ -176,7 +176,6 @@
         @if($sale->discount > 0)
         <cbc:AllowanceTotalAmount currencyID="PEN">{{ round($sale->discount, 2) }}</cbc:AllowanceTotalAmount>
         @endif
-        <cbc:ChargeTotalAmount currencyID="PEN">0.00</cbc:ChargeTotalAmount>
         <cbc:PayableAmount currencyID="PEN">{{ round($sale->total, 2) }}</cbc:PayableAmount>
     </cac:LegalMonetaryTotal>
     @foreach ($sale->saleDetails as $i => $saleDetail)

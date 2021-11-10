@@ -241,7 +241,7 @@
                       rounded-pill-border
                     "
                     type="text"
-                    v-on:change="addSeries(index)"
+                    @change="addSeries(index)"
                     v-model="detail.quantity"
                   />
                 </td>
@@ -255,7 +255,7 @@
                     "
                     type="text"
                     v-model="detail.discount"
-                    v-on:change="activateOrDesactivateGlobalDiscount"
+                    @change="activateOrDesactivateGlobalDiscount()"
                     :disabled="activateDetailDiscount"
                   />
                 </td>
@@ -314,7 +314,7 @@
                 <td>
                   <button
                     class="btn btn-flat bg-light"
-                    v-on:click="deleteItem(index)"
+                    @click="deleteItem(index)"
                   >
                     <i class="text-danger fas fa-trash"></i>
                   </button>
@@ -392,19 +392,10 @@
 
                 <!-- CALCULANDO TOTALES-->
                 <div v-show="false">
-                  {{
-                    (subtotal +=
-                      detail.quantity * detail.sale_price - detail.discount)
-                  }}
-                  {{
-                    (total +=
-                      detail.quantity * detail.sale_price - detail.discount)
-                  }}
-                  {{
-                    (exonerated +=
-                      detail.quantity * detail.sale_price - detail.discount)
-                  }}
-                  {{ (discount += parseFloat(detail.discount)) }}
+                  {{ subtotal += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ total += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ exonerated += (detail.quantity * detail.sale_price) - detail.discount }}
+                  {{ discount += parseFloat(detail.discount) }}
                 </div>
               </tr>
             </tbody>
@@ -422,9 +413,9 @@
                   <i class="text-danger fas fa-money-bill"></i>
                   Tipo de pago
                 </label>
-                <select v-model="saleData.voucher.warranty_serie_id" class="form-control rounded-pill">
-                  <option v-for="warrantySerie in warrantySeries" :key="warrantySerie.id" :value="warrantySerie.id">
-                    {{ warrantySerie.serie }}
+                <select v-model="saleData.voucher.payment_type_id" class="form-control rounded-pill">
+                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                    {{ paymentType.description }}
                   </option>
                 </select>
               </div>
@@ -452,7 +443,6 @@
             </div>
           </div>
           <!-- Tipo de pago -->
-          <h4>Tipo de Pago</h4>
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -593,6 +583,12 @@ export default {
       this.warrantySeries = resp.data.data;
       this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
     });
+
+    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
+      this.paymentTypes = resp.data.data;
+      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id
+    });
+
   },
   data() {
     return {
@@ -617,6 +613,7 @@ export default {
       activateDetailDiscount: false,
 
       identificationDocuments: {},
+      paymentTypes: [],
       products: {},
       productSeries: [],
       saleData: {
@@ -635,6 +632,7 @@ export default {
           change: 0,
           warranty_serie_id: null,
           warranty: false,
+          payment_type_id: null,
         },
         detail: [],
       },

@@ -19,20 +19,21 @@ class CreateSalesTable extends Migration
             $table->bigInteger('document_number');
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
-            $table->unsignedDecimal('subtotal', 12, 3)->nullable();
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
-            $table->decimal('total_igv', 12,3)->default(0);
-            $table->decimal('total_exonerated', 12, 3)->default(0);
-            $table->decimal('total_unaffected', 12, 3)->default(0);
-            $table->decimal('total_free', 12, 3)->default(0);
-            $table->decimal('total_taxed', 12, 3)->default(0);
-            $table->unsignedDecimal('total', 12, 3)->default(0);
+
+            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('subtotal', 12,3)->default(0);
+            $table->unsignedDecimal('total_igv', 12,3)->default(0);
+            $table->unsignedDecimal('total_exonerated', 12,3)->default(0);
+            $table->unsignedDecimal('total_unaffected', 12,3)->default(0);
+            $table->unsignedDecimal('total_free', 12,3)->default(0);
+            $table->unsignedDecimal('total_taxed', 12,3)->default(0);
+            $table->unsignedDecimal('total', 12,3)->default(0);
 
             $table->boolean('have_warranty')->default(false);
 
             $table->string('observation')->nullable();
-            $table->decimal('received_money', 9, 3)->nullable();
-            $table->decimal('change', 9, 3)->nullable();
+            $table->unsignedDecimal('received_money', 12,3)->nullable();
+            $table->unsignedDecimal('change', 12,3)->nullable();
 
             $table->string('state')->nullable();
             $table->boolean('send_sunat')->default(false);
@@ -41,7 +42,11 @@ class CreateSalesTable extends Migration
             $table->string('hash_cdr')->nullable();
             $table->boolean('canceled')->default(false);
             
-            
+            $table->foreignId('payment_type_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->foreignId('serie_id')
                 ->constrained()
                 ->onUpdate('cascade')

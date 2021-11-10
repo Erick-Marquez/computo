@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\IdentificationDocumentResource;
+use App\Http\Resources\IgvTypeResource;
+use App\Http\Resources\PaymentTypeResource;
 use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SaleResource;
 use App\Http\Resources\SerieResource;
@@ -12,8 +14,11 @@ use App\Http\Resources\VoucherTypeResource;
 use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
 use App\Models\Company;
+use App\Models\CurrencyExchange;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
+use App\Models\IgvType;
+use App\Models\PaymentType;
 use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleDetail;
@@ -38,7 +43,7 @@ class VoucherController extends Controller
     public function index()
     {
         $vouchers = Sale::whereHas('serie', function($q) {
-            $q->where('voucher_type_id', '!=', 3); // 3 id de nota de venta
+            $q->where('voucher_type_id', '!=', 3); // 3 - id de nota de venta
         })->with('serie.voucherType', 'customer')->get();
         
         return SaleResource::collection($vouchers);
@@ -51,20 +56,6 @@ class VoucherController extends Controller
         })->with('serie.voucherType', 'customer')->get();
         
         return SaleResource::collection($vouchers);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $customers = Customer::all();
-        $identificationDocuments = IdentificationDocument::all();
-        $voucherTypes = VoucherType::offset(0)->limit(3)->get();
-        $series = Serie::where('branch_id', 1)->get();
-        return view('sales.vouchers.create', compact('customers', 'identificationDocuments', 'voucherTypes', 'series'));
     }
 
     /**
@@ -105,6 +96,7 @@ class VoucherController extends Controller
 
             'have_warranty' => $request->voucher['warranty'], 
 
+            'payment_type_id' => $request->voucher['payment_type_id'],
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
             //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
@@ -172,7 +164,7 @@ class VoucherController extends Controller
         ]);
 
         // Enviar a Sunat
-        if ($request->voucher['document_type'] == '01') { // Factura
+        if ($request->voucher['document_type'] == 1) { // Factura
 
             $sunat = SunatService::facturar($sale->id, 'invoice');
 
@@ -184,7 +176,7 @@ class VoucherController extends Controller
                 'hash_cdr' => $sunat['response']['hash_cdr']
             ]);
         }
-        elseif ($request->voucher['document_type'] == '03') { // Boleta
+        elseif ($request->voucher['document_type'] == 2) { // Boleta
             
             $sunat = SunatService::facturar($sale->id, 'ticket');
 
@@ -196,7 +188,7 @@ class VoucherController extends Controller
                 'hash_cdr' => $sunat['response']['hash_cdr']
             ]);
         }
-        elseif ($request->voucher['document_type'] == 'NV') {
+        else {
 
             return "Nota de Venta Guardada";
 
@@ -213,17 +205,6 @@ class VoucherController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
@@ -318,14 +299,14 @@ class VoucherController extends Controller
         if ($type == 'xml') {
             $pathToFile .= DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
             //nombre del zip del xml del comprabante solicitado
-            $nameZip = $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+            $nameZip = $company->ruc . '-' . $sale->serie->voucherType->cod . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
            
             $pathToFile .= $nameZip;
         }
         else if ($type == 'cdr') {
             $pathToFile .= DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
             //nombre del zip del cdr del comprabante solicitado
-            $nameZip = 'R-' . $company->ruc . '-' . $sale->serie->voucherType->id . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
+            $nameZip = 'R-' . $company->ruc . '-' . $sale->serie->voucherType->cod . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
             
             $pathToFile .= $nameZip;
         }
@@ -339,6 +320,12 @@ class VoucherController extends Controller
         return VoucherTypeResource::collection($voucherTypes);
     }
 
+    public function igvTypes()
+    {
+        $igvTypes = IgvType::all();
+        return IgvTypeResource::collection($igvTypes);
+    }
+
     public function series($id)
     {
         $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', $id)->get();
@@ -349,6 +336,12 @@ class VoucherController extends Controller
     {
         $identificationDocuments = IdentificationDocument::all();
         return IdentificationDocumentResource::collection($identificationDocuments);
+    }
+
+    public function paymentTypes()
+    {
+        $paymentTypes = PaymentType::all();
+        return PaymentTypeResource::collection($paymentTypes);
     }
 
     public function products()

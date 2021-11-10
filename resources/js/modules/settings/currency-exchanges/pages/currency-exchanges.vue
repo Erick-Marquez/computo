@@ -134,9 +134,10 @@
             <br>
             <div class="form-group">
               <label for="name">Monto de Cambio</label>
-              <input type="text" class="form-control" v-model="currencyExchange.change" required>
+              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchange.change" required>
             </div>
           </div>
+          
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">
               Cerrar
@@ -160,23 +161,30 @@
         </div>
         <form @submit.prevent="editCurrencyExchange()">
           <div class="modal-body">
-            <div class="row">
-              <h5>
-                Fecha
-                <small class="text-muted">{{ currentCurrencyExchange.fecha }}</small>
-              </h5>
-              <h5>
-                Compra
-                <small class="text-muted">{{ currentCurrencyExchange.compra }}</small>
-              </h5>
-              <h5>
-                Venta
-                <small class="text-muted">{{ currentCurrencyExchange.venta }}</small>
-              </h5>
+            <div class="row text-center">
+              <div class="col">
+                <span class="badge bg-maroon">Fecha:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.fecha }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Compra:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.compra }}
+              </div>
+              <div class="col">
+                <span class="badge bg-maroon">Venta:</span>
+              </div>
+              <div class="col">
+                {{ currentCurrencyExchange.venta }}
+              </div>
             </div>
+            <br>
             <div class="form-group">
               <label for="name">Monto de Cambio</label>
-              <input type="text" class="form-control" v-model="currencyExchangeEdit.change" required>
+              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchangeEdit.change" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -203,11 +211,15 @@ export default {
     return{
       currentCurrencyExchange : '',
       currencyExchanges: {},
+
       currencyExchange: {
         change: '',
         date: ''
       },
+      errors: null,
       currencyExchangeEdit: {}
+
+
     }
   },
   methods:{
@@ -221,6 +233,7 @@ export default {
         this.currentCurrencyExchange=resp.data
       })
     },
+
     showModal(modal, currencyExchange = null) {
       if (currencyExchange !== null) {
         this.currencyExchangeEdit = currencyExchange;
@@ -240,7 +253,8 @@ export default {
         Swal.fire("Creado", "El Cambio de Divisa ha sido creado", "success");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
+        this.errors = error.response.data.errors
       });
     },
     editCurrencyExchange(){

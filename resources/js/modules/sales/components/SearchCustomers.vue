@@ -1,19 +1,19 @@
 <template>
-  <h4>Datos del cliente</h4>
+  <h4 class="mb-3">Datos del Cliente</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-address-card"></i>
           Tipo documento
         </label>
         <select
-          v-if="voucherType == 1"
+          v-if="voucherType == 'FACTURA' || voucherType == '01'"
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
-          <option value="6" >RUC</option>
+          <option value="6">RUC</option>
         </select>
         <select
           v-else
@@ -36,8 +36,8 @@
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-pen"></i>
-          N° Documento</label
-        >
+          N° Documento <span v-show="responseApi" :class="responseApiClass"> | {{ responseApi }} </span>
+        </label>
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
@@ -51,7 +51,7 @@
           <div v-if="!loading" class="input-group-append">
             <button
               class="btn btn-dark rounded-pill-right"
-              @click="getDataApi"
+              @click.prevent="getDataApi"
             >
               <i class="fas fa-search"></i>
             </button>
@@ -93,7 +93,7 @@
     </div>
 
     <!-- NOMBRE/RAZON SOCIAL -->
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-id-badge"></i>
@@ -110,7 +110,7 @@
 
   <div class="row">
     <!-- DIRECCIÓN -->
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-map-marker-alt"></i>
@@ -127,21 +127,20 @@
     </div>
 
     <!-- UBIGEO -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-globe"></i>
           Ubigeo</label
         >
-        <select name="" id="" class="form-control rounded-pill">
-          <option value="">Opcion1</option>
-          <option value="">Opcion2</option>
+        <select v-model="customer.ubigee"  class="form-control rounded-pill" name="">
+            <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.cod">{{ ubigee.place_description }}</option>
         </select>
       </div>
     </div>
 
     <!-- N° CELULAR -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-phone"></i>
@@ -160,26 +159,29 @@
 </template>
 
 <script>
-import BaseUrl from "../../../api/BaseUrl";
+import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
-  components: { BaseUrl },
+  components: { BaseUrl},
   data() {
     return {
       toggle: false,
       customers: [],
       type_documents: [],
       searching: {},
+      ubigees: [],
       max_length: 8,
       loading: false,
+      responseApi: null,
     };
   },
   props: {
     customer: Object,
-    voucherType: Number,
+    voucherType: String,
   },
   created() {
     this.getTypeDocuments();
+    this.getUbigees();
   },
   methods: {
     async getTypeDocuments() {
@@ -196,21 +198,33 @@ export default {
       await BaseUrl.get(
         `/api/data-document/${this.customer.identification_document_id}/${this.customer.document}`
       )
-      .then((response) => {
-        console.log(response.data);
-        this.customer.phone = "";
-        this.customer.address = "";
-        this.customer.address = response.data.address;
-        this.customer.name = response.data.name;
-        this.customer.address = response.data.address;
-        this.customer.phone = response.data.phone;
-      })
-      .catch((error) => {
-        console.log(error.response);
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+        .then((response) => {
+          console.log(response.data);
+          this.customer.phone = "";
+          this.customer.address = "";
+          this.customer.id = null;
+          this.customer.name = response.data.name;
+          this.customer.address = response.data.address;
+          this.customer.phone = response.data.phone;
+          this.customer.ubigee = response.data.ubigee;
+          this.responseApi = "HABIDO";
+        })
+        .catch((error) => {
+          console.log(error.response);
+          this.responseApi = "NO HABIDO";
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    async getUbigees() {
+      await BaseUrl.get(`/api/ubigees`)
+        .then((response) => {
+          this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     },
     async getcustomers() {
       await BaseUrl.get(
@@ -232,11 +246,12 @@ export default {
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
+      this.customer.ubigee = response.data.ubigee;
       this.customers = {};
     },
     searchDocument() {
       clearTimeout(this.searching);
-      this.searching = setTimeout(this.getcustomers, 200);
+      this.searching = setTimeout(this.getcustomers, 300);
     },
   },
   computed: {
@@ -249,6 +264,9 @@ export default {
         ? true
         : false;
     },
+    responseApiClass() {
+        return this.responseApi == 'NO HABIDO' ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success"
+    }
     // enableSearchDocument() {
     //   return true
     // },

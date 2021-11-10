@@ -10,17 +10,21 @@ class SaleDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+
+        'discount',
         'price',
         'quantity',
-        'unit_price',
-        'discount',
+
         'total_igv',
         'subtotal',
         'total',
+
         'series',
+
         'igv_type_id',
         'sale_id',
         'branch_product_id'
+        
     ];
 
     protected $casts = [

@@ -15,9 +15,11 @@ class Sale extends Model
     const ANULADO = 'ANULADO';
 
     protected $fillable = [
+
         'document_number',
         'date_issue',
         'date_due',
+
         'subtotal',
         'discount',
         'total_igv',
@@ -26,11 +28,12 @@ class Sale extends Model
         'total_free',
         'total_taxed',
         'total',
+
+        'have_warranty',
+
         'observation',
         'received_money',
         'change',
-
-        'have_warranty',
 
         'state',
         'send_sunat',
@@ -39,10 +42,12 @@ class Sale extends Model
         'hash_cdr',
         'canceled',
 
+        'payment_type_id',
         'serie_id',
         'customer_id',
         'open_closed_cashbox_id',
         'user_id'
+        
     ];
 
     public function saleDetails()
@@ -53,6 +58,11 @@ class Sale extends Model
     public function serie()
     {
         return $this->belongsTo(Serie::class);
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
     }
 
     public function customer()

@@ -5,7 +5,6 @@ import router from "./router";
 import { createApp } from 'vue';
 
 import Permissions from './mixins/Permissions';
-import Select2 from 'vue3-select2-component';
 
 import indexKardex from './modules/inventory/kardex/index.vue';
 import indexBranches from './modules/inventory/branches/index.vue';
@@ -69,5 +68,4 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 
 app.mixin(Permissions);
 app.use(router).mount('#app')
-app.component('Select2', Select2);
 

@@ -78,7 +78,7 @@ class ProductController extends Controller
                 'product_id' => $product->id,
             ]);
 
-
+            // dar formato a las series
             $productSeries = [];
 
             if ($request->manager_series) {

@@ -15,10 +15,21 @@ class CreateQuotationDetailsTable extends Migration
     {
         Schema::create('quotation_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedDecimal('price', 9,3)->nullable();
-            $table->bigInteger('quantity')->nullable();
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
-            $table->unsignedDecimal('total', 9,3)->nullable();
+
+            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('price', 12,3);
+            $table->bigInteger('quantity');
+
+            $table->unsignedDecimal('total_igv', 12,3)->default(0);
+            $table->unsignedDecimal('subtotal', 12,3)->nullable();
+            $table->unsignedDecimal('total', 12,3)->nullable();
+
+
+            $table->string('igv_type_id');
+            $table->foreign('igv_type_id')
+                ->references('id')
+                ->on('igv_types')
+                ->onUpdate('cascade');
 
             $table->foreignId('quotation_id')
                 ->constrained()

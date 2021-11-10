@@ -10,18 +10,28 @@ class Quotation extends Model
     use HasFactory;
 
     protected $fillable = [
+
         'document_number',
+        'date_due',
+
+        'subtotal',
         'discount',
+        'total_igv',
+        'total_exonerated',
+        'total_unaffected',
+        'total_free',
+        'total_taxed',
         'total',
-        'observation',
 
         'have_warranty',
 
-        'date_due',
-        
+        'observation',
+
+        'payment_type_id',
         'serie_id',
         'customer_id',
         'user_id'
+        
     ];
 
     public function quotationDetails()
