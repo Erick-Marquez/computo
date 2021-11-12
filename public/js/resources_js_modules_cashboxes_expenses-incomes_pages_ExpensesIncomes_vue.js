@@ -312,7 +312,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     );
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"form-group\" v-if=\"movement.type == 'expense'\">\n            <label for=\"\">Tipo de movimiento</label>\n            <select\n              name=\"\"\n              id=\"\"\n              class=\"form-control\"\n              v-model=\"movement.description\"\n              key=\"movement-description\"\n            >\n              <option value=\"servicio\" selected=\"true\">Servicios</option>\n              <option value=\"remuneracion\">Remuneración</option>\n            </select>\n          </div>\n\n          <div class=\"form-group\" v-if=\"movement.description == 'remuneracion'\">\n            <label for=\"\">Empleado</label>\n            <select\n              name=\"\"\n              id=\"\"\n              class=\"form-control\"\n              v-model=\"movement.employed\"\n              key=\"movement-employed\"\n            >\n              <option value=\"juan\">Juan</option>\n              <option value=\"roberto\">Roberto</option>\n            </select>\n          </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"form-group\" v-if=\"movement.type == 'expense'\">\r\n            <label for=\"\">Tipo de movimiento</label>\r\n            <select\r\n              name=\"\"\r\n              id=\"\"\r\n              class=\"form-control\"\r\n              v-model=\"movement.description\"\r\n              key=\"movement-description\"\r\n            >\r\n              <option value=\"servicio\" selected=\"true\">Servicios</option>\r\n              <option value=\"remuneracion\">Remuneración</option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"form-group\" v-if=\"movement.description == 'remuneracion'\">\r\n            <label for=\"\">Empleado</label>\r\n            <select\r\n              name=\"\"\r\n              id=\"\"\r\n              class=\"form-control\"\r\n              v-model=\"movement.employed\"\r\n              key=\"movement-employed\"\r\n            >\r\n              <option value=\"juan\">Juan</option>\r\n              <option value=\"roberto\">Roberto</option>\r\n            </select>\r\n          </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     step: "0.0001",
     "class": "form-control",
@@ -499,7 +499,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1282,21 +1282,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _NewMovement_vue_vue_type_template_id_3a362525__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewMovement.vue?vue&type=template&id=3a362525 */ "./resources/js/modules/cashboxes/components/NewMovement.vue?vue&type=template&id=3a362525");
 /* harmony import */ var _NewMovement_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewMovement.vue?vue&type=script&lang=js */ "./resources/js/modules/cashboxes/components/NewMovement.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
-/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
 /* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 
 
 
 
 ;
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NewMovement_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NewMovement_vue_vue_type_template_id_3a362525__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/cashboxes/components/NewMovement.vue"]])
-=======
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_NewMovement_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_NewMovement_vue_vue_type_template_id_3a362525__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/cashboxes/components/NewMovement.vue"]])
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 /* hot reload */
 if (false) {}
 
@@ -1318,21 +1310,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ExpensesIncomes.vue?vue&type=template&id=0674d71c */ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=template&id=0674d71c");
 /* harmony import */ var _ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExpensesIncomes.vue?vue&type=script&lang=js */ "./resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
-/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
 /* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 
 
 
 
 ;
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue"]])
-=======
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ExpensesIncomes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ExpensesIncomes_vue_vue_type_template_id_0674d71c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/cashboxes/expenses-incomes/pages/ExpensesIncomes.vue"]])
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 /* hot reload */
 if (false) {}
 

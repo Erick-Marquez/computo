@@ -427,7 +427,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -474,7 +474,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/warranty_cpe.svg?ab294b4ee0b8d8f0a54018cc745012f0");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/warranty_cpe.svg?ab68db46a9c6a278a38d4871af3dc1f2");
 
 /***/ }),
 
@@ -489,7 +489,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cdr.svg?76aea3817924be8741aec7ffac40d8c8");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cdr.svg?20c124f12c047f9adc6652776886235a");
 
 /***/ }),
 
@@ -1285,21 +1285,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Vouchers.vue?vue&type=template&id=248899c1 */ "./resources/js/modules/sales/vouchers/pages/Vouchers.vue?vue&type=template&id=248899c1");
 /* harmony import */ var _Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Vouchers.vue?vue&type=script&lang=js */ "./resources/js/modules/sales/vouchers/pages/Vouchers.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
-/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
 /* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 
 
 
 
 ;
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/sales/vouchers/pages/Vouchers.vue"]])
-=======
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Vouchers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Vouchers_vue_vue_type_template_id_248899c1__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/sales/vouchers/pages/Vouchers.vue"]])
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 /* hot reload */
 if (false) {}
 
