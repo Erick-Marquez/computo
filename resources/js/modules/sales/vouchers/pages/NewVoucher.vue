@@ -966,19 +966,43 @@ export default {
           Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
         }
 
-        this.getErrorDetailSerie(0)
+        this.getErrorDetailSerie(0, 0) 
 
       });
     },
-    getErrorDetailSerie(index){
+    // i = index1(detail) , j = index2(series)
+    getErrorDetailSerie(i, j){
 
-      for (let j = 0; j < this.saleData.detail[index].quantity; j++) {
-        if (this.errorsCreate['detail.' + index + '.series.' + j + '.serie'] != null) {
+      if (i < this.saleData.detail.length) {
 
-          console.log(this.errorsCreate['detail.' + index + '.series.' + j + '.serie'][0])
-          return Swal.fire("Algo salio mal", this.errorsCreate['detail.' + index + '.series.' + j + '.serie'][0], "error")
-          
+        if (j < this.saleData.detail[i].quantity) {
+
+          if (this.errorsCreate['detail.' + i + '.series.' + j + '.serie'] != null) {
+
+            console.log('detail.' + i + '.series.' + j + '.serie')
+            Swal.fire({
+              title: "Algo salio mal",
+              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + '</b>: </br>' +
+              this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
+              icon: "warning"
+            })
+            .then((result) => {
+              i++
+              this.getErrorDetailSerie(i, 0)
+            })
+            
+          }
+          else{
+            j++
+            this.getErrorDetailSerie(i, j)
+          }
+
         }
+        else{
+          i++
+          this.getErrorDetailSerie(i, 0)
+        }
+        
       }
 
     },

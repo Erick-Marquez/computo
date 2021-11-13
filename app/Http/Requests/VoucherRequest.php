@@ -133,7 +133,9 @@ class VoucherRequest extends FormRequest
 
             // Serie de los productos
 
-            'detail.*.series.*.serie.required' => 'Completa.',
+            'detail.*.series.*.serie.required' => 'El campo serie es requerido.',
+            'detail.*.series.*.serie.exists' => 'Ingrese una serie válida.',
+            'detail.*.series.*.serie.distinct' => 'Las series ingresadas deben ser distintas.',
 
 
         ];

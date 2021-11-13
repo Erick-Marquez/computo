@@ -708,28 +708,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           Swal.fire("Algo salio mal", _this7.errorsCreate['detail'][0], "error");
         }
 
-        _this7.getErrorDetailSerie(0);
+        _this7.getErrorDetailSerie(0, 0);
       });
     },
-    getErrorDetailSerie: function getErrorDetailSerie(index) {
-      for (var j = 0; j < this.saleData.detail[index].quantity; j++) {
-        if (this.errorsCreate['detail.' + index + '.series.' + j + '.serie'] != null) {
-          console.log(this.errorsCreate['detail.' + index + '.series.' + j + '.serie'][0]);
-          return Swal.fire("Algo salio mal", this.errorsCreate['detail.' + index + '.series.' + j + '.serie'][0], "error");
+    // i = index1(detail) , j = index2(series)
+    getErrorDetailSerie: function getErrorDetailSerie(i, j) {
+      var _this8 = this;
+
+      if (i < this.saleData.detail.length) {
+        if (j < this.saleData.detail[i].quantity) {
+          if (this.errorsCreate['detail.' + i + '.series.' + j + '.serie'] != null) {
+            console.log('detail.' + i + '.series.' + j + '.serie');
+            Swal.fire({
+              title: "Algo salio mal",
+              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + '</b>: </br>' + this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
+              icon: "warning"
+            }).then(function (result) {
+              i++;
+
+              _this8.getErrorDetailSerie(i, 0);
+            });
+          } else {
+            j++;
+            this.getErrorDetailSerie(i, j);
+          }
+        } else {
+          i++;
+          this.getErrorDetailSerie(i, 0);
         }
       }
     },
     getQuotation: function getQuotation() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.saleData.detail = [];
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/quotation/".concat(this.quotationSerieSelect, "/").concat(this.numberQuotation)).then(function (resp) {
         var quotation = resp.data.data;
-        _this8.saleData.voucher.discount = quotation.discount;
-        _this8.saleData.voucher.warranty = Boolean(quotation.have_warranty);
-        _this8.saleData.voucher.observation = quotation.observation;
+        _this9.saleData.voucher.discount = quotation.discount;
+        _this9.saleData.voucher.warranty = Boolean(quotation.have_warranty);
+        _this9.saleData.voucher.observation = quotation.observation;
         quotation.quotation_details.forEach(function (e, index) {
-          _this8.productSerieSearchFilter.push([]);
+          _this9.productSerieSearchFilter.push([]);
 
           var product = {
             product_id: e.id,
@@ -743,20 +762,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             series: []
           };
 
-          _this8.saleData.detail.push(product); //Obtener y Añadir series
+          _this9.saleData.detail.push(product); //Obtener y Añadir series
 
 
-          _this8.getSeries(e.id);
+          _this9.getSeries(e.id);
 
-          _this8.addSeries(index); //Activar descuento
+          _this9.addSeries(index); //Activar descuento
 
 
-          _this8.activateOrDesactivateGlobalDiscount();
+          _this9.activateOrDesactivateGlobalDiscount();
 
-          _this8.activateOrDesactivateDetailDiscount();
+          _this9.activateOrDesactivateDetailDiscount();
         });
 
-        _this8.getQuotationDiscount(0);
+        _this9.getQuotationDiscount(0);
       })["catch"](function (error) {
         if (error.response.status == 404) {
           Swal.fire({
@@ -768,7 +787,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     getQuotationDiscount: function getQuotationDiscount(index) {
-      var _this9 = this;
+      var _this10 = this;
 
       if (index < this.saleData.detail.length) {
         if (this.saleData.detail[index].discount > 0) {
@@ -786,29 +805,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             if (result.isConfirmed) {
               Swal.fire({
                 title: 'Confirmado',
-                html: 'El descuento para el producto <b>' + _this9.saleData.detail[index].description + '</b> ' + 'por un total de <b>S/. ' + _this9.saleData.detail[index].discount + '</b> ' + 'ha sido aceptado el precio final es <b>S/. ' + _this9.saleData.detail[index].sale_price + '</b>',
+                html: 'El descuento para el producto <b>' + _this10.saleData.detail[index].description + '</b> ' + 'por un total de <b>S/. ' + _this10.saleData.detail[index].discount + '</b> ' + 'ha sido aceptado el precio final es <b>S/. ' + _this10.saleData.detail[index].sale_price + '</b>',
                 icon: 'success',
                 allowOutsideClick: false
               }).then(function (result) {
                 if (result.value) {
                   index++;
 
-                  _this9.getQuotationDiscount(index);
+                  _this10.getQuotationDiscount(index);
                 }
               });
             } else if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.backdrop) {
-              var discount = _this9.saleData.detail[index].discount;
-              _this9.saleData.detail[index].discount = 0;
+              var discount = _this10.saleData.detail[index].discount;
+              _this10.saleData.detail[index].discount = 0;
               Swal.fire({
                 title: 'Cancelado',
-                html: 'El descuento para el producto <b>' + _this9.saleData.detail[index].description + '</b> ' + 'por un total de <b>S/. ' + discount + '</b> ' + 'ha sido eliminado el precio final es <b>S/. ' + _this9.saleData.detail[index].sale_price + '</b>',
+                html: 'El descuento para el producto <b>' + _this10.saleData.detail[index].description + '</b> ' + 'por un total de <b>S/. ' + discount + '</b> ' + 'ha sido eliminado el precio final es <b>S/. ' + _this10.saleData.detail[index].sale_price + '</b>',
                 icon: 'error',
                 allowOutsideClick: false
               }).then(function (result) {
                 if (result.value) {
                   index++;
 
-                  _this9.getQuotationDiscount(index);
+                  _this10.getQuotationDiscount(index);
                 }
               });
             }
