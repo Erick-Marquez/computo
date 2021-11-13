@@ -516,9 +516,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getSeries: function getSeries(id) {
       var _this5 = this;
 
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/products/series/".concat(id)).then(function (resp) {
-        _this5.productSeries.push(resp.data.data);
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/products/series/".concat(id)).then(function (resp) {
+                  _this5.productSeries.push(resp.data.data);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     },
     getTotals: function getTotals() {
       var _this6 = this;
@@ -721,7 +735,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             console.log('detail.' + i + '.series.' + j + '.serie');
             Swal.fire({
               title: "Algo salio mal",
-              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + '</b>: </br>' + this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
+              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' + this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
               icon: "warning"
             }).then(function (result) {
               i++;
@@ -742,21 +756,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this9 = this;
 
       this.saleData.detail = [];
+      this.productSeries = [];
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/quotation/".concat(this.quotationSerieSelect, "/").concat(this.numberQuotation)).then(function (resp) {
         var quotation = resp.data.data;
         _this9.saleData.voucher.discount = quotation.discount;
         _this9.saleData.voucher.warranty = Boolean(quotation.have_warranty);
         _this9.saleData.voucher.observation = quotation.observation;
+        _this9.saleData.voucher.payment_type_id = quotation.payment_type_id;
         quotation.quotation_details.forEach(function (e, index) {
           _this9.productSerieSearchFilter.push([]);
 
           var product = {
-            product_id: e.id,
+            discount: e.discount,
+            subtotal: 0,
+            total: 0,
+            product_id: e.branch_product_id,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
-            igv_type_id: e.branch_product.product.igv_type_id,
-            discount: e.discount,
+            igv_type_id: e.igv_type_id,
             description: e.branch_product.product.name,
+            brand: e.branch_product.product.brand_line.brand.description,
             sale_price: e.price,
             quantity: e.quantity,
             series: []
@@ -765,7 +784,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this9.saleData.detail.push(product); //Obtener y Añadir series
 
 
-          _this9.getSeries(e.id);
+          _this9.getSeries(e.branch_product_id);
 
           _this9.addSeries(index); //Activar descuento
 
@@ -773,7 +792,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this9.activateOrDesactivateGlobalDiscount();
 
           _this9.activateOrDesactivateDetailDiscount();
-        });
+        }); // Alertas para las notificaciones y calcular totales
 
         _this9.getQuotationDiscount(0);
       })["catch"](function (error) {
@@ -892,8 +911,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         //   this.getQuotationDiscount(index)
         // }
         this.activateOrDesactivateGlobalDiscount();
-        this.activateOrDesactivateDetailDiscount();
-        return true;
+        this.activateOrDesactivateDetailDiscount(); //calcular totales
+
+        this.getTotals();
+        console.log(this.saleData);
       }
     }
   }

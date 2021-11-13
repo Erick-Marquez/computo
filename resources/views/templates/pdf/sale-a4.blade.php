@@ -30,7 +30,7 @@
         <div class="ruc">
             <p class="ruc__primero">R.U.C. {{ $company->ruc }}</p>
             <p class="ruc__segundo">{{ $head->serie->voucherType->description }}</p>
-            <p class="ruc__numero">{{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
+            <p class="ruc__numero">{{ $head->serie->serie }} - {{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
         </div>
     </header>
     <main>

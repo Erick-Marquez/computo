@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;452;600&display=swap');
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Rubik', sans-serif;
+}
+
+.logo{
+    text-align: center;
+}
+.logo img{
+    display: inline-block;
+    width: 100px;
+    border: 1px solid black;
+}
+.img{
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    display: inline-block;
+    margin-left: 40%;
+    text-align: center;
+}
+.header{
+    width: 100%;
+    color: black;
+    
+}
+.header tr td{
+    text-align: center;
+    font-size: 0.8rem;
+    /* font-weight: 400; */
+    margin: 0;
+    padding: 0;
+}
+
+.header tr:first-child td{
+    font-weight: 700;
+    font-size: 1rem;
+}
+.header tr:last-child td{
+    border-bottom: 1px dashed black;
+    padding-bottom: 9px;
+}
+.header--size-little{
+    font-size: 0.7rem;
+    font-weight: lighter;
+}
+.header--size-little:first-child{
+    width: 200%;
+}
+
+.invoice{
+    width: 100%;
+}
+.invoice thead{
+    font-size: 0.9rem;
+}
+.invoice tbody tr td{
+    padding: 0;
+    margin: 0;
+}
+.invoice tbody{
+    font-size: 0.8rem;
+}
+.sale{
+    padding: 5px;
+    font-size: 0.8rem;
+    table-layout: fixed;
+    width: 100%;
+}
+.sale thead th:first-child{
+    width: 55%;
+}
+.sale thead th{
+    text-align: start;
+
+}
+.sale tbody{
+    font-size: 0.7rem;
+    padding: 15px;
+}
+span{
+    font-weight: bold;
+}
+.hr{
+    height:1px;
+    background-color: #fff;
+    border-bottom: 1px dashed black;
+}
+.price{
+    table-layout: fixed;
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 5px;
+}
+.price tr td{
+    text-align: right;
+}
+.qr{
+    margin-top: 10px;
+    margin-left: 83px;
+    width: 120px;
+    height: 120px;
+}
+p{
+    font-size: 0.7rem;
+    padding: 0 0 0 5;
+}
+.bold{
+    font-weight: bold;
+}

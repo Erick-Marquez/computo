@@ -68,7 +68,7 @@ class VoucherController extends Controller
     public function store(VoucherRequest $request)
     {
 
-        return $request;
+        // return $request;
 
         if (is_null($request->customer['id'])) {
             $customer = Customer::create([
@@ -361,7 +361,7 @@ class VoucherController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product')->firstOrFail();
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand')->firstOrFail();
         return QuotationResource::make($quotation);
     }
 }

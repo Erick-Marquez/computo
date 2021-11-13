@@ -793,8 +793,8 @@ export default {
       }
       this.saleData.detail[index].series = temp;
     },
-    getSeries(id) {
-      BaseUrl.get(`api/sales/products/series/${id}`).then((resp) => {
+    async getSeries(id) {
+      await BaseUrl.get(`api/sales/products/series/${id}`).then((resp) => {
         this.productSeries.push(resp.data.data);
       });
     },
@@ -982,7 +982,7 @@ export default {
             console.log('detail.' + i + '.series.' + j + '.serie')
             Swal.fire({
               title: "Algo salio mal",
-              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + '</b>: </br>' +
+              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
               this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
               icon: "warning"
             })
@@ -1010,33 +1010,42 @@ export default {
 
       this.saleData.detail = []
 
+      this.productSeries = []
+
       BaseUrl.get(`api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`).then( resp=>{
         let quotation = resp.data.data
 
         this.saleData.voucher.discount = quotation.discount
         this.saleData.voucher.warranty = Boolean(quotation.have_warranty)
         this.saleData.voucher.observation = quotation.observation
+        this.saleData.voucher.payment_type_id = quotation.payment_type_id
 
         quotation.quotation_details.forEach((e, index) => {
 
           this.productSerieSearchFilter.push([])
 
           const product = {
-            product_id : e.id,
+
+            discount : e.discount,
+            subtotal: 0,
+            total: 0,
+
+            product_id : e.branch_product_id,
             cod : e.branch_product.product.cod,
             affect_icbper : false,
-            igv_type_id : e.branch_product.product.igv_type_id,
-            discount : e.discount,
+            igv_type_id : e.igv_type_id,
             description : e.branch_product.product.name,
+            brand : e.branch_product.product.brand_line.brand.description,
             sale_price : e.price,
             quantity : e.quantity,
             series : []
+
           }
 
           this.saleData.detail.push(product)
 
           //Obtener y Añadir series
-          this.getSeries(e.id)
+          this.getSeries(e.branch_product_id)
           this.addSeries(index)
 
           //Activar descuento
@@ -1044,7 +1053,9 @@ export default {
           this.activateOrDesactivateDetailDiscount()
         });
 
+        // Alertas para las notificaciones y calcular totales
         this.getQuotationDiscount(0)
+        
         
       })
       .catch((error) => {
@@ -1172,9 +1183,14 @@ export default {
         //   index++
         //   this.getQuotationDiscount(index)
         // }
+
         this.activateOrDesactivateGlobalDiscount()
         this.activateOrDesactivateDetailDiscount()
-        return true
+
+        //calcular totales
+        this.getTotals()
+
+        console.log(this.saleData)
       }
 
     },

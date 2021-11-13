@@ -1,7 +1,6 @@
 @php
     $path_style = resource_path('views'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'pdf'.DIRECTORY_SEPARATOR.'style-warranty.css');
 @endphp
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
