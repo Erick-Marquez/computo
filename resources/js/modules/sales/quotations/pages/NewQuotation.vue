@@ -194,7 +194,8 @@
                   <i class="text-danger fas fa-tags"></i>
                   Descuento
                 </label>
-                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="quotationData.quotation.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
+                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001"
+                v-model="quotationData.quotation.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
                 <div class="invalid-feedback" v-if="errorsCreate['quotation.discount'] ">
                   {{ errorsCreate['quotation.discount'][0] }}
                 </div>
@@ -294,10 +295,6 @@ export default {
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
       this.identificationDocuments = resp.data.data;
-    });
-
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
     });
 
     await BaseUrl.get(`api/sales/products`).then((resp) => {

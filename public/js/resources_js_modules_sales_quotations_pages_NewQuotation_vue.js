@@ -243,27 +243,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 4:
               _context.next = 6;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/products").then(function (resp) {
-                _this.products = resp.data.data;
-              });
-
-            case 6:
-              _context.next = 8;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/igvtypes").then(function (resp) {
                 _this.igvTypes = resp.data.data;
               });
 
-            case 8:
-              _context.next = 10;
+            case 6:
+              _context.next = 8;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/paymenttypes").then(function (resp) {
                 _this.paymentTypes = resp.data.data;
                 _this.quotationData.quotation.payment_type_id = _this.paymentTypes[0].id;
               });
 
-            case 10:
+            case 8:
               _this.getSeries();
 
-            case 11:
+            case 9:
             case "end":
               return _context.stop();
           }

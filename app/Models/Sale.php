@@ -40,6 +40,7 @@ class Sale extends Model
         'response_sunat',
         'description_sunat_cdr',
         'hash_cdr',
+        'hash_cpe',
         'canceled',
 
         'payment_type_id',

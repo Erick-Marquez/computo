@@ -52,7 +52,7 @@
             <tbody>
                 <tr>
                     <td>{{ $head->created_at }}</td>
-                    <td>EFECTIVO</td>
+                    <td>{{ $head->paymentType->description }}</td>
                     <td>Soles</td>
                     <td>{{ $head->date_due }}</td>
                     {{-- <td></td> --}}
@@ -81,7 +81,7 @@
                         <td>{{ $detail->igvType->description }}</td>
                         <td>S/. {{ round($detail->discount, 3) }}</td>
                         <td>S/. {{ round($detail->price, 3) }}</td>
-                        <td>S/. {{ $detail->total }}</td>
+                        <td>S/. {{ round($detail->total, 3) }}</td>
                     </tr>
                     @php
                         $discount += $detail->discount;
@@ -109,16 +109,46 @@
                 <td>
                     <div class="resumen">
                         <p>RESUMEN:</p>
+                        @if ($head->discount > 0)
+                            <div class="resumen__elemento">
+                                <p>Descuento Global:</p>
+                                <p class="descuento__precio">S/. {{ round($head->discount, 3) }}</p>
+                            </div>
+                        @endif
                         @if ($discount > 0)
                             <div class="resumen__elemento">
                                 <p>Descuento por Item:</p>
-                                <p class="descuento__precio">S/ {{ round($discount, 3) }}</p>
+                                <p class="descuento__precio">S/. {{ round($discount, 3) }}</p>
                             </div>
                         @endif
-                        @if ($head->discount > 0)
+                        @if ($head->total_taxed > 0)
                             <div class="resumen__elemento">
-                                <p>Descuento Total:</p>
-                                <p class="descuento__precio">S/ {{ round($head->discount, 3) }}</p>
+                                <p>Gravado:</p>
+                                <p class="descuento__precio">S/. {{ round($head->total_taxed, 3) }}</p>
+                            </div>
+                        @endif
+                        @if ($head->total_exonerated > 0)
+                            <div class="resumen__elemento">
+                                <p>Exonerado:</p>
+                                <p class="descuento__precio">S/. {{ round($head->total_exonerated, 3) }}</p>
+                            </div>
+                        @endif
+                        @if ($head->total_unaffected > 0)
+                            <div class="resumen__elemento">
+                                <p>Inafecto:</p>
+                                <p class="descuento__precio">S/. {{ round($head->total_unaffected, 3) }}</p>
+                            </div>
+                        @endif
+                        @if ($head->total_free > 0)
+                            <div class="resumen__elemento">
+                                <p>Gratuita:</p>
+                                <p class="descuento__precio">S/. {{ round($head->total_free, 3) }}</p>
+                            </div>
+                        @endif
+                        @if ($head->total_igv > 0)
+                            <div class="resumen__elemento">
+                                <p>Igv (18%):</p>
+                                <p class="descuento__precio">S/. {{ round($head->total_igv, 3) }}</p>
                             </div>
                         @endif
                         <div class="resumen__elemento">

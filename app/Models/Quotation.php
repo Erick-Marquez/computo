@@ -43,6 +43,11 @@ class Quotation extends Model
     {
         return $this->belongsTo(Serie::class);
     }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
     
     public function customer()
     {
