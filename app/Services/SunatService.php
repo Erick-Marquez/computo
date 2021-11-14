@@ -184,7 +184,7 @@ class SunatService
         curl_setopt($ch, CURLOPT_URL, $ws); // Url con el cual se comunica    
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Recibire un retorno
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); // Tipo de autorizacion
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 30s
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 5s
         curl_setopt($ch, CURLOPT_POST, true); // Se enviara Datos por post
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlSend); // El xml de envio
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Cabecera de la comunicacion

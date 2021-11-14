@@ -30,7 +30,7 @@
         <div class="ruc">
             <p class="ruc__primero">R.U.C. {{ $company->ruc }}</p>
             <p class="ruc__segundo">{{ $head->serie->voucherType->description }}</p>
-            <p class="ruc__numero">{{ $head->serie->serie }}-{{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
+            <p class="ruc__numero">{{ $head->serie->serie }} - {{ str_pad($head->document_number, 4, '0', STR_PAD_LEFT) }}</p>
         </div>
     </header>
     <main>
@@ -65,8 +65,8 @@
                     <td>CANT.</td>
                     <td>DESCRIPCIÓN</td>
                     <td>AFECT.IGV</td>
-                    <td>DESCUENTO</td>
                     <td>PRECIO</td>
+                    <td>DESCUENTO</td>
                     <td>IMPORTE</td>
                 </tr>
             </thead>
@@ -79,8 +79,8 @@
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->branchProduct->product->name  }}</td>
                         <td>{{ $detail->igvType->description }}</td>
-                        <td>S/. {{ round($detail->discount, 3) }}</td>
                         <td>S/. {{ round($detail->price, 3) }}</td>
+                        <td>S/. {{ round($detail->discount, 3) }}</td>
                         <td>S/. {{ round($detail->total, 3) }}</td>
                     </tr>
                     @php

@@ -951,12 +951,12 @@ export default {
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
         this.errorsCreate = {}
         console.log(response)
-        // this.$router.push({ name: "voucher-list" });
-        // Swal.fire(
-        //   "Comprobante Creado",
-        //   response.data,
-        //   "success"
-        // );
+        this.$router.push({ name: "voucher-list" });
+        Swal.fire(
+          "Comprobante Creado",
+          response.data,
+          "success"
+        );
       })
       .catch((error) => {
         console.log(error.response);

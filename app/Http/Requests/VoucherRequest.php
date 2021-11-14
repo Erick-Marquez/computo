@@ -71,6 +71,8 @@ class VoucherRequest extends FormRequest
             
         ];
 
+        // TODO: Validar las series solo si el producto maneja series
+
         foreach ($this->detail as $i => $detail) {
             
             $rules['detail.' . $i . '.series.*.serie'] = [

@@ -708,12 +708,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/sales", this.saleData).then(function (response) {
         _this7.errorsCreate = {};
-        console.log(response); // this.$router.push({ name: "voucher-list" });
-        // Swal.fire(
-        //   "Comprobante Creado",
-        //   response.data,
-        //   "success"
-        // );
+        console.log(response);
+
+        _this7.$router.push({
+          name: "voucher-list"
+        });
+
+        Swal.fire("Comprobante Creado", response.data, "success");
       })["catch"](function (error) {
         console.log(error.response);
         _this7.errorsCreate = error.response.data.errors;

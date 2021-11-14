@@ -60,7 +60,7 @@ class SerieRequest extends FormRequest
         return [
             'serie.required' => 'Debe ingresar una serie.',
             'serie.size' => 'La serie debe tener 4 caracteres.',
-            'serie.unique' => 'La serie ya existe (La serie debe ser unica y no debe repetirse entre sucursales).',
+            'serie.unique' => 'No vengas aqui a querer sorprender. La serie ya existe (La serie debe ser unica y no debe repetirse entre sucursales).',
             'serie.regex' => $serieMessages[$this->voucher_type_id]
         ];
     }

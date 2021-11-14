@@ -11,21 +11,11 @@ body{
 }
 .logo img{
     display: inline-block;
-    width: 100px;
-    border: 1px solid black;
-}
-.img{
-    width: 50px;
-    height: 50px;
-    background-color: red;
-    display: inline-block;
-    margin-left: 40%;
-    text-align: center;
+    width: 120px;
 }
 .header{
     width: 100%;
     color: black;
-    
 }
 .header tr td{
     text-align: center;
