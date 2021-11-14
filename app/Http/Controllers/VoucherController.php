@@ -252,7 +252,8 @@ class VoucherController extends Controller
                 'state' => $sunat['state'],
                 'response_sunat' => $sunat['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
-                'hash_cdr' => $sunat['response']['hash_cdr']
+                'hash_cdr' => $sunat['response']['hash_cdr'],
+                'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
         }
         elseif ($request->voucher['document_type'] == 2) { // Boleta
@@ -264,7 +265,8 @@ class VoucherController extends Controller
                 'state' => $sunat['state'],
                 'response_sunat' => $sunat['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
-                'hash_cdr' => $sunat['response']['hash_cdr']
+                'hash_cdr' => $sunat['response']['hash_cdr'],
+                'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
         }
         else {

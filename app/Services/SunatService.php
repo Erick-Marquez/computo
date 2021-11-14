@@ -122,7 +122,15 @@ class SunatService
 
         // Guardo el xml firmado
         Storage::disk('local')->put(self::$directoryXml.self::$nameXml, $xmlSigned);
+
+        // Determinar mensajes de respuesta
+
+        $docCpe = new DOMDocument();
+        $docCpe->load(storage_path('app'.DIRECTORY_SEPARATOR.self::$directoryXml.self::$nameXml));
+
+
         self::$message['xml']['firmado'] = true;
+        self::$message['response']['hash_cpe'] = $docCpe->getElementsByTagName('DigestValue')->item(0)->nodeValue;
     }
 
     public static function zipXml()

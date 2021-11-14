@@ -160,8 +160,7 @@
             </tr>
             <tr class="observacion">
                 <td colspan="3">
-                    <p><span>Hash: </span></p>
-                    <p class="compra__hash"><span >{{$head->hash_cdr }}</span></p   >
+                    <p><span>Hash: </span>{{$head->hash_cpe }}</p>
                 </td>
             </tr>
             <tr class="observacion">
