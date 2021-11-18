@@ -17,4 +17,9 @@ class PaymentType extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class);
+    }
 }

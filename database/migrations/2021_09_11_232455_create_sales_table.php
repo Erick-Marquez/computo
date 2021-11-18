@@ -20,7 +20,7 @@ class CreateSalesTable extends Migration
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
 
-            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('discount', 12,3)->nullable()->default(0);
             $table->unsignedDecimal('subtotal', 12,3)->default(0);
             $table->unsignedDecimal('total_igv', 12,3)->default(0);
             $table->unsignedDecimal('total_exonerated', 12,3)->default(0);
@@ -31,15 +31,16 @@ class CreateSalesTable extends Migration
 
             $table->boolean('have_warranty')->default(false);
 
-            $table->string('observation')->nullable();
+            $table->text('observation')->nullable();
             $table->unsignedDecimal('received_money', 12,3)->nullable();
             $table->unsignedDecimal('change', 12,3)->nullable();
 
             $table->string('state')->nullable();
             $table->boolean('send_sunat')->default(false);
             $table->boolean('response_sunat')->default(false);
-            $table->string('description_sunat_cdr')->nullable();
+            $table->text('description_sunat_cdr')->nullable();
             $table->string('hash_cdr')->nullable();
+            $table->string('hash_cpe')->nullable();
             $table->boolean('canceled')->default(false);
             
             $table->foreignId('payment_type_id')

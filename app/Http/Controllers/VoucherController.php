@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VoucherRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\IdentificationDocumentResource;
@@ -64,8 +65,8 @@ class VoucherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(VoucherRequest $request)
+    {    
 
         if (is_null($request->customer['id'])) {
             $customer = Customer::create([
@@ -79,7 +80,6 @@ class VoucherController extends Controller
             $request->customer['id'] = $customer->id;
         }
         
-        // $request->detail[0]['series'][0]['serie']
         $serie = Serie::find($request->voucher['serie_id']);
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
@@ -99,10 +99,11 @@ class VoucherController extends Controller
             'payment_type_id' => $request->voucher['payment_type_id'],
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
-            //'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
+            'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
 
+        // Variables para los totales de la venta
         $subtotalSale = 0;
         $totalIgvSale = 0;
         $totalExoneratedSale = 0;
@@ -111,46 +112,124 @@ class VoucherController extends Controller
         $totalTaxedSale = 0;
         $totalSale = 0;
 
-        for ($i = 0; $i < count($request->detail); $i++) {
+        $igv = 0.18;
+        // Crear los detalles de la cotizacion
+        foreach ($request->detail as $key => $detail) {
 
-            $productSeries = [];
+            $subtotal = 0;
+            $totalIgv = 0;
+            $total = 0;
 
-            for ($j=0; $j < count($request->detail[$i]['series']) ; $j++) {
-                array_push($productSeries, $request->detail[$i]['series'][$j]['serie']);
+            // ! EL PRECIO UNITARIO SE HALLA DIVIDIENDO EL TOTAL ENTRE LA CANTIDAD
+
+            switch ($detail['igv_type_id']) {
+                case 10:
+                    // hallar el precio sin igv
+                    $priceWithoutIgv = $detail['sale_price'] / (1 + $igv);
+
+                    $detail['sale_price'] = $priceWithoutIgv;
+        
+                    // hallar el subtotal = (precio sin igv * cantidad) - descuento
+                    $subtotal = ($priceWithoutIgv * $detail['quantity']) - $detail['discount'];
+        
+                    // hallar el total = (subtotal * 1.18)
+                    $total = $subtotal * (1 + $igv);
+                    
+                    // hallar el igv = (total - subtotal)
+                    $totalIgv = $total - $subtotal;
+        
+                    // Actualizar totales globales
+                    $subtotalSale += $subtotal;
+                    $totalIgvSale += $totalIgv;
+                    $totalTaxedSale += $subtotal;
+                    $totalSale += $total;
+                    break;
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalSale += $subtotal;
+                    $totalFreeSale += $total;
+                    break;
+                case 20:
+                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalSale += $subtotal;
+                    $totalExoneratedSale += $subtotal;
+                    $totalSale += $total;
+                    break;
+                case 30:
+                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalSale += $subtotal;
+                    $totalUnaffectedSale += $subtotal;
+                    $totalSale += $total;
+                    break;
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                case 35:
+                case 36:
+                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalSale += $subtotal;
+                    $totalFreeSale += $total;
+                    break;
+                case 40:
+                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalSale += $subtotal;
+                    $totalUnaffectedSale += $subtotal;
+                    $totalSale += $total;
+                    break;
+                default:
+                    # code...
+                    break;
             }
 
-            $total_igv = 0;
+            // TODO AÑADIR SOLO SI EL PRODUCTO MANEJA SERIE
+            $productSeries = [];
 
-            // Totales del detalle venta
-            $subtotal = $request->detail[$i]['quantity'] * $request->detail[$i]['sale_price'];
-            $total = $request->detail[$i]['quantity'] * $request->detail[$i]['sale_price'];
-
-            // Suma en cadena para la venta
-            $totalSale += $total;
-            $subtotalSale += $subtotal;
-            $totalExoneratedSale += $subtotal;
+            for ($j=0; $j < count($detail['series']) ; $j++) {
+                array_push($productSeries, $detail['series'][$j]['serie']);
+            }
 
             SaleDetail::create([
-                'price' => $request->detail[$i]['sale_price'],
-                'quantity' => $request->detail[$i]['quantity'],
-                'total_igv' => $total_igv,
+
+                'discount' => $detail['discount'],
+                'price' => $detail['sale_price'],
+                'quantity' => $detail['quantity'],
+
+                'total_igv' => $totalIgv,
                 'subtotal' => $subtotal,
                 'total' => $total,
-                //'discount' => $request->discount[$i],
+
                 'series' => $productSeries,
+
+                'igv_type_id' => $detail['igv_type_id'],
                 'sale_id' => $sale->id,
-                'branch_product_id' => $request->detail[$i]['product_id'],
-                'igv_type_id' => $request->detail[$i]['igv_type_id'],
+                'branch_product_id' => $detail['product_id']
+
             ]);
 
-
-            $data['branch_product_id'] = $request->detail[$i]['product_id'];
-            $data['quantity'] = $request->detail[$i]['quantity'];
+            $data['branch_product_id'] = $detail['product_id'];
+            $data['quantity'] = $detail['quantity'];
             $data['document'] = $sale->serie->serie . '-' . $sale->document_number;
-            $data['series'] = $request->detail[$i]['series'];
+            $data['series'] = $productSeries;
             $data['user_id'] = auth()->user()->id;
 
             KardexService::sale($data);
+
         }
 
         $sale->update([
@@ -173,7 +252,8 @@ class VoucherController extends Controller
                 'state' => $sunat['state'],
                 'response_sunat' => $sunat['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
-                'hash_cdr' => $sunat['response']['hash_cdr']
+                'hash_cdr' => $sunat['response']['hash_cdr'],
+                'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
         }
         elseif ($request->voucher['document_type'] == 2) { // Boleta
@@ -185,7 +265,8 @@ class VoucherController extends Controller
                 'state' => $sunat['state'],
                 'response_sunat' => $sunat['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
-                'hash_cdr' => $sunat['response']['hash_cdr']
+                'hash_cdr' => $sunat['response']['hash_cdr'],
+                'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
         }
         else {
@@ -358,7 +439,7 @@ class VoucherController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product')->firstOrFail();
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand')->firstOrFail();
         return QuotationResource::make($quotation);
     }
 }

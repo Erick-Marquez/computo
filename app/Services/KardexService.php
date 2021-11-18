@@ -13,20 +13,13 @@ class KardexService
     public static function sale($data)
     {   
 
-        $productSeries = [];
-
-        // Convertir en array
-        for ($i=0; $i < count($data['series']) ; $i++) { 
-            array_push($productSeries, $data['series'][$i]['serie']);
-        }
-
         $kardex = Kardex::create([
             'date' => Carbon::now()->toDateTimeString(),
             'quantity' => $data['quantity'],
             'movement_type' => Kardex::SALIDA,
             'description' => Kardex::VENTA,
             'document' => $data['document'],
-            'series' => $productSeries,
+            'series' => $data['series'],
             'branch_product_id' => $data['branch_product_id'],
             'user_id' => $data['user_id'],
         ]);
@@ -38,8 +31,8 @@ class KardexService
 
         // Vender las series si maneja series
         if ($branchProduct->manager_series) { //Comprobar si maneja series
-            foreach ($productSeries as $key => $serie) { // Iterar cada serie del array
-                BranchProductSerie::where('serie', $serie)->update(["sold" => true]); //actualizar serie a vendido
+            foreach ($data['series'] as $key => $serie) { // Iterar cada serie del array
+                BranchProductSerie::where('serie', $serie)->where('branch_product_id', $data['branch_product_id'])->update(["sold" => true]); //actualizar serie a vendido
             }
         }   
     }

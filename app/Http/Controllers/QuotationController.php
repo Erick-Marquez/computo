@@ -84,16 +84,86 @@ class QuotationController extends Controller
         $totalTaxedQuotation = 0;
         $totalQuotation = 0;
 
+        $igv = 0.18;
         // Crear los detalles de la cotizacion
         foreach ($request->detail as $key => $detail) {
 
-            $totalIgv = 0;
             $subtotal = 0;
+            $totalIgv = 0;
+            $total = 0;
 
-            $total = ($detail['quantity'] * $detail['sale_price']) - $detail['discount'];
+            switch ($detail['igv_type_id']) {
+                case 10:
+                    // hallar el precio sin igv
+                    $priceWithoutIgv = $detail['sale_price'] / (1 + $igv);
+        
+                    // hallar el subtotal = (precio sin igv * cantidad) - descuento
+                    $subtotal = round($priceWithoutIgv * $detail['quantity'], 2) - $detail['discount'];
+        
+                    // hallar el total = (subtotal * 1.18)
+                    $total = round($subtotal * (1 + $igv), 2);
+                    
+                    // hallar el igv = (total - subtotal)
+                    $totalIgv = $total - $subtotal;
+        
+                    // Actualizar totales globales
+                    $subtotalQuotation += $subtotal;
+                    $totalIgvQuotation += $totalIgv;
+                    $totalTaxedQuotation += $subtotal;
+                    $totalQuotation += $total;
+                    break;
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $total = $subtotal;
 
+                    $subtotalQuotation += $subtotal;
+                    $totalFreeQuotation += $total;
+                    break;
+                case 20:
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $total = $subtotal;
 
-            $totalQuotation = $totalQuotation + $total;
+                    $subtotalQuotation += $subtotal;
+                    $totalExoneratedQuotation += $subtotal;
+                    $totalQuotation += $total;
+                    break;
+                case 30:
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalQuotation += $subtotal;
+                    $totalUnaffectedQuotation += $subtotal;
+                    $totalQuotation += $total;
+                    break;
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                case 35:
+                case 36:
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalQuotation += $subtotal;
+                    $totalFreeQuotation += $total;
+                    break;
+                case 40:
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $total = $subtotal;
+
+                    $subtotalQuotation += $subtotal;
+                    $totalUnaffectedQuotation += $subtotal;
+                    $totalQuotation += $total;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
 
             $quotationDetails = QuotationDetail::create([
 
@@ -113,7 +183,13 @@ class QuotationController extends Controller
         }
         
         $quotation->update([
-            'total' => $totalQuotation - $request->quotation['discount']
+            'subtotal' => $subtotalQuotation,
+            'total_igv' => $totalIgvQuotation,
+            'total_exonerated' => $totalExoneratedQuotation,
+            'total_unaffected' => $totalUnaffectedQuotation,
+            'total_free' => $totalFreeQuotation,
+            'total_taxed' => $totalTaxedQuotation,
+            'total' => $totalQuotation
         ]);
 
         return $serie->serie . '-' .$quotation->document_number;

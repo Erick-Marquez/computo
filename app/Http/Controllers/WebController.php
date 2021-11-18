@@ -172,7 +172,7 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        // return SunatService::facturar(1, 'invoice');
+        return SunatService::facturar(7, 'invoice');
 
         // $currencyExchange = CurrencyExchange::latest()->first()->change;
         // $branchProducts = BranchProduct::select(
@@ -186,7 +186,7 @@ class WebController extends Controller
 
         // return $branchProducts;
 
-        $quotation = Quotation::find(1);
-        return $quotation;
+        // $quotation = Quotation::find(1);
+        // return $quotation;
     }
 }

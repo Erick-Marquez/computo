@@ -16,7 +16,7 @@ class CreateSaleDetailsTable extends Migration
         Schema::create('sale_details', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('discount', 12,3)->nullable()->default(0);
             $table->unsignedDecimal('price', 12,3);
             $table->bigInteger('quantity');
 

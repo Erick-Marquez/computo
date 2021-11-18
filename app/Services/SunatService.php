@@ -122,7 +122,15 @@ class SunatService
 
         // Guardo el xml firmado
         Storage::disk('local')->put(self::$directoryXml.self::$nameXml, $xmlSigned);
+
+        // Determinar mensajes de respuesta
+
+        $docCpe = new DOMDocument();
+        $docCpe->load(storage_path('app'.DIRECTORY_SEPARATOR.self::$directoryXml.self::$nameXml));
+
+
         self::$message['xml']['firmado'] = true;
+        self::$message['response']['hash_cpe'] = $docCpe->getElementsByTagName('DigestValue')->item(0)->nodeValue;
     }
 
     public static function zipXml()
@@ -184,7 +192,7 @@ class SunatService
         curl_setopt($ch, CURLOPT_URL, $ws); // Url con el cual se comunica    
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Recibire un retorno
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); // Tipo de autorizacion
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 30s
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 5s
         curl_setopt($ch, CURLOPT_POST, true); // Se enviara Datos por post
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlSend); // El xml de envio
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Cabecera de la comunicacion

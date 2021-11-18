@@ -19,7 +19,7 @@ class CreateQuotationsTable extends Migration
             $table->bigInteger('document_number')->nullable();
             $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
 
-            $table->unsignedDecimal('discount', 12,3)->default(0);
+            $table->unsignedDecimal('discount', 12,3)->nullable()->default(0);
             $table->unsignedDecimal('subtotal', 12,3)->default(0);
             $table->unsignedDecimal('total_igv', 12,3)->default(0);
             $table->unsignedDecimal('total_exonerated', 12,3)->default(0);
@@ -28,7 +28,7 @@ class CreateQuotationsTable extends Migration
             $table->unsignedDecimal('total_taxed', 12,3)->default(0);
             $table->unsignedDecimal('total', 12,3)->default(0);
             
-            $table->boolean('have_warranty')->default(false);
+            $table->boolean('have_warranty')->nullable()->default(false);
 
             $table->string('observation')->nullable();
             

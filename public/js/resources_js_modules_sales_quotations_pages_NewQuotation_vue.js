@@ -243,27 +243,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 4:
               _context.next = 6;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/products").then(function (resp) {
-                _this.products = resp.data.data;
-              });
-
-            case 6:
-              _context.next = 8;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/igvtypes").then(function (resp) {
                 _this.igvTypes = resp.data.data;
               });
 
-            case 8:
-              _context.next = 10;
+            case 6:
+              _context.next = 8;
               return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/paymenttypes").then(function (resp) {
                 _this.paymentTypes = resp.data.data;
                 _this.quotationData.quotation.payment_type_id = _this.paymentTypes[0].id;
               });
 
-            case 10:
+            case 8:
               _this.getSeries();
 
-            case 11:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -450,145 +444,162 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       var igv = 0.18;
       this.quotationData.detail.forEach(function (e) {
-        _this5.quotationData.quotation.discountItems += e.discount; // hallar el precio sin igv y total
-
-        var priceWithoutIgv = e.sale_price / (1 + igv);
-        var total = e.sale_price * e.quantity;
+        _this5.quotationData.quotation.discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {
           case 10:
             //Gravado - Operación Onerosa
-            e.subtotal = parseFloat((priceWithoutIgv * e.quantity).toFixed(2));
+            // hallar el precio sin igv
+            var priceWithoutIgv = e.sale_price / (1 + igv); // hallar el subtotal = (precio sin igv * cantidad) - descuento
+
+            e.subtotal = parseFloat((priceWithoutIgv * e.quantity).toFixed(2)) - e.discount; // hallar el total = (subtotal * 1.18)
+
+            e.total = parseFloat((e.subtotal * (1 + igv)).toFixed(2)); // Actualizar totales globales
+
             _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalIgv += parseFloat((total - e.subtotal).toFixed(2));
+            _this5.quotationData.quotation.totalIgv += parseFloat((e.total - e.subtotal).toFixed(2));
             _this5.quotationData.quotation.totalTaxed += e.subtotal;
-            _this5.quotationData.quotation.total += total;
+            _this5.quotationData.quotation.total += e.total;
             break;
 
           case 11:
             //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 12:
             //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 13:
             //[Gratuita] Gravado – Retiro
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 14:
             //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 15:
             //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 16:
             //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 20:
             //Exonerado - Operación Onerosa
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalExonerated += total;
-            _this5.quotationData.quotation.total += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalExonerated += e.subtotal;
+            _this5.quotationData.quotation.total += e.total;
             break;
 
           case 30:
             //Inafecto - Operación Onerosa
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalUnaffected += total;
-            _this5.quotationData.quotation.total += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalUnaffected += e.subtotal;
+            _this5.quotationData.quotation.total += e.total;
             break;
 
           case 31:
             //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 32:
             //[Gratuita] Inafecto – Retiro
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 33:
             //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 34:
             //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 35:
             //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 36:
             //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalFree += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalFree += e.total;
             break;
 
           case 40:
             //Exportación
-            e.subtotal = total;
-            _this5.quotationData.quotation.subtotal += total;
-            _this5.quotationData.quotation.totalUnaffected += total;
-            _this5.quotationData.quotation.total += total;
+            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            _this5.quotationData.quotation.subtotal += e.subtotal;
+            _this5.quotationData.quotation.totalUnaffected += e.subtotal;
+            _this5.quotationData.quotation.total += e.total;
             break;
         }
-
-        e.total = total;
       });
-      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount - this.quotationData.quotation.discountItems;
+      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount;
     },
     createQuotation: function createQuotation() {
       var _this6 = this;
 
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/quotations", this.quotationData).then(function (response) {
         console.log(response);
-        _this6.errorsCreate = {}; // this.$router.push({ name: "quotation-list" })
-        // Swal.fire(
-        //   "Cotización Creada",
-        //   "Se ha creado la Cotización " + response.data,
-        //   "success"
-        // )
+        _this6.errorsCreate = {};
+
+        _this6.$router.push({
+          name: "quotation-list"
+        });
+
+        Swal.fire("Cotización Creada", "Se ha creado la Cotización " + response.data, "success");
       })["catch"](function (error) {
         console.log(error.response);
         _this6.errorsCreate = error.response.data.errors;
@@ -1305,13 +1316,17 @@ var _hoisted_84 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_85 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravada:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravado:", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_86 = /*#__PURE__*/_withScopeId(function () {
+<<<<<<< HEAD
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerada:", -1
+=======
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerado:", -1
+>>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
   /* HOISTED */
   );
 });
@@ -1677,7 +1692,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1700,7 +1715,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-27533446] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item[data-v-27533446] {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-27533446] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item[data-v-27533446] {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

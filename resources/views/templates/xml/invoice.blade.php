@@ -8,13 +8,13 @@
             <ext:ExtensionContent/>
         </ext:UBLExtension>
     </ext:UBLExtensions>
-    <!-- GENERADO DESDE  -->
+    <!-- GENERADO DESDE S.A.C. -->
     <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
     <cbc:CustomizationID schemeAgencyName="PE:SUNAT">2.0</cbc:CustomizationID>
     <cbc:ProfileID schemeName="Tipo de Operacion" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">0101</cbc:ProfileID>
     <cbc:ID>{{ $sale->serie->serie }}-{{ $sale->document_number }}</cbc:ID>
     <cbc:IssueDate>{{ $sale->date_issue }}</cbc:IssueDate>
-    <cbc:IssueTime>00:00:00</cbc:IssueTime>
+    <cbc:IssueTime>{{ date_format($sale->created_at, 'H:i:s') }}</cbc:IssueTime>
     <cbc:DueDate>{{ $sale->date_due }}</cbc:DueDate>
     <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale->serie->voucherType->cod }}</cbc:InvoiceTypeCode>
     <cbc:Note languageLocaleID="1000">{{ \App\Services\NumberLetterService::convert(round($sale->total, 2), 'SOLES') }}</cbc:Note>
@@ -111,6 +111,15 @@
         <cbc:ID>FormaPago</cbc:ID>
         <cbc:PaymentMeansID>Contado</cbc:PaymentMeansID>
     </cac:PaymentTerms>
+    @if ($sale->discount > 0)
+    <cac:AllowanceCharge>
+        <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+        <cbc:AllowanceChargeReasonCode>03</cbc:AllowanceChargeReasonCode>
+        <cbc:MultiplierFactorNumeric>{{ round($sale->discount / $sale->total, 5) }}</cbc:MultiplierFactorNumeric>
+        <cbc:Amount currencyID="PEN">{{ round($sale->discount, 2) }}</cbc:Amount>
+        <cbc:BaseAmount currencyID="PEN">{{ round($sale->total, 2) }}</cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    @endif
     <cac:TaxTotal>
         <cbc:TaxAmount currencyID="PEN">{{ round($sale->total_igv, 2) }}</cbc:TaxAmount>
         @if($sale->total_taxed > 0)
@@ -176,7 +185,9 @@
         @if($sale->discount > 0)
         <cbc:AllowanceTotalAmount currencyID="PEN">{{ round($sale->discount, 2) }}</cbc:AllowanceTotalAmount>
         @endif
-        <cbc:PayableAmount currencyID="PEN">{{ round($sale->total, 2) }}</cbc:PayableAmount>
+        <cbc:ChargeTotalAmount currencyID="PEN">0.00</cbc:ChargeTotalAmount>
+        <cbc:PrepaidAmount currencyID="PEN">0.00</cbc:PrepaidAmount>
+        <cbc:PayableAmount currencyID="PEN">{{ round($sale->total - $sale->discount, 2) }}</cbc:PayableAmount>
     </cac:LegalMonetaryTotal>
     @foreach ($sale->saleDetails as $i => $saleDetail)
     <cac:InvoiceLine>
@@ -185,14 +196,23 @@
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($saleDetail->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cac:PricingReference>
             <cac:AlternativeConditionPrice>
-                <cbc:PriceAmount currencyID="PEN">{{ round($saleDetail->price, 2) }}</cbc:PriceAmount>
+                <cbc:PriceAmount currencyID="PEN">{{ round($saleDetail->total / $saleDetail->quantity, 2) }}</cbc:PriceAmount>
                 <cbc:PriceTypeCode listName="Tipo de Precio" listAgencyName="PE:SUNAT" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo16">01</cbc:PriceTypeCode>
             </cac:AlternativeConditionPrice>
         </cac:PricingReference>
+        @if ($saleDetail->discount > 0)
+        <cac:AllowanceCharge>
+            <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+            <cbc:AllowanceChargeReasonCode listAgencyName="PE:SUNAT" listName="Cargo/descuento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53">00</cbc:AllowanceChargeReasonCode>
+            <cbc:MultiplierFactorNumeric>{{ round($saleDetail->discount / ($saleDetail->subtotal + $saleDetail->discount), 5) }}</cbc:MultiplierFactorNumeric>
+            <cbc:Amount currencyID="PEN">{{ round($saleDetail->discount, 2) }}</cbc:Amount>
+            <cbc:BaseAmount currencyID="PEN">{{ round($saleDetail->subtotal + $saleDetail->discount, 2) }}</cbc:BaseAmount>
+        </cac:AllowanceCharge>
+        @endif
         <cac:TaxTotal>
             <cbc:TaxAmount currencyID="PEN">{{ round($saleDetail->total_igv, 2) }}</cbc:TaxAmount>
             <cac:TaxSubtotal>
-                <cbc:TaxableAmount currencyID="PEN">{{ round($saleDetail->total, 2) }}</cbc:TaxableAmount>
+                <cbc:TaxableAmount currencyID="PEN">{{ round($saleDetail->subtotal, 2) }}</cbc:TaxableAmount>
                 <cbc:TaxAmount currencyID="PEN">{{ round($saleDetail->total_igv, 2) }}</cbc:TaxAmount>
                 @switch($saleDetail->igvType->id)
                 @case(10)

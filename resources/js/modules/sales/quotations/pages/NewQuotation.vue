@@ -194,7 +194,8 @@
                   <i class="text-danger fas fa-tags"></i>
                   Descuento
                 </label>
-                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="quotationData.quotation.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
+                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001"
+                v-model="quotationData.quotation.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
                 <div class="invalid-feedback" v-if="errorsCreate['quotation.discount'] ">
                   {{ errorsCreate['quotation.discount'][0] }}
                 </div>
@@ -241,11 +242,11 @@
                   <td>S/. {{ quotationData.quotation.discountItems }}</td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalTaxed > 0">
-                  <th>Gravada:</th>
+                  <th>Gravado:</th>
                   <td>S/. {{ quotationData.quotation.totalTaxed }}</td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalExonerated > 0">
-                  <th>Exonerada:</th>
+                  <th>Exonerado:</th>
                   <td>S/. {{ quotationData.quotation.totalExonerated }}</td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalUnaffected > 0">
@@ -294,10 +295,6 @@ export default {
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
       this.identificationDocuments = resp.data.data;
-    });
-
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
     });
 
     await BaseUrl.get(`api/sales/products`).then((resp) => {
@@ -512,102 +509,123 @@ export default {
       this.quotationData.detail.forEach( e => {
 
         this.quotationData.quotation.discountItems += e.discount
-        // hallar el precio sin igv y total
-        let priceWithoutIgv = e.sale_price / (1 + igv)
-        let total = e.sale_price * e.quantity
-
+        
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
-            e.subtotal = parseFloat((priceWithoutIgv * e.quantity).toFixed(2))
+
+            // hallar el precio sin igv
+            let priceWithoutIgv = e.sale_price / (1 + igv)
+
+            // hallar el subtotal = (precio sin igv * cantidad) - descuento
+            e.subtotal = (parseFloat((priceWithoutIgv * e.quantity).toFixed(2)) - e.discount)
+
+            // hallar el total = (subtotal * 1.18)
+            e.total = parseFloat(( e.subtotal * (1 + igv)).toFixed(2))
+
+            // Actualizar totales globales
             this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalIgv += parseFloat((total - e.subtotal).toFixed(2))
+            this.quotationData.quotation.totalIgv += parseFloat((e.total - e.subtotal).toFixed(2))
             this.quotationData.quotation.totalTaxed += e.subtotal
-            this.quotationData.quotation.total += total
+            this.quotationData.quotation.total += e.total
             break
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalExonerated += total
-            this.quotationData.quotation.total += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalExonerated += e.subtotal
+            this.quotationData.quotation.total += e.total
             break
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalUnaffected += total
-            this.quotationData.quotation.total += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalUnaffected += e.subtotal
+            this.quotationData.quotation.total += e.total
             break
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalFree += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalFree += e.total
             break
           case 40: //Exportación
-            e.subtotal = total
-            this.quotationData.quotation.subtotal += total
-            this.quotationData.quotation.totalUnaffected += total
-            this.quotationData.quotation.total += total
+            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
+            e.total = e.subtotal
+            this.quotationData.quotation.subtotal += e.subtotal
+            this.quotationData.quotation.totalUnaffected += e.subtotal
+            this.quotationData.quotation.total += e.total
             break
         }
 
-        e.total = total
       })
 
-      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount - this.quotationData.quotation.discountItems
+      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount
 
     },
     createQuotation() {
@@ -617,12 +635,14 @@ export default {
 
         this.errorsCreate = {
         }
-        // this.$router.push({ name: "quotation-list" })
-        // Swal.fire(
-        //   "Cotización Creada",
-        //   "Se ha creado la Cotización " + response.data,
-        //   "success"
-        // )
+
+        this.$router.push({ name: "quotation-list" })
+        Swal.fire(
+          "Cotización Creada",
+          "Se ha creado la Cotización " + response.data,
+          "success"
+        )
+        
       })
       .catch((error) => {
         console.log(error.response)
