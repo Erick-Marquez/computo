@@ -1,5 +1,5 @@
 <template>
-  <h4 class="mb-3">Datos del Cliente</h4>
+  <h4 class="mb-3">Datos del clientes</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
     <div class="col-md-3">
@@ -36,12 +36,16 @@
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fas fa-pen"></i>
-          N° Documento <span v-show="responseApi" :class="responseApiClass"> | {{ responseApi }} </span>
+          N° Documento
+          <span v-show="responseApi" :class="responseApiClass">
+            | {{ responseApi }}
+          </span>
         </label>
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
-            class="form-control rounded-pill-left"
+            id="searchcustomer"
+            :class="$errorsClass(errors['customer.document'])"
             v-model="customer.document"
             :maxlength="maxLenghDocument"
             @keyup="searchDocument"
@@ -79,6 +83,7 @@
         <div v-show="toggle" class="autocomplete mt-0">
           <ul class="list">
             <li
+              v-show="customers"
               class="item"
               @click="setData(customerFind)"
               v-for="customerFind in customers"
@@ -97,13 +102,19 @@
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-id-badge"></i>
-          Nombre/Razón Social:</label
-        >
+          Nombre/Razón Social:
+        </label>
         <input
           v-model="customer.name"
           type="text"
-          class="form-control rounded-pill"
+          :class="$errorsClass(errors['customer.name'])"
         />
+        <div
+          v-if="$errorsExists(errors['customer.name'])"
+          class="invalid-feedback ml-3"
+        >
+          {{ $errorsPrint(errors["customer.name"]) }}
+        </div>
       </div>
     </div>
   </div>
@@ -133,8 +144,16 @@
           <i class="text-danger fas fa-globe"></i>
           Ubigeo</label
         >
-        <select v-model="customer.ubigee"  class="form-control rounded-pill" name="">
-            <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.cod">{{ ubigee.place_description }}</option>
+        <select
+          id="select4"
+          class="js-states form-control rounded-pill"
+          name=""
+          style="width: 100%"
+          v-model="customer.ubigee_id"
+        >
+          <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.id">
+            {{ ubigee.place_description }}
+          </option>
         </select>
       </div>
     </div>
@@ -147,11 +166,9 @@
           N° Celular</label
         >
         <input
-          v-model="customer.phone"
-          type="text"
           class="form-control rounded-pill"
-          name=""
-          id=""
+          type="text"
+          v-model="customer.phone"
         />
       </div>
     </div>
@@ -159,10 +176,10 @@
 </template>
 
 <script>
-import BaseUrl from "../../../api/BaseUrl";
+import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
-  components: { BaseUrl},
+  components: { BaseUrl },
   data() {
     return {
       toggle: false,
@@ -178,10 +195,15 @@ export default {
   props: {
     customer: Object,
     voucherType: String,
+    errors: Array,
   },
   created() {
     this.getTypeDocuments();
     this.getUbigees();
+  },
+  mounted() {
+    $("#select4").select2();
+    $(".select2-selection.select2-selection--single").addClass("rounded-pill");
   },
   methods: {
     async getTypeDocuments() {
@@ -206,8 +228,11 @@ export default {
           this.customer.name = response.data.name;
           this.customer.address = response.data.address;
           this.customer.phone = response.data.phone;
-          this.customer.ubigee = response.data.ubigee;
+          this.customer.ubigee_id = null;
+          //this.customer.ubigee_id = response.data.ubigee_id;
           this.responseApi = "HABIDO";
+          console.log(this.responseApi);
+          this.selectUbigee;
         })
         .catch((error) => {
           console.log(error.response);
@@ -234,10 +259,9 @@ export default {
       )
         .then((response) => {
           this.customers = response.data.data;
-          console.log(response.data);
         })
         .catch((error) => {
-          console.log(error.response);
+          console.log(error.response.data);
         });
     },
     setData(customerFind) {
@@ -246,8 +270,9 @@ export default {
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
-      this.customer.ubigee = response.data.ubigee;
-      this.customers = {};
+      this.customer.ubigee_id = customerFind.ubigee_id;
+      this.customers = null;
+      this.selectUbigee;
     },
     searchDocument() {
       clearTimeout(this.searching);
@@ -265,8 +290,14 @@ export default {
         : false;
     },
     responseApiClass() {
-        return this.responseApi == 'NO HABIDO' ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success"
-    }
+      return this.responseApi === "NO HABIDO"
+        ? "text-sm font-weight-light text-danger"
+        : "text-sm font-weight-light text-success";
+    },
+    selectUbigee() {
+      $("#select4").val(this.customer.ubigee_id); // Select the option with a value of '1'
+      $("#select4").trigger("change"); // Notify any JS components that the value changed
+    },
     // enableSearchDocument() {
     //   return true
     // },
@@ -310,5 +341,10 @@ export default {
 .rounded-pill-right {
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
+}
+
+#searchcustomer {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 </style>
