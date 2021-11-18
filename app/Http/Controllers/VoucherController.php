@@ -20,11 +20,14 @@ use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\IgvType;
 use App\Models\PaymentType;
+use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Serie;
 use App\Models\VoucherType;
+use App\Models\Warranty;
+use App\Models\WarrantyDetail;
 use App\Services\KardexService;
 use App\Services\NumberLetterService;
 use App\Services\SunatService;
@@ -67,6 +70,7 @@ class VoucherController extends Controller
      */
     public function store(VoucherRequest $request)
     {    
+        
 
         if (is_null($request->customer['id'])) {
             $customer = Customer::create([
@@ -79,6 +83,7 @@ class VoucherController extends Controller
             ]);
             $request->customer['id'] = $customer->id;
         }
+
         
         $serie = Serie::find($request->voucher['serie_id']);
         $serie->current_number = $serie->current_number + 1;
@@ -103,6 +108,27 @@ class VoucherController extends Controller
             'user_id' => auth()->user()->id
         ]);
 
+        // Garantia
+        if ($request->voucher['warranty']) {
+            $serieWarranty = Serie::find($request->voucher['warranty_serie_id']);
+            $serieWarranty ->current_number = $serieWarranty->current_number + 1;
+            $serieWarranty ->save();
+
+            $warranty = Warranty::create([
+                'document_number' => $serieWarranty->current_number,
+                'date_issue' => $request->voucher['date_issue'],
+                'date_due' => $request->voucher['date_due'],
+    
+                'discount' => $request->voucher['discount'],
+    
+                'serie_id' => $request->voucher['warranty_serie_id'],
+                'sale_id' => $sale->id,
+                'customer_id' => $request->customer['id'],
+                'user_id' => auth()->user()->id
+            ]);
+        }
+
+        $totalWarranty =0;
         // Variables para los totales de la venta
         $subtotalSale = 0;
         $totalIgvSale = 0;
@@ -198,11 +224,19 @@ class VoucherController extends Controller
             }
 
             // TODO AÑADIR SOLO SI EL PRODUCTO MANEJA SERIE
+
+            $product = BranchProduct::where('id', $detail['product_id'])->with('product')->firstOrFail();
+
             $productSeries = [];
 
-            for ($j=0; $j < count($detail['series']) ; $j++) {
-                array_push($productSeries, $detail['series'][$j]['serie']);
+            if ($product->product->manager_series) {
+
+                for ($j=0; $j < count($detail['series']) ; $j++) {
+                    array_push($productSeries, $detail['series'][$j]['serie']);
+                }
+
             }
+            
 
             SaleDetail::create([
 
@@ -221,6 +255,28 @@ class VoucherController extends Controller
                 'branch_product_id' => $detail['product_id']
 
             ]);
+
+            if ($request->voucher['warranty'] && $product->product->have_warranty) {
+
+                WarrantyDetail::create([
+
+                    'date_due' => Carbon::now()->addMonths($product->product->time_of_warranty),
+
+                    'discount' => $detail['discount'],
+                    'price' => $detail['sale_price'],
+                    'quantity' => $detail['quantity'],
+    
+                    'total' => $total,
+    
+                    'series' => $productSeries,
+    
+                    'warranty_id' => $warranty->id,
+                    'branch_product_id' => $detail['product_id']
+                ]);
+
+                $totalWarranty += $total;
+
+            }
 
             $data['branch_product_id'] = $detail['product_id'];
             $data['quantity'] = $detail['quantity'];
@@ -241,6 +297,14 @@ class VoucherController extends Controller
             'total_taxed' => $totalTaxedSale,
             'total' => $totalSale
         ]);
+
+        if ($request->voucher['warranty']) {
+
+            $warranty->update([
+                'total' => $totalWarranty
+            ]);
+
+        }
 
         // Enviar a Sunat
         if ($request->voucher['document_type'] == 1) { // Factura
@@ -274,6 +338,7 @@ class VoucherController extends Controller
             return "Nota de Venta Guardada";
 
         }
+
 
         return $sale->description_sunat_cdr;
 

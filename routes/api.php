@@ -23,6 +23,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WarrantyController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -63,6 +64,9 @@ Route::middleware([
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
     Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
+
+    //Warranties
+    Route::get('/warranties', [WarrantyController::class, 'index'])->name('api.warranties.index');
 
     Route::apiResource('cajas', CashboxController::class)->parameters([
         'cajas' => 'cashbox'

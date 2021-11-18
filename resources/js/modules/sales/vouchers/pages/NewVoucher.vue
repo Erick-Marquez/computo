@@ -54,13 +54,13 @@
               <i class="text-danger fas fa-file-invoice"></i>
               Tipo comprobante
             </label>
-            <select :class="'form-control rounded-pill' + (errorsCreate['voucher.document_type'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.document_type" @change="loadSeries()">
+            <select :class="'form-control rounded-pill' + (errors['voucher.document_type'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.document_type" @change="loadSeries()">
               <option v-for="voucherType in voucherTypes" :key="voucherType.id" :value="voucherType.id">
                 {{ voucherType.description }}
               </option>
             </select>
-            <div class="invalid-feedback" v-if="errorsCreate['voucher.document_type'] ">
-              {{ errorsCreate['voucher.document_type'][0] }}
+            <div class="invalid-feedback" v-if="errors['voucher.document_type'] ">
+              {{ errors['voucher.document_type'][0] }}
             </div>
           </div>
         </div>
@@ -71,13 +71,13 @@
               <i class="text-danger fas fa-barcode"></i>
               Serie
             </label>
-            <select :class="'form-control rounded-pill' + (errorsCreate['voucher.serie_id'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.serie_id" v-on:change="loadCurrentNumber">
+            <select :class="'form-control rounded-pill' + (errors['voucher.serie_id'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.serie_id" v-on:change="loadCurrentNumber">
               <option v-for="serie in series" :key="serie.id" :value="serie.id">
                 {{ serie.serie }}
               </option>
             </select>
-            <div class="invalid-feedback" v-if="errorsCreate['voucher.serie_id'] ">
-              {{ errorsCreate['voucher.serie_id'][0] }}
+            <div class="invalid-feedback" v-if="errors['voucher.serie_id'] ">
+              {{ errors['voucher.serie_id'][0] }}
             </div>
           </div>
         </div>
@@ -204,41 +204,41 @@
               <tr v-for="(detail, index) in saleData.detail" :key="detail">
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.product_id'] == null ? '' : ' is-invalid')" type="text" :value="detail.description + ' - ' + detail.brand + ' - ' + detail.cod" disabled>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.product_id']">
-                    {{ errorsCreate['detail.'+ index +'.product_id'][0] }}
+                  <input :class="'form-control rounded-pill' + (errors['detail.'+ index +'.product_id'] == null ? '' : ' is-invalid')" type="text" :value="detail.description + ' - ' + detail.brand + ' - ' + detail.cod" disabled>
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.product_id']">
+                    {{ errors['detail.'+ index +'.product_id'][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <select v-model="detail.igv_type_id" :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.igv_type_id'] == null ? '' : ' is-invalid')" @change="getTotals()">
+                  <select v-model="detail.igv_type_id" :class="'form-control rounded-pill' + (errors['detail.'+ index +'.igv_type_id'] == null ? '' : ' is-invalid')" @change="getTotals()">
                     <option v-for="igvType in igvTypes" :key="igvType.id" :value="igvType.id">
                       {{ igvType.description }}
                     </option>
                   </select>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.igv_type_id']">
-                    {{ errorsCreate['detail.'+ index +'.igv_type_id'][0] }}
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.igv_type_id']">
+                    {{ errors['detail.'+ index +'.igv_type_id'][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.quantity'] == null ? '' : ' is-invalid')" type="number" min="1" v-model="detail.quantity" @change="addSeries(index)" @input="getTotals()">
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.quantity']">
-                    {{ errorsCreate['detail.'+ index +'.quantity'][0] }}
+                  <input :class="'form-control rounded-pill' + (errors['detail.'+ index +'.quantity'] == null ? '' : ' is-invalid')" type="number" min="1" v-model="detail.quantity" @change="addSeries(index)" @input="getTotals()">
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.quantity']">
+                    {{ errors['detail.'+ index +'.quantity'][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="detail.discount" @change="activateOrDesactivateGlobalDiscount()" :disabled="activateDetailDiscount" @input="getTotals()">
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.discount']">
-                    {{ errorsCreate['detail.'+ index +'.discount'][0] }}
+                  <input :class="'form-control rounded-pill' + (errors['detail.'+ index +'.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="detail.discount" @change="activateOrDesactivateGlobalDiscount()" :disabled="activateDetailDiscount" @input="getTotals()">
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.discount']">
+                    {{ errors['detail.'+ index +'.discount'][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.sale_price'] == null ? '' : ' is-invalid')" type="text" v-model="detail.sale_price" disabled>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.sale_price']">
-                    {{ errorsCreate['detail.'+ index +'.sale_price'][0] }}
+                  <input :class="'form-control rounded-pill' + (errors['detail.'+ index +'.sale_price'] == null ? '' : ' is-invalid')" type="text" v-model="detail.sale_price" disabled>
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.sale_price']">
+                    {{ errors['detail.'+ index +'.sale_price'][0] }}
                   </div>
                 </td>
 
@@ -257,8 +257,8 @@
                   <button class="btn btn-flat bg-light" @click="deleteItem(index)">
                     <i class="text-danger fas fa-trash"></i>
                   </button>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.series']">
-                    {{ errorsCreate['detail.'+ index +'.series'][0] }}
+                  <div class="invalid-feedback" v-if="errors['detail.'+ index +'.series']">
+                    {{ errors['detail.'+ index +'.series'][0] }}
                   </div>
                 </td>
 
@@ -389,10 +389,10 @@
                   <i class="text-danger fas fa-tags"></i>
                   Descuento
                 </label>
-                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001"
+                <input :class="$errorsClass(errors['voucher.discount'])" type="number" min="0" step="0.001"
                 v-model="saleData.voucher.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
-                <div class="invalid-feedback" v-if="errorsCreate['quotation.discount'] ">
-                  {{ errorsCreate['quotation.discount'][0] }}
+                <div class="invalid-feedback ml-3" v-if="$errorsExists(errors['voucher.discount'])">
+                  {{ $errorsPrint(errors['voucher.discount']) }}
                 </div>
               </div>
             </div>
@@ -581,7 +581,7 @@ export default {
 
           discountItems: 0,
 
-          document_type: "01",
+          document_type: 1,
           serie_id: "",
           moneda: "PEN",
           date_issue: "2021-10-17", //Año - mes - dia
@@ -595,9 +595,6 @@ export default {
         },
         detail: [],
       },
-      errorsCreate: {
-
-      }
     };
   },
   mounted() {
@@ -950,21 +947,23 @@ export default {
     createSale() {
 
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
-        this.errorsCreate = {}
+        this.errors = []
         console.log(response)
-        this.$router.push({ name: "voucher-list" });
-        Swal.fire(
-          "Comprobante Creado",
-          response.data,
-          "success"
-        );
+        // this.$router.push({ name: "voucher-list" });
+        // Swal.fire(
+        //   "Comprobante Creado",
+        //   response.data,
+        //   "success"
+        // );
       })
       .catch((error) => {
-        console.log(error.response);
 
-        this.errorsCreate = error.response.data.errors
-        if (this.errorsCreate['detail'] != null) {
-          Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
+        this.errors = error.response.data.errors
+
+        console.log(error.response.data.errors);
+        this.errors = error.response.data.errors
+        if (this.errors['detail'] != null) {
+          Swal.fire("Algo salio mal", this.errors['detail'][0], "error")
         }
 
         this.getErrorDetailSerie(0, 0)
@@ -978,13 +977,13 @@ export default {
 
         if (j < this.saleData.detail[i].quantity) {
 
-          if (this.errorsCreate['detail.' + i + '.series.' + j + '.serie'] != null) {
+          if (this.errors['detail.' + i + '.series.' + j + '.serie'] != null) {
 
             console.log('detail.' + i + '.series.' + j + '.serie')
             Swal.fire({
               title: "Algo salio mal",
               html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
-              this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
+              this.errors['detail.' + i + '.series.' + j + '.serie'][0],
               icon: "warning"
             })
             .then((result) => {

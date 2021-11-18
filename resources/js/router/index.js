@@ -62,7 +62,7 @@ const routes = [
             {
                 path: '',
                 name: 'warranties-list',
-                component: () => import('../modules/sales/warranties/pages/Warranty.vue'),
+                component: () => import('../modules/sales/warranties/pages/Warranties.vue'),
             },
             {
                 path: '',

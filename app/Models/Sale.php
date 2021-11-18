@@ -56,6 +56,11 @@ class Sale extends Model
         return $this->hasMany(SaleDetail::class);
     }
 
+    public function warranty()
+    {
+        return $this->hasOne(Warranty::class);
+    }
+
     public function serie()
     {
         return $this->belongsTo(Serie::class);

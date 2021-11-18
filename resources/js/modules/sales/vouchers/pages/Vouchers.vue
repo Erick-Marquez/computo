@@ -155,8 +155,8 @@ export default {
   },
   methods:{
     getTimestamp(date){
-      let prueba = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
-      return prueba
+      let dateString = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
+      return dateString
     }
   }
 }
