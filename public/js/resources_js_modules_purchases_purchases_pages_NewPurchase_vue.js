@@ -743,22 +743,14 @@ var _hoisted_32 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-<<<<<<< HEAD
 var _hoisted_33 = {
-=======
-var _hoisted_32 = {
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
   "class": "col-md-3"
 };
 var _hoisted_34 = {
   "class": "form-group"
 };
 
-<<<<<<< HEAD
 var _hoisted_35 = /*#__PURE__*/_withScopeId(function () {
-=======
-var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -776,11 +768,7 @@ var _hoisted_38 = {
   "class": "form-group"
 };
 
-<<<<<<< HEAD
 var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
-=======
-var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -1569,7 +1557,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1592,7 +1580,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1616,11 +1604,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-<<<<<<< HEAD
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-7d3927a2] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-7d3927a2] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item[data-v-7d3927a2] {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item[data-v-7d3927a2]:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-7d3927a2] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-7d3927a2] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n#searchProvider[data-v-7d3927a2] {\n  border-top-right-radius: 0 !important;\n  border-bottom-right-radius: 0 !important;\n}\n", ""]);
-=======
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-7d3927a2] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-7d3927a2] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item[data-v-7d3927a2] {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item[data-v-7d3927a2]:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-7d3927a2] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-7d3927a2] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1644,7 +1628,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-5c886a86] {\r\n  border-top-right-radius: 23px;\r\n  border-bottom-right-radius: 23px;\r\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\r\n  background: linear-gradient(\r\n    to right,\r\n    #292e49,\r\n    #536976\r\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-5c886a86] {\r\n  color: rgba(48, 48, 48, 0.774);\r\n  font-weight: 300;\n}\n.rounded-pill-left[data-v-5c886a86] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-5c886a86] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-5c886a86] {\n  border-top-right-radius: 23px;\n  border-bottom-right-radius: 23px;\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(\n    to right,\n    #292e49,\n    #536976\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-5c886a86] {\n  color: rgba(48, 48, 48, 0.774);\n  font-weight: 300;\n}\n.rounded-pill-left[data-v-5c886a86] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-5c886a86] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2914,7 +2898,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_SearchProvider_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SearchProvider_vue_vue_type_template_id_7d3927a2_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-7d3927a2"],['__file',"resources/js/modules/purchases/purchases/components/SearchProvider.vue"]])
-<<<<<<< HEAD
 /* hot reload */
 if (false) {}
 
@@ -2943,8 +2926,6 @@ __webpack_require__.r(__webpack_exports__);
 
 ;
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SetProducts_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SetProducts_vue_vue_type_template_id_192d274d__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/purchases/purchases/components/SetProducts.vue"]])
-=======
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
 /* hot reload */
 if (false) {}
 

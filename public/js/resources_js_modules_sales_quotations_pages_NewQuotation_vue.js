@@ -50,11 +50,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: {
     customer: Object,
-    voucherType: String
+    voucherType: String,
+    errors: Array
   },
   created: function created() {
     this.getTypeDocuments();
     this.getUbigees();
+  },
+  mounted: function mounted() {
+    $("#select4").select2();
+    $(".select2-selection.select2-selection--single").addClass("rounded-pill");
   },
   methods: {
     getTypeDocuments: function getTypeDocuments() {
@@ -98,8 +103,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.customer.name = response.data.name;
                   _this2.customer.address = response.data.address;
                   _this2.customer.phone = response.data.phone;
-                  _this2.customer.ubigee = response.data.ubigee;
+                  _this2.customer.ubigee_id = null; //this.customer.ubigee_id = response.data.ubigee_id;
+
+                  //this.customer.ubigee_id = response.data.ubigee_id;
                   _this2.responseApi = "HABIDO";
+                  console.log(_this2.responseApi);
+                  _this2.selectUbigee;
                 })["catch"](function (error) {
                   console.log(error.response);
                   _this2.responseApi = "NO HABIDO";
@@ -149,9 +158,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context4.next = 2;
                 return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/clientes?filter[document]=".concat(_this4.customer.document, "\n                            &filter[identification_document_id]=").concat(_this4.customer.identification_document_id, "\n                            &perPage=10")).then(function (response) {
                   _this4.customers = response.data.data;
-                  console.log(response.data);
                 })["catch"](function (error) {
-                  console.log(error.response);
+                  console.log(error.response.data);
                 });
 
               case 2:
@@ -168,8 +176,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
-      this.customer.ubigee = response.data.ubigee;
-      this.customers = {};
+      this.customer.ubigee_id = customerFind.ubigee_id;
+      this.customers = null;
+      this.selectUbigee;
     },
     searchDocument: function searchDocument() {
       clearTimeout(this.searching);
@@ -184,7 +193,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return this.customer.identification_document_id == 6 || this.customer.identification_document_id == 1 ? true : false;
     },
     responseApiClass: function responseApiClass() {
-      return this.responseApi == 'NO HABIDO' ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success";
+      return this.responseApi === "NO HABIDO" ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success";
+    },
+    selectUbigee: function selectUbigee() {
+      $("#select4").val(this.customer.ubigee_id); // Select the option with a value of '1'
+
+      $("#select4").trigger("change"); // Notify any JS components that the value changed
     } // enableSearchDocument() {
     //   return true
     // },
@@ -299,6 +313,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         },
         detail: []
       },
+      errors: [],
       errorsCreate: {}
     };
   },
@@ -635,7 +650,7 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
     "class": "mb-3"
-  }, "Datos del Cliente", -1
+  }, "Datos del clientes", -1
   /* HOISTED */
   );
 });
@@ -747,22 +762,26 @@ var _hoisted_27 = /*#__PURE__*/_withScopeId(function () {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "text-danger fas fa-id-badge"
-  }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Nombre/Razón Social:")], -1
+  }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Nombre/Razón Social: ")], -1
   /* HOISTED */
   );
 });
 
 var _hoisted_28 = {
-  "class": "row"
+  key: 0,
+  "class": "invalid-feedback ml-3"
 };
 var _hoisted_29 = {
-  "class": "col-md-6"
+  "class": "row"
 };
 var _hoisted_30 = {
+  "class": "col-md-6"
+};
+var _hoisted_31 = {
   "class": "form-group"
 };
 
-var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_32 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -772,14 +791,14 @@ var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_32 = {
+var _hoisted_33 = {
   "class": "col-md-3"
 };
-var _hoisted_33 = {
+var _hoisted_34 = {
   "class": "form-group"
 };
 
-var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_35 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -789,15 +808,15 @@ var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_35 = ["value"];
-var _hoisted_36 = {
+var _hoisted_36 = ["value"];
+var _hoisted_37 = {
   "class": "col-md-3"
 };
-var _hoisted_37 = {
+var _hoisted_38 = {
   "class": "form-group"
 };
 
-var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -839,7 +858,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT, CLASS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.responseApi]])]), $options.showSearchingData ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "class": "form-control rounded-pill-left",
+    id: "searchcustomer",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.$errorsClass($props.errors['customer.document'])),
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $props.customer.document = $event;
     }),
@@ -853,8 +873,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onFocus: _cache[5] || (_cache[5] = function ($event) {
       return $data.toggle = true;
     })
-  }, null, 40
-  /* PROPS, HYDRATE_EVENTS */
+  }, null, 42
+  /* CLASS, PROPS, HYDRATE_EVENTS */
   , _hoisted_15), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.document]]), !$data.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-dark rounded-pill-right",
     onClick: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
@@ -876,7 +896,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 32
   /* HYDRATE_EVENTS */
   )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Autocomplete "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_23, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.customers, function (customerFind) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       "class": "item",
       onClick: function onClick($event) {
         return $options.setData(customerFind);
@@ -885,7 +905,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onMousedown: _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]))
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(customerFind.document) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(customerFind.name), 41
     /* TEXT, PROPS, HYDRATE_EVENTS */
-    , _hoisted_24);
+    , _hoisted_24)), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.customers]]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])], 512
@@ -895,10 +915,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $props.customer.name = $event;
     }),
     type: "text",
-    "class": "form-control rounded-pill"
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.name]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DIRECCIÓN "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.$errorsClass($props.errors['customer.name']))
+  }, null, 2
+  /* CLASS */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.name]]), _ctx.$errorsExists($props.errors['customer.name']) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$errorsPrint($props.errors["customer.name"])), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" DIRECCIÓN "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $props.customer.address = $event;
     }),
@@ -908,31 +930,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.address]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" UBIGEO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.address]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" UBIGEO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    id: "select4",
+    "class": "js-states form-control rounded-pill",
+    name: "",
+    style: {
+      "width": "100%"
+    },
     "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
-      return $props.customer.ubigee = $event;
-    }),
-    "class": "form-control rounded-pill",
-    name: ""
+      return $props.customer.ubigee_id = $event;
+    })
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ubigees, function (ubigee) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: ubigee.id,
-      value: ubigee.cod
+      value: ubigee.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ubigee.place_description), 9
     /* TEXT, PROPS */
-    , _hoisted_35);
+    , _hoisted_36);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $props.customer.ubigee]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" N° CELULAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $props.customer.ubigee_id]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" N° CELULAR "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "form-control rounded-pill",
+    type: "text",
     "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
       return $props.customer.phone = $event;
-    }),
-    type: "text",
-    "class": "form-control rounded-pill",
-    name: "",
-    id: ""
+    })
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.phone]])])])])], 64
@@ -1322,11 +1346,7 @@ var _hoisted_85 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_86 = /*#__PURE__*/_withScopeId(function () {
-<<<<<<< HEAD
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerada:", -1
-=======
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerado:", -1
->>>>>>> e372354c7ceb9cc430278f0d10141c64ae42e399
   /* HOISTED */
   );
 });
@@ -1420,10 +1440,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.currentNumber]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SearchCustomers, {
     voucherType: 2,
-    customer: $data.quotationData.customer
+    customer: $data.quotationData.customer,
+    errors: $data.errors
   }, null, 8
   /* PROPS */
-  , ["customer"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COMPONENTE PARA BUSCAR PRODUCTOS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  , ["customer", "errors"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" COMPONENTE PARA BUSCAR PRODUCTOS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "search",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.productSearch = $event;
@@ -1692,7 +1713,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1715,7 +1736,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-27533446] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item[data-v-27533446] {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-27533446] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item[data-v-27533446] {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n#searchcustomer[data-v-27533446] {\n  border-top-right-radius: 0 !important;\n  border-bottom-right-radius: 0 !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1739,7 +1760,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-00958cb4] {\r\n  border-top-right-radius: 23px;\r\n  border-bottom-right-radius: 23px;\r\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\r\n  background: linear-gradient(\r\n    to right,\r\n    #292e49,\r\n    #536976\r\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-00958cb4] {\r\n  color: rgba(48, 48, 48, 0.774);\r\n  font-weight: 300;\n}\n.option__relative[data-v-00958cb4]{\r\n  position: relative;\r\n  z-index: 99;\n}\n.option__contenedor[data-v-00958cb4]{\r\n  box-sizing: border-box;\r\n  border-radius: 5px;\r\n  width: 100%;\r\n  max-height: 200px;\r\n  box-shadow: 0 0 2px 0 rgb(128,189,255);\r\n  background-color: #fff;\r\n  box-sizing: border-box;\r\n  cursor: pointer;\r\n  overflow-y: scroll;\r\n  position: absolute;\r\n  z-index: 100;\n}\n.option__contenedor input[data-v-00958cb4],.search input[data-v-00958cb4]{\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  /*border-color: #93a8c3;*/\r\n  outline-color: rgb(128,189,255);\r\n  border-style: solid;\r\n  border-width: 1px;\r\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-00958cb4]{\r\n  width: 100%;\r\n  padding:8px 10px ;\r\n  margin: 0;\n}\n.option__contenedor[data-v-00958cb4]::-webkit-scrollbar{\r\n  width: 7px;\r\n  background-color: rgb(128,189,255)\n}\n.option__contenedor[data-v-00958cb4]::-webkit-scrollbar-thumb{\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 10px;\r\n  border-right: 1px solid rgb(128,189,255);\r\n  border-left: 1px solid rgb(128,189,255);\n}\n.search .option__contenedor[data-v-00958cb4]{\r\n  top: 0;\n}\n.search input[data-v-00958cb4]{\r\n  width: 100%;\r\n  height: 40px;\r\n  border-radius: 5px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark[data-v-00958cb4] {\n  border-top-right-radius: 23px;\n  border-bottom-right-radius: 23px;\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(\n    to right,\n    #292e49,\n    #536976\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel[data-v-00958cb4] {\n  color: rgba(48, 48, 48, 0.774);\n  font-weight: 300;\n}\n.option__relative[data-v-00958cb4]{\n  position: relative;\n  z-index: 99;\n}\n.option__contenedor[data-v-00958cb4]{\n  box-sizing: border-box;\n  border-radius: 5px;\n  width: 100%;\n  max-height: 200px;\n  box-shadow: 0 0 2px 0 rgb(128,189,255);\n  background-color: #fff;\n  box-sizing: border-box;\n  cursor: pointer;\n  overflow-y: scroll;\n  position: absolute;\n  z-index: 100;\n}\n.option__contenedor input[data-v-00958cb4],.search input[data-v-00958cb4]{\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  /*border-color: #93a8c3;*/\n  outline-color: rgb(128,189,255);\n  border-style: solid;\n  border-width: 1px;\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-00958cb4]{\n  width: 100%;\n  padding:8px 10px ;\n  margin: 0;\n}\n.option__contenedor[data-v-00958cb4]::-webkit-scrollbar{\n  width: 7px;\n  background-color: rgb(128,189,255)\n}\n.option__contenedor[data-v-00958cb4]::-webkit-scrollbar-thumb{\n  background-color: rgb(255, 255, 255);\n  border-radius: 10px;\n  border-right: 1px solid rgb(128,189,255);\n  border-left: 1px solid rgb(128,189,255);\n}\n.search .option__contenedor[data-v-00958cb4]{\n  top: 0;\n}\n.search input[data-v-00958cb4]{\n  width: 100%;\n  height: 40px;\n  border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

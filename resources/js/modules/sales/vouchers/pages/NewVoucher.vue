@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <SearchCustomers :voucherType="saleData.voucher.document_type" :customer="saleData.customer" />
+      <SearchCustomers :voucherType="saleData.voucher.document_type" :customer="saleData.customer" :errors="errors" />
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
@@ -540,6 +540,7 @@ export default {
   },
   data() {
     return {
+      errors: [],
       warrantySeries: {},
 
       quotationSerieSelect: null,
@@ -595,7 +596,7 @@ export default {
         detail: [],
       },
       errorsCreate: {
-        
+
       }
     };
   },
@@ -817,7 +818,7 @@ export default {
       this.saleData.detail.forEach( e => {
 
         this.saleData.voucher.discountItems += e.discount
-        
+
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
 
@@ -966,7 +967,7 @@ export default {
           Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
         }
 
-        this.getErrorDetailSerie(0, 0) 
+        this.getErrorDetailSerie(0, 0)
 
       });
     },
@@ -990,7 +991,7 @@ export default {
               i++
               this.getErrorDetailSerie(i, 0)
             })
-            
+
           }
           else{
             j++
@@ -1002,7 +1003,7 @@ export default {
           i++
           this.getErrorDetailSerie(i, 0)
         }
-        
+
       }
 
     },
@@ -1055,15 +1056,15 @@ export default {
 
         // Alertas para las notificaciones y calcular totales
         this.getQuotationDiscount(0)
-        
-        
+
+
       })
       .catch((error) => {
         if (error.response.status == 404) {
           Swal.fire({
-            title: 'No encontrado', 
-            html: 'No existe la cotización', 
-            icon: 'warning' 
+            title: 'No encontrado',
+            html: 'No existe la cotización',
+            icon: 'warning'
           });
         }
       })
@@ -1092,7 +1093,7 @@ export default {
             if (result.isConfirmed) {
               Swal.fire({
                 title: 'Confirmado',
-                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' + 
+                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
                 'por un total de <b>S/. ' + this.saleData.detail[index].discount + '</b> '  +
                 'ha sido aceptado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
                 icon: 'success',
@@ -1109,8 +1110,8 @@ export default {
               this.saleData.detail[index].discount = 0
               Swal.fire({
                 title: 'Cancelado',
-                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' + 
-                'por un total de <b>S/. ' + discount +  '</b> ' + 
+                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
+                'por un total de <b>S/. ' + discount +  '</b> ' +
                 'ha sido eliminado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
                 icon: 'error',
                 allowOutsideClick: false
@@ -1148,7 +1149,7 @@ export default {
         //     if (result.isConfirmed) {
         //       Swal.fire({
         //         title: 'Confirmado',
-        //         html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' + 
+        //         html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
         //         'por un total de <b>S/. ' + this.saleData.detail[index].discount + '</b> '  +
         //         'ha sido aceptado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
         //         icon: 'success',
@@ -1165,8 +1166,8 @@ export default {
         //       this.saleData.detail[index].discount = 0
         //       Swal.fire({
         //         title: 'Cancelado',
-        //         html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' + 
-        //         'por un total de <b>S/. ' + discount +  '</b> ' + 
+        //         html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
+        //         'por un total de <b>S/. ' + discount +  '</b> ' +
         //         'ha sido eliminado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
         //         icon: 'error',
         //         allowOutsideClick: false

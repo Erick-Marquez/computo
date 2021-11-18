@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <SearchCustomers :voucherType="2" :customer="quotationData.customer" />
+      <SearchCustomers :voucherType="2" :customer="quotationData.customer" :errors="errors"/>
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
@@ -80,7 +80,7 @@
                         <td class="col-2 text-center">{{ filSearch.brand }}</td>
                         <td class="col-2 text-center">
                           <input class="btn btn-sm btn-success w-50" type="button" :value="filSearch.sale_price" @click="priceOne(filSearch)">
-                        </td> 
+                        </td>
                         <td class="col-2 text-center">
                           <input class="btn btn-sm btn-warning w-50" type="button" :value="filSearch.referential_sale_price_one" @click="priceTwo(filSearch)">
                         </td>
@@ -354,8 +354,9 @@ export default {
         },
         detail: []
       },
+      errors: [],
       errorsCreate: {
-        
+
       }
     };
   },
@@ -383,9 +384,9 @@ export default {
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
-    
+
     searchProducts(){
-        
+
       let produtsBackup = this.products
       let wordFilter = this.productSearch.toLowerCase();
 
@@ -393,7 +394,7 @@ export default {
         this.productSearchFilter=''
       }else{
         this.productSearchFilter = produtsBackup.filter(products =>
-          (products.name.toLowerCase().indexOf(wordFilter) !== -1) 
+          (products.name.toLowerCase().indexOf(wordFilter) !== -1)
         );
       }
 
@@ -509,7 +510,7 @@ export default {
       this.quotationData.detail.forEach( e => {
 
         this.quotationData.quotation.discountItems += e.discount
-        
+
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
 
@@ -642,7 +643,7 @@ export default {
           "Se ha creado la Cotización " + response.data,
           "success"
         )
-        
+
       })
       .catch((error) => {
         console.log(error.response)

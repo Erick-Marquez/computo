@@ -133,14 +133,14 @@ export default {
   },
   data(){
     return{
-      quotations:{}
+      quotations:{},
     }
   },
   methods:{
     getElapsedTime(endDate){
 
       let elapsedTime = this.getElapsedTimeNumber(endDate)
-  
+
       let seconds = elapsedTime/1000
       let minutes = seconds/60
       let hours = minutes/60

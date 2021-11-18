@@ -176,7 +176,7 @@
 </template>
 
 <script>
-import BaseUrl from "../../../../api/BaseUrl";
+import BaseUrl from "../../../api/BaseUrl";
 
 export default {
   components: { BaseUrl },
