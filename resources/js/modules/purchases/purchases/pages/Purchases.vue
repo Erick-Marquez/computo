@@ -91,7 +91,7 @@
                           ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
                         ><a class="dropdown-item" href="#"
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                        ><a class="dropdown-item" href="#" target="_blank"
+                        ><a class="dropdown-item" :href="`print/purchase/${purchase.id}`" target="_blank"
                           ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                         >
                       </div>

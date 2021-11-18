@@ -55,7 +55,9 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">compras</span>
-                <span class="info-box-number">{{ details.balance.purchases }}</span>
+                <span class="info-box-number">{{
+                  details.balance.purchases
+                }}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -189,7 +191,7 @@ export default {
         },
       },
       openClosedCashbox: {
-          id: null,
+        id: null,
       },
       movements: [],
       errors: {},
@@ -224,7 +226,7 @@ export default {
           this.showDetails();
           this.errors = {};
           this.movement = {};
-          this.movement.type = 'EGRESO';
+          this.movement.type = "EGRESO";
           $("#new-movement").modal("hide");
         })
         .catch((error) => {
@@ -248,11 +250,13 @@ export default {
           )
             .then((response) => {
               this.$router.push({ name: "layout-cashbox" });
-              Swal.fire(
-                "Cerrado!",
-                "Su caja se cerro satisfactoriamente.",
-                "success"
-              );
+              console.log(response.data);
+              Swal.fire({
+                icon: "sucess",
+                title: "Caja Cerrada!",
+                text: "Su caja se cerro satisfactoriamente.",
+                footer: `<a class="btn btn-sm btn-outline-info" target="_blank" href="http://computo.test/print/cashbox/report/${response.data}"><i class="fas fa-file-invoice-dollar"></i> Ver reporte</a>`,
+              });
             })
             .catch((error) => {
               console.log(error);

@@ -3,7 +3,7 @@
     <h3>Registrar Nueva Compra</h3>
   </div>
   <div class="card">
-    <form @submit.prevent="createPurchase">
+    <form @submit.prevent="createPurchase" novalidate>
       <div class="card-body">
         <h4>Comprobante</h4>
         <div class="row mt-3">
@@ -15,7 +15,7 @@
                 Tipo comprobante
               </label>
               <select
-                v-model="newPurchase.document_type"
+                v-model="newPurchase.voucherDetail.document_type"
                 class="form-control rounded-pill"
               >
                 <option value="BOLETA">BOLETA</option>
@@ -34,9 +34,15 @@
               >
               <input
                 type="text"
-                class="form-control rounded-pill"
-                v-model="newPurchase.serie"
+                :class="$errorsClass(errors['voucherDetail.serie'])"
+                v-model="newPurchase.voucherDetail.serie"
               />
+              <div
+                v-if="$errorsExists(errors['voucherDetail.serie'])"
+                class="invalid-feedback ml-3"
+              >
+                {{ $errorsPrint(errors["voucherDetail.serie"]) }}
+              </div>
             </div>
           </div>
 
@@ -49,9 +55,15 @@
               >
               <input
                 type="text"
-                class="form-control rounded-pill"
-                v-model="newPurchase.document_number"
+                :class="$errorsClass(errors['voucherDetail.document_number'])"
+                v-model="newPurchase.voucherDetail.document_number"
               />
+              <div
+                v-if="$errorsExists(errors['voucherDetail.document_number'])"
+                class="invalid-feedback ml-3"
+              >
+                {{ $errorsPrint(errors["voucherDetail.document_number"]) }}
+              </div>
             </div>
           </div>
 
@@ -62,20 +74,26 @@
               >
               <input
                 type="date"
-                class="form-control rounded-pill"
-                v-model="newPurchase.date_issue"
+                :class="$errorsClass(errors['voucherDetail.date_issue'])"
+                v-model="newPurchase.voucherDetail.date_issue"
               />
+              <div
+                v-if="$errorsExists(errors['voucherDetail.date_issue'])"
+                class="invalid-feedback ml-3"
+              >
+                {{ $errorsPrint(errors["voucherDetail.date_issue"]) }}
+              </div>
             </div>
           </div>
         </div>
 
         <search-provider
           :provider="newPurchase.provider"
-          :voucherType="newPurchase.document_type"
+          :voucherType="newPurchase.voucherDetail.document_type"
+          :errors="errors"
         ></search-provider>
-
-        <search-products :products="newPurchase.products"></search-products>
-
+        <search-products :products="newPurchase.products" :errors="errors"></search-products>
+        <set-products :products="newPurchase.products" :errors="errors"></set-products>
         <!-- Observación -->
         <div class="row mt-4">
           <div class="col-md-8 pr-5">
@@ -88,7 +106,7 @@
                         class="custom-control-input custom-control-input-danger"
                         type="checkbox"
                         id="handle_exchange_rate"
-                        v-model="newPurchase.handle_exchange_rate"
+                        v-model="newPurchase.voucherDetail.handle_exchange_rate"
                       />
                       <label
                         for="handle_exchange_rate"
@@ -99,12 +117,23 @@
                     </div>
                   </div>
 
-                  <input
-                    type="text"
-                    class="form-control rounded-pill px-4"
-                    v-show="newPurchase.handle_exchange_rate"
-                    v-model="newPurchase.exchange_rate"
-                  />
+                  <div class="ml-4 form-group">
+                    <input
+                      type="number"
+                      :class="
+                        $errorsClass(errors['voucherDetail.exchange_rate'])
+                      "
+                      v-show="newPurchase.voucherDetail.handle_exchange_rate"
+                      v-model.number="newPurchase.voucherDetail.exchange_rate"
+                      step="0.001"
+                    />
+                    <div
+                      v-if="$errorsExists(errors['voucherDetail.exchange_rate'])"
+                      class="invalid-feedback ml-3"
+                    >
+                      {{ $errorsPrint(errors["voucherDetail.exchange_rate"]) }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -121,7 +150,7 @@
                     cols="30"
                     rows="4"
                     class="form-control rounded-pill px-5"
-                    v-model="newPurchase.observation"
+                    v-model="newPurchase.voucherDetail.observation"
                   ></textarea>
                 </div>
               </div>
@@ -138,16 +167,15 @@
                       $
                       {{
                         newPurchase.products.length
-                          ? (newPurchase.subtotal = newPurchase.products
-                              .reduce((previousValue, currentValue) => {
-                                return (
-                                  parseFloat(previousValue) +
-                                  parseFloat(
-                                    currentValue.referential_purchase_price
-                                  )
-                                );
-                              }, 0)
-                              .toFixed(2))
+                          ? (newPurchase.voucherDetail.subtotal =
+                              newPurchase.products
+                                .reduce((previousValue, currentValue) => {
+                                  return (
+                                    parseFloat(previousValue) +
+                                    parseFloat(currentValue.subtotal)
+                                  );
+                                }, 0)
+                                .toFixed(2))
                           : 0
                       }}
                     </td>
@@ -158,17 +186,28 @@
                       $
                       {{
                         newPurchase.products.length
-                          ? (newPurchase.total = newPurchase.products
-                              .reduce((previousValue, currentValue) => {
-                                return (
-                                  parseFloat(previousValue) +
-                                  parseFloat(
-                                    currentValue.referential_purchase_price
-                                  )
-                                );
-                              }, 0)
-                              .toFixed(2))
+                          ? (newPurchase.voucherDetail.total =
+                              newPurchase.products
+                                .reduce((previousValue, currentValue) => {
+                                  return (
+                                    parseFloat(previousValue) +
+                                    parseFloat(currentValue.total)
+                                  );
+                                }, 0)
+                                .toFixed(2))
                           : 0
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Total igv:</th>
+                    <td>
+                      $
+                      {{
+                        (newPurchase.voucherDetail.total_igv = parseFloat(
+                          newPurchase.voucherDetail.total -
+                            newPurchase.voucherDetail.subtotal
+                        ).toFixed(2))
                       }}
                     </td>
                   </tr>
@@ -194,27 +233,46 @@
 <script>
 import SearchProvider from "../components/SearchProvider.vue";
 import SearchProducts from "../components/SearchProducts.vue";
+import SetProducts from '../components/SetProducts.vue';
 import BaseUrl from "../../../../api/BaseUrl";
+// import ErrorsForm from "../../../../api/ErrorsForm";
 
 export default {
-  components: { SearchProvider, SearchProducts },
+  components: { SearchProvider, SearchProducts, SetProducts },
+//   setup() {
+//     const {errorsExists, errorsClass, errorsPrint } = ErrorsForm();
+//     return {
+//       errorsExists,
+//       errorsClass,
+//       errorsPrint,
+//     };
+//   },
   data() {
     return {
       newPurchase: {
-        handle_exchange_rate: true,
-        document_type: "BOLETA",
-        serie: null,
-        document_number: null,
-        date_issue: null,
-        subtotal: 0,
-        total: 0,
+        voucherDetail: {
+          document_type: "BOLETA",
+          serie: null,
+          date_issue: null,
+          document_number: null,
+          handle_exchange_rate: true,
+          exchange_rate: null,
+          observation: null,
+          subtotal: 0,
+          total_igv: 0,
+          total: 0,
+        },
         provider: {
           id: null,
           identification_document_id: 6,
         },
         products: [],
       },
+      errors: [],
     };
+  },
+  mounted() {
+    this.getCurrencyExchange();
   },
   methods: {
     async createPurchase() {
@@ -229,10 +287,22 @@ export default {
           );
         })
         .catch((error) => {
+          this.errors = error.response.data.errors;
+          console.log(this.errors);
+        });
+    },
+    async getCurrencyExchange() {
+      await BaseUrl.get(`api/currencyexchanges`)
+        .then((response) => {
+          this.newPurchase.voucherDetail.exchange_rate =
+            response.data.data[0].change; // lo en  via en un array xd
+        })
+        .catch(() => {
           console.log(error.response);
         });
     },
   },
+  computed: {},
 };
 </script>
 

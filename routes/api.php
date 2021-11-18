@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BrandController;
 use Illuminate\Http\Request;
@@ -100,6 +101,8 @@ Route::middleware([
     Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
     Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
     Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
+
+    Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
     //------------------------Inventory----------------------
     Route::apiResource('branches', BranchController::class)->names('api.branches');

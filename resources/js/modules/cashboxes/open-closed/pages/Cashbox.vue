@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-      <!-- BOTON PARA CREAR CAJA -->
+    <!-- BOTON PARA CREAR CAJA -->
     <button
       class="btn btn-lg btn-block btn-dark my-2"
       @click="showModal('#modal-create')"
@@ -121,7 +121,11 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-dismiss="modal"
+            >
               Cerrar
             </button>
             <button type="submit" class="btn btn-dark">Guardar</button>
@@ -160,7 +164,11 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-dismiss="modal"
+            >
               Cerrar
             </button>
             <button type="submit" class="btn btn-dark">Guardar</button>
@@ -200,7 +208,11 @@
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-dismiss="modal"
+            >
               Cerrar
             </button>
             <button type="submit" class="btn btn-dark">Guardar</button>
@@ -223,7 +235,7 @@ export default {
       cashboxes: [],
       cashbox: {
         id: null,
-        description: '',
+        description: "",
         opening_amount: 0,
       },
     };
@@ -266,20 +278,16 @@ export default {
         if (result.isConfirmed) {
           BaseUrl.delete(`/api/cajas/${id}`)
             .then((response) => {
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
               this.showCashboxes();
             })
             .catch((error) => {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Something went wrong!",
-                footer: '<a href="">Why do I have this issue?</a>',
+                text: error.response.data.error,
               });
-
-              console.log(error);
             });
-
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
         }
       });
     },
@@ -295,7 +303,7 @@ export default {
             icon: "error",
             title: "Oops...",
             text: error.response.data.message,
-            footer: '<a href="">Llevame a mi caja!!!</a>',
+            //footer: '<a class="btn btn-danger" href="youtube.com">Llevame a mi caja!!!</a>',
           });
           $("#open-cashbox").modal("hide");
 
@@ -303,17 +311,17 @@ export default {
         });
     },
     editCashbox(cashbox) {
-        this.cashbox = cashbox;
+      this.cashbox = cashbox;
     },
     async updateCashbox() {
       BaseUrl.put(`/api/cajas/${this.cashbox.id}`, this.cashbox)
         .then((response) => {
-            console.log(response.data);
-            this.showCashboxes();
-            $('#modal-edit').modal('hide');
+          console.log(response.data);
+          this.showCashboxes();
+          $("#modal-edit").modal("hide");
         })
         .catch((error) => {
-            console.log(error.response)
+          console.log(error.response);
         });
     },
     showModal(modal, cashbox = null) {

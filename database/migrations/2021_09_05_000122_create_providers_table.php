@@ -21,13 +21,18 @@ class CreateProvidersTable extends Migration
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
-            $table->string('ubigee')->nullable();
             $table->string('identification_document_id');
 
 
             $table->foreign('identification_document_id')
                 ->references('id')
                 ->on('identification_documents')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('ubigee_id') // PRINCIPAL
+                ->nullable()
+                ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

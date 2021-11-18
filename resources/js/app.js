@@ -5,6 +5,7 @@ import router from "./router";
 import { createApp } from 'vue';
 
 import Permissions from './mixins/Permissions';
+import ErrorsForm from './mixins/ErrorsForm';
 
 import indexKardex from './modules/inventory/kardex/index.vue';
 import indexBranches from './modules/inventory/branches/index.vue';
@@ -19,6 +20,7 @@ import indexWarranty from './modules/sales/warranties/index.vue';
 /* Catalogs */
 import indexFamiliesLinesBrands from './modules/catalogs/families-lines-brands/index.vue';
 import indexProduct from './modules/catalogs/products/index.vue';
+import indexAssemblies from './modules/catalogs/assemblies/index.vue';
 
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
 import indexExpensesIncomes from './modules/cashboxes/expenses-incomes/index.vue';
@@ -26,6 +28,10 @@ import indexPurchase from './modules/purchases/purchases/index.vue';
 import indexDashboard from './modules/dashboard/dashboard/index.vue';
 import indexProviders from './modules/third-parties/providers/index.vue'
 import indexCustomers from './modules/third-parties/customers/index.vue'
+
+// Reportes
+import indexReportCashboxes from './modules/reports/cashboxes/index.vue';
+import indexReportPurchases from './modules/reports/purchases/index.vue';
 
 /* Settings */
 import indexCompany from './modules/settings/company/index.vue';
@@ -45,6 +51,7 @@ app.component('index-warranties', indexWarranty);
 /* Catalogs */
 app.component('index-families-lines-brands', indexFamiliesLinesBrands);
 app.component('index-products', indexProduct);
+app.component('index-assemblies', indexAssemblies);
 
 app.component('index-kardex', indexKardex);
 app.component('index-modification-stock', indexModificactionStock);
@@ -63,9 +70,12 @@ app.component('index-roles', indexRoles);
 app.component('index-series', indexSeries);
 app.component('index-currency-exchanges', indexCurrencyExchanges);
 
+/* Reportes */
+app.component('index-report-cashboxes', indexReportCashboxes);
 
 
 
 app.mixin(Permissions);
+app.mixin(ErrorsForm);
 app.use(router).mount('#app')
 

@@ -25,10 +25,16 @@ class CreateCustomersTable extends Migration
 
             $table->foreign('identification_document_id')
                 ->references('id')
-                ->on('identification_documents') 
+                ->on('identification_documents')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            
+
+            $table->foreignId('ubigee_id') // PRINCIPAL
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

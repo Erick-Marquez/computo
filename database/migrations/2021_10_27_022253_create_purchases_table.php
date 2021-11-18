@@ -18,7 +18,7 @@ class CreatePurchasesTable extends Migration
             $table->string('document_type');
             $table->bigInteger('document_number');
             $table->string('serie');
-            $table->decimal('exchange_rate');
+            $table->decimal('exchange_rate')->nullable();
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
             $table->decimal('total_igv', 12, 3)->default(0);

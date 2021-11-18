@@ -120,6 +120,21 @@ class WebController extends Controller
         return view('inventory.devolutions.index');
     }
 
+    public function assemblies()
+    {
+        return view('catalogs.assemblies.index');
+    }
+
+    public function reportCashboxes()
+    {
+        return view('reports.cashboxes.index');
+    }
+
+    public function reportPurchases()
+    {
+        return view('reports.purchases.index');
+    }
+
     /*========Configuracion=========*/
 
     public function company()

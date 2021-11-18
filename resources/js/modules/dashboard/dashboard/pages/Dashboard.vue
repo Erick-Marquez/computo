@@ -162,20 +162,20 @@ export default {
 
         datasets: [
           {
-            label: "BOLETAS",
-            fill: true,
-            tension: 0.5,
-            data: [],
-            backgroundColor: ["rgba(52, 73, 94, 0.1)"],
-            borderColor: "#34495E",
-          },
-          {
             label: "FACTURAS",
             fill: true,
             tension: 0.5,
             data: [],
             backgroundColor: ["rgba(23, 165, 137, 0.1)"],
             borderColor: "#17A589",
+          },
+          {
+            label: "BOLETAS",
+            fill: true,
+            tension: 0.5,
+            data: [],
+            backgroundColor: ["rgba(52, 73, 94, 0.1)"],
+            borderColor: "#34495E",
           },
           {
             label: "NV",
@@ -197,6 +197,7 @@ export default {
     async getDataVouchers() {
       await BaseUrl.get(`/api/dashboard/vouchers`)
         .then((response) => {
+            console.log(response.data)
           this.testData.labels = response.data.fechas.reverse();
           this.testData.datasets[0].data = this.fillDates(
             response.data.facturas,

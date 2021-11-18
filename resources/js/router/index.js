@@ -110,7 +110,27 @@ const routes = [
             }
         ]
     },
-
+    {
+        path: '/ensamblajes',
+        name: 'assemblies-index',
+        component: () => import('../modules/catalogs/assemblies/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'assemblies-list',
+                component: () => import('../modules/catalogs/assemblies/pages/Assemblies.vue'),
+            },
+            {
+                path: '/nuevo-ensamblaje',
+                name: 'new-assembly',
+                component: () => import('../modules/catalogs/assemblies/pages/NewAssembly.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'assemblies-list' }
+            }
+        ]
+    },
     {
         path: '/sucursales',
         name: 'branches-index',
@@ -203,6 +223,35 @@ const routes = [
                 name: 'dashboard',
                 component: () => import('../modules/dashboard/dashboard/pages/Dashboard.vue'),
             },
+        ]
+    },
+    /* REPORTES */
+    {
+        path: '/reportes',
+        name: 'reports-index',
+        component: () => import('../modules/reports/index.vue'),
+        children: [
+            {
+                path: 'cajas',
+                name: 'report-cashboxes-index',
+                component: () => import('../modules/reports/cashboxes/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-cashboxes',
+                        component: () => import('../modules/reports/cashboxes/pages/ReportCashboxes.vue'),
+                    }
+                ]
+            },
+            // {
+            //     path: '/reporte-compras',
+            //     name: 'report-purchases',
+            //     component: () => import('../modules/catalogs/assemblies/pages/NewAssemblie.vue'),
+            // },
+            // {
+            //     path: '',
+            //     redirect: { name: 'assemblies-list' }
+            // }
         ]
     },
 

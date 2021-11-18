@@ -44,7 +44,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       cashboxes: [],
       cashbox: {
         id: null,
-        description: '',
+        description: "",
         opening_amount: 0
       }
     };
@@ -126,17 +126,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (result) {
                   if (result.isConfirmed) {
                     _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/cajas/".concat(id)).then(function (response) {
+                      Swal.fire("Deleted!", "Your file has been deleted.", "success");
+
                       _this3.showCashboxes();
                     })["catch"](function (error) {
                       Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "Something went wrong!",
-                        footer: '<a href="">Why do I have this issue?</a>'
+                        text: error.response.data.error
                       });
-                      console.log(error);
                     });
-                    Swal.fire("Deleted!", "Your file has been deleted.", "success");
                   }
                 });
 
@@ -166,8 +165,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: error.response.data.message,
-                    footer: '<a href="">Llevame a mi caja!!!</a>'
+                    text: error.response.data.message //footer: '<a class="btn btn-danger" href="youtube.com">Llevame a mi caja!!!</a>',
+
                   });
                   $("#open-cashbox").modal("hide");
                   console.log(error.response.data);
@@ -197,7 +196,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   _this5.showCashboxes();
 
-                  $('#modal-edit').modal('hide');
+                  $("#modal-edit").modal("hide");
                 })["catch"](function (error) {
                   console.log(error.response);
                 });
@@ -691,6 +690,82 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\n
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (cssWithMappingToString) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join("");
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === "string") {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, ""]];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
 
 /***/ }),
 
@@ -1485,8 +1560,6 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Cashbox_vue_vue_type_style_index_0_id_5c28ca8e_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
-<<<<<<< HEAD
-=======
 
 /***/ }),
 
@@ -1766,7 +1839,6 @@ module.exports = function (list, options) {
     lastIdentifiers = newLastIdentifiers;
   };
 };
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 
 /***/ }),
 
@@ -1784,11 +1856,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Cashbox_vue_vue_type_template_id_5c28ca8e_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Cashbox.vue?vue&type=template&id=5c28ca8e&scoped=true */ "./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=template&id=5c28ca8e&scoped=true");
 /* harmony import */ var _Cashbox_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cashbox.vue?vue&type=script&lang=js */ "./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=script&lang=js");
 /* harmony import */ var _Cashbox_vue_vue_type_style_index_0_id_5c28ca8e_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Cashbox.vue?vue&type=style&index=0&id=5c28ca8e&scoped=true&lang=css */ "./resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue?vue&type=style&index=0&id=5c28ca8e&scoped=true&lang=css");
-<<<<<<< HEAD
-/* harmony import */ var _home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
 /* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 
 
 
@@ -1796,11 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
 ;
 
 
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,_home_paloma_laravel_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Cashbox_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Cashbox_vue_vue_type_template_id_5c28ca8e_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-5c28ca8e"],['__file',"resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue"]])
-=======
 const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_Cashbox_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Cashbox_vue_vue_type_template_id_5c28ca8e_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-5c28ca8e"],['__file',"resources/js/modules/cashboxes/open-closed/pages/Cashbox.vue"]])
->>>>>>> 4633cef4dc506f270e99f04b35b98672442446fd
 /* hot reload */
 if (false) {}
 

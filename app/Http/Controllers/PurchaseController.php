@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Resources\PurchaseResource;
+use App\Models\Company;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Services\PurchaseService;
+use Barryvdh\DomPDF\PDF;
 class PurchaseController extends Controller
 {
 
@@ -68,5 +70,13 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         //
+    }
+
+
+    public function printPurchase(Purchase $purchase)
+    {
+        $company = Company::all()->first();
+        $pdf = \PDF::loadView('templates.pdf.purchase', compact('company', 'purchase'))->setPaper('A4','portrait');
+        return $pdf->stream();
     }
 }

@@ -47,7 +47,7 @@ class Sale extends Model
         'customer_id',
         'open_closed_cashbox_id',
         'user_id'
-        
+
     ];
 
     public function saleDetails()

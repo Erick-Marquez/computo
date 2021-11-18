@@ -226,7 +226,7 @@ return [
 
     'menu' => [
         // Navbar items:
-        
+
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
@@ -396,8 +396,8 @@ return [
                 [
                     'text' => 'Configuraciones de PC',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'assemblies.index',
-                    'can'    => 'assemblies.index',
+                    'route'  => 'web.assemblies',
+                    // 'can'    => 'assemblies.index',
                 ],
             ],
         ],
@@ -479,7 +479,7 @@ return [
                 [
                     'text' => 'Reporte de Caja',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.cashboxes',
                 ],
                 [
                     'text' => 'Reporte Detallado',
@@ -665,12 +665,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css',
+                    'location' => '//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
                 ],
             ],
         ],

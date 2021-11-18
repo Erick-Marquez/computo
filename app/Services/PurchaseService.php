@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
+use App\Models\Company;
+use App\Models\Product;
 use App\Models\Provider;
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
@@ -14,22 +16,27 @@ class PurchaseService
     {
 
         try {
-            $provider = Provider::firstOrCreate($request->provider);
+            $provider = Provider::where('document', $request->provider['document'])->first();
+
+            if (is_null($provider)) {
+                $provider = Provider::updateOrCreate();
+            }
 
             $purchase = Purchase::create([
-                'document_type' => $request->document_type,
-                'document_number' => $request->document_number,
-                'serie' => $request->serie,
-                'exchange_rate' => $request->exchange_rate,
-                'date_issue' => $request->date_issue,
-                'subtotal' => $request->subtotal,
-                'total' => $request->total,
-                'observation' => $request->observation,
+                'document_type' => $request->voucherDetail['document_type'],
+                'document_number' => $request->voucherDetail['document_number'],
+                'serie' => $request->voucherDetail['serie'],
+                'exchange_rate' => $request->voucherDetail['exchange_rate'],
+                'date_issue' => $request->voucherDetail['date_issue'],
+                'subtotal' => $request->voucherDetail['subtotal'],
+                'total' => $request->voucherDetail['total'],
+                'total_igv' => $request->voucherDetail['total_igv'],
+                'observation' => $request->voucherDetail['observation'],
                 'provider_id' => $provider['id'],
                 'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             ]);
 
-            $result = $this->updateProductsAndSeries($request->products, $purchase['id']);
+            $result = $this->updateProductsAndSeries($request->products, $purchase);
 
             if (!$result) {
                 $purchase->delete();
@@ -45,50 +52,55 @@ class PurchaseService
     }
 
     # PUEDE SERVIR PARA EDITAR TAMBIEN :U
-    public function updateProductsAndSeries($products, $purchaseId)
+    public function updateProductsAndSeries($products, $purchase)
     {
         foreach ($products as $product) {
             $branch_product = BranchProduct::where('product_id', $product['id'])->first();
 
-            if (!is_null($branch_product)) { # actualiza si ya existe
-                $branch_product->update([
-                    'stock' => $branch_product['stock'] + $product['quantity'],
-                    'referential_purchase_price' => $product['referential_purchase_price'],
-                    'manager_series' => count($product['series']) ? true : false
-                ]);
-            } else { # si esto es nulo, que chucha hacemos
+            if (is_null($branch_product)) {
+
                 $branch_product = BranchProduct::create([
                     'branch_id' => auth()->user()->branch_id, // ! mala practica, se necesita antes un REQUEST->ADD
                     'product_id' => $product['id'],
                     'igv_type_id' => 20,
-                    'stock' => $product['quantity'],
+                    'stock' => 0,
                     'referential_purchase_price' => $product['referential_purchase_price'],
                 ]);
-            }
 
-            # Si tiene series registradas o no
-            if (count($product['series'])) {
-                foreach ($product['series'] as $serie) {
-                    BranchProductSerie::create([
-                        'branch_product_id' => $branch_product['id'],
-                        'serie' => $serie
-                    ]);
-                }
+                $data = [
+                    'quantity' => 0,
+                    'series' => $product['manager_series'] ? $product['series'] : [],
+                    'branch_product_id' => $branch_product['id'],
+                    'user_id' => auth()->user()->id
+                ];
+
+                KardexService::initialStock($data);
             }
 
             # creando modelos para la compra detalle
             PurchaseDetail::create([
                 'price' => $product['referential_purchase_price'],
                 'quantity' => $product['quantity'],
-                'total_igv' => 0,
-                'subtotal' => $product['referential_purchase_price'] * $product['quantity'],
-                'total' => $product['referential_purchase_price'] * $product['quantity'],
-                'series' => count($product['series']) ? implode(",", $product['series']) : null,
-                'purchase_id' => $purchaseId,
+                'total_igv' => $product['total'] - $product['subtotal'],
+                'subtotal' => $product['subtotal'],
+                'total' => $product['total'],
+                'series' => $product['manager_series'] ? $product['series'] : null,
+                'purchase_id' => $purchase['id'],
                 'branch_product_id' => $branch_product['id'],
             ]);
+
+            $purchaseKardex = [
+                'quantity' => $product['quantity'],
+                'document' => $purchase['serie'] . '-' . $purchase['document_number'],
+                'series' => $product['manager_series'] ? $product['series'] : [],
+                'branch_product_id' => $branch_product['id'],
+                'user_id' => auth()->user()->id
+            ];
+
+            KardexService::purchase($purchaseKardex);
         }
 
         return true;
     }
+
 }

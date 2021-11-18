@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Assembly extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     protected $fillable = [
         'name',
@@ -16,6 +17,10 @@ class Assembly extends Model
         'price',
         'active'
     ];
+
+    protected $allowIncluded = [];
+    protected $allowFilter = ['id', 'name', 'active'];
+    protected $allowSort = ['id'];
 
     public function products()
     {

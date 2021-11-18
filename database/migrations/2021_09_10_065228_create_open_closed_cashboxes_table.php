@@ -16,9 +16,9 @@ class CreateOpenClosedCashboxesTable extends Migration
         Schema::create('open_closed_cashboxes', function (Blueprint $table) {
             $table->id();
             $table->datetime('opening_date'); // FECHA DE APERTURA
-            $table->unsignedDecimal('opening_amount', 9, 2); // MONTO DE APERTURA
+            $table->decimal('opening_amount', 9, 2); // MONTO DE APERTURA
             $table->datetime('closing_date')->nullable(); // FECHA DE CIERRE
-            $table->unsignedDecimal('closing_amount', 9, 2)->nullable(); // MONTO DE CIERRE
+            $table->decimal('closing_amount', 9, 2)->nullable(); // MONTO DE CIERRE
             $table->boolean('state')->default(true); // CERRADO O ABIERTO
 
             $table->foreignId('user_id') // USUARIO
@@ -30,7 +30,7 @@ class CreateOpenClosedCashboxesTable extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                
+
             $table->timestamps();
         });
     }

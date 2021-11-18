@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(CurrencyExchangeSeeder::class);
 
-        Sale::factory(1000)->create();
+        //Sale::factory(1000)->create();
 
         //\App\Models\Product::factory(3000)->create();
         //\App\Models\BranchProduct::factory(9000)->create();

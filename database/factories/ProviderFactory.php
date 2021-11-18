@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\IdentificationDocument;
 use App\Models\Provider;
+use App\Models\Ubigee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProviderFactory extends Factory
@@ -29,7 +30,8 @@ class ProviderFactory extends Factory
             'phone' => $this->faker->e164PhoneNumber,
             'email' => $this->faker->unique()->freeEmail,
             'address' => $this->faker->address,
-            'identification_document_id' => IdentificationDocument::all()->random()->id
+            'identification_document_id' => IdentificationDocument::all()->random()->id,
+            'ubigee_id' => Ubigee::all()->random()->id
         ];
     }
 }

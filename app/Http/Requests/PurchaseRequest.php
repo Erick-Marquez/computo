@@ -24,14 +24,26 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'document_type' => 'required|string',
-            'document_number' => 'required|numeric',
-            'serie' => 'required|string',
-            'exchange_rate' => 'numeric',
-            'date_issue' => 'required|date',
-            'subtotal' => 'numeric',
-            'total' => 'numeric',
-            'observation' => 'string',
+            'voucherDetail.document_type' => 'required|string',
+            'voucherDetail.document_number' => 'required|numeric',
+            'voucherDetail.serie' => 'required|string',
+            'voucherDetail.handle_exchange_rate' => 'boolean',
+            'voucherDetail.exchange_rate' => 'exclude_if:voucherDetail.handle_exchange_rate,false|required|numeric',
+            'voucherDetail.date_issue' => 'required|date',
+            'voucherDetail.subtotal' => 'numeric',
+            'voucherDetail.total' => 'numeric',
+
+            'provider.identification_document_id' => 'required|exists:identification_documents,id',
+            'provider.document' => 'required|min:8|max:11',
+            'provider.name' => 'required|string',
+
+            'products' => 'array|required',
+            'products.*.id' => 'required|distinct|exists:products,id',
+            'products.*.referential_purchase_price' => 'required|numeric',
+            'products.*.quantity' => 'required|numeric|min:1',
+            'products.*.manager_series' => 'required|boolean',
+            'products.*.series' => 'bail|exclude_if:products.*.manager_series,0|required|array',
+            'products.*.series.*' => 'distinct|string|min:1|unique:branch_product_series,serie',
         ];
     }
 }

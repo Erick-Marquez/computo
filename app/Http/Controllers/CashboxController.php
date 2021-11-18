@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CashboxResource;
 use App\Models\Cashbox;
+use App\Models\Company;
+use App\Models\OpenClosedCashbox;
+use App\Models\Purchase;
 use App\Services\CashboxService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\PDF;
+use Illuminate\Support\Facades\DB;
 
 class CashboxController extends Controller
 {
@@ -89,6 +94,11 @@ class CashboxController extends Controller
     public function destroy($id)
     {
         $cashbox = Cashbox::findOrFail($id);
+
+        if ($cashbox['is_open']) {
+            return response()->json(['error' => 'Cierre la caja primero'], 405);
+        }
+
         $cashbox->delete();
         return response()->json(['message' => 'Caja eliminada']);
     }
@@ -138,4 +148,10 @@ class CashboxController extends Controller
         return $this->cashboxService->movement($id, $request->all());
     }
 
+    public function reportCashboxOpenClosed($occId)
+    {
+        $dataReport = $this->cashboxService->getDataReport($occId);
+        $pdf = \PDF::loadView('templates.pdf.report-cashbox-oc', $dataReport)->setPaper('A4','portrait');
+        return $pdf->stream();
+    }
 }

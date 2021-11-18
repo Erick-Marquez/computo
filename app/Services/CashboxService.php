@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Models\Cashbox;
+use App\Models\Company;
 use App\Models\OpenClosedCashbox;
 use App\Models\OpenClosedCashboxDetail;
 use App\Models\Sale;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
 
@@ -79,9 +81,7 @@ class CashboxService
             $cashbox->update(['is_open' => false]);
             $user->update(['open_closed_cashbox_id' => null]);
 
-            return response()->json([
-                'message' => 'Cerrado con exito'
-            ]);
+            return response()->json($id);
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -93,10 +93,7 @@ class CashboxService
         $cashbox = Cashbox::findOrFail($id);
 
         if (!$cashbox['is_open']) {  //  Verifico si esta aperturada o no
-
-            return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
-                'message' => 'Accion no permitida'
-            ], 401);
+            return false;
         }
 
         $openClosedCashbox = $cashbox->openClosedCashboxes()->orderBy('created_at', 'desc')->first();
@@ -177,5 +174,30 @@ class CashboxService
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
+    }
+
+    public function getDataReport($occId)
+    {
+        $occ = OpenClosedCashbox::findOrFail($occId);
+        $cashbox = $occ->cashbox;
+        $company = Company::first();
+
+        $occ_details = $occ->openClosedCashboxDetails()
+                            ->select('type as description', DB::raw('SUM(amount) as total'))
+                            ->groupBy('type')
+                            ->get();
+
+        $sales = DB::table('sales')
+                    ->join('series', 'sales.serie_id', '=', 'series.id')
+                    ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
+                    ->select('voucher_types.description as description', DB::raw('SUM(sales.total) as total'))
+                    ->where('open_closed_cashbox_id', $occ['id'])
+                    ->groupBy('voucher_types.description')
+                    ->get(); // OBJETO {X: , Y: }
+
+        $movements = $sales->merge($occ_details);
+
+        return compact("occ", "cashbox", "company", "movements");
+
     }
 }

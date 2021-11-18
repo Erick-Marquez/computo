@@ -16,12 +16,12 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $customers = Provider::included()
+        $providers = Provider::included()
                                 ->filter()
                                 ->sort()
                                 ->getOrPaginate();
 
-        return ProviderResource::collection($customers);
+        return ProviderResource::collection($providers);
     }
 
     /**

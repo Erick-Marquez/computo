@@ -24,6 +24,7 @@ class ProviderResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
+            'ubigee_id' => $this->ubigee_id,
         ];
     }
 }

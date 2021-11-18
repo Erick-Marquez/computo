@@ -9,11 +9,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AssemblyController;
 
 use App\Http\Controllers\BranchController;
-
+use App\Http\Controllers\CashboxController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
@@ -37,7 +38,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
     //Sale
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-    
+
     Route::middleware(['opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
@@ -90,6 +91,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Rutas descarga
     Route::get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
 
+
+    // Rutas emsamblajes
+    Route::get('/ensamblajes', [WebController::class, 'assemblies'])->name('web.assemblies');
+
+    // Rutas reportes
+    Route::get('/reportes/cajas', [WebController::class, 'reportCashboxes'])->name('web.reports.cashboxes');
+
 });
 
 Route::get('/prueba', [WebController::class, 'prueba']);
@@ -110,3 +118,5 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
     Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']);
 
 
+Route::get('print/cashbox/report/{occId}', [CashboxController::class, 'reportCashboxOpenClosed'])->name('cashbox.reportOC');
+Route::get('print/purchase/{purchase}', [PurchaseController::class, 'printPurchase'])->name('purchase.print');

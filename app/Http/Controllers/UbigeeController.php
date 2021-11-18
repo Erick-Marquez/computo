@@ -10,7 +10,10 @@ class UbigeeController extends Controller
 {
     public function index()
     {
-        $ubigees = Ubigee::all();
+        $ubigees = Ubigee::included()
+                                ->filter()
+                                ->sort()
+                                ->getOrPaginate();
 
         return UbigeeResource::collection($ubigees);
     }
