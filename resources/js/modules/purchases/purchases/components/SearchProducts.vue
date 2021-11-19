@@ -4,7 +4,10 @@
     <div class="col-md">
       <h4>
         <i class="text-danger fas fa-box"></i>
-        Productos <span class="text-sm text-danger"> {{ $errorsPrint(errors['products']) }} </span>
+        Productos
+        <span class="text-sm text-danger">
+          {{ $errorsPrint(errors["products"]) }}
+        </span>
       </h4>
 
       <input
@@ -90,14 +93,19 @@ export default {
 
     setProduct(product) {
       product.quantity = 1;
+
       product.referential_purchase_price == null
         ? (product.referential_purchase_price = 0)
         : false;
+
       product.manager_series ? (product.series = []) : (product.series = null);
       product.igv = false;
 
       this.productsFound = [];
       this.productName = null;
+
+      product.sale_price = product.referential_sale_price_one;
+      product.discount = 0;
 
       let index = this.products.findIndex(
         (element) => element.id == product.id

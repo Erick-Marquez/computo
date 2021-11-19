@@ -17,10 +17,9 @@ class CreateAssembliesTable extends Migration
             $table->id();
             $table->string('cod')->unique();
             $table->string('name');
-            $table->bigInteger('stock')->nullable();
             $table->string('description')->nullable();
             $table->unsignedDecimal('price', 9,3)->nullable();
-            $table->unsignedDecimal('discount', 9,3)->nullable();
+            // $table->unsignedDecimal('discount', 9,3)->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

@@ -100,7 +100,7 @@
       </div>
 
       <SearchCustomers :voucherType="saleData.voucher.document_type" :customer="saleData.customer" :errors="errors" />
-
+        {{saleData.detail}}
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
         <div class="col-md">

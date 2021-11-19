@@ -24,7 +24,14 @@ class AssemblyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string',
+            'cod' => 'required|unique:assemblies,cod',
+            'price' => 'required|numeric|min:0',
+
+            'products' => 'array|required',
+            'products.*.id' => 'required|distinct|exists:products,id',
+            'products.*.sale_price' => 'required|numeric',
+            'products.*.quantity' => 'required|numeric|min:1',
         ];
     }
 }

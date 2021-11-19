@@ -15,13 +15,14 @@ class CreateAssemblyProductTable extends Migration
     {
         Schema::create('assembly_product', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('quantity')->nullable();
+            $table->bigInteger('quantity')->default(1);
+            $table->decimal('sale_price');
 
-            $table->foreignId('assembly_id') 
+            $table->foreignId('assembly_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('product_id') 
+            $table->foreignId('product_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

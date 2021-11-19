@@ -17,9 +17,15 @@
                   type="text"
                   name=""
                   id=""
-                  :class="$errorsClass(errors[''])"
+                  :class="$errorsClass(errors['name'])"
                   v-model="newAssembly.name"
                 />
+                <div
+                  class="invalid-feedback ml-3"
+                  v-if="$errorsExists(errors['name'])"
+                >
+                  {{ $errorsPrint(errors["name"]) }}
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
@@ -29,9 +35,15 @@
                       type="text"
                       name=""
                       id=""
-                      :class="$errorsClass(errors[''])"
+                      :class="$errorsClass(errors['cod'])"
                       v-model="newAssembly.cod"
                     />
+                    <div
+                      class="invalid-feedback ml-3"
+                      v-if="$errorsExists(errors['cod'])"
+                    >
+                      {{ $errorsPrint(errors["cod"]) }}
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -41,10 +53,26 @@
                       type="text"
                       name=""
                       id=""
-                      :class="$errorsClass(errors[''])"
-                      v-model="newAssembly.price"
+                      :class="$errorsClass(errors['price'])"
+                      :value="
+                        (newAssembly.price = newAssembly.products
+                          .reduce((previousValue, currentValue) => {
+                            return (
+                              parseFloat(previousValue) +
+                              parseFloat(currentValue.sale_price) *
+                                parseFloat(currentValue.quantity)
+                            );
+                          }, 0)
+                          .toFixed(2))
+                      "
                       disabled
                     />
+                    <div
+                      class="invalid-feedback ml-3"
+                      v-if="$errorsExists(errors['price'])"
+                    >
+                      {{ $errorsPrint(errors["price"]) }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -101,16 +129,20 @@
               <table class="table">
                 <thead class="thead-dark">
                   <tr>
-                    <th style="width: 65%">Producto</th>
-                    <th style="width: 10%">Cantidad</th>
-                    <th style="width: 15%">Precio Referencial</th>
-                    <th style="width: 15%">Descuento</th>
-                    <th style="width: 5%">Eliminar</th>
+                    <th class="text-center" style="width: 70%">Producto</th>
+                    <th class="text-center" style="width: 10%">Cantidad</th>
+                    <th class="text-center" style="width: 10%">
+                      Precio Referencial
+                    </th>
+                    <th class="text-center" style="width: 10%">Del</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(product, index) in newAssembly.products" :key="product.id">
-                    <td>{{ product.name }}</td>
+                  <tr
+                    v-for="(product, index) in newAssembly.products"
+                    :key="product.id"
+                  >
+                    <td>{{ product.name }} - {{ product.brand }}</td>
                     <td>
                       <input
                         class="form-control form-control-border p-0 text-center"
@@ -122,14 +154,7 @@
                       <input
                         class="form-control form-control-border p-0 text-center"
                         type="text"
-                        v-model="product.referential_purchase_price"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        class="form-control form-control-border p-0 text-center"
-                        type="text"
-                        v-model="product.discount"
+                        v-model="product.sale_price"
                       />
                     </td>
                     <td>
@@ -186,7 +211,7 @@ export default {
         });
     },
     removeProduct(index) {
-      this.products.splice(index, 1);
+      this.newAssembly.products.splice(index, 1);
     },
   },
 };

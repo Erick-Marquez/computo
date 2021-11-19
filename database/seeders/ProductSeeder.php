@@ -131,7 +131,7 @@ class ProductSeeder extends Seeder
             ['branch_product_id' => 6, 'sold' => false, 'active' => true, 'serie' => 'SDX57N'],
             ['branch_product_id' => 6, 'sold' => false, 'active' => true, 'serie' => 'SDX58N'],
             ['branch_product_id' => 6, 'sold' => false, 'active' => true, 'serie' => 'SDX59N'],
-            
+
             ['branch_product_id' => 7, 'sold' => false, 'active' => true, 'serie' => 'SDX60N'],
             ['branch_product_id' => 7, 'sold' => false, 'active' => true, 'serie' => 'SDX61N'],
             ['branch_product_id' => 7, 'sold' => false, 'active' => true, 'serie' => 'SDX62N'],
@@ -177,25 +177,25 @@ class ProductSeeder extends Seeder
             ['branch_product_id' => 10, 'sold' => false, 'active' => true, 'serie' => 'SDX99N'],
         ]);
 
-        DB::table('assemblies')->insert([
-            ['active' => true, 'discount' => 0, 'price' => 2000.000, 'name' => 'PC Galactica', 'description' => 'Para que puedas jugar minecraft'],
-            ['active' => true, 'discount' => 0, 'price' => 3000.000, 'name' => 'PC Ultra', 'description' => 'Para que puedas jugar fornite'],
-        ]);
+        // DB::table('assemblies')->insert([
+        //     ['active' => true, 'cod' => 'ESMP231','price' => 2000.000, 'name' => 'PC Galactica', 'description' => 'Para que puedas jugar minecraft'],
+        //     ['active' => true, 'cod' => 'ESMP232','price' => 3000.000, 'name' => 'PC Ultra', 'description' => 'Para que puedas jugar fornite'],
+        // ]);
 
-        DB::table('assembly_product')->insert([
-            ['assembly_id' => 1, 'product_id' => 3, 'quantity' => 1],
-            ['assembly_id' => 1, 'product_id' => 6, 'quantity' => 1],
-            ['assembly_id' => 1, 'product_id' => 5, 'quantity' => 1],
-            ['assembly_id' => 1, 'product_id' => 11, 'quantity' => 1],
-            ['assembly_id' => 1, 'product_id' => 12, 'quantity' => 1],
-            ['assembly_id' => 1, 'product_id' => 13, 'quantity' => 1],
+        // DB::table('assembly_product')->insert([
+        //     ['assembly_id' => 1, 'product_id' => 3, 'quantity' => 1],
+        //     ['assembly_id' => 1, 'product_id' => 6, 'quantity' => 1],
+        //     ['assembly_id' => 1, 'product_id' => 5, 'quantity' => 1],
+        //     ['assembly_id' => 1, 'product_id' => 11, 'quantity' => 1],
+        //     ['assembly_id' => 1, 'product_id' => 12, 'quantity' => 1],
+        //     ['assembly_id' => 1, 'product_id' => 13, 'quantity' => 1],
 
-            ['assembly_id' => 2, 'product_id' => 1, 'quantity' => 1],
-            ['assembly_id' => 2, 'product_id' => 9, 'quantity' => 1],
-            ['assembly_id' => 2, 'product_id' => 5, 'quantity' => 1],
-            ['assembly_id' => 2, 'product_id' => 11, 'quantity' => 1],
-            ['assembly_id' => 2, 'product_id' => 12, 'quantity' => 2],
-            ['assembly_id' => 2, 'product_id' => 13, 'quantity' => 1],
-        ]);
+        //     ['assembly_id' => 2, 'product_id' => 1, 'quantity' => 1],
+        //     ['assembly_id' => 2, 'product_id' => 9, 'quantity' => 1],
+        //     ['assembly_id' => 2, 'product_id' => 5, 'quantity' => 1],
+        //     ['assembly_id' => 2, 'product_id' => 11, 'quantity' => 1],
+        //     ['assembly_id' => 2, 'product_id' => 12, 'quantity' => 2],
+        //     ['assembly_id' => 2, 'product_id' => 13, 'quantity' => 1],
+        // ]);
     }
 }

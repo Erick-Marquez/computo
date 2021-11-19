@@ -12,7 +12,7 @@ class Assembly extends Model
 
     protected $fillable = [
         'name',
-        'stock',
+        'cod',
         'description',
         'price',
         'active'
