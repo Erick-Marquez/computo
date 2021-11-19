@@ -69,7 +69,7 @@
                       <a title="Haz Click para Visualizar el Ticket" target="_blank" :href="'print/vouchers/TICKET/' + sale.id">
                         <img src="../../../../../../public/img/svg/ticket_cpe.svg" style="width: 30px">
                       </a>
-                      <a title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + sale.id">
+                      <a v-if="sale.have_warranty" title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + sale.id">
                         <img src="../../../../../../public/img/svg/warranty_cpe.svg" style="width: 30px">
                       </a>
                     </td>

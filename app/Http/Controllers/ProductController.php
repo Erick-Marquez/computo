@@ -58,7 +58,12 @@ class ProductController extends Controller
             'referential_sale_price_one' => $request->referential_sale_price_one,
             'referential_sale_price_two' => $request->referential_sale_price_two,
             'manager_series' => $request->manager_series,
-            'igv_type_id' => 20, // obtener del tipo de IGV de la sucursal
+
+            'have_warranty' => $request->have_warranty,
+            'type_of_time_for_warranty' => $request->type_of_time_for_warranty,
+            'time_of_warranty' => $request->time_of_warranty,
+
+            'igv_type_id' => $request->igv_type_id, // obtener del tipo de IGV de la sucursal
             'brand_line_id' => $brandLine->id
         ]);
 
@@ -73,7 +78,12 @@ class ProductController extends Controller
                 'referential_sale_price_one' => $request->referential_sale_price_one,
                 'referential_sale_price_two' => $request->referential_sale_price_two,
                 'manager_series' => $request->manager_series,
-                'igv_type_id' => 20, // obtener del tipo de IGV de la sucursal,
+
+                'have_warranty' => $request->have_warranty,
+                'type_of_time_for_warranty' => $request->type_of_time_for_warranty,
+                'time_of_warranty' => $request->time_of_warranty,
+
+                'igv_type_id' => $request->igv_type_id, // obtener del tipo de IGV de la sucursal,
                 'branch_id' => $branch['id'],
                 'product_id' => $product->id,
             ]);

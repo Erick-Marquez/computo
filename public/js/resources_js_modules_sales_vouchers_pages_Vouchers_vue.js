@@ -372,13 +372,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: 'print/vouchers/TICKET/' + sale.id
     }, _hoisted_29, 8
     /* PROPS */
-    , _hoisted_27), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_27), sale.have_warranty ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+      key: 0,
       title: "Haz Click para Visualizar la Gatantía",
       target: "_blank",
       href: 'print/vouchers/WARRANTY/' + sale.id
     }, _hoisted_32, 8
     /* PROPS */
-    , _hoisted_30)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_30)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       title: "Haz Click para Descargar el XML",
       target: "_blank",
       href: 'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id

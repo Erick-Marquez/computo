@@ -37,7 +37,7 @@
                   <th>Fecha</th>
                   <th>Comprobante</th>
                   <th>Cliente</th>
-                  <th>Tiempo Restante</th>
+                  <th>Tiempo Restante Aprox.</th>
                   <th>PDF</th>
                   <th>Acciones</th>
                 </tr>

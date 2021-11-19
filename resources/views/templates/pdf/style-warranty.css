@@ -44,7 +44,7 @@ header{
     width: 95%;
 }
 .productos td:last-of-type{
-    width: 70%;
+    width: 50%;
 }
 .productos thead td{
     color: rgb(3, 29, 148);

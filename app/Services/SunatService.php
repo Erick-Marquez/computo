@@ -32,19 +32,6 @@ class SunatService
 
     public static function facturar($id, $type)
     {   
-        // self::$message = [
-        //     'xml' => [
-        //         'creado' => null,
-        //         'firmado' => null
-        //     ],
-        //     'zip' => null,
-        //     'send' => null,
-        //     'response' => [
-        //         "cod" => null,
-        //         'message' => null,
-        //         'hash_cdr' => null
-        //     ]
-        // ];
         self::template($id, $type);
         self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
         self::signXml();

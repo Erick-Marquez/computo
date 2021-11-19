@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\BranchProduct;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -76,17 +77,22 @@ class VoucherRequest extends FormRequest
         ];
 
         // TODO: Validar las series solo si el producto maneja series
-
+        
         foreach ($this->detail as $i => $detail) {
             
-            $rules['detail.' . $i . '.series.*.serie'] = [
-                'required',
-                Rule::exists('branch_product_series', 'serie')
-                ->where('branch_product_id', $detail['product_id']) // que pertenesca al producto
-                ->where('active', 1) // que este activo
-                ->where('sold', 0), // que no este vendida
-                'distinct'
-            ];
+            $branchProduct = BranchProduct::where('id', $detail['product_id'])->with('product')->first();
+
+            if ($branchProduct->product->manager_series) {
+                $rules['detail.' . $i . '.series.*.serie'] = [
+                    'required',
+                    Rule::exists('branch_product_series', 'serie')
+                    ->where('branch_product_id', $detail['product_id']) // que pertenesca al producto
+                    ->where('active', 1) // que este activo
+                    ->where('sold', 0), // que no este vendida
+                    'distinct'
+                ];
+            }
+
         }
 
         return $rules;

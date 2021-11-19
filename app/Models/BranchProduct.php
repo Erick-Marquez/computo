@@ -18,6 +18,11 @@ class BranchProduct extends Model
         'referential_sale_price_two',
         'manager_series',
         'active',
+
+        'have_warranty',
+        'type_of_time_for_warranty',
+        'time_of_warranty',
+
         'igv_type_id',
         'branch_id',
         'product_id',
