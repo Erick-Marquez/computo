@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+    Route::get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
 
     //Rutas egresos-ingresos
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
@@ -106,7 +107,6 @@ Route::get('/prueba', [WebController::class, 'prueba']);
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 
 //Modulo Catalago
-Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', ProductSerieController::class)->names('product-series')->parameters(['product-series' => 'productSerie']);
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
 
 

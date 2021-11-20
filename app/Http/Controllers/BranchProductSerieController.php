@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchProductSerieResource;
+use App\Http\Resources\ProductResource;
 use App\Models\BranchProductSerie;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductSerieController extends Controller
+class BranchProductSerieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +17,25 @@ class ProductSerieController extends Controller
      */
     public function index()
     {
-        $productSeries = BranchProductSerie::all();
-        return view('catalogs.product-series.index', compact('productSeries'));
+        $products = Product::where('manager_series', true)
+                            ->withCount([
+                                'branchProducts', 
+                                'branchProductSeries as branchProductSerieAvailables' => function ($query){
+                                    $query->where('sold', false);
+                                },
+                                'branchProductSeries as branchProductSerieSolds' => function ($query){
+                                    $query->where('sold', true);
+                                },
+                            ])
+                            ->with([
+                                'branchProducts' => function ($query){
+                                    $query->withCount('branchProductSeries');
+                                },
+                                'branchProducts.branch',
+                                'brandLine.brand'
+                            ])
+                            ->get();
+        return BranchProductSerieResource::collection($products);
     }
 
     /**

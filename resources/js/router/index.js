@@ -90,6 +90,22 @@ const routes = [
         ]
     },
     {
+        path: '/producto-series',
+        name: 'product-series-index',
+        component: () => import('../modules/catalogs/product-series/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'product-series-list',
+                component: () => import('../modules/catalogs/product-series/pages/ProductSeries.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'product-list' }
+            }
+        ]
+    },
+    {
         path: '/productos',
         name: 'product-index',
         component: () => import('../modules/catalogs/products/index.vue'),

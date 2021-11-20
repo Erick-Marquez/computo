@@ -149,7 +149,6 @@ class VoucherRequest extends FormRequest
             'detail.*.series.*.serie.exists' => 'Ingrese una serie válida.',
             'detail.*.series.*.serie.distinct' => 'Las series ingresadas deben ser distintas.',
 
-
         ];
     }
 }

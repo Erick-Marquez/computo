@@ -20,6 +20,7 @@ import indexWarranty from './modules/sales/warranties/index.vue';
 /* Catalogs */
 import indexFamiliesLinesBrands from './modules/catalogs/families-lines-brands/index.vue';
 import indexProduct from './modules/catalogs/products/index.vue';
+import indexProductSeries from './modules/catalogs/product-series/index.vue';
 import indexAssemblies from './modules/catalogs/assemblies/index.vue';
 
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
@@ -51,6 +52,7 @@ app.component('index-warranties', indexWarranty);
 /* Catalogs */
 app.component('index-families-lines-brands', indexFamiliesLinesBrands);
 app.component('index-products', indexProduct);
+app.component('index-product-series', indexProductSeries);
 app.component('index-assemblies', indexAssemblies);
 
 app.component('index-kardex', indexKardex);

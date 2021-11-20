@@ -53,6 +53,11 @@ class Product extends Model
         return $this->hasMany(BranchProduct::class);
     }
 
+    public function branchProductSeries()
+    {
+        return $this->hasManyThrough(BranchProductSerie::class, BranchProduct::class);
+    }
+
     public function assemblies()
     {
         return $this->belongsToMany(Assembly::class);

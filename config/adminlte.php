@@ -362,24 +362,6 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.families-lines-brands',
                 ],
-                // [
-                //     'text' => 'Familias',
-                //     'icon' => 'fas fa-fw ',
-                //     'route'  => 'families.index',
-                //     'can'    => 'families.index',
-                // ],
-                // [
-                //     'text' => 'Lineas',
-                //     'icon' => 'fas fa-fw ',
-                //     'route'  => 'lines.index',
-                //     'can'    => 'lines.index',
-                // ],
-                // [
-                //     'text' => 'Marcas',
-                //     'icon' => 'fas fa-fw ',
-                //     'route'  => 'brands.index',
-                //     'can'    => 'brands.index',
-                // ],
                 [
                     'text' => 'Productos',
                     'icon' => 'fas fa-fw ',
@@ -390,7 +372,7 @@ return [
                 [
                     'text' => 'Series',
                     'icon' => 'fas fa-fw ',
-                    'route'  => 'product-series.index',
+                    'route'  => 'web.product-series',
                     'can'    => 'product-series.index',
                 ],
                 [

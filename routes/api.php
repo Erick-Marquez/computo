@@ -18,6 +18,7 @@ use App\Http\Controllers\ExpenseIncomeController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
+use App\Http\Controllers\BranchProductSerieController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
@@ -105,6 +106,9 @@ Route::middleware([
     Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
     Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
     Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
+
+    //Product-Series
+    Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');
 
     Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
