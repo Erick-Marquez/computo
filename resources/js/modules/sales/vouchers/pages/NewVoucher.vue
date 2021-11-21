@@ -254,7 +254,7 @@
                   <input type="button" class="btn btn-dark btn-sm" data-toggle="modal" :data-target="'#seriesModal' + index" value="Series">
                 </td>
                 <td>
-                  <button class="btn btn-flat bg-light" @click="deleteItem(index)">
+                  <button type="button" class="btn btn-flat bg-light" @click="deleteItem(index)">
                     <i class="text-danger fas fa-trash"></i>
                   </button>
                   <div class="invalid-feedback" v-if="errors['detail.'+ index +'.series']">
@@ -949,12 +949,12 @@ export default {
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
         this.errors = []
         console.log(response)
-        // this.$router.push({ name: "voucher-list" });
-        // Swal.fire(
-        //   "Comprobante Creado",
-        //   response.data,
-        //   "success"
-        // );
+        this.$router.push({ name: "voucher-list" });
+        Swal.fire(
+          "Comprobante Creado",
+          response.data,
+          "success"
+        );
       })
       .catch((error) => {
 

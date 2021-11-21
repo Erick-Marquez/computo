@@ -104,6 +104,7 @@
                 Precios |
                 <small class="text-danger">
                   Solo se guarda el precio en dolares
+                  <i class="fas fa-exclamation-triangle"></i>
                 </small>
               </h4>
             </div>
@@ -133,6 +134,7 @@
                 <p class="lead">
                   Precios de venta |
                   <small class="text-danger">
+                    <i class="fas fa-hand-point-right"></i>
                     Respecto al precio de compra
                   </small>
                 </p>
@@ -316,7 +318,10 @@
       </div>
     </div>
   </div>
-  <input type="submit" class="btn btn-dark btn-block btn-lg mb-4" value="Guardar Producto">
+  <button type="submit" class="btn btn-dark btn-block btn-lg mb-4">
+    <span><i class="fas fa-save"></i></span>
+    Guardar Producto
+  </button>
 </form>
 </template>
 

@@ -722,12 +722,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/sales", this.saleData).then(function (response) {
         _this7.errors = [];
-        console.log(response); // this.$router.push({ name: "voucher-list" });
-        // Swal.fire(
-        //   "Comprobante Creado",
-        //   response.data,
-        //   "success"
-        // );
+        console.log(response);
+
+        _this7.$router.push({
+          name: "voucher-list"
+        });
+
+        Swal.fire("Comprobante Creado", response.data, "success");
       })["catch"](function (error) {
         _this7.errors = error.response.data.errors;
         console.log(error.response.data.errors);
@@ -2099,6 +2100,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, null, 8
     /* PROPS */
     , _hoisted_66)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      type: "button",
       "class": "btn btn-flat bg-light",
       onClick: function onClick($event) {
         return $options.deleteItem(index);

@@ -93,7 +93,7 @@
 
   <!-- Modal Nuevo -->
   <div class="modal fade" id="modal-create" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Crear Nueva Sucursal</h4>
@@ -122,22 +122,38 @@
                     
                     <div class="form-group">
                       <label for="name">Código SUNAT</label>
-                      <input type="text" class="form-control" v-model="branch.codSunat" required>
+                      <input type="text" :class="'form-control' + (errorsCreate['cod_sunat'] == null ? '' : ' is-invalid')" 
+                      v-model="branch.codSunat" required>
+                      <div class="invalid-feedback" v-if="errorsCreate['cod_sunat']">
+                        {{ errorsCreate['cod_sunat'][0] }}
+                      </div>
                     </div>
 
                     <div class="form-group">
                       <label for="name">Nombre de la sucursal</label>
-                      <input type="text" class="form-control" v-model="branch.description" required>
+                      <input type="text" :class="'form-control' + (errorsCreate['description'] == null ? '' : ' is-invalid')" 
+                      v-model="branch.description" required>
+                      <div class="invalid-feedback" v-if="errorsCreate['description']">
+                        {{ errorsCreate['description'][0] }}
+                      </div>
                     </div>
 
                     <div class="form-group">
                       <label for="name">Dirección</label>
-                      <input type="text" class="form-control" v-model="branch.direction" required>
+                      <input type="text" :class="'form-control' + (errorsCreate['direction'] == null ? '' : ' is-invalid')" 
+                      v-model="branch.direction" required>
+                      <div class="invalid-feedback" v-if="errorsCreate['direction']">
+                        {{ errorsCreate['direction'][0] }}
+                      </div>
                     </div>
 
                     <div class="form-group">
                       <label for="name">Ubigeo</label>
-                      <input type="text" class="form-control" v-model="branch.ubigeo" required>
+                      <input type="text" :class="'form-control' + (errorsCreate['ubigeo'] == null ? '' : ' is-invalid')" 
+                      v-model="branch.ubigeo" required>
+                      <div class="invalid-feedback" v-if="errorsCreate['ubigeo']">
+                        {{ errorsCreate['ubigeo'][0] }}
+                      </div>
                     </div>
 
                     <div class="form-group">
@@ -158,68 +174,68 @@
                     </div>
 
                     <div class="table-responsive">
-                      <table class="table table-bordered">
+                      <table class="table table-bordered" style="min-width: 650px;">
                         <thead class="thead-dark text-center">
                           <tr>
-                            <th scope="col" class="col-md-6">Tipo de Comprobante</th>
-                            <th scope="col" class="col-md-4">Serie</th>
-                            <th scope="col" class="col-md-2">Numero</th>
+                            <th scope="col" class="col-5">Tipo de Comprobante</th>
+                            <th scope="col" class="col-2">Serie</th>
+                            <th scope="col" class="col-2">Numero</th>
+                            <th scope="col" class="col-2">Afectación IGV</th>
+                            <th scope="col" class="col-1">Eliminar</th>
                           </tr>    
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="align-middle">Factura Eléctronica</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.invoice" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.invoiceNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Boleta Eléctronica</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.ticket" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.ticketNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Nota de Venta Eléctronica</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.saleNote" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.saleNoteNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Nota de Crédito que modifica una Factura</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteInvoice" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteInvoiceNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Nota de Débito que modifica una Factura</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteInvoice" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteInvoiceNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Nota de Crédito que modifica una Boleta</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteTicket" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.creditNoteTicketNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Nota de Débito que modifica una Boleta</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteTicket" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.debitNoteTicketNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Cotización</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.quotation" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.quotationNumber" required></td>
-                          </tr>
-                          <tr>
-                            <td class="align-middle">Garantía</td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.warranty" required></td>
-                            <td class="align-middle"><input class="form-control" type="text" v-model="branch.series.warrantyNumber" required></td>
+                          <tr v-for="(branchSerie, index) in branch.series" :key="branchSerie.id">
+                            <td class="align-middle">
+                              <select :class="'form-control' + (errorsCreate['series.'+ index +'.voucher_type_id'] == null ? '' : ' is-invalid')" 
+                              v-model="branchSerie.voucherTypeId" @change="getExample(branchSerie)" :disabled="branchSerie.isDisable">
+                                <option v-for="voucherType in voucherTypes" :key="voucherType.id" :value="voucherType.id">
+                                  {{ voucherType.description }}
+                                </option>
+                              </select>
+                              <div class="invalid-feedback" v-if="errorsCreate['series.'+ index +'.voucher_type_id']">
+                                {{ errorsCreate['series.'+ index +'.voucher_type_id'][0] }}
+                              </div>
+                            </td>
+                            <td class="align-middle">
+                              <input :class="'form-control' + (errorsCreate['series.'+ index +'.serie'] == null ? '' : ' is-invalid')" 
+                              type="text" :placeholder="branchSerie.example" v-model="branchSerie.serie" required>
+                              <div class="invalid-feedback" v-if="errorsCreate['series.'+ index +'.serie']">
+                                {{ errorsCreate['series.'+ index +'.serie'][0] }}
+                              </div>
+                            </td>
+                            <td class="align-middle">
+                              <input :class="'form-control' + (errorsCreate['series.'+ index +'.current_number'] == null ? '' : ' is-invalid')" 
+                              type="number" min="1" v-model="branchSerie.number" required>
+                              <div class="invalid-feedback" v-if="errorsCreate['series.'+ index +'.current_number']">
+                                {{ errorsCreate['series.'+ index +'.current_number'][0] }}
+                              </div>
+                            </td>
+                            <td class="align-middle text-center">
+                              <div class="custom-control custom-switch custom-switch-on-danger">
+                                <input type="checkbox" class="custom-control-input" :id="'customSwitchCreate' + index" v-model="branchSerie.haveIgv">
+                                <label class="custom-control-label" :for="'customSwitchCreate' + index">{{ branchSerie.haveIgv ? 'Si' : 'No' }}</label>
+                              </div>
+                            </td>
+                            <td class="align-middle text-center">
+                              <button type="button" class="btn btn-flat" @click="branchSerie.isDisable ? null : deleteBranchSerie(index)" :disabled="branchSerie.isDisable">
+                                <i class="text-danger fas fa-trash"></i>
+                              </button>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
+                    <button type="button" class="btn btn-md btn-block btn-dark my-2" @click="addBranchSerie()">
+                      <span><i class="fas fa-plus"></i></span>
+                      Añadir otra serie
+                    </button>
                   </div>
                   <!-- /.Series -->
                 </div>
               </div>
             </div>
+
 
           </div>
           <div class="modal-footer justify-content-between">
@@ -290,44 +306,49 @@ export default {
   components:{BaseUrl},
   async created(){
     this.showBranches()
+    this.getVoucherTypes()
   },
   data(){
     return{
-      branches:{},
+      branches: [],
+      voucherTypes: [],
       branch: {
         codSunat: '0000',
         description: '',
         direction: '',
         ubigeo: '',
         phone: '',
-        series: {
-          invoice : 'F001',
-          invoiceNumber : 1,
-          ticket : 'B001',
-          ticketNumber : 1,
-          saleNote: 'N001',
-          saleNoteNumber: 1,
-          creditNoteInvoice: 'FC01',
-          creditNoteInvoiceNumber: 1,
-          debitNoteInvoice: 'FD01',
-          debitNoteInvoiceNumber: 1,
-          creditNoteTicket: 'BC01',
-          creditNoteTicketNumber: 1,
-          debitNoteTicket: 'BD01',
-          debitNoteTicketNumber: 1,
-          quotation: 'C001',
-          quotationNumber: 1,
-          warranty: 'G001',
-          warrantyNumber: 1
-        } 
+        series: []
       },
-      branchEdit: {}
+      branchEdit: {},
+      errorsCreate: {}
     }
   },
   methods:{
     async showBranches(){
       await BaseUrl.get(`api/branches`).then( resp => {
         this.branches=resp.data.data
+      })
+    },
+    async getVoucherTypes(){
+      await BaseUrl.get(`api/series/voucherTypes`).then( resp=>{
+        this.voucherTypes = resp.data.data
+
+        this.voucherTypes.forEach(element => {
+
+          let temp = {
+            voucherTypeId: element.id,
+            example: element.example,
+            serie: element.example,
+            number: 1,
+            haveIgv: false,
+            isDisable: true,
+          }
+
+          this.branch.series.push(temp);
+        
+        });
+
       })
     },
     showModal(modal, branch = null) {
@@ -344,21 +365,100 @@ export default {
       $(modal).modal("show");
     },
     createBranch(){
-      console.log(this.branch)
-      // BaseUrl.post(`api/branches`, this.branch).then( resp => {
+
+      let createBranch = {
+        cod_sunat: this.branch.codSunat,
+        description: this.branch.description,
+        direction: this.branch.direction,
+        ubigeo: this.branch.ubigeo,
+        phone: this.branch.phone,
+        series: []
+      }
+
+      let series = []
+
+      this.branch.series.forEach(element => {
+
+        let temp = {
+          voucher_type_id: element.voucherTypeId,
+          serie: element.serie,
+          current_number: element.number,
+          have_igv: element.haveIgv,
+        }
+
+        series.push(temp);
+      });
+
+      createBranch.series = series
+
+      console.log(createBranch)
+      BaseUrl.post(`api/branches`, createBranch).then( resp => {
         
-      //   console.log(resp)
-      //   $("#modal-create").modal("hide")
-      //   this.showBranches()
-      //   this.branch = {
-      //     change: '',
-      //     date: ''
-      //   }
-      //   Swal.fire("Creado", "La sucursal ha sido creada", "success");
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+        this.errorsCreate = {}
+      
+        $("#modal-create").modal("hide")
+
+        this.showBranches()
+
+        this.branch = {
+          codSunat: '0000',
+          description: '',
+          direction: '',
+          ubigeo: '',
+          phone: '',
+          series: []
+        }
+        this.voucherTypes.forEach(element => {
+
+          let temp = {
+            voucherTypeId: element.id,
+            example: element.example,
+            serie: element.example,
+            number: 1,
+            haveIgv: false,
+            isDisable: true,
+          }
+
+          this.branch.series.push(temp);
+        
+        });
+
+        Swal.fire("Creado", "La sucursal ha sido creada", "success");
+        
+      })
+      .catch((error) => {
+        this.errorsCreate = error.response.data.errors
+      });
+
+    },
+    getExample(branchSerie){
+
+      let voucherTypesBackup = this.voucherTypes
+
+      let voucherTypeFilter = voucherTypesBackup.filter(
+        (voucherTypes) => voucherTypes.id == branchSerie.voucherTypeId
+      );
+
+      branchSerie.example = 'Ej: ' + voucherTypeFilter[0].example
+    },
+    addBranchSerie(){
+
+      let temp = {
+        voucherTypeId: null,
+        example: '👈 Selecciona',
+        serie: null,
+        number: 1,
+        haveIgv: false,
+        isDisable: false,
+      }
+
+      this.branch.series.push(temp);
+
+    },
+    deleteBranchSerie(index) {
+
+      this.branch.series.splice(index, 1);
+
     },
     editBranch(){
 
