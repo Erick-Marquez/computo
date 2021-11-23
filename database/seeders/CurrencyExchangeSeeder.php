@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CurrencyExchange;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,9 @@ class CurrencyExchangeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('currency_exchanges')->insert([
-            ['date' => Carbon::now()->toDateTimeString(), 'change' => 3.97]
+        CurrencyExchange::create([
+            'date' => Carbon::now()->toDateTimeString(), 
+            'change' => 3.97
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VoucherRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
+use App\Http\Resources\CurrencyExchangeResource;
 use App\Http\Resources\IdentificationDocumentResource;
 use App\Http\Resources\IgvTypeResource;
 use App\Http\Resources\PaymentTypeResource;
@@ -251,4 +252,11 @@ class VoucherController extends Controller
         $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand')->firstOrFail();
         return QuotationResource::make($quotation);
     }
+
+    public function currencyExchange()
+    {
+        $currencyExchange = CurrencyExchange::latest()->first();
+        return CurrencyExchangeResource::make($currencyExchange);
+    }
+
 }

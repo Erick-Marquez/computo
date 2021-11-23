@@ -59,6 +59,7 @@ Route::middleware([
     Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
     Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
+    Route::get('/sales/currencyexchange', [VoucherController::class, 'currencyExchange'])->name('api.sales.currencyExchange');
 
 
     //Quotations

@@ -473,25 +473,11 @@
       <!-- Resumen de ventas -->
       <div class="row no-print">
         <div class="col-12">
-          <!-- <a
-            href="invoice-print.html"
-            rel="noopener"
-            target="_blank"
-            class="btn btn-default"
-            ><i class="fas fa-print"></i> Print</a
-          > -->
           <form @submit.prevent="createSale()">
             <button type="submit" class="btn btn-dark float-right">
               <i class="far fa-credit-card"></i> Guarda Documento Electronico
             </button>
           </form>
-          <!-- <button
-            type="button"
-            class="btn btn-primary float-right"
-            style="margin-right: 5px"
-          >
-            <i class="fas fa-download"></i> Generate PDF
-          </button> -->
         </div>
       </div>
     </div>
@@ -514,10 +500,6 @@ export default {
       this.identificationDocuments = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
-    });
-
     await BaseUrl.get(`api/sales/series/8`).then((resp) => {
       this.quotationSeries = resp.data.data;
       this.quotationSerieSelect = this.quotationSeries[0].id
@@ -537,11 +519,28 @@ export default {
       this.igvTypes = resp.data.data;
     });
 
+    await BaseUrl.get(`api/sales/currencyexchange`).then((resp) => {
+      this.currencyExchange = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/products`).then((resp) => {
+      this.products = resp.data.data;
+
+      this.products.forEach(product => {
+        product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
+      });
+    });
+
+
   },
   data() {
     return {
       errors: [],
       warrantySeries: {},
+
+      currencyExchange: {},
 
       quotationSerieSelect: null,
       quotationSeries: {},
@@ -562,7 +561,7 @@ export default {
       identificationDocuments: {},
       paymentTypes: [],
       igvTypes: [],
-      products: {},
+      products: [],
       productSeries: [],
       saleData: {
         customer: {
@@ -760,6 +759,7 @@ export default {
       this.saleData.detail.splice(index, 1);
       this.productSeries.splice(index, 1);
       this.productSerieSearchFilter.splice(index, 1);
+      this.getTotals()
     },
 
     activateOrDesactivateGlobalDiscount() {

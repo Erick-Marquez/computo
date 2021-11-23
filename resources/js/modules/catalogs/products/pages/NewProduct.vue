@@ -296,7 +296,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="">Tipo de Tiempo</label>
+                    <label for="">Lapsos</label>
                     <select class="form-control" v-model="typeOfTimeForWarranty">
                       <option value="days">Días</option>
                       <option value="weeks">Semanas</option>
