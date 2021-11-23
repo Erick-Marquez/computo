@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Provider;
 use App\Models\Sale;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 use SebastianBergmann\Type\VoidType;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +21,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         // suscursales
-
+        Storage::deleteDirectory('public/assemblies');
+        Storage::deleteDirectory('public/products');
+        Storage::makeDirectory('public/assemblies');
+        Storage::makeDirectory('public/products');
 
         $this->call(RoleSeeder::class);
         $this->call(VoucherTypeSeeder::class);

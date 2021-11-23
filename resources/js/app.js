@@ -40,6 +40,8 @@ import indexRoles from './modules/settings/roles/index.vue';
 import indexSeries from './modules/settings/series/index.vue';
 import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.vue';
 
+import imageUpload from './mixins/ImageUpload.vue'
+
 const app = createApp({});
 
 /* Sales */
@@ -73,7 +75,8 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 /* Reportes */
 app.component('index-report-cashboxes', indexReportCashboxes);
 
-
+/* uy */
+app.component('image-upload', imageUpload)
 
 app.mixin(Permissions);
 app.mixin(ErrorsForm);

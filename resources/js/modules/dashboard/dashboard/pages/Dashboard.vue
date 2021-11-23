@@ -150,9 +150,17 @@ export default {
       widgets: {},
       options: {
         scales: {
+          x: {
+            gridLines: {
+              display: false,
+            },
+          },
           y: {
             beginAtZero: true,
             suggestedMax: 50,
+            gridLines: {
+              display: false,
+            },
           },
         },
       },
@@ -197,7 +205,7 @@ export default {
     async getDataVouchers() {
       await BaseUrl.get(`/api/dashboard/vouchers`)
         .then((response) => {
-            console.log(response.data)
+          console.log(response.data);
           this.testData.labels = response.data.fechas.reverse();
           this.testData.datasets[0].data = this.fillDates(
             response.data.facturas,
@@ -235,17 +243,16 @@ export default {
 
       return vouchers;
     },
-    async getDataWidgets()
-    {
-        await BaseUrl.get(`/api/dashboard/widgets`)
-        .then(response => {
-            console.log(response.data)
-            this.widgets = response.data;
+    async getDataWidgets() {
+      await BaseUrl.get(`/api/dashboard/widgets`)
+        .then((response) => {
+          console.log(response.data);
+          this.widgets = response.data;
         })
-        .catch(error => {
-            console.log(error.response)
-        })
-    }
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
   },
 };
 </script>

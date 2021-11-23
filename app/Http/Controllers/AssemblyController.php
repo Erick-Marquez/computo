@@ -7,6 +7,9 @@ use App\Http\Resources\AssemblyResource;
 use App\Models\Assembly;
 use App\Models\AssemblyProduct;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use App\Models\Image as ImageModel;
+use Illuminate\Support\Facades\Storage;
 
 class AssemblyController extends Controller
 {
@@ -27,12 +30,24 @@ class AssemblyController extends Controller
 
     public function store(AssemblyRequest $request)
     {
+
         try {
             $assembly = Assembly::create([
                 'cod' => $request->cod,
                 'name' => $request->name,
                 'price' => $request->price,
                 'description' => $request->description
+            ]);
+
+            $imageName = explode(' ', $request->name);
+            $imageName = implode('-', $imageName);
+
+            Image::make($request->image)
+                    ->resize(500, null)
+                    ->save(public_path('storage') . "/assemblies/$imageName.png", 70, 'png');
+
+            $assembly->image()->create([
+                'url' => "assemblies/$imageName.png",
             ]);
 
             foreach ($request->products as $product) {
@@ -45,6 +60,7 @@ class AssemblyController extends Controller
             }
 
             return response()->json(['message' => 'Ensamblaje registrado']);
+
         } catch (\Throwable $th) {
             // throw $th;
             return $th->getMessage();

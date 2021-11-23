@@ -8,7 +8,7 @@
   <div class="container-fluid">
     <form @submit.prevent="storeAssembly()">
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-8">
           <div class="card">
             <div class="card-body">
               <div class="form-group">
@@ -89,17 +89,40 @@
             </div>
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
           <div class="card">
             <div class="card-body">
               <div class="row">
                 <div class="col-md">
                   <img
-                    class="img-fluid imagen d-flex justify-content-center"
-                    src="https://icons-for-free.com/iconfiles/png/512/cloud+upload+file+storage+upload+icon-1320190558968694328.png"
-                    alt="Photo"
-                    style="height: 300px"
+                    v-if="hasImage"
+                    class="rounded mx-auto d-block mb-4"
+                    :src="imageUpload.imgDataUrl"
+                    style="width: 100%"
                   />
+                  <img
+                    v-else
+                    class="img-fluid"
+                    src="/images/imageUpload.png"
+                    alt=""
+                  />
+
+                  <a class="btn btn-block btn-outline-dark" @click="toggleShow">
+                    <i class="fas fa-upload"></i>
+                    Subir Imagen
+                  </a>
+                  <my-upload
+                    field="img"
+                    @crop-success="cropSuccess"
+                    @srcFileSet="srcFileSet"
+                    v-model="imageUpload.show"
+                    :langExt="imageUpload.idioma"
+                    :params="imageUpload.params"
+                    :width="600"
+                    :height="400"
+                    :headers="imageUpload.headers"
+                    img-format="png"
+                  ></my-upload>
                 </div>
               </div>
             </div>
@@ -172,7 +195,11 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-lg btn-outline-dark btn-block mb-4">
+      <button
+        type="submit"
+        class="btn btn-lg btn-outline-dark btn-block mb-4"
+        :disabled="disabled"
+      >
         <i class="fas fa-save"></i>
         Guardar
       </button>
@@ -183,9 +210,10 @@
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
 import SearchProducts from "../../../purchases/purchases/components/SearchProducts.vue";
+import myUpload from "vue-image-crop-upload";
 
 export default {
-  components: { BaseUrl, SearchProducts },
+  components: { BaseUrl, SearchProducts, myUpload },
   data() {
     return {
       newAssembly: {
@@ -193,25 +221,73 @@ export default {
         cod: null,
         description: null,
         price: 0,
+        image: "",
         products: [],
       },
+      imageUpload: {
+        idioma: {
+          hint: "Selecciona o arrastra una imagen",
+          loading: "Subiendo...",
+          noSupported:
+            "Tu navegador no es soportado, por favor usa IE10+ u otros navegadores más recientes",
+          success: "Subido exitosamente",
+          fail: "Sucedió un error",
+          preview: "Vista previa",
+          btn: {
+            off: "Cancelar",
+            close: "Cerrar",
+            back: "Atrás",
+            save: "Guardar",
+          },
+          error: {
+            onlyImg: "Únicamente imágenes",
+            outOfSize: "La imagen excede el tamaño maximo:",
+            lowestPx: "La imagen es demasiado pequeña. Se espera por lo menos:",
+          },
+        },
+        show: false,
+        width: 200,
+        imgDataUrl: "", // the datebase64 url of created image
+      },
       errors: [],
+      disabled: false,
     };
   },
   created() {},
   methods: {
     async storeAssembly() {
+      this.disabled = true;
       await BaseUrl.post(`/api/assemblies`, this.newAssembly)
         .then((response) => {
-          console.log(response.data);
+          this.disabled = false;
+          this.$router.push({ name: "assemblies-list" });
+          Swal.fire({
+            icon: "sucess",
+            title: "Ensamblaje registrado",
+          });
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
           console.log(error.response);
         });
     },
-    removeProduct(index) {
-      this.newAssembly.products.splice(index, 1);
+
+    //* * METODOS PARA IMAGENES
+    toggleShow() {
+      this.imageUpload.show = !this.imageUpload.show;
+    },
+    cropSuccess(imgDataUrl, field) {
+      console.log("-------- crop success --------");
+      this.imageUpload.imgDataUrl = imgDataUrl;
+      this.newAssembly.image = imgDataUrl;
+    },
+    srcFileSet(fileName, fileType, fileSize) {
+      console.log(fileSize);
+    },
+  },
+  computed: {
+    hasImage() {
+      return this.imageUpload.imgDataUrl != "" ? true : false;
     },
   },
 };

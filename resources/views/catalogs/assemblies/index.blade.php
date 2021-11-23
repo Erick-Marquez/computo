@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Configuraciones de PC')
 
 @section('content_header')
 @stop
