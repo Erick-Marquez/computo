@@ -82,6 +82,19 @@ trait ApiTrait{
         }
     }
 
+    public function scopeDateInterval(Builder $query)
+    {
+
+        if (empty(request('dateInterval'))) {
+            return;
+        }
+
+        $range = explode(',', request('dateInterval'));
+        $from = date($range[0]);
+        $until = date($range[1]);
+        $query->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $until);
+    }
+
     public function scopeGetOrPaginate(Builder $query)
     {
         if ( request('perPage') ) {
@@ -94,5 +107,4 @@ trait ApiTrait{
 
         return $query->get();
     }
-
 }

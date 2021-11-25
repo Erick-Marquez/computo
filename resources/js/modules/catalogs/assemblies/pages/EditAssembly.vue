@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Crear una Nueva Configuración</h1>
+      <h1>Editar Configuracion</h1>
     </div>
   </div>
 
@@ -18,7 +18,7 @@
                   name=""
                   id=""
                   :class="$errorsClass(errors['name'])"
-                  v-model="newAssembly.name"
+                  v-model="editAssembly.name"
                 />
                 <div
                   class="invalid-feedback ml-3"
@@ -36,7 +36,7 @@
                       name=""
                       id=""
                       :class="$errorsClass(errors['cod'])"
-                      v-model="newAssembly.cod"
+                      v-model="editAssembly.cod"
                     />
                     <div
                       class="invalid-feedback ml-3"
@@ -55,7 +55,7 @@
                       id=""
                       :class="$errorsClass(errors['price'])"
                       :value="
-                        (newAssembly.price = newAssembly.products
+                        (editAssembly.price = editAssembly.products
                           .reduce((previousValue, currentValue) => {
                             return (
                               parseFloat(previousValue) +
@@ -83,7 +83,7 @@
                   name=""
                   id=""
                   rows="5"
-                  v-model="newAssembly.description"
+                  v-model="editAssembly.description"
                 ></textarea>
               </div>
             </div>
@@ -144,7 +144,7 @@
               /> -->
 
               <search-products
-                :products="newAssembly.products"
+                :products="editAssembly.products"
                 :errors="errors"
               ></search-products>
             </div>
@@ -162,7 +162,7 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(product, index) in newAssembly.products"
+                    v-for="(product, index) in editAssembly.products"
                     :key="product.id"
                   >
                     <td>{{ product.name }} - {{ product.brand }}</td>
@@ -216,7 +216,7 @@ export default {
   components: { BaseUrl, SearchProducts, myUpload },
   data() {
     return {
-      newAssembly: {
+      editAssembly: {
         name: null,
         cod: null,
         description: null,
@@ -252,21 +252,33 @@ export default {
       disabled: false,
     };
   },
-  created() {},
+  created() {
+      this.getAssembly()
+  },
   methods: {
-    async storeAssembly() {
-      this.disabled = true;
-      await BaseUrl.post(`/api/assemblies`, this.newAssembly)
+    async getAssembly() {
+      await BaseUrl.get(`/api/assemblies/${this.$route.params.id}?included=image&included=products`)
         .then((response) => {
-          this.disabled = false;
-          this.$router.push({ name: "assemblies-list" });
-          Swal.fire("Ensamblaje Registrado", ":)", "success");
+          console.log(response.data.data);
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
           console.log(error.response);
         });
     },
+    // async storeAssembly() {
+    //   this.disabled = true;
+    //   await BaseUrl.post(`/api/assemblies`, this.editAssembly)
+    //     .then((response) => {
+    //       this.disabled = false;
+    //       this.$router.push({ name: "assemblies-list" });
+    //       Swal.fire("Ensamblaje Registrado", ":)", "success");
+    //     })
+    //     .catch((error) => {
+    //       this.errors = error.response.data.errors;
+    //       console.log(error.response);
+    //     });
+    // },
 
     //* * METODOS PARA IMAGENES
     toggleShow() {
@@ -275,7 +287,7 @@ export default {
     cropSuccess(imgDataUrl, field) {
       console.log("-------- crop success --------");
       this.imageUpload.imgDataUrl = imgDataUrl;
-      this.newAssembly.image = imgDataUrl;
+      this.editAssembly.image = imgDataUrl;
     },
     srcFileSet(fileName, fileType, fileSize) {
       console.log(fileSize);

@@ -29,6 +29,14 @@ class ProductResource extends JsonResource
             'brand_line_id' => $this->brand_line_id,
             'brand' => $this->brandLine->brand->description,
             'line' => $this->brandLine->line->description,
+
+            'sale_price' => $this->whenPivotLoaded('assembly_product', function () {
+                return $this->pivot->sale_price;
+            }),
+            'quantity' => $this->whenPivotLoaded('assembly_product', function () {
+                return $this->pivot->quantity;
+            }),
+
         ];
     }
 }

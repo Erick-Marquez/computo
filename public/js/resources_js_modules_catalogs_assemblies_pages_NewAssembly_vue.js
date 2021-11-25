@@ -73,7 +73,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         },
         show: false,
-        width: 200,
         imgDataUrl: "" // the datebase64 url of created image
 
       },
@@ -100,10 +99,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     name: "assemblies-list"
                   });
 
-                  Swal.fire({
-                    icon: "sucess",
-                    title: "Ensamblaje registrado"
-                  });
+                  Swal.fire("Ensamblaje Registrado", ":)", "success");
                 })["catch"](function (error) {
                   _this.errors = error.response.data.errors;
                   console.log(error.response);
@@ -508,7 +504,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     langExt: $data.imageUpload.idioma,
     params: $data.imageUpload.params,
-    width: 600,
+    width: 500,
     height: 400,
     headers: $data.imageUpload.headers,
     "img-format": "png"

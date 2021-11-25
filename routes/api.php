@@ -18,11 +18,13 @@ use App\Http\Controllers\ExpenseIncomeController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
+use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
+use App\Models\OpenClosedCashbox;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -72,6 +74,8 @@ Route::middleware([
     Route::patch('/cashbox/{id}/close', [CashboxController::class, 'closeCashbox'])->name('api.closecashbox');
     Route::get('/cashbox/detail/{id}', [CashboxController::class, 'cashboxDetail'])->name('api.cashboxdetail');
     Route::post('/cashbox/{id}/movement', [CashboxController::class, 'movement'])->name('api.movementCashbox');
+
+    Route::apiResource('openClosedCashboxes', OpenClosedCashboxController::class)->names('api.openClosedCashboxes');
 
     Route::apiResource('egresos-ingresos', ExpenseIncomeController::class)->parameters([
         'egresos-ingresos' => 'expenseIncome'

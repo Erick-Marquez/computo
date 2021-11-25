@@ -18,14 +18,14 @@ class Assembly extends Model
         'active'
     ];
 
-    protected $allowIncluded = [];
+    protected $allowIncluded = ['products', 'image'];
     protected $allowFilter = ['id', 'name', 'active'];
     protected $allowSort = ['id'];
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'assembly_product', 'assembly_id', 'product_id')
-                    ->withPivot('quantity');
+                    ->withPivot('quantity', 'sale_price');
     }
 
     public function image()

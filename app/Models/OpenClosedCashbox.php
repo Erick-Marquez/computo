@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OpenClosedCashbox extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     protected $fillable = [
         'opening_date',
@@ -18,6 +19,10 @@ class OpenClosedCashbox extends Model
         'user_id',
         'cashbox_id',
     ];
+
+    protected $allowIncluded = ['cashbox', 'user'];
+    protected $allowFilter = ['cashbox_id', 'user_id', 'opening_date', 'state'];
+    protected $allowSort = ['id', 'opening_date'];
 
     public function cashbox()
     {
@@ -56,4 +61,5 @@ class OpenClosedCashbox extends Model
 
         return $expenseIncomes;
     }
+
 }

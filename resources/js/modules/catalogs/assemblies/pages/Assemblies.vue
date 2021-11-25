@@ -6,8 +6,10 @@
   </div>
 
   <div class="container-fluid">
-
-    <router-link class="btn btn-block btn-lg btn-dark mb-4" :to="{name: 'new-assembly'}">
+    <router-link
+      class="btn btn-block btn-lg btn-dark mb-4"
+      :to="{ name: 'new-assembly' }"
+    >
       <i class="fas fa-plus"></i>
       Nuevo Ensamblaje
     </router-link>
@@ -55,7 +57,7 @@
                     <td>{{ assembly.cod }}</td>
                     <td>{{ assembly.name }}</td>
                     <td>{{ assembly.description }}</td>
-                    <td>{{ assembly.referential_sale_price }}</td>
+                    <td>${{ assembly.price }}</td>
                     <td>
                       <div class="dropdown">
                         <button
@@ -73,11 +75,14 @@
                           aria-labelledby="dropdownMenuButton"
                           style=""
                         >
-                          <a class="dropdown-item" href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                          ><a class="dropdown-item" href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                          >
+                          <router-link class="dropdown-item" :to="{name: 'edit-assembly', params: {id : assembly.id}}">
+                            <i class="col-1 mr-3 fas fa-eye"></i>
+                            Editar
+                          </router-link>
+                          <a class="dropdown-item" href="#">
+                            <i class="col-1 mr-3 fas fa-edit"></i>
+                            Eliminar
+                          </a>
                         </div>
                       </div>
                     </td>
@@ -108,7 +113,7 @@ export default {
   },
   methods: {
     async getAssemblies() {
-      await BaseUrl.get(`/api/assemblies`)
+      await BaseUrl.get(`/api/assemblies?included=image&included=products`)
         .then((response) => {
           this.assemblies = response.data.data;
           console.log(response.data);

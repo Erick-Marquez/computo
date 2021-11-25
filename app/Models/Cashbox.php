@@ -3,18 +3,23 @@
 namespace App\Models;
 
 use App\Services\CashboxService;
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cashbox extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     protected $fillable = [
         'description',
         'is_open',
         'branch_id'
     ];
+
+    protected $allowIncluded = ['openClosedCashboxes'];
+    protected $allowFilter = ['is_open'];
+    protected $allowSort = ['id'];
 
     // Relacion inversa de muchos a uno
     public function branch()

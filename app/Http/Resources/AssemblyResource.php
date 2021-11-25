@@ -3,7 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ImageResource;
 class AssemblyResource extends JsonResource
 {
     /**
@@ -16,9 +17,12 @@ class AssemblyResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'cod' => $this->cod,
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
+            'image' => $this->image->url,
+            'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }
 }

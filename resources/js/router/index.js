@@ -126,6 +126,11 @@ const routes = [
                 component: () => import('../modules/catalogs/assemblies/pages/NewAssembly.vue'),
             },
             {
+                path: '/editar-ensamblaje/:id',
+                name: 'edit-assembly',
+                component: () => import('../modules/catalogs/assemblies/pages/EditAssembly.vue'),
+            },
+            {
                 path: '',
                 redirect: { name: 'assemblies-list' }
             }

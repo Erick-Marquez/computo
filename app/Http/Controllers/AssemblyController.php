@@ -42,9 +42,7 @@ class AssemblyController extends Controller
             $imageName = explode(' ', $request->name);
             $imageName = implode('-', $imageName);
 
-            Image::make($request->image)
-                    ->resize(500, null)
-                    ->save(public_path('storage') . "/assemblies/$imageName.png", 70, 'png');
+            Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
 
             $assembly->image()->create([
                 'url' => "assemblies/$imageName.png",
@@ -63,13 +61,14 @@ class AssemblyController extends Controller
 
         } catch (\Throwable $th) {
             // throw $th;
-            return $th->getMessage();
+            throw $th->getMessage();
         }
     }
 
-    public function show(Assembly $assembly)
+    public function show($id)
     {
-        //
+        $assembly = Assembly::included()->findOrFail($id);
+        return AssemblyResource::make($assembly);
     }
 
     public function update(Request $request, Assembly $assembly)

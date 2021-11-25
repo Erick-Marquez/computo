@@ -27,8 +27,13 @@ class CashboxController extends Controller
 
     public function index()
     {
-        $user = auth()->user()->branch_id;
-        $cashboxes = Cashbox::all()->where('branch_id', $user);
+        $branch_id = auth()->user()->branch_id;
+
+        $cashboxes = Cashbox::included()
+                            ->filter()
+                            ->sort()
+                            ->getOrPaginate()
+                            ->where('branch_id', $branch_id);
 
         return CashboxResource::collection($cashboxes);
     }
@@ -52,7 +57,6 @@ class CashboxController extends Controller
         Cashbox::create($data);
 
         return response()->json($data);
-
     }
 
     /**
@@ -61,8 +65,10 @@ class CashboxController extends Controller
      * @param  \App\Models\Cashbox  $cashbox
      * @return \Illuminate\Http\Response
      */
-    public function show(Cashbox $cashbox)
+    public function show($id)
     {
+        $cashbox = Cashbox::included()->firstOrFail($id);
+        CashboxResource::make($cashbox);
     }
 
     /**
@@ -151,7 +157,7 @@ class CashboxController extends Controller
     public function reportCashboxOpenClosed($occId)
     {
         $dataReport = $this->cashboxService->getDataReport($occId);
-        $pdf = \PDF::loadView('templates.pdf.report-cashbox-oc', $dataReport)->setPaper('A4','portrait');
+        $pdf = \PDF::loadView('templates.pdf.report-cashbox-oc', $dataReport)->setPaper('A4', 'portrait');
         return $pdf->stream();
     }
 }
