@@ -39,17 +39,25 @@ class SaleService
 
             'observation' => $request->voucher['observation'],
             'discount' => $request->voucher['discount'],
-            'received_money' => $request->voucher['received_money'],
-            'change' => $request->voucher['change'],
+            
 
             'have_warranty' => $request->voucher['warranty'], 
 
-            'payment_type_id' => $request->voucher['payment_type_id'],
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
             'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => $request->user_id
         ]);
+
+        $paymentToSale = [];
+
+        foreach ($request->voucher['payments'] as $payment) {
+            
+            $paymentToSale[$payment['payment_type_id']] = ['amount' => $payment['amount']];
+
+        }
+
+        $sale->paymentTypes()->attach($paymentToSale);
 
         // Garantia
         if ($request->voucher['warranty']) {

@@ -35,7 +35,7 @@ class VoucherRequest extends FormRequest
 
             
 
-            'voucher.payment_type_id' => ['required', 'exists:payment_types,id'],
+            'voucher.payment.*.payment_type_id' => ['required', 'exists:payment_types,id'],
 
             'voucher.document_type' => [
                 'required', 

@@ -64,7 +64,7 @@
                   </td>
                   <td class="align-middle">
                     <a title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + warranty.sale.id">
-                      <img src="../../../../../../public/img/svg/warranty_cpe.svg" style="width: 30px">
+                      <img src="../../../../../img/warranty_cpe.svg" style="width: 30px">
                     </a>
                   </td>
                   <td>

@@ -185,17 +185,17 @@
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
 
-        <div class="col-12 table-responsive mt-4">
+        <div class="col-12 table-responsive mt-4 mb-4 table-product border rounded">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th style="width: 40%">Descripción</th>
+                <th style="width: 36%">Descripción</th>
                 <th style="width: 20%">Tipo IGV</th>
                 <th style="width: 3%">Cantidad</th>
-                <th style="width: 8%">Descuento</th>
-                <th style="width: 8%">Precio</th>
-                <th style="width: 8%">Sub Total</th>
-                <th style="width: 8%">Total</th>
+                <th style="width: 9%">Descuento</th>
+                <th style="width: 9%">Precio</th>
+                <th style="width: 9%">Sub Total</th>
+                <th style="width: 9%">Total</th>
                 <th style="width: 5%">Series</th>
                 <th style="width: 3%"></th>
               </tr>
@@ -334,24 +334,79 @@
               </tr>
             </tbody>
           </table>
+          <div class="image-without-products" v-if="saleData.detail.length == 0">
+            <img src="../../../../../img/add_product.png" alt="" style="max-height: 120px">
+            <h1 class="display-4">Agregue productos</h1>
+          </div>
         </div>
       </div>
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
+
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table" style="min-width: 600px;">
+                <thead>
+                  <tr>
+                    <th><i class="text-danger fas fa-money-bill"></i> Tipo de pago</th>
+                    <th>Total Recibido S/.</th>
+                    <th v-if="!saleData.voucher.isMultiPayment">Vuelto S/.</th>
+                    <th class="col-2 text-center">¿Es multipago?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(payment, index) in saleData.voucher.payments" :key="payment.id">
+                    <td>
+                      <select v-model="payment.payment_type_id" class="form-control rounded-pill">
+                        <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                          {{ paymentType.description }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <input class="form-control rounded-pill" type="number" min="0" step="0.01" v-model="payment.amount" @input="index == 0 ? getChange() : null">
+                    </td>
+                    <td v-if="!saleData.voucher.isMultiPayment">
+                      <input class="form-control rounded-pill" type="text" v-model="saleData.voucher.change" disabled>
+                    </td>
+
+                    <td class="text-center" v-if="index == 0">
+                      <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
+                        <input type="checkbox" class="custom-control-input" id="customSwitchCreateIsMultiPayment" v-model="saleData.voucher.isMultiPayment" @change="clearMultipayment()">
+                        <label class="custom-control-label" for="customSwitchCreateIsMultiPayment">{{ saleData.voucher.isMultiPayment ? 'Si' : 'No' }}</label>
+                      </div>
+                    </td>
+                    <td class="text-center" v-else-if="index == 1">
+                      <button type="button" class="btn btn-dark btn-sm" @click="addPayment()">
+                        <span><i class="fas fa-plus"></i></span>
+                        Añadir
+                      </button>
+                    </td>
+                    <td class="text-center" v-else>
+                      <button type="button" class="btn btn-flat" @click="deletePayment(index)">
+                        <i class="text-danger fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">
-                  <i class="text-danger fas fa-money-bill"></i>
-                  Tipo de pago
+                  <i class="text-danger fas fa-tags"></i>
+                  Descuento
                 </label>
-                <select v-model="saleData.voucher.payment_type_id" class="form-control rounded-pill">
-                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
-                    {{ paymentType.description }}
-                  </option>
-                </select>
+                <input :class="$errorsClass(errors['voucher.discount'])" type="number" min="0" step="0.01"
+                v-model="saleData.voucher.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
+                <div class="invalid-feedback ml-3" v-if="$errorsExists(errors['voucher.discount'])">
+                  {{ $errorsPrint(errors['voucher.discount']) }}
+                </div>
               </div>
             </div>
             <div class="col-md-3">
@@ -380,40 +435,9 @@
                 </select>
               </div>
             </div>
+            
           </div>
-          <!-- Tipo de pago -->
-          <div class="row">
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">
-                  <i class="text-danger fas fa-tags"></i>
-                  Descuento
-                </label>
-                <input :class="$errorsClass(errors['voucher.discount'])" type="number" min="0" step="0.001"
-                v-model="saleData.voucher.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
-                <div class="invalid-feedback ml-3" v-if="$errorsExists(errors['voucher.discount'])">
-                  {{ $errorsPrint(errors['voucher.discount']) }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">Total Recibido S/.</label>
-                <input class="form-control rounded-pill" type="number" min="0" step="0.001" v-model="saleData.voucher.received_money" @input="getChange()">
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">Vuelto S/.</label>
-                <input
-                  class="form-control rounded-pill"
-                  type="text"
-                  v-model="saleData.voucher.change"
-                  disabled
-                >
-              </div>
-            </div>
-          </div>
+
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -421,7 +445,7 @@
                 <textarea
                   cols="30"
                   rows="4"
-                  class="form-control rounded-pill px-5"
+                  class="form-control"
                   v-model="saleData.voucher.observation"
                 ></textarea>
               </div>
@@ -430,7 +454,7 @@
         </div>
         <div class="col-md-4">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table mt-5">
               <tbody>
                 <tr v-show="saleData.voucher.discount > 0">
                   <th>Descuento global:</th>
@@ -512,7 +536,7 @@ export default {
 
     await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
       this.paymentTypes = resp.data.data;
-      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id
+      this.saleData.voucher.payments[0].payment_type_id = this.paymentTypes[0].id
     });
 
     await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
@@ -590,7 +614,15 @@ export default {
           change: 0,
           warranty_serie_id: null,
           warranty: false,
-          payment_type_id: null,
+
+          isMultiPayment: false,
+          payments: [
+            {
+              payment_type_id: null,
+              amount: 0
+            },
+            
+          ],
         },
         detail: [],
       },
@@ -761,7 +793,6 @@ export default {
       this.productSerieSearchFilter.splice(index, 1);
       this.getTotals()
     },
-
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
       let discount = 0;
@@ -779,7 +810,6 @@ export default {
       this.activateDetailDiscount =
         this.saleData.voucher.discount > 0 ? true : false;
     },
-
     addSeries(index) {
       const temp = [];
       for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
@@ -937,14 +967,20 @@ export default {
 
     },
     getChange(){
-      if (this.saleData.voucher.received_money != 0) {
-        this.saleData.voucher.change = this.saleData.voucher.received_money - this.saleData.voucher.total
+      if (this.saleData.voucher.payments[0].amount != 0) {
+        this.saleData.voucher.change = this.saleData.voucher.payments[0].amount - this.saleData.voucher.total
       }
-      if (this.saleData.voucher.received_money == 0) {
+      if (this.saleData.voucher.payments[0].amount == 0) {
         this.saleData.voucher.change = 0
       }
     },
     createSale() {
+
+      this.saleData.voucher.received_money = 0
+
+      if (!this.saleData.voucher.isMultiPayment) {
+        this.saleData.voucher.received_money = this.saleData.voucher.payments[0].amount
+      }
 
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
         this.errors = []
@@ -1194,6 +1230,30 @@ export default {
       }
 
     },
+    addPayment(){
+
+      const payment = {
+        payment_type_id: this.paymentTypes[0].id,
+        amount: 0,
+      }
+
+      this.saleData.voucher.payments.push(payment);
+    },
+    deletePayment(index){
+      this.saleData.voucher.payments.splice(index, 1);
+    },
+    clearMultipayment(){
+
+      if (!this.saleData.voucher.isMultiPayment) {
+
+        this.saleData.voucher.payments = []
+        
+      }
+
+      this.addPayment()
+
+    }
+
 
   }
 };
@@ -1270,5 +1330,25 @@ label {
   width: 100%;
   height: 40px;
   border-radius: 5px;
+}
+.table-product{
+  min-height: 250px;
+}
+.table-product table{
+  min-width: 900px;
+}
+.image-without-products{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img{
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
 }
 </style>

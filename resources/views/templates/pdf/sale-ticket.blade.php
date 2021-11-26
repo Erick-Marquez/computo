@@ -63,7 +63,27 @@
                 <td><span class="bold">Direc.: </span>{{ $head->customer->address }}</td>
             </tr>
             <tr>
-                <td><span class="bold">Forma de Pago: </span>{{ $head->paymentType->description }}</td>
+                @if (count($head->paymentTypes) == 1)
+        
+                    <td><span class="bold">Forma de Pago: </span>{{ $head->paymentTypes[0]->description }}</td>
+
+                @else
+
+                    <td>
+                        <span class="bold">Formas de Pago: </span>
+
+                        @foreach ($head->paymentTypes as $payment)
+                                
+                            @if ($loop->last)
+                                {{ $payment->description }}
+                            @else
+                            {{ $payment->description }},
+                            @endif
+
+                        @endforeach
+                    </td>
+                @endif
+                
             </tr>
             <tr>
                 <td><span class="bold">Fecha Vencimiento: </span>{{ $head->date_due }}</td>
@@ -95,53 +115,69 @@
             @endphp
         @endforeach
     </tbody>
-  </table>
-  <div class="hr"></div>
-  <table class="price">
-    <tbody>
-        @if ($head->discount > 0)
+    </table>
+    <div class="hr"></div>
+    <table class="price">
+        <tbody>
+            @if ($head->discount > 0)
+                <tr>
+                    <td><span class="bold">Descuento Global: </span> S/. {{ round($head->discount, 2) }}</td>
+                </tr>
+            @endif
+            @if ($discount > 0)
+                <tr>
+                    <td><span class="bold">Descuento por Item: </span> S/. {{ round($discount, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->total_taxed > 0)
+                <tr>
+                    <td><span class="bold">Gravado: </span> S/. {{ round($head->total_taxed, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->total_exonerated > 0)
+                <tr>
+                    <td><span class="bold">Exonerado: </span> S/. {{ round($head->total_exonerated, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->total_unaffected > 0)
+                <tr>
+                    <td><span class="bold">Inafecto: </span> S/. {{ round($head->total_unaffected, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->total_free > 0)
+                <tr>
+                    <td><span class="bold">Gratuita: </span> S/. {{ round($head->total_free, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->total_igv > 0)
+                <tr>
+                    <td><span class="bold">Igv (18%): </span> S/. {{ round($head->total_igv, 2) }}</td>
+                </tr>
+            @endif
             <tr>
-                <td><span class="bold">Descuento Global: </span> S/. {{ round($head->discount, 2) }}</td>
+                <td><span class="bold">Total: </span> S/. {{ round($head->total - $head->discount, 2) }}</td>
             </tr>
-        @endif
-        @if ($discount > 0)
-            <tr>
-                <td><span class="bold">Descuento por Item: </span> S/. {{ round($discount, 2) }}</td>
-            </tr>
-        @endif
-        @if ($head->total_taxed > 0)
-            <tr>
-                <td><span class="bold">Gravado: </span> S/. {{ round($head->total_taxed, 2) }}</td>
-            </tr>
-        @endif
-        @if ($head->total_exonerated > 0)
-            <tr>
-                <td><span class="bold">Exonerado: </span> S/. {{ round($head->total_exonerated, 2) }}</td>
-            </tr>
-        @endif
-        @if ($head->total_unaffected > 0)
-            <tr>
-                <td><span class="bold">Inafecto: </span> S/. {{ round($head->total_unaffected, 2) }}</td>
-            </tr>
-        @endif
-        @if ($head->total_free > 0)
-            <tr>
-                <td><span class="bold">Gratuita: </span> S/. {{ round($head->total_free, 2) }}</td>
-            </tr>
-        @endif
-        @if ($head->total_igv > 0)
-            <tr>
-                <td><span class="bold">Igv (18%): </span> S/. {{ round($head->total_igv, 2) }}</td>
-            </tr>
-        @endif
-        <tr>
-            <td><span class="bold">Total: </span> S/. {{ round($head->total - $head->discount, 2) }}</td>
-        </tr>
-    </tbody>
-  </table>
-  <div class="hr"></div>
-  <p><span class="bold">IMPORTE EN LETRAS: </span>{{ \App\Services\NumberLetterService::convert(round($head->total - $head->discount, 2), 'SOLES') }}</p>
-  <p><span class="bold">FORMA DE PAGO: </span>{{ $head->paymentType->description }} (Contado)</p>
+        </tbody>
+    </table>
+    <div class="hr"></div>
+    <p><span class="bold">IMPORTE EN LETRAS: </span>{{ \App\Services\NumberLetterService::convert(round($head->total - $head->discount, 2), 'SOLES') }}</p>
+
+    @if (count($head->paymentTypes) == 1)
+        
+        <p><span class="bold">FORMA DE PAGO: </span>{{ $head->paymentTypes[0]->description }} (Contado)</p>
+
+    @else
+
+        <p><span class="bold">FORMAS DE PAGO (CONTADO):</p>
+
+        @foreach ($head->paymentTypes as $payment)
+            
+            <p><span class="bold">{{ $payment->description }}: </span>S/. {{ round($payment->pivot->amount, 2) }}</p>
+
+        @endforeach
+        
+    @endif
+  
     <div>
         <img src="data:image/png;base64, {{ $qr }}" class="qr"/>
     </div>

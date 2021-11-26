@@ -200,7 +200,10 @@ class SunatService
             $doc = new DOMDocument();
             $doc->loadXML($response);
             if (isset($doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
+
                 self::$message['response_sunat'] = true;
+
+                
                 $cdr = $doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue; // Obtener el valor de la etiqueta de respuesta
                 $cdr = base64_decode($cdr); // Descodificar la respuesta
                 // Guardo el archivo cdr

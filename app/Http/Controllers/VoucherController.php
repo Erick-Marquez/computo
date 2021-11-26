@@ -123,7 +123,7 @@ class VoucherController extends Controller
     public function print($type, Sale $sale)
     {
         $company = Company::find(1);
-        $head = Sale::where('id', $sale->id)->with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType')->firstOrFail();
+        $head = Sale::where('id', $sale->id)->with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType', 'paymentTypes')->firstOrFail();
         $details = $head->saleDetails;
 
         $text = join('|', [

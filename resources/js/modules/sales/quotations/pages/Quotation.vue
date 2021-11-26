@@ -64,7 +64,7 @@
                     <td class="align-middle text-center">S/. {{ availableQuotation.total }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + availableQuotation.id">
-                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
                       </a>
                     </td>
                     <td class="align-middle text-center">
@@ -170,7 +170,7 @@
                     <td class="align-middle text-center">S/. {{ unavailableQuotation.total }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + unavailableQuotation.id">
-                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
                       </a>
                     </td>
                     <td class="align-middle text-center">

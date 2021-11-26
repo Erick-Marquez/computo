@@ -43,7 +43,6 @@ class Sale extends Model
         'hash_cpe',
         'canceled',
 
-        'payment_type_id',
         'serie_id',
         'customer_id',
         'open_closed_cashbox_id',
@@ -66,9 +65,9 @@ class Sale extends Model
         return $this->belongsTo(Serie::class);
     }
 
-    public function paymentType()
+    public function paymentTypes()
     {
-        return $this->belongsTo(PaymentType::class);
+        return $this->belongsToMany(PaymentType::class)->withPivot(["amount"]);
     }
 
     public function customer()
