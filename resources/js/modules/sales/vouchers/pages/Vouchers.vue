@@ -64,20 +64,20 @@
                     <td class="align-middle">S/. {{ sale.total }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/vouchers/A4/' + sale.id">
-                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
                       </a>
                       <a title="Haz Click para Visualizar el Ticket" target="_blank" :href="'print/vouchers/TICKET/' + sale.id">
-                        <img src="../../../../../../public/img/svg/ticket_cpe.svg" style="width: 30px">
+                        <img src="../../../../../img/ticket_cpe.svg" style="width: 30px">
                       </a>
-                      <a title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + sale.id">
-                        <img src="../../../../../../public/img/svg/warranty_cpe.svg" style="width: 30px">
+                      <a v-if="sale.have_warranty" title="Haz Click para Visualizar la Gatantía" target="_blank" :href="'print/vouchers/WARRANTY/' + sale.id">
+                        <img src="../../../../../img/warranty_cpe.svg" style="width: 30px">
                       </a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id"><img src="../../../../../../public/img/svg/xml_cpe.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id"><img src="../../../../../img/xml_cpe.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/cdr/' + sale.id"><img src="../../../../../../public/img/svg/xml_cdr.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/cdr/' + sale.id"><img src="../../../../../img/xml_cdr.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
                       <i v-if="sale.state == 'ACEPTADO'" class="text-success fas fa-check"></i>
@@ -155,8 +155,8 @@ export default {
   },
   methods:{
     getTimestamp(date){
-      let prueba = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
-      return prueba
+      let dateString = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
+      return dateString
     }
   }
 }

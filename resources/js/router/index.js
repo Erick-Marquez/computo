@@ -62,7 +62,7 @@ const routes = [
             {
                 path: '',
                 name: 'warranties-list',
-                component: () => import('../modules/sales/warranties/pages/Warranty.vue'),
+                component: () => import('../modules/sales/warranties/pages/Warranties.vue'),
             },
             {
                 path: '',
@@ -86,6 +86,22 @@ const routes = [
             {
                 path: '',
                 redirect: { name: 'families-lines-brands-list' }
+            }
+        ]
+    },
+    {
+        path: '/producto-series',
+        name: 'product-series-index',
+        component: () => import('../modules/catalogs/product-series/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'product-series-list',
+                component: () => import('../modules/catalogs/product-series/pages/ProductSeries.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'product-list' }
             }
         ]
     },

@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
 use App\Models\Serie;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use PDF;
@@ -24,8 +25,17 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $quotations = Quotation::with('customer', 'user','serie')->get();
-        return QuotationResource::collection($quotations);
+        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->with('customer', 'user','serie')->latest()->get();
+
+        $unavailableQuotations = Quotation::where('date_due', '<', Carbon::now())->with('customer', 'user','serie')->latest()->get();
+
+        return response()->json([
+
+            'availableQuotations' => $availableQuotations,
+
+            'unavailableQuotations' => $unavailableQuotations
+            
+        ]);
     }
 
     /**

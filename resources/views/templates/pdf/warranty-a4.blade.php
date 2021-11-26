@@ -28,18 +28,37 @@
         <table class="productos">
             <thead>
                 <tr>
-                    <td>N°</td>
-                    <td>Código</td>
                     <td>Cantidad</td>
+                    <td>Tiempo</td>
+                    <td>Fecha Máxima</td>
                     <td>Descripción</td>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($details as $i => $detail)
                     <tr>
-                        <td>{{ $i+1 }}</td>
-                        <td>codigo</td>
                         <td>{{ $detail->quantity }}</td>
+                        @php
+                            switch ($detail->branchProduct->product->type_of_time_for_warranty) {
+                                case 'days':
+                                    $time_of_warranty = $detail->branchProduct->product->time_of_warranty == 1 ? $detail->branchProduct->product->time_of_warranty . ' Día' : $detail->branchProduct->product->time_of_warranty . ' Días'; 
+                                    break;
+                                case 'weeks':
+                                    $time_of_warranty = $detail->branchProduct->product->time_of_warranty == 1 ? $detail->branchProduct->product->time_of_warranty . ' Semana' : $detail->branchProduct->product->time_of_warranty . ' Semanas'; 
+                                    break;
+                                case 'months':
+                                    $time_of_warranty = $detail->branchProduct->product->time_of_warranty == 1 ? $detail->branchProduct->product->time_of_warranty . ' Mes' : $detail->branchProduct->product->time_of_warranty . ' Meses'; 
+                                    break;
+                                case 'years':
+                                    $time_of_warranty = $detail->branchProduct->product->time_of_warranty == 1 ? $detail->branchProduct->product->time_of_warranty . ' Año' : $detail->branchProduct->product->time_of_warranty . ' Años'; 
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                        @endphp
+                        <td>{{ $time_of_warranty }}</td>
+                        <td>{{ $detail->date_due }}</td>
                         <td>{{ $detail->branchProduct->product->name  }} - Series: 
                             @foreach ($detail->series as $serie)
                                 ({{ $serie }})
@@ -51,7 +70,7 @@
         </table>
         <p>"{{ $company->name }}" otorga la garantía en las siguientes condiciones:</p>
         <p class="negrita">Primero:</p>
-        <p>Se otorga una garantía total de "(TIEMPO)": en la cual "{{ $company->name }}" cambiará cualquier componente que presente fallas de fabricación y por tal
+        <p>Se otorga una garantía total del tiempo especificado por producto: en la cual "{{ $company->name }}" cambiará cualquier componente que presente fallas de fabricación y por tal
             no brinde un adecuado rendimiento, siendo la pieza de reemplazo nueva y en las mismas características que la fallada.
         </p>
         <p class="negrita">Segundo:</p>
@@ -74,7 +93,7 @@
         <p>* En este caso el cliente perderá todo derecho por Garantía</p>
         <p>CONDICIONES DE SERVICIO TECNICO Y DIAGNOSTICO</p>
         <p class="negrita">Cuarto:</p>
-        <p>Todo Servicio Técnico y diagnostico se realizará en las Oficinas de "{{ $company->name }}"para lo cual el cliente deberá traer su equipo o componente que presente fallas y el documento de compra correspondiente. <br>
+        <p>Todo Servicio Técnico y diagnostico se realizará en las Oficinas de "{{ $company->name }}" para lo cual el cliente deberá traer su equipo o componente que presente fallas y el documento de compra correspondiente. <br>
         La Garantía NO cubre el Servicio Técnico, NO cubre piezas, partes y/o accesorios adicionales que presenten fallas consignadas en el Ítem N° Tercero.</p>
         
         @php

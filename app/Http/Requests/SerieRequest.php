@@ -37,8 +37,8 @@ class SerieRequest extends FormRequest
 
         return [
             'serie' => ['required', 'size:4', 'unique:series,serie', $serieRules[$this->voucher_type_id]],
-            'current_number' => 'required|integer',
-            'voucher_type_id' => 'required',
+            'current_number' => 'required|integer|min:1',
+            'voucher_type_id' => 'required|exists:voucher_types,id',
             'branch_id' => 'required'
         ];
     }
@@ -60,7 +60,7 @@ class SerieRequest extends FormRequest
         return [
             'serie.required' => 'Debe ingresar una serie.',
             'serie.size' => 'La serie debe tener 4 caracteres.',
-            'serie.unique' => 'No vengas aqui a querer sorprender. La serie ya existe (La serie debe ser unica y no debe repetirse entre sucursales).',
+            'serie.unique' => 'La serie ya existe (La serie debe ser unica y no debe repetirse entre sucursales).',
             'serie.regex' => $serieMessages[$this->voucher_type_id]
         ];
     }

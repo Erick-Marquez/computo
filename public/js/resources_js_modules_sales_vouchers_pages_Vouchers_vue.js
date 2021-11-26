@@ -65,10 +65,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     getTimestamp: function getTimestamp(date) {
-      var prueba = new Date(Date.parse(date)).toLocaleString('en-US', {
+      var dateString = new Date(Date.parse(date)).toLocaleString('en-US', {
         timeZone: 'America/Lima'
       });
-      return prueba;
+      return dateString;
     }
   }
 });
@@ -87,11 +87,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* binding */ render)
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _public_img_svg_pdf_cpe_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../../public/img/svg/pdf_cpe.svg */ "./public/img/svg/pdf_cpe.svg");
-/* harmony import */ var _public_img_svg_ticket_cpe_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../public/img/svg/ticket_cpe.svg */ "./public/img/svg/ticket_cpe.svg");
-/* harmony import */ var _public_img_svg_warranty_cpe_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../public/img/svg/warranty_cpe.svg */ "./public/img/svg/warranty_cpe.svg");
-/* harmony import */ var _public_img_svg_xml_cpe_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../public/img/svg/xml_cpe.svg */ "./public/img/svg/xml_cpe.svg");
-/* harmony import */ var _public_img_svg_xml_cdr_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../public/img/svg/xml_cdr.svg */ "./public/img/svg/xml_cdr.svg");
+/* harmony import */ var _img_pdf_cpe_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../img/pdf_cpe.svg */ "./resources/img/pdf_cpe.svg");
+/* harmony import */ var _img_ticket_cpe_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../img/ticket_cpe.svg */ "./resources/img/ticket_cpe.svg");
+/* harmony import */ var _img_warranty_cpe_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../img/warranty_cpe.svg */ "./resources/img/warranty_cpe.svg");
+/* harmony import */ var _img_xml_cpe_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../img/xml_cpe.svg */ "./resources/img/xml_cpe.svg");
+/* harmony import */ var _img_xml_cdr_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../img/xml_cdr.svg */ "./resources/img/xml_cdr.svg");
 
 
 
@@ -196,7 +196,7 @@ var _hoisted_23 = {
 var _hoisted_24 = ["href"];
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: _public_img_svg_pdf_cpe_svg__WEBPACK_IMPORTED_MODULE_1__["default"],
+  src: _img_pdf_cpe_svg__WEBPACK_IMPORTED_MODULE_1__["default"],
   style: {
     "width": "30px"
   }
@@ -208,7 +208,7 @@ var _hoisted_26 = [_hoisted_25];
 var _hoisted_27 = ["href"];
 
 var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: _public_img_svg_ticket_cpe_svg__WEBPACK_IMPORTED_MODULE_2__["default"],
+  src: _img_ticket_cpe_svg__WEBPACK_IMPORTED_MODULE_2__["default"],
   style: {
     "width": "30px"
   }
@@ -220,7 +220,7 @@ var _hoisted_29 = [_hoisted_28];
 var _hoisted_30 = ["href"];
 
 var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: _public_img_svg_warranty_cpe_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
+  src: _img_warranty_cpe_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
   style: {
     "width": "30px"
   }
@@ -235,7 +235,7 @@ var _hoisted_33 = {
 var _hoisted_34 = ["href"];
 
 var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: _public_img_svg_xml_cpe_svg__WEBPACK_IMPORTED_MODULE_4__["default"],
+  src: _img_xml_cpe_svg__WEBPACK_IMPORTED_MODULE_4__["default"],
   style: {
     "width": "30px"
   }
@@ -250,7 +250,7 @@ var _hoisted_37 = {
 var _hoisted_38 = ["href"];
 
 var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: _public_img_svg_xml_cdr_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
+  src: _img_xml_cdr_svg__WEBPACK_IMPORTED_MODULE_5__["default"],
   style: {
     "width": "30px"
   }
@@ -372,13 +372,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: 'print/vouchers/TICKET/' + sale.id
     }, _hoisted_29, 8
     /* PROPS */
-    , _hoisted_27), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_27), sale.have_warranty ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+      key: 0,
       title: "Haz Click para Visualizar la Gatantía",
       target: "_blank",
       href: 'print/vouchers/WARRANTY/' + sale.id
     }, _hoisted_32, 8
     /* PROPS */
-    , _hoisted_30)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_30)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       title: "Haz Click para Descargar el XML",
       target: "_blank",
       href: 'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id
@@ -427,16 +428,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
 /***/ }),
 
-/***/ "./public/img/svg/pdf_cpe.svg":
-/*!************************************!*\
-  !*** ./public/img/svg/pdf_cpe.svg ***!
-  \************************************/
+/***/ "./resources/img/pdf_cpe.svg":
+/*!***********************************!*\
+  !*** ./resources/img/pdf_cpe.svg ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -444,14 +445,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/pdf_cpe.svg?20a57c59eab72f335c4b320ee80bcb0c");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/pdf_cpe.svg?22505b81a3f67132583a5bce0d205a5b");
 
 /***/ }),
 
-/***/ "./public/img/svg/ticket_cpe.svg":
-/*!***************************************!*\
-  !*** ./public/img/svg/ticket_cpe.svg ***!
-  \***************************************/
+/***/ "./resources/img/ticket_cpe.svg":
+/*!**************************************!*\
+  !*** ./resources/img/ticket_cpe.svg ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -463,10 +464,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./public/img/svg/warranty_cpe.svg":
-/*!*****************************************!*\
-  !*** ./public/img/svg/warranty_cpe.svg ***!
-  \*****************************************/
+/***/ "./resources/img/warranty_cpe.svg":
+/*!****************************************!*\
+  !*** ./resources/img/warranty_cpe.svg ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -478,10 +479,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./public/img/svg/xml_cdr.svg":
-/*!************************************!*\
-  !*** ./public/img/svg/xml_cdr.svg ***!
-  \************************************/
+/***/ "./resources/img/xml_cdr.svg":
+/*!***********************************!*\
+  !*** ./resources/img/xml_cdr.svg ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -493,10 +494,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./public/img/svg/xml_cpe.svg":
-/*!************************************!*\
-  !*** ./public/img/svg/xml_cpe.svg ***!
-  \************************************/
+/***/ "./resources/img/xml_cpe.svg":
+/*!***********************************!*\
+  !*** ./resources/img/xml_cpe.svg ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -504,7 +505,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cpe.svg?767e5bd0f7658beeb425a67c5d58f838");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/xml_cpe.svg?cc57968ed80d143441288d3a2303104c");
 
 /***/ }),
 

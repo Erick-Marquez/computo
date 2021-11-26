@@ -160,14 +160,16 @@
             </tr>
             <tr class="observacion">
                 <td colspan="3">
-                    <p><span>Hash: </span>{{$head->hash_cpe }}</p>
+                    <p><span>Hash: </span>{{ $head->hash_cpe }}</p>
                 </td>
             </tr>
-            <tr class="observacion">
-                <td colspan="3">
-                    <p><span>Observación: </span>{{$head->observation }}</p>
-                </td>
-            </tr>
+            @if ($head->observation)
+                <tr class="observacion">
+                    <td colspan="3">
+                        <p><span>Observación: </span>{{ $head->observation }}</p>
+                    </td>
+                </tr>
+            @endif
         </table>
     </main>
 </body>

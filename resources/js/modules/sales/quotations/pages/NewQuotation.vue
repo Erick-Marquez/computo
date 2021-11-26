@@ -211,7 +211,7 @@
                   <input type="checkbox" class="custom-control-input" id="customSwitchCreate" v-model="quotationData.quotation.warranty">
                   <label class="custom-control-label" for="customSwitchCreate">{{ quotationData.quotation.warranty ? 'Si' : 'No' }}</label>
                 </div>
-                <div class="invalid-feedback" v-if="errorsCreate['quotation.warranty'] ">
+                <div class="invalid-feedback" v-if="errorsCreate['quotation.warranty']">
                   {{ errorsCreate['quotation.warranty'][0] }}
                 </div>
               </div>

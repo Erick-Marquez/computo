@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="container-fluid">
-    <div class="row text-center justify-content-md-center">
+    <div class="row text-center justify-content-md-center align-items-center">
 
       <div class="col col-lg-3">
         <div class="card">

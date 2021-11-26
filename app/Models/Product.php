@@ -20,6 +20,11 @@ class Product extends Model
         'referential_sale_price_two',
         'manager_series',
         'active',
+
+        'have_warranty',
+        'type_of_time_for_warranty',
+        'time_of_warranty',
+        
         'igv_type_id',
         'brand_line_id'
     ];
@@ -46,6 +51,11 @@ class Product extends Model
     public function branchProducts()
     {
         return $this->hasMany(BranchProduct::class);
+    }
+
+    public function branchProductSeries()
+    {
+        return $this->hasManyThrough(BranchProductSerie::class, BranchProduct::class);
     }
 
     public function assemblies()

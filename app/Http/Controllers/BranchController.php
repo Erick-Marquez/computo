@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BranchRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchResource;
 use Illuminate\Http\Request;
@@ -28,21 +29,30 @@ class BranchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BranchRequest $request)
     {
-        $request->validate([
-            'description' => 'required',
-            'direction' => 'required',
-        ]);
-
-        Branch::create([
+        $branch = Branch::create([
+            'cod_sunat' => $request->cod_sunat,
             'description' => $request->description,
             'phone' => $request->phone,
             'direction' => $request->direction,
             'ubigeo' => $request->ubigeo,
         ]);
 
-        return redirect()->route('branches.index');
+        foreach ($request->series as $branchSerie) {
+            
+            $branch->series()->create([
+                'serie' => $branchSerie['serie'],
+                'current_number' => $branchSerie['current_number'] - 1,
+
+                'have_igv' => $branchSerie['have_igv'],
+                
+                'voucher_type_id' => $branchSerie['voucher_type_id']
+            ]);
+
+        }
+
+        return response()->json($branch);
     }
 
     /**

@@ -150,7 +150,7 @@ var _hoisted_2 = {
   "class": "container-fluid"
 };
 var _hoisted_3 = {
-  "class": "row text-center justify-content-md-center"
+  "class": "row text-center justify-content-md-center align-items-center"
 };
 var _hoisted_4 = {
   "class": "col col-lg-3"
@@ -624,7 +624,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

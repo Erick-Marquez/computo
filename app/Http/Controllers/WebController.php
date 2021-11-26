@@ -53,8 +53,6 @@ class WebController extends Controller
         return view('catalogs.product-series.index');
     }
 
-
-
     public function branches()
     {
         return view('inventory.branches.index');

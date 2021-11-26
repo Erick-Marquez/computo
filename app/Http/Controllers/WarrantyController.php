@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BranchProductSerie;
+use App\Http\Resources\WarrantyResource;
+use App\Models\Warranty;
 use Illuminate\Http\Request;
 
-class ProductSerieController extends Controller
+class WarrantyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,9 @@ class ProductSerieController extends Controller
      */
     public function index()
     {
-        $productSeries = BranchProductSerie::all();
-        return view('catalogs.product-series.index', compact('productSeries'));
+        $warranties = Warranty::with('sale.serie', 'customer', 'serie')->get();
+        
+        return WarrantyResource::collection($warranties);
     }
 
     /**

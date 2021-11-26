@@ -13,11 +13,11 @@
       <i class="fas fa-plus"></i>
       Nueva Cotización
     </router-link>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de Cotizaciones</h3>
+            <h3 class="card-title">Lista de cotizaciones disponibles</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -37,45 +37,45 @@
             </div>
           </div>
           <!-- /.card-header -->
-          <div class="card-body p-0">
+          <div class="card-body p-0 table-custom-quotation">
             <div class="table-responsive">
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>Fecha</th>
-                    <th>Cotización</th>
-                    <th>Cliente</th>
-                    <th>Total</th>
-                    <th>PDF</th>
-                    <th>Valido Hasta</th>
-                    <th>Vendedor</th>
-                    <th>Acciones</th>
+                    <th style="width: 10%">Fecha</th>
+                    <th class="text-center" style="width: 5%">Cotización</th>
+                    <th style="width: 15%">Cliente</th>
+                    <th class="text-center" style="width: 10%">Total</th>
+                    <th class="text-center" style="width: 5%">PDF</th>
+                    <th class="text-center" style="width: 10%">Valido Hasta</th>
+                    <th class="text-center" style="width: 10%">Vendedor</th>
+                    <th class="text-center" style="width: 5%">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="quotation in quotations" :key="quotation.id">
-                    <td class="align-middle">{{ getTimestamp(quotation.created_at) }}</td>
-                    <td class="align-middle">{{quotation.serie.serie}}-{{ quotation.document_number }}</td>
+                  <tr v-for="availableQuotation in availableQuotations" :key="availableQuotation.id">
+                    <td class="align-middle">{{ getTimestamp(availableQuotation.created_at) }}</td>
+                    <td class="align-middle text-center">{{availableQuotation.serie.serie}}-{{ availableQuotation.document_number }}</td>
                     <td class="align-middle">
-                      <span class="badge bg-maroon">{{ quotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ quotation.customer.document }}
+                      <span class="badge bg-maroon">{{ availableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ availableQuotation.customer.document }}
                       <br>
-                      <span class="badge bg-maroon">Nombre:</span> {{ quotation.customer.name }}
+                      <span class="badge bg-maroon">Nombre:</span> {{ availableQuotation.customer.name }}
                     </td>
-                    <td class="align-middle">S/. {{ quotation.total }}</td>
-                    <td class="align-middle">
-                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + quotation.id">
-                        <img src="../../../../../../public/img/svg/pdf_cpe.svg" style="width: 30px">
+                    <td class="align-middle text-center">S/. {{ availableQuotation.total }}</td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + availableQuotation.id">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
                       </a>
                     </td>
-                    <td class="align-middle">
-                      {{ quotation.date_due }}
+                    <td class="align-middle text-center">
+                      {{ availableQuotation.date_due }}
                       <br>
-                      <span :class="getElapsedTimeNumber(quotation.date_due) > 0 ? 'text-success' : 'text-danger'" >
-                        {{ getElapsedTimeNumber(quotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(quotation.date_due) }}
+                      <span :class="getElapsedTimeNumber(availableQuotation.date_due) > 0 ? 'text-success' : 'text-danger'" >
+                        {{ getElapsedTimeNumber(availableQuotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(availableQuotation.date_due) }}
                       </span>
                     </td>
-                    <td class="align-middle">{{ quotation.user.name }}</td>
-                    <td class="align-middle">
+                    <td class="align-middle text-center">{{ availableQuotation.user.name }}</td>
+                    <td class="align-middle text-center">
                       <div class="dropdown">
                         <button
                           class="btn btn-danger dropdown-toggle"
@@ -102,7 +102,7 @@
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                           ><a
                             class="dropdown-item"
-                            :href="'print/quotations/' + quotation.id"
+                            :href="'print/quotations/' + availableQuotation.id"
                             target="_blank"
                             ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                           >
@@ -116,7 +116,112 @@
           </div>
           <!-- /.card-body -->
         </div>
-        <!-- /.card -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de cotizaciones convertidas o fuera de plazo</h3>
+
+            <div class="card-tools">
+              <div class="input-group input-group-sm" style="width: 150px">
+                <input
+                  type="text"
+                  name="table_search"
+                  class="form-control float-right"
+                  placeholder="Search"
+                >
+
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0 table-custom-quotation">
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th class="" style="width: 10%">Fecha</th>
+                    <th class="text-center" style="width: 5%">Cotización</th>
+                    <th class="" style="width: 15%">Cliente</th>
+                    <th class="text-center" style="width: 10%">Total</th>
+                    <th class="text-center" style="width: 5%">PDF</th>
+                    <th class="text-center" style="width: 10%">Valido Hasta</th>
+                    <th class="text-center" style="width: 10%">Vendedor</th>
+                    <th class="text-center" style="width: 5%">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="unavailableQuotation in unavailableQuotations" :key="unavailableQuotation.id">
+                    <td class="align-middle">{{ getTimestamp(unavailableQuotation.created_at) }}</td>
+                    <td class="align-middle text-center">{{unavailableQuotation.serie.serie}}-{{ unavailableQuotation.document_number }}</td>
+                    <td class="align-middle">
+                      <span class="badge bg-maroon">{{ unavailableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ unavailableQuotation.customer.document }}
+                      <br>
+                      <span class="badge bg-maroon">Nombre:</span> {{ unavailableQuotation.customer.name }}
+                    </td>
+                    <td class="align-middle text-center">S/. {{ unavailableQuotation.total }}</td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + unavailableQuotation.id">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
+                      </a>
+                    </td>
+                    <td class="align-middle text-center">
+                      {{ unavailableQuotation.date_due }}
+                      <br>
+                      <span :class="getElapsedTimeNumber(unavailableQuotation.date_due) > 0 ? 'text-success' : 'text-danger'" >
+                        {{ getElapsedTimeNumber(unavailableQuotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(unavailableQuotation.date_due) }}
+                      </span>
+                    </td>
+                    <td class="align-middle text-center">{{ unavailableQuotation.user.name }}</td>
+                    <td class="align-middle text-center">
+                      <div class="dropdown">
+                        <button
+                          class="btn btn-danger dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          Acciones
+                        </button>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                          style=""
+                        >
+                          <a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
+                          ><a
+                            class="dropdown-item"
+                            href="#"
+                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                          ><a
+                            class="dropdown-item"
+                            :href="'print/quotations/' + unavailableQuotation.id"
+                            target="_blank"
+                            ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                          >
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
       </div>
     </div>
   </div>
@@ -128,12 +233,14 @@ export default {
   components:{BaseUrl},
   async created(){
     await BaseUrl.get(`api/quotations`).then( resp=>{
-      this.quotations=resp.data.data
+      this.availableQuotations = resp.data.availableQuotations
+      this.unavailableQuotations = resp.data.unavailableQuotations
     })
   },
   data(){
     return{
-      quotations:{},
+      availableQuotations: [],
+      unavailableQuotations: [],
     }
   },
   methods:{
@@ -180,5 +287,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.table-custom-quotation{
+  min-height: 300px;
+}
+
 </style>

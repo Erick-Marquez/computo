@@ -61,9 +61,7 @@
             <select
               :class="
                 'form-control rounded-pill' +
-                (errorsCreate['voucher.document_type'] == null
-                  ? ''
-                  : ' is-invalid')
+                (errors['voucher.document_type'] == null ? '' : ' is-invalid')
               "
               v-model="saleData.voucher.document_type"
               @change="loadSeries()"
@@ -78,9 +76,9 @@
             </select>
             <div
               class="invalid-feedback"
-              v-if="errorsCreate['voucher.document_type']"
+              v-if="errors['voucher.document_type']"
             >
-              {{ errorsCreate["voucher.document_type"][0] }}
+              {{ errors["voucher.document_type"][0] }}
             </div>
           </div>
         </div>
@@ -94,7 +92,7 @@
             <select
               :class="
                 'form-control rounded-pill' +
-                (errorsCreate['voucher.serie_id'] == null ? '' : ' is-invalid')
+                (errors['voucher.serie_id'] == null ? '' : ' is-invalid')
               "
               v-model="saleData.voucher.serie_id"
               v-on:change="loadCurrentNumber"
@@ -103,11 +101,8 @@
                 {{ serie.serie }}
               </option>
             </select>
-            <div
-              class="invalid-feedback"
-              v-if="errorsCreate['voucher.serie_id']"
-            >
-              {{ errorsCreate["voucher.serie_id"][0] }}
+            <div class="invalid-feedback" v-if="errors['voucher.serie_id']">
+              {{ errors["voucher.serie_id"][0] }}
             </div>
           </div>
         </div>
@@ -128,13 +123,13 @@
           </div>
         </div>
       </div>
-{{ saleData.voucher.document_type }}
+      {{ saleData.voucher.document_type }}
       <SearchCustomers
         :voucherType="saleData.voucher.document_type"
         :customer="saleData.customer"
         :errors="errors"
       />
-{{ saleData.detail }}
+      {{ saleData.detail }}
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
         <div class="col-md">
@@ -157,7 +152,6 @@
                   >Configuracion de PC</label
                 >
               </div>
-
             </div>
             <!-- <div class="p-2">Third flex item</div> -->
           </div>
@@ -235,25 +229,29 @@
           </div>
 
           <div v-else class="">
-              <search-assemblies :products="saleData.detail" v-on:setAssemblie="setAssemblie"></search-assemblies>
+            <search-assemblies
+              :products="saleData.detail"
+              v-on:setAssemblie="setAssemblie"
+            ></search-assemblies>
           </div>
-
         </div>
       </div>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
-        <div class="col-12 table-responsive mt-4">
+        <div
+          class="col-12 table-responsive mt-4 mb-4 table-product border rounded"
+        >
           <table class="table table-striped">
             <thead>
               <tr>
-                <th style="width: 40%">Descripción</th>
+                <th style="width: 36%">Descripción</th>
                 <th style="width: 20%">Tipo IGV</th>
                 <th style="width: 3%">Cantidad</th>
-                <th style="width: 8%">Descuento</th>
-                <th style="width: 8%">Precio</th>
-                <th style="width: 8%">Sub Total</th>
-                <th style="width: 8%">Total</th>
+                <th style="width: 9%">Descuento</th>
+                <th style="width: 9%">Precio</th>
+                <th style="width: 9%">Sub Total</th>
+                <th style="width: 9%">Total</th>
                 <th style="width: 5%">Series</th>
                 <th style="width: 3%"></th>
               </tr>
@@ -264,7 +262,7 @@
                   <input
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.product_id'] == null
+                      (errors['detail.' + index + '.product_id'] == null
                         ? ''
                         : ' is-invalid')
                     "
@@ -280,9 +278,9 @@
                   />
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.product_id']"
+                    v-if="errors['detail.' + index + '.product_id']"
                   >
-                    {{ errorsCreate["detail." + index + ".product_id"][0] }}
+                    {{ errors["detail." + index + ".product_id"][0] }}
                   </div>
                 </td>
 
@@ -291,7 +289,7 @@
                     v-model="detail.igv_type_id"
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.igv_type_id'] == null
+                      (errors['detail.' + index + '.igv_type_id'] == null
                         ? ''
                         : ' is-invalid')
                     "
@@ -307,9 +305,9 @@
                   </select>
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.igv_type_id']"
+                    v-if="errors['detail.' + index + '.igv_type_id']"
                   >
-                    {{ errorsCreate["detail." + index + ".igv_type_id"][0] }}
+                    {{ errors["detail." + index + ".igv_type_id"][0] }}
                   </div>
                 </td>
 
@@ -317,7 +315,7 @@
                   <input
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.quantity'] == null
+                      (errors['detail.' + index + '.quantity'] == null
                         ? ''
                         : ' is-invalid')
                     "
@@ -329,9 +327,9 @@
                   />
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.quantity']"
+                    v-if="errors['detail.' + index + '.quantity']"
                   >
-                    {{ errorsCreate["detail." + index + ".quantity"][0] }}
+                    {{ errors["detail." + index + ".quantity"][0] }}
                   </div>
                 </td>
 
@@ -339,7 +337,7 @@
                   <input
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.discount'] == null
+                      (errors['detail.' + index + '.discount'] == null
                         ? ''
                         : ' is-invalid')
                     "
@@ -353,9 +351,9 @@
                   />
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.discount']"
+                    v-if="errors['detail.' + index + '.discount']"
                   >
-                    {{ errorsCreate["detail." + index + ".discount"][0] }}
+                    {{ errors["detail." + index + ".discount"][0] }}
                   </div>
                 </td>
 
@@ -363,7 +361,7 @@
                   <input
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.sale_price'] == null
+                      (errors['detail.' + index + '.sale_price'] == null
                         ? ''
                         : ' is-invalid')
                     "
@@ -373,9 +371,9 @@
                   />
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.sale_price']"
+                    v-if="errors['detail.' + index + '.sale_price']"
                   >
-                    {{ errorsCreate["detail." + index + ".sale_price"][0] }}
+                    {{ errors["detail." + index + ".sale_price"][0] }}
                   </div>
                 </td>
 
@@ -408,6 +406,7 @@
                 </td>
                 <td>
                   <button
+                    type="button"
                     class="btn btn-flat bg-light"
                     @click="deleteItem(index)"
                   >
@@ -415,9 +414,9 @@
                   </button>
                   <div
                     class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.series']"
+                    v-if="errors['detail.' + index + '.series']"
                   >
-                    {{ errorsCreate["detail." + index + ".series"][0] }}
+                    {{ errors["detail." + index + ".series"][0] }}
                   </div>
                 </td>
 
@@ -493,31 +492,146 @@
               </tr>
             </tbody>
           </table>
+          <div
+            class="image-without-products"
+            v-if="saleData.detail.length == 0"
+          >
+            <img
+              src="../../../../../img/add_product.png"
+              alt=""
+              style="max-height: 120px"
+            />
+            <h1 class="display-4">Agregue productos</h1>
+          </div>
         </div>
       </div>
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
+
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table" style="min-width: 600px">
+                <thead>
+                  <tr>
+                    <th>
+                      <i class="text-danger fas fa-money-bill"></i> Tipo de pago
+                    </th>
+                    <th>Total Recibido S/.</th>
+                    <th v-if="!saleData.voucher.isMultiPayment">Vuelto S/.</th>
+                    <th class="col-2 text-center">¿Es multipago?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(payment, index) in saleData.voucher.payments"
+                    :key="payment.id"
+                  >
+                    <td>
+                      <select
+                        v-model="payment.payment_type_id"
+                        class="form-control rounded-pill"
+                      >
+                        <option
+                          v-for="paymentType in paymentTypes"
+                          :key="paymentType.id"
+                          :value="paymentType.id"
+                        >
+                          {{ paymentType.description }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        class="form-control rounded-pill"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        v-model="payment.amount"
+                        @input="index == 0 ? getChange() : null"
+                      />
+                    </td>
+                    <td v-if="!saleData.voucher.isMultiPayment">
+                      <input
+                        class="form-control rounded-pill"
+                        type="text"
+                        v-model="saleData.voucher.change"
+                        disabled
+                      />
+                    </td>
+
+                    <td class="text-center" v-if="index == 0">
+                      <div
+                        class="
+                          custom-control custom-switch custom-switch-on-danger
+                          is-invalid
+                        "
+                      >
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="customSwitchCreateIsMultiPayment"
+                          v-model="saleData.voucher.isMultiPayment"
+                          @change="clearMultipayment()"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="customSwitchCreateIsMultiPayment"
+                          >{{
+                            saleData.voucher.isMultiPayment ? "Si" : "No"
+                          }}</label
+                        >
+                      </div>
+                    </td>
+                    <td class="text-center" v-else-if="index == 1">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-sm"
+                        @click="addPayment()"
+                      >
+                        <span><i class="fas fa-plus"></i></span>
+                        Añadir
+                      </button>
+                    </td>
+                    <td class="text-center" v-else>
+                      <button
+                        type="button"
+                        class="btn btn-flat"
+                        @click="deletePayment(index)"
+                      >
+                        <i class="text-danger fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">
-                  <i class="text-danger fas fa-money-bill"></i>
-                  Tipo de pago
+                  <i class="text-danger fas fa-tags"></i>
+                  Descuento
                 </label>
-                <select
-                  v-model="saleData.voucher.payment_type_id"
-                  class="form-control rounded-pill"
+                <input
+                  :class="$errorsClass(errors['voucher.discount'])"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  v-model="saleData.voucher.discount"
+                  @change="activateOrDesactivateDetailDiscount"
+                  :disabled="activateGlobalDiscount"
+                  @input="getTotals()"
+                />
+                <div
+                  class="invalid-feedback ml-3"
+                  v-if="$errorsExists(errors['voucher.discount'])"
                 >
-                  <option
-                    v-for="paymentType in paymentTypes"
-                    :key="paymentType.id"
-                    :value="paymentType.id"
-                  >
-                    {{ paymentType.description }}
-                  </option>
-                </select>
+                  {{ $errorsPrint(errors["voucher.discount"]) }}
+                </div>
               </div>
             </div>
             <div class="col-md-3">
@@ -568,62 +682,6 @@
               </div>
             </div>
           </div>
-          <!-- Tipo de pago -->
-          <div class="row">
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">
-                  <i class="text-danger fas fa-tags"></i>
-                  Descuento
-                </label>
-                <input
-                  :class="
-                    'form-control rounded-pill' +
-                    (errorsCreate['quotation.discount'] == null
-                      ? ''
-                      : ' is-invalid')
-                  "
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  v-model="saleData.voucher.discount"
-                  @change="activateOrDesactivateDetailDiscount"
-                  :disabled="activateGlobalDiscount"
-                  @input="getTotals()"
-                />
-                <div
-                  class="invalid-feedback"
-                  v-if="errorsCreate['quotation.discount']"
-                >
-                  {{ errorsCreate["quotation.discount"][0] }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">Total Recibido S/.</label>
-                <input
-                  class="form-control rounded-pill"
-                  type="number"
-                  min="0"
-                  step="0.001"
-                  v-model="saleData.voucher.received_money"
-                  @input="getChange()"
-                />
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">Vuelto S/.</label>
-                <input
-                  class="form-control rounded-pill"
-                  type="text"
-                  v-model="saleData.voucher.change"
-                  disabled
-                />
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -631,7 +689,7 @@
                 <textarea
                   cols="30"
                   rows="4"
-                  class="form-control rounded-pill px-5"
+                  class="form-control"
                   v-model="saleData.voucher.observation"
                 ></textarea>
               </div>
@@ -640,7 +698,7 @@
         </div>
         <div class="col-md-4">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table mt-5">
               <tbody>
                 <tr v-show="saleData.voucher.discount > 0">
                   <th>Descuento global:</th>
@@ -683,25 +741,11 @@
       <!-- Resumen de ventas -->
       <div class="row no-print">
         <div class="col-12">
-          <!-- <a
-            href="invoice-print.html"
-            rel="noopener"
-            target="_blank"
-            class="btn btn-default"
-            ><i class="fas fa-print"></i> Print</a
-          > -->
           <form @submit.prevent="createSale()">
             <button type="submit" class="btn btn-dark float-right">
               <i class="far fa-credit-card"></i> Guarda Documento Electronico
             </button>
           </form>
-          <!-- <button
-            type="button"
-            class="btn btn-primary float-right"
-            style="margin-right: 5px"
-          >
-            <i class="fas fa-download"></i> Generate PDF
-          </button> -->
         </div>
       </div>
     </div>
@@ -726,10 +770,6 @@ export default {
       this.identificationDocuments = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
-    });
-
     await BaseUrl.get(`api/sales/series/8`).then((resp) => {
       this.quotationSeries = resp.data.data;
       this.quotationSerieSelect = this.quotationSeries[0].id;
@@ -742,18 +782,36 @@ export default {
 
     await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
       this.paymentTypes = resp.data.data;
-      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id;
+      this.saleData.voucher.payments[0].payment_type_id = this.paymentTypes[0].id
     });
 
     await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
       this.igvTypes = resp.data.data;
     });
+
+    await BaseUrl.get(`api/sales/currencyexchange`).then((resp) => {
+      this.currencyExchange = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/products`).then((resp) => {
+      this.products = resp.data.data;
+
+      this.products.forEach(product => {
+        product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
+      });
+    });
+
+
   },
   data() {
     return {
       errors: [],
       searchAssemblies: false,
       warrantySeries: {},
+
+      currencyExchange: {},
 
       quotationSerieSelect: null,
       quotationSeries: {},
@@ -774,7 +832,7 @@ export default {
       identificationDocuments: {},
       paymentTypes: [],
       igvTypes: [],
-      products: {},
+      products: [],
       productSeries: [],
       saleData: {
         customer: {
@@ -802,11 +860,18 @@ export default {
           change: 0,
           warranty_serie_id: null,
           warranty: false,
-          payment_type_id: null,
+
+          isMultiPayment: false,
+          payments: [
+            {
+              payment_type_id: null,
+              amount: 0
+            },
+
+          ],
         },
         detail: [],
       },
-      errorsCreate: {},
     };
   },
   mounted() {
@@ -1014,8 +1079,8 @@ export default {
       this.saleData.detail.splice(index, 1);
       this.productSeries.splice(index, 1);
       this.productSerieSearchFilter.splice(index, 1);
+      this.getTotals()
     },
-
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
       let discount = 0;
@@ -1033,7 +1098,6 @@ export default {
       this.activateDetailDiscount =
         this.saleData.voucher.discount > 0 ? true : false;
     },
-
     addSeries(index) {
       const temp = [];
       for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
@@ -1205,69 +1269,64 @@ export default {
 
       this.getChange();
     },
-    getChange() {
-      if (this.saleData.voucher.received_money != 0) {
-        this.saleData.voucher.change =
-          this.saleData.voucher.received_money - this.saleData.voucher.total;
+    getChange(){
+      if (this.saleData.voucher.payments[0].amount != 0) {
+        this.saleData.voucher.change = this.saleData.voucher.payments[0].amount - this.saleData.voucher.total
       }
-      if (this.saleData.voucher.received_money == 0) {
-        this.saleData.voucher.change = 0;
+      if (this.saleData.voucher.payments[0].amount == 0) {
+        this.saleData.voucher.change = 0
       }
     },
     createSale() {
-      BaseUrl.post("/api/sales", this.saleData)
-        .then((response) => {
-          this.errorsCreate = {};
-          console.log(response);
-          this.$router.push({ name: "voucher-list" });
-          Swal.fire("Comprobante Creado", response.data, "success");
-        })
-        .catch((error) => {
-          console.log(error.response);
-
-          this.errorsCreate = error.response.data.errors;
-          if (this.errorsCreate["detail"] != null) {
-            Swal.fire(
-              "Algo salio mal",
-              this.errorsCreate["detail"][0],
-              "error"
-            );
-          }
-
-          this.getErrorDetailSerie(0, 0);
-        });
+      this.saleData.voucher.received_money = 0
+      if (!this.saleData.voucher.isMultiPayment) {
+        this.saleData.voucher.received_money = this.saleData.voucher.payments[0].amount
+      }
+      BaseUrl.post("/api/sales", this.saleData).then((response) => {
+        this.errors = []
+        console.log(response)
+        this.$router.push({ name: "voucher-list" });
+        Swal.fire(
+          "Comprobante Creado",
+          response.data,
+          "success"
+        );
+      })
+      .catch((error) => {
+        this.errors = error.response.data.errors
+        console.log(error.response.data.errors);
+        this.errors = error.response.data.errors
+        if (this.errors['detail'] != null) {
+          Swal.fire("Algo salio mal", this.errors['detail'][0], "error")
+        }
+        this.getErrorDetailSerie(0, 0)
+      });
     },
     // i = index1(detail) , j = index2(series)
-    getErrorDetailSerie(i, j) {
+    getErrorDetailSerie(i, j){
       if (i < this.saleData.detail.length) {
         if (j < this.saleData.detail[i].quantity) {
-          if (
-            this.errorsCreate["detail." + i + ".series." + j + ".serie"] != null
-          ) {
-            console.log("detail." + i + ".series." + j + ".serie");
+          if (this.errors['detail.' + i + '.series.' + j + '.serie'] != null) {
+            console.log('detail.' + i + '.series.' + j + '.serie')
             Swal.fire({
               title: "Algo salio mal",
-              html:
-                "Exite un error en el producto  <b>" +
-                this.saleData.detail[i].description +
-                " - " +
-                this.saleData.detail[i].brand +
-                " - " +
-                this.saleData.detail[i].cod +
-                "</b>: </br>" +
-                this.errorsCreate["detail." + i + ".series." + j + ".serie"][0],
-              icon: "warning",
-            }).then((result) => {
-              i++;
-              this.getErrorDetailSerie(i, 0);
-            });
-          } else {
-            j++;
-            this.getErrorDetailSerie(i, j);
+              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
+              this.errors['detail.' + i + '.series.' + j + '.serie'][0],
+              icon: "warning"
+            })
+            .then((result) => {
+              i++
+              this.getErrorDetailSerie(i, 0)
+            })
           }
-        } else {
-          i++;
-          this.getErrorDetailSerie(i, 0);
+          else{
+            j++
+            this.getErrorDetailSerie(i, j)
+          }
+        }
+        else{
+          i++
+          this.getErrorDetailSerie(i, 0)
         }
       }
     },
@@ -1476,7 +1535,32 @@ export default {
         console.log(this.saleData);
       }
     },
-  },
+    addPayment(){
+
+      const payment = {
+        payment_type_id: this.paymentTypes[0].id,
+        amount: 0,
+      }
+
+      this.saleData.voucher.payments.push(payment);
+    },
+    deletePayment(index){
+      this.saleData.voucher.payments.splice(index, 1);
+    },
+    clearMultipayment(){
+
+      if (!this.saleData.voucher.isMultiPayment) {
+
+        this.saleData.voucher.payments = []
+
+      }
+
+      this.addPayment()
+
+    }
+
+
+  }
 };
 </script>
 
@@ -1551,5 +1635,25 @@ label {
   width: 100%;
   height: 40px;
   border-radius: 5px;
+}
+.table-product {
+  min-height: 250px;
+}
+.table-product table {
+  min-width: 900px;
+}
+.image-without-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img {
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
 }
 </style>

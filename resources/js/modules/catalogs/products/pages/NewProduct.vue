@@ -6,27 +6,54 @@
         <div class="col-md">
           <div class="card">
             <div class="card-header">
-              <div class="card-title">
-                  <h4>Producto</h4>
-              </div>
-              <div class="card-tools">
-                <div class="custom-control custom-checkbox">
-                  <input
-                    class="custom-control-input custom-control-input-danger"
-                    type="checkbox"
-                    id="managerSeriesCheckbox"
-                    v-model="managerSeries"
-                  >
-                  <label for="managerSeriesCheckbox" class="custom-control-label">¿Maneja Series?</label>
+              <div class="row align-items-center">
+                <div class="col-6 col-md-3 col-lg-6">
+                  <div>
+                    <h4>Producto</h4>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="row justify-content-center">
+                        <label class="mr-2">
+                          ¿Tiene Grantía?
+                        </label>
+                        <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
+                          <input type="checkbox" class="custom-control-input" id="customSwitchHaveWarranty" v-model="haveWarranty">
+                          <label class="custom-control-label" for="customSwitchHaveWarranty">{{ haveWarranty ? 'Si' : 'No' }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row justify-content-center">
+                        <label class="mr-2">
+                          ¿Maneja Series?
+                        </label>
+                        <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
+                          <input type="checkbox" class="custom-control-input" id="customSwitchManagerSeries" v-model="managerSeries">
+                          <label class="custom-control-label" for="customSwitchManagerSeries">{{ managerSeries ? 'Si' : 'No' }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-md">
+                <div class="col-md-6">
                   <div class="form-group">
                     <label for="">Nombre del producto</label>
                     <input type="text" class="form-control" v-model="productName" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Tipo de IGV</label>
+                    <select class="form-control" v-model="igvTypeId">
+                      <option v-for="igvType in igvTypes" :key="igvType.id" :value="igvType.id">{{ igvType.description }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -76,8 +103,9 @@
               <h4>
                 Precios |
                 <small class="text-danger">
-                  Solo se guarda el precio en dolares</small
-                >
+                  Solo se guarda el precio en dolares
+                  <i class="fas fa-exclamation-triangle"></i>
+                </small>
               </h4>
             </div>
             <div class="card-body">
@@ -103,7 +131,13 @@
               </div>
 
               <div class="row">
-                <p class="lead">Precios de venta</p>
+                <p class="lead">
+                  Precios de venta |
+                  <small class="text-danger">
+                    <i class="fas fa-hand-point-right"></i>
+                    Respecto al precio de compra
+                  </small>
+                </p>
                 <div class="table-responsive">
                   <table class="table table-bordered table-prices">
                     <thead class="thead-dark text-center">
@@ -128,10 +162,7 @@
                         <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceTwoDollar" @keyup="changeSalePriceSolesAndGainTwo()"></td>
                       </tr>
                       <tr>
-                        <td class="align-middle">Precio Tarjeta
-                          <br>
-                          <small class="text-danger">(Respecto al precio 1)</small>
-                        </td>
+                        <td class="align-middle">Precio Tarjeta</td>
                         <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="saleGainThree" @keyup="changeSalePriceSolesAndDollarThree()"></td>
                         <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceThreeSoles" @keyup="changeSalePriceDollarAndGainThree()"></td>
                         <td class="align-middle"><input type="number" step="0.001" class="form-control" v-model="salePriceThreeDollar" @keyup="changeSalePriceSolesAndGainThree()"></td>
@@ -153,14 +184,13 @@
               <h4>Agregar Foto</h4>
             </div>
             <div class="card-body">
-              <div class="row">
-                <div class="col-md">
+              <div class="row justify-content-center">
                   <img
-                    class="img-fluid imagen d-flex justify-content-center"
+                    class="img-fluid imagen d-flex"
+                    style="height: 200px;"
                     src="https://icons-for-free.com/iconfiles/png/512/cloud+upload+file+storage+upload+icon-1320190558968694328.png"
                     alt="Photo"
                   >
-                </div>
               </div>
 
               <div class="row">
@@ -219,7 +249,7 @@
                       <tr v-if="selectedBranch.isAvailable">
                         <td class="align-middle">{{ selectedBranch.description }}</td>
                         <td class="align-middle">
-                          <input type="number" class="form-control" v-model="selectedBranch.quantity" @change="addSeries(selectedBranch)">
+                          <input type="number" min="0" class="form-control" v-model="selectedBranch.quantity" @change="addSeries(selectedBranch)">
                         </td>
                         <td v-if="managerSeries" class="align-middle">
                           <input type="button" class="btn btn-dark btn-sm btn-series" data-toggle="modal" :data-target="'#seriesModal'+selectedBranch.id" value="Series">
@@ -255,9 +285,43 @@
           </div>
         </div>
       </div>
+
+      <div class="row" v-if="haveWarranty">
+        <div class="col-md">
+          <div class="card">
+            <div class="card-header">
+              <h4>Configuración de la garantía</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Lapsos</label>
+                    <select class="form-control" v-model="typeOfTimeForWarranty">
+                      <option value="days">Días</option>
+                      <option value="weeks">Semanas</option>
+                      <option value="months">Meses</option>
+                      <option value="years">Años</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Tiempo</label>
+                    <input type="number" min="1" class="form-control" v-model="timeOfWarranty" required>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <input type="submit" class="btn btn-dark btn-block btn-lg mb-4" value="Guardar Producto">
+  <button type="submit" class="btn btn-dark btn-block btn-lg mb-4">
+    <span><i class="fas fa-save"></i></span>
+    Guardar Producto
+  </button>
 </form>
 </template>
 
@@ -285,15 +349,19 @@ export default {
     await BaseUrl.get(`api/products/currencyexchange`).then((resp) => {
       this.currencyExchange = resp.data.change;
     });
+    await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
+      this.igvTypes = resp.data.data;
+    });
   },
   data() {
     return {
       cod: '',
       productName: '',
       description: '',
-      branches : {},
-      lines : {},
-      brands : {},
+      branches : [],
+      lines : [],
+      brands : [],
+      igvTypes : [],
 
       line : null,
       brand : '',
@@ -315,10 +383,16 @@ export default {
       salePriceThreeSoles: '',
       salePriceThreeDollar: '',
 
-      managerSeries: false,
+      managerSeries: false, 
 
       selectedBranches: [],
       showInventory: false,
+
+      igvTypeId: 20,
+
+      haveWarranty: false,
+      typeOfTimeForWarranty: 'months',
+      timeOfWarranty: null,
 
     };
   },
@@ -376,14 +450,14 @@ export default {
     //Precio 3
     changeSalePriceSolesAndGainThree(){
       this.salePriceThreeSoles = this.changePriceSoles(this.salePriceThreeDollar)
-      this.saleGainThree = this.getGain(this.salePriceOneDollar, this.salePriceThreeDollar)
+      this.saleGainThree = this.getGain(this.purchasePriceDollar, this.salePriceThreeDollar)
     },
     changeSalePriceDollarAndGainThree(){
       this.salePriceThreeDollar = this.changePriceDollar(this.salePriceThreeSoles)
-      this.saleGainThree = this.getGain(this.salePriceOneDollar, this.salePriceThreeDollar)
+      this.saleGainThree = this.getGain(this.purchasePriceDollar, this.salePriceThreeDollar)
     },
     changeSalePriceSolesAndDollarThree(){
-      this.salePriceThreeDollar = this.getPrice(this.salePriceOneDollar, this.saleGainThree)
+      this.salePriceThreeDollar = this.getPrice(this.purchasePriceDollar, this.saleGainThree)
       this.salePriceThreeSoles = this.changePriceSoles(this.salePriceThreeDollar)
     },
     //Funciones generales para precios
@@ -438,6 +512,12 @@ export default {
         manager_series : this.managerSeries,
         line_id : this.line,
         brand_id : this.brand,
+
+        have_warranty: this.haveWarranty,
+        type_of_time_for_warranty: this.typeOfTimeForWarranty,
+        time_of_warranty: this.timeOfWarranty,
+
+        igv_type_id: this.igvTypeId,
 
         branches : []
       }

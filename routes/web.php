@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
 
     Route::middleware(['opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+    Route::middleware(['opening.cashbox'])->get('/nueva-venta/{id}', [WebController::class, 'newSale'])->name('web.new-sale-quotations');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
@@ -55,6 +56,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+    Route::get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
 
     //Rutas egresos-ingresos
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
@@ -82,6 +84,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/usuarios', [WebController::class, 'users'])->name('web.users');
     Route::get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
     Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
+    Route::get('/roles/{id}', [WebController::class, 'roles'])->name('web.roles.update');
     Route::get('/series', [WebController::class, 'series'])->name('web.series');
 
     //Rutas imprimir
@@ -106,7 +109,6 @@ Route::get('/prueba', [WebController::class, 'prueba']);
 Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 
 //Modulo Catalago
-Route::middleware(['auth:sanctum', 'verified'])->resource('product-series', ProductSerieController::class)->names('product-series')->parameters(['product-series' => 'productSerie']);
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
 
 

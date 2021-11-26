@@ -24,9 +24,12 @@ class CreateProductsTable extends Migration
             $table->unsignedDecimal('referential_sale_price_two', 9,3)->nullable();
             $table->boolean('manager_series')->default(false);
             $table->boolean('active')->default(true);
+
+            $table->boolean('have_warranty')->default(false);
+            $table->string('type_of_time_for_warranty')->nullable();
+            $table->integer('time_of_warranty')->nullable();
+
             $table->string('igv_type_id');
-
-
             $table->foreign('igv_type_id')
                 ->references('id')
                 ->on('igv_types') 

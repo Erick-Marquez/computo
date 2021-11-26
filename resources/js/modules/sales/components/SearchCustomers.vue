@@ -9,7 +9,7 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == 1"
+          v-if="voucherType == 'FACTURA' || voucherType == '01' || voucherType === 1 "
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >

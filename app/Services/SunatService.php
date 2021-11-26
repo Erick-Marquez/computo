@@ -32,19 +32,6 @@ class SunatService
 
     public static function facturar($id, $type)
     {   
-        // self::$message = [
-        //     'xml' => [
-        //         'creado' => null,
-        //         'firmado' => null
-        //     ],
-        //     'zip' => null,
-        //     'send' => null,
-        //     'response' => [
-        //         "cod" => null,
-        //         'message' => null,
-        //         'hash_cdr' => null
-        //     ]
-        // ];
         self::template($id, $type);
         self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
         self::signXml();
@@ -213,7 +200,10 @@ class SunatService
             $doc = new DOMDocument();
             $doc->loadXML($response);
             if (isset($doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
+
                 self::$message['response_sunat'] = true;
+
+                
                 $cdr = $doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue; // Obtener el valor de la etiqueta de respuesta
                 $cdr = base64_decode($cdr); // Descodificar la respuesta
                 // Guardo el archivo cdr

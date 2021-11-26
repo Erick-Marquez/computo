@@ -19,12 +19,13 @@ use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
+use App\Http\Controllers\BranchProductSerieController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
-use App\Models\OpenClosedCashbox;
+use App\Http\Controllers\WarrantyController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -59,12 +60,16 @@ Route::middleware([
     Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
     Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
+    Route::get('/sales/currencyexchange', [VoucherController::class, 'currencyExchange'])->name('api.sales.currencyExchange');
 
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
     Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
+
+    //Warranties
+    Route::get('/warranties', [WarrantyController::class, 'index'])->name('api.warranties.index');
 
     Route::apiResource('cajas', CashboxController::class)->parameters([
         'cajas' => 'cashbox'
@@ -105,6 +110,9 @@ Route::middleware([
     Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
     Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
     Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
+
+    //Product-Series
+    Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');
 
     Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
