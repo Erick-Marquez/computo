@@ -1,14 +1,36 @@
-<script>
-import { defineComponent } from "vue";
-import Chart from "chart.js/auto";
-import { DonutChart } from "vue-chart-3";
+<template>
+  <DoughnutChart :chartData="testData" />
+</template>
 
-export default defineComponent({
-  name: "TypePaymentChart",
-  components: { DonutChart },
-  setup() {
-    return { testData };
+<script>
+import { DoughnutChart } from "vue-chart-3";
+
+export default {
+  components: {
+    DoughnutChart,
   },
-  props: {testData}
-});
+  data() {
+    return {
+      testData: {
+        labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+        datasets: [
+          {
+            data: [30, 40, 60, 70, 5],
+            backgroundColor: [
+              "#77CEFF",
+              "#0079AF",
+              "#123E6B",
+              "#97B0C4",
+              "#A5C8ED",
+            ],
+          },
+        ],
+      },
+      options: {
+        scales: {}, // boom
+      },
+    };
+  },
+};
 </script>
+

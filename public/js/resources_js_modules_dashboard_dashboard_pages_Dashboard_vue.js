@@ -11,6 +11,43 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chart-3 */ "./node_modules/vue-chart-3/dist/index.js");
+/* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_chart_3__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    DoughnutChart: vue_chart_3__WEBPACK_IMPORTED_MODULE_0__.DoughnutChart
+  },
+  data: function data() {
+    return {
+      testData: {
+        labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+        datasets: [{
+          data: [30, 40, 60, 70, 5],
+          backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"]
+        }]
+      },
+      options: {
+        scales: {} // boom
+
+      }
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js":
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js ***!
@@ -27,7 +64,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.esm.js");
 /* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-chart-3 */ "./node_modules/vue-chart-3/dist/index.js");
 /* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_chart_3__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
+/* harmony import */ var _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../charts/TypePaymentChart.vue */ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue");
+/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -37,11 +75,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Dashboard",
   components: {
     LineChart: vue_chart_3__WEBPACK_IMPORTED_MODULE_2__.LineChart,
-    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"]
+    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"],
+    TypePaymentChart: _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -104,7 +144,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"].get("/api/dashboard/vouchers").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/dashboard/vouchers").then(function (response) {
                   console.log(response.data);
                   _this.testData.labels = response.data.fechas.reverse();
                   _this.testData.datasets[0].data = _this.fillDates(response.data.facturas, response.data.fechas);
@@ -155,7 +195,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"].get("/api/dashboard/widgets").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/dashboard/widgets").then(function (response) {
                   console.log(response.data);
                   _this2.widgets = response.data;
                 })["catch"](function (error) {
@@ -172,6 +212,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   }
 });
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0 ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_DoughnutChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DoughnutChart");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_DoughnutChart, {
+    chartData: $data.testData
+  }, null, 8
+  /* PROPS */
+  , ["chartData"]);
+}
 
 /***/ }),
 
@@ -327,7 +392,7 @@ var _hoisted_24 = {
   "class": "row"
 };
 var _hoisted_25 = {
-  "class": "col-md"
+  "class": "col-md-8"
 };
 var _hoisted_26 = {
   "class": "card"
@@ -341,8 +406,25 @@ var _hoisted_28 = {
     "display": "block"
   }
 };
+var _hoisted_29 = {
+  "class": "col-md-4"
+};
+var _hoisted_30 = {
+  "class": "card"
+};
+
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Tipo de pagos</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
+
+var _hoisted_32 = {
+  "class": "card-body",
+  style: {
+    "display": "block"
+  }
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_LineChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LineChart");
+
+  var _component_TypePaymentChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TypePaymentChart");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, _ctx.$can('dashboard') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, "tu puedes ver el dashboard")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$can('sales') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, "tu puedes ver las compras")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.sales), 1
   /* TEXT */
@@ -350,12 +432,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), _hoisted_15]), _hoisted_16, _hoisted_17])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.products), 1
   /* TEXT */
-  ), _hoisted_21]), _hoisted_22, _hoisted_23])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-6\">\r\n      <div class=\"card\">\r\n        <div class=\"card-header\">\r\n          <h3 class=\"card-title\">Grafico 1</h3>\r\n\r\n          <div class=\"card-tools\">\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-tool\"\r\n              data-card-widget=\"collapse\"\r\n            >\r\n              <i class=\"fas fa-minus\"></i>\r\n            </button>\r\n            <button\r\n              type=\"button\"\r\n              class=\"btn btn-tool\"\r\n              data-card-widget=\"remove\"\r\n            >\r\n              <i class=\"fas fa-times\"></i>\r\n            </button>\r\n          </div>\r\n        </div>\r\n        <div class=\"card-body\" style=\"display: block\">\r\n          <div class=\"chart\">\r\n            <div class=\"chartjs-size-monitor\">\r\n              <div class=\"chartjs-size-monitor-expand\">\r\n                <div class=\"\"></div>\r\n              </div>\r\n              <div class=\"chartjs-size-monitor-shrink\">\r\n                <div class=\"\"></div>\r\n              </div>\r\n            </div>\r\n            <canvas\r\n              id=\"areaChart\"\r\n              style=\"\r\n                min-height: 250px;\r\n                height: 250px;\r\n                max-height: 250px;\r\n                max-width: 100%;\r\n                display: block;\r\n                width: 487px;\r\n              \"\r\n              width=\"487\"\r\n              height=\"250\"\r\n              class=\"chartjs-render-monitor\"\r\n            ></canvas>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
+  ), _hoisted_21]), _hoisted_22, _hoisted_23])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
     chartData: $data.testData,
     options: $data.options
   }, null, 8
   /* PROPS */
-  , ["chartData", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"getDataWidgets\" class=\"btn btn-info\">model</button> ")], 64
+  , ["chartData", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [_hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TypePaymentChart)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"getDataWidgets\" class=\"btn btn-info\">model</button> ")], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -13572,7 +13654,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #84d9d2, #07cdae);\n}\n.caja-1[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #ffbf96, #fe7096);\n}\n.caja-2[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #90caf9, #047edf 99%);\n}\n.fas[data-v-1c35a19d] {\r\n  color: #f2f2f2;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\n  background: linear-gradient(to right, #84d9d2, #07cdae);\n}\n.caja-1[data-v-1c35a19d] {\n  background: linear-gradient(to right, #ffbf96, #fe7096);\n}\n.caja-2[data-v-1c35a19d] {\n  background: linear-gradient(to right, #90caf9, #047edf 99%);\n}\n.fas[data-v-1c35a19d] {\n  color: #f2f2f2;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -19772,6 +19854,34 @@ exports.install = function(){}
 
 /***/ }),
 
+/***/ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TypePaymentChart.vue?vue&type=template&id=acc062c0 */ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0");
+/* harmony import */ var _TypePaymentChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TypePaymentChart.vue?vue&type=script&lang=js */ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js");
+/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TypePaymentChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue ***!
@@ -19803,6 +19913,22 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TypePaymentChart.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js ***!
@@ -19816,6 +19942,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Dashboard_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Dashboard.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js");
  
+
+/***/ }),
+
+/***/ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0 ***!
+  \************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TypePaymentChart.vue?vue&type=template&id=acc062c0 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0");
+
 
 /***/ }),
 

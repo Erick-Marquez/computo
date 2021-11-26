@@ -15,7 +15,11 @@
               v-model="quotationSerieSelect"
               class="form-control rounded-pill"
             >
-              <option v-for="quotationSerie in quotationSeries" :key="quotationSerie.id" :value="quotationSerie.id">
+              <option
+                v-for="quotationSerie in quotationSeries"
+                :key="quotationSerie.id"
+                :value="quotationSerie.id"
+              >
                 {{ quotationSerie.serie }}
               </option>
             </select>
@@ -29,7 +33,7 @@
             placeholder="n° cotización"
             class="form-control"
             v-model="numberQuotation"
-          >
+          />
           <div class="input-group-append">
             <button
               class="btn btn-danger rounded-pill-right"
@@ -54,13 +58,29 @@
               <i class="text-danger fas fa-file-invoice"></i>
               Tipo comprobante
             </label>
-            <select :class="'form-control rounded-pill' + (errorsCreate['voucher.document_type'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.document_type" @change="loadSeries()">
-              <option v-for="voucherType in voucherTypes" :key="voucherType.id" :value="voucherType.id">
+            <select
+              :class="
+                'form-control rounded-pill' +
+                (errorsCreate['voucher.document_type'] == null
+                  ? ''
+                  : ' is-invalid')
+              "
+              v-model="saleData.voucher.document_type"
+              @change="loadSeries()"
+            >
+              <option
+                v-for="voucherType in voucherTypes"
+                :key="voucherType.id"
+                :value="voucherType.id"
+              >
                 {{ voucherType.description }}
               </option>
             </select>
-            <div class="invalid-feedback" v-if="errorsCreate['voucher.document_type'] ">
-              {{ errorsCreate['voucher.document_type'][0] }}
+            <div
+              class="invalid-feedback"
+              v-if="errorsCreate['voucher.document_type']"
+            >
+              {{ errorsCreate["voucher.document_type"][0] }}
             </div>
           </div>
         </div>
@@ -71,13 +91,23 @@
               <i class="text-danger fas fa-barcode"></i>
               Serie
             </label>
-            <select :class="'form-control rounded-pill' + (errorsCreate['voucher.serie_id'] == null ? '' : ' is-invalid')" v-model="saleData.voucher.serie_id" v-on:change="loadCurrentNumber">
+            <select
+              :class="
+                'form-control rounded-pill' +
+                (errorsCreate['voucher.serie_id'] == null ? '' : ' is-invalid')
+              "
+              v-model="saleData.voucher.serie_id"
+              v-on:change="loadCurrentNumber"
+            >
               <option v-for="serie in series" :key="serie.id" :value="serie.id">
                 {{ serie.serie }}
               </option>
             </select>
-            <div class="invalid-feedback" v-if="errorsCreate['voucher.serie_id'] ">
-              {{ errorsCreate['voucher.serie_id'][0] }}
+            <div
+              class="invalid-feedback"
+              v-if="errorsCreate['voucher.serie_id']"
+            >
+              {{ errorsCreate["voucher.serie_id"][0] }}
             </div>
           </div>
         </div>
@@ -98,17 +128,41 @@
           </div>
         </div>
       </div>
-
-      <SearchCustomers :voucherType="saleData.voucher.document_type" :customer="saleData.customer" :errors="errors" />
-        {{saleData.detail}}
+{{ saleData.voucher.document_type }}
+      <SearchCustomers
+        :voucherType="saleData.voucher.document_type"
+        :customer="saleData.customer"
+        :errors="errors"
+      />
+{{ saleData.detail }}
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
         <div class="col-md">
-          <h4>
-            <i class="text-danger fas fa-box"></i>
-            Productos
-          </h4>
-          <div class="">
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-grow-1">
+              <h4>
+                <i class="text-danger fas fa-box"></i>
+                Productos
+              </h4>
+            </div>
+            <div class="p-2">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input custom-control-input-danger"
+                  type="checkbox"
+                  id="searchAssemblies"
+                  v-model="searchAssemblies"
+                />
+                <label for="searchAssemblies" class="custom-control-label"
+                  >Configuracion de PC</label
+                >
+              </div>
+
+            </div>
+            <!-- <div class="p-2">Third flex item</div> -->
+          </div>
+
+          <div v-if="!searchAssemblies" class="">
             <input
               type="search"
               v-model="productSearch"
@@ -179,12 +233,16 @@
               </div>
             </div>
           </div>
+
+          <div v-else class="">
+              <search-assemblies :products="saleData.detail" v-on:setAssemblie="setAssemblie"></search-assemblies>
+          </div>
+
         </div>
       </div>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
-
         <div class="col-12 table-responsive mt-4">
           <table class="table table-striped">
             <thead>
@@ -202,63 +260,164 @@
             </thead>
             <tbody>
               <tr v-for="(detail, index) in saleData.detail" :key="detail">
-
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.product_id'] == null ? '' : ' is-invalid')" type="text" :value="detail.description + ' - ' + detail.brand + ' - ' + detail.cod" disabled>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.product_id']">
-                    {{ errorsCreate['detail.'+ index +'.product_id'][0] }}
+                  <input
+                    :class="
+                      'form-control rounded-pill' +
+                      (errorsCreate['detail.' + index + '.product_id'] == null
+                        ? ''
+                        : ' is-invalid')
+                    "
+                    type="text"
+                    :value="
+                      detail.description +
+                      ' - ' +
+                      detail.brand +
+                      ' - ' +
+                      detail.cod
+                    "
+                    disabled
+                  />
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.product_id']"
+                  >
+                    {{ errorsCreate["detail." + index + ".product_id"][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <select v-model="detail.igv_type_id" :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.igv_type_id'] == null ? '' : ' is-invalid')" @change="getTotals()">
-                    <option v-for="igvType in igvTypes" :key="igvType.id" :value="igvType.id">
+                  <select
+                    v-model="detail.igv_type_id"
+                    :class="
+                      'form-control rounded-pill' +
+                      (errorsCreate['detail.' + index + '.igv_type_id'] == null
+                        ? ''
+                        : ' is-invalid')
+                    "
+                    @change="getTotals()"
+                  >
+                    <option
+                      v-for="igvType in igvTypes"
+                      :key="igvType.id"
+                      :value="igvType.id"
+                    >
                       {{ igvType.description }}
                     </option>
                   </select>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.igv_type_id']">
-                    {{ errorsCreate['detail.'+ index +'.igv_type_id'][0] }}
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.igv_type_id']"
+                  >
+                    {{ errorsCreate["detail." + index + ".igv_type_id"][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.quantity'] == null ? '' : ' is-invalid')" type="number" min="1" v-model="detail.quantity" @change="addSeries(index)" @input="getTotals()">
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.quantity']">
-                    {{ errorsCreate['detail.'+ index +'.quantity'][0] }}
+                  <input
+                    :class="
+                      'form-control rounded-pill' +
+                      (errorsCreate['detail.' + index + '.quantity'] == null
+                        ? ''
+                        : ' is-invalid')
+                    "
+                    type="number"
+                    min="1"
+                    v-model="detail.quantity"
+                    @change="addSeries(index)"
+                    @input="getTotals()"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.quantity']"
+                  >
+                    {{ errorsCreate["detail." + index + ".quantity"][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001" v-model="detail.discount" @change="activateOrDesactivateGlobalDiscount()" :disabled="activateDetailDiscount" @input="getTotals()">
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.discount']">
-                    {{ errorsCreate['detail.'+ index +'.discount'][0] }}
+                  <input
+                    :class="
+                      'form-control rounded-pill' +
+                      (errorsCreate['detail.' + index + '.discount'] == null
+                        ? ''
+                        : ' is-invalid')
+                    "
+                    type="number"
+                    min="0"
+                    step="0.001"
+                    v-model="detail.discount"
+                    @change="activateOrDesactivateGlobalDiscount()"
+                    :disabled="activateDetailDiscount"
+                    @input="getTotals()"
+                  />
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.discount']"
+                  >
+                    {{ errorsCreate["detail." + index + ".discount"][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input :class="'form-control rounded-pill' + (errorsCreate['detail.'+ index +'.sale_price'] == null ? '' : ' is-invalid')" type="text" v-model="detail.sale_price" disabled>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.sale_price']">
-                    {{ errorsCreate['detail.'+ index +'.sale_price'][0] }}
+                  <input
+                    :class="
+                      'form-control rounded-pill' +
+                      (errorsCreate['detail.' + index + '.sale_price'] == null
+                        ? ''
+                        : ' is-invalid')
+                    "
+                    type="text"
+                    v-model="detail.sale_price"
+                    disabled
+                  />
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.sale_price']"
+                  >
+                    {{ errorsCreate["detail." + index + ".sale_price"][0] }}
                   </div>
                 </td>
 
                 <td>
-                  <input class="form-control rounded-pill" type="text" disabled :value="detail.subtotal">
+                  <input
+                    class="form-control rounded-pill"
+                    type="text"
+                    disabled
+                    :value="detail.subtotal"
+                  />
                 </td>
 
                 <td>
-                  <input class="form-control rounded-pill" type="text" disabled :value="detail.total">
+                  <input
+                    class="form-control rounded-pill"
+                    type="text"
+                    disabled
+                    :value="detail.total"
+                  />
                 </td>
 
                 <td>
-                  <input type="button" class="btn btn-dark btn-sm" data-toggle="modal" :data-target="'#seriesModal' + index" value="Series">
+                  <input
+                    type="button"
+                    class="btn btn-dark btn-sm"
+                    data-toggle="modal"
+                    :data-target="'#seriesModal' + index"
+                    value="Series"
+                  />
                 </td>
                 <td>
-                  <button class="btn btn-flat bg-light" @click="deleteItem(index)">
+                  <button
+                    class="btn btn-flat bg-light"
+                    @click="deleteItem(index)"
+                  >
                     <i class="text-danger fas fa-trash"></i>
                   </button>
-                  <div class="invalid-feedback" v-if="errorsCreate['detail.'+ index +'.series']">
-                    {{ errorsCreate['detail.'+ index +'.series'][0] }}
+                  <div
+                    class="invalid-feedback"
+                    v-if="errorsCreate['detail.' + index + '.series']"
+                  >
+                    {{ errorsCreate["detail." + index + ".series"][0] }}
                   </div>
                 </td>
 
@@ -275,7 +434,8 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="seriesModalLabel">
-                          Registrar series para {{ detail.description }} - {{ detail.brand}} - {{ detail.cod }}
+                          Registrar series para {{ detail.description }} -
+                          {{ detail.brand }} - {{ detail.cod }}
                         </h5>
                         <button
                           type="button"
@@ -298,7 +458,7 @@
                             placeholder="Serie"
                             v-model="obj.serie"
                             @keyup="searchProductSeries(index, j)"
-                          >
+                          />
                           <div class="">
                             <div class="">
                               <div>
@@ -330,7 +490,6 @@
                     </div>
                   </div>
                 </div>
-
               </tr>
             </tbody>
           </table>
@@ -347,8 +506,15 @@
                   <i class="text-danger fas fa-money-bill"></i>
                   Tipo de pago
                 </label>
-                <select v-model="saleData.voucher.payment_type_id" class="form-control rounded-pill">
-                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                <select
+                  v-model="saleData.voucher.payment_type_id"
+                  class="form-control rounded-pill"
+                >
+                  <option
+                    v-for="paymentType in paymentTypes"
+                    :key="paymentType.id"
+                    :value="paymentType.id"
+                  >
                     {{ paymentType.description }}
                   </option>
                 </select>
@@ -360,9 +526,23 @@
                   <i class="text-danger fas fa-file-contract"></i>
                   ¿Aplica garantía?
                 </label>
-                <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
-                  <input type="checkbox" class="custom-control-input" id="customSwitchCreate" v-model="saleData.voucher.warranty">
-                  <label class="custom-control-label" for="customSwitchCreate">{{ saleData.voucher.warranty ? 'Si' : 'No' }}</label>
+                <div
+                  class="
+                    custom-control custom-switch custom-switch-on-danger
+                    is-invalid
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="customSwitchCreate"
+                    v-model="saleData.voucher.warranty"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="customSwitchCreate"
+                    >{{ saleData.voucher.warranty ? "Si" : "No" }}</label
+                  >
                 </div>
               </div>
             </div>
@@ -373,8 +553,15 @@
                   <i class="text-danger fas fa-barcode"></i>
                   Serie Garantia
                 </label>
-                <select v-model="saleData.voucher.warranty_serie_id" class="form-control rounded-pill">
-                  <option v-for="warrantySerie in warrantySeries" :key="warrantySerie.id" :value="warrantySerie.id">
+                <select
+                  v-model="saleData.voucher.warranty_serie_id"
+                  class="form-control rounded-pill"
+                >
+                  <option
+                    v-for="warrantySerie in warrantySeries"
+                    :key="warrantySerie.id"
+                    :value="warrantySerie.id"
+                  >
                     {{ warrantySerie.serie }}
                   </option>
                 </select>
@@ -389,17 +576,40 @@
                   <i class="text-danger fas fa-tags"></i>
                   Descuento
                 </label>
-                <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001"
-                v-model="saleData.voucher.discount" @change="activateOrDesactivateDetailDiscount" :disabled="activateGlobalDiscount" @input="getTotals()">
-                <div class="invalid-feedback" v-if="errorsCreate['quotation.discount'] ">
-                  {{ errorsCreate['quotation.discount'][0] }}
+                <input
+                  :class="
+                    'form-control rounded-pill' +
+                    (errorsCreate['quotation.discount'] == null
+                      ? ''
+                      : ' is-invalid')
+                  "
+                  type="number"
+                  min="0"
+                  step="0.001"
+                  v-model="saleData.voucher.discount"
+                  @change="activateOrDesactivateDetailDiscount"
+                  :disabled="activateGlobalDiscount"
+                  @input="getTotals()"
+                />
+                <div
+                  class="invalid-feedback"
+                  v-if="errorsCreate['quotation.discount']"
+                >
+                  {{ errorsCreate["quotation.discount"][0] }}
                 </div>
               </div>
             </div>
             <div class="col-md">
               <div class="form-group">
                 <label for="">Total Recibido S/.</label>
-                <input class="form-control rounded-pill" type="number" min="0" step="0.001" v-model="saleData.voucher.received_money" @input="getChange()">
+                <input
+                  class="form-control rounded-pill"
+                  type="number"
+                  min="0"
+                  step="0.001"
+                  v-model="saleData.voucher.received_money"
+                  @input="getChange()"
+                />
               </div>
             </div>
             <div class="col-md">
@@ -410,7 +620,7 @@
                   type="text"
                   v-model="saleData.voucher.change"
                   disabled
-                >
+                />
               </div>
             </div>
           </div>
@@ -501,13 +711,15 @@
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
 import SearchCustomers from "../../components/SearchCustomers.vue";
+import SearchAssemblies from "../../components/SearchAssemblies.vue";
+
 export default {
-  components: { BaseUrl, SearchCustomers },
+  components: { BaseUrl, SearchCustomers, SearchAssemblies },
   async created() {
     await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
       this.voucherTypes = resp.data.data;
-      this.saleData.voucher.document_type = this.voucherTypes[0].id
-      this.loadSeries()
+      this.saleData.voucher.document_type = this.voucherTypes[0].id;
+      this.loadSeries();
     });
 
     await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
@@ -520,27 +732,27 @@ export default {
 
     await BaseUrl.get(`api/sales/series/8`).then((resp) => {
       this.quotationSeries = resp.data.data;
-      this.quotationSerieSelect = this.quotationSeries[0].id
+      this.quotationSerieSelect = this.quotationSeries[0].id;
     });
 
     await BaseUrl.get(`api/sales/series/9`).then((resp) => {
       this.warrantySeries = resp.data.data;
-      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
+      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id;
     });
 
     await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
       this.paymentTypes = resp.data.data;
-      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id
+      this.saleData.voucher.payment_type_id = this.paymentTypes[0].id;
     });
 
     await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
       this.igvTypes = resp.data.data;
     });
-
   },
   data() {
     return {
       errors: [],
+      searchAssemblies: false,
       warrantySeries: {},
 
       quotationSerieSelect: null,
@@ -569,19 +781,18 @@ export default {
           id: null,
         },
         voucher: {
-
-          subtotal : 0,
-          discount : 0,
-          totalIgv : 0,
-          totalExonerated : 0,
-          totalUnaffected : 0,
-          totalFree : 0,
-          totalTaxed : 0,
-          total : 0,
+          subtotal: 0,
+          discount: 0,
+          totalIgv: 0,
+          totalExonerated: 0,
+          totalUnaffected: 0,
+          totalFree: 0,
+          totalTaxed: 0,
+          total: 0,
 
           discountItems: 0,
 
-          document_type: "01",
+          document_type: 2,
           serie_id: "",
           moneda: "PEN",
           date_issue: "2021-10-17", //Año - mes - dia
@@ -595,9 +806,7 @@ export default {
         },
         detail: [],
       },
-      errorsCreate: {
-
-      }
+      errorsCreate: {},
     };
   },
   mounted() {
@@ -610,10 +819,12 @@ export default {
   },
   methods: {
     loadSeries() {
-      BaseUrl.get(`api/sales/series/${this.saleData.voucher.document_type}`).then((resp) => {
+      BaseUrl.get(
+        `api/sales/series/${this.saleData.voucher.document_type}`
+      ).then((resp) => {
         this.series = resp.data.data;
-        this.saleData.voucher.serie_id = this.series[0].id
-        this.loadCurrentNumber()
+        this.saleData.voucher.serie_id = this.series[0].id;
+        this.loadCurrentNumber();
       });
     },
     loadCurrentNumber() {
@@ -655,24 +866,30 @@ export default {
         }
       }
     },
-    priceOne(filSearch) {
+    setAssemblie(products) {
+        products.forEach((product) => {
+            this.setProductAssembly(product)
+        })
+    },
+
+    setProductAssembly(productAssembly) {
       this.productSerieSearchFilter.push([]);
 
       const product = {
-        discount : 0,
+        discount: 0,
         subtotal: 0,
         total: 0,
 
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
-        sale_price : filSearch.sale_price,
-        quantity : 1,
-        series : []
-      }
+        product_id: productAssembly.id,
+        cod: productAssembly.cod,
+        affect_icbper: false,
+        igv_type_id: productAssembly.igv_type_id,
+        description: productAssembly.name,
+        brand: productAssembly.brand,
+        sale_price: productAssembly.sale_price,
+        quantity: productAssembly.quantity,
+        series: [],
+      };
 
       const series = {
         id: "",
@@ -684,7 +901,41 @@ export default {
 
       this.productSearch = "";
 
-      this.getTotals()
+      this.getTotals();
+
+      this.getSeries(productAssembly.id);
+    },
+
+    priceOne(filSearch) {
+      this.productSerieSearchFilter.push([]);
+
+      const product = {
+        discount: 0,
+        subtotal: 0,
+        total: 0,
+
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: filSearch.igv_type_id,
+        description: filSearch.name,
+        brand: filSearch.brand,
+        sale_price: filSearch.sale_price,
+        quantity: 1,
+        series: [],
+      };
+
+      const series = {
+        id: "",
+        serie: "",
+      };
+      product.series.push(series);
+
+      this.saleData.detail.push(product);
+
+      this.productSearch = "";
+
+      this.getTotals();
 
       this.getSeries(filSearch.id);
     },
@@ -692,20 +943,20 @@ export default {
       this.productSerieSearchFilter.push([]);
 
       const product = {
-        discount : 0,
+        discount: 0,
         subtotal: 0,
         total: 0,
 
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
-        sale_price : filSearch.referential_sale_price_one,
-        quantity : 1,
-        series : []
-      }
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: filSearch.igv_type_id,
+        description: filSearch.name,
+        brand: filSearch.brand,
+        sale_price: filSearch.referential_sale_price_one,
+        quantity: 1,
+        series: [],
+      };
 
       const series = {
         id: "",
@@ -717,7 +968,7 @@ export default {
 
       this.productSearch = "";
 
-      this.getTotals()
+      this.getTotals();
 
       this.getSeries(filSearch.id);
     },
@@ -725,20 +976,20 @@ export default {
       this.productSerieSearchFilter.push([]);
 
       const product = {
-        discount : 0,
+        discount: 0,
         subtotal: 0,
         total: 0,
 
-        product_id : filSearch.id,
-        cod : filSearch.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
-        sale_price : filSearch.referential_sale_price_two,
-        quantity : 1,
-        series : []
-      }
+        product_id: filSearch.id,
+        cod: filSearch.cod,
+        affect_icbper: false,
+        igv_type_id: filSearch.igv_type_id,
+        description: filSearch.name,
+        brand: filSearch.brand,
+        sale_price: filSearch.referential_sale_price_two,
+        quantity: 1,
+        series: [],
+      };
 
       const series = {
         id: "",
@@ -750,7 +1001,7 @@ export default {
 
       this.productSearch = "";
 
-      this.getTotals()
+      this.getTotals();
 
       this.getSeries(filSearch.id);
     },
@@ -799,334 +1050,365 @@ export default {
         this.productSeries.push(resp.data.data);
       });
     },
-    getTotals(){
+    getTotals() {
+      this.saleData.voucher.subtotal = 0;
+      this.saleData.voucher.totalIgv = 0;
+      this.saleData.voucher.totalExonerated = 0;
+      this.saleData.voucher.totalUnaffected = 0;
+      this.saleData.voucher.totalFree = 0;
+      this.saleData.voucher.totalTaxed = 0;
+      this.saleData.voucher.total = 0;
 
-      this.saleData.voucher.subtotal = 0
-      this.saleData.voucher.totalIgv = 0
-      this.saleData.voucher.totalExonerated = 0
-      this.saleData.voucher.totalUnaffected = 0
-      this.saleData.voucher.totalFree = 0
-      this.saleData.voucher.totalTaxed = 0
-      this.saleData.voucher.total = 0
-
-      this.saleData.voucher.discountItems = 0
+      this.saleData.voucher.discountItems = 0;
 
       // igv constante
-      const igv = 0.18
+      const igv = 0.18;
 
       // TODO: CORREGIR y redondear al final
-      this.saleData.detail.forEach( e => {
-
-        this.saleData.voucher.discountItems += e.discount
+      this.saleData.detail.forEach((e) => {
+        this.saleData.voucher.discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
-
             // hallar el precio sin igv
-            let priceWithoutIgv = e.sale_price / (1 + igv)
+            let priceWithoutIgv = e.sale_price / (1 + igv);
 
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
-            e.subtotal = parseFloat(((priceWithoutIgv * e.quantity) - e.discount).toFixed(2))
+            e.subtotal = parseFloat(
+              (priceWithoutIgv * e.quantity - e.discount).toFixed(2)
+            );
 
             // hallar el total = (subtotal * 1.18)
-            e.total = parseFloat(( e.subtotal * (1 + igv)).toFixed(2))
+            e.total = parseFloat((e.subtotal * (1 + igv)).toFixed(2));
 
             // Actualizar totales globales
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalIgv += parseFloat((e.total - e.subtotal).toFixed(2))
-            this.saleData.voucher.totalTaxed += e.subtotal
-            this.saleData.voucher.total += e.total
-            break
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalIgv += parseFloat(
+              (e.total - e.subtotal).toFixed(2)
+            );
+            this.saleData.voucher.totalTaxed += e.subtotal;
+            this.saleData.voucher.total += e.total;
+            break;
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalExonerated += e.subtotal
-            this.saleData.voucher.total += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalExonerated += e.subtotal;
+            this.saleData.voucher.total += e.total;
+            break;
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalUnaffected += e.subtotal
-            this.saleData.voucher.total += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalUnaffected += e.subtotal;
+            this.saleData.voucher.total += e.total;
+            break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalFree += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalFree += e.total;
+            break;
           case 40: //Exportación
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.saleData.voucher.subtotal += e.subtotal
-            this.saleData.voucher.totalUnaffected += e.subtotal
-            this.saleData.voucher.total += e.total
-            break
+            e.subtotal =
+              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
+            e.total = e.subtotal;
+            this.saleData.voucher.subtotal += e.subtotal;
+            this.saleData.voucher.totalUnaffected += e.subtotal;
+            this.saleData.voucher.total += e.total;
+            break;
         }
+      });
 
-      })
+      this.saleData.voucher.total =
+        this.saleData.voucher.total - this.saleData.voucher.discount;
 
-      this.saleData.voucher.total = this.saleData.voucher.total - this.saleData.voucher.discount
-
-      this.getChange()
-
+      this.getChange();
     },
-    getChange(){
+    getChange() {
       if (this.saleData.voucher.received_money != 0) {
-        this.saleData.voucher.change = this.saleData.voucher.received_money - this.saleData.voucher.total
+        this.saleData.voucher.change =
+          this.saleData.voucher.received_money - this.saleData.voucher.total;
       }
       if (this.saleData.voucher.received_money == 0) {
-        this.saleData.voucher.change = 0
+        this.saleData.voucher.change = 0;
       }
     },
     createSale() {
+      BaseUrl.post("/api/sales", this.saleData)
+        .then((response) => {
+          this.errorsCreate = {};
+          console.log(response);
+          this.$router.push({ name: "voucher-list" });
+          Swal.fire("Comprobante Creado", response.data, "success");
+        })
+        .catch((error) => {
+          console.log(error.response);
 
-      BaseUrl.post("/api/sales", this.saleData).then((response) => {
-        this.errorsCreate = {}
-        console.log(response)
-        this.$router.push({ name: "voucher-list" });
-        Swal.fire(
-          "Comprobante Creado",
-          response.data,
-          "success"
-        );
-      })
-      .catch((error) => {
-        console.log(error.response);
+          this.errorsCreate = error.response.data.errors;
+          if (this.errorsCreate["detail"] != null) {
+            Swal.fire(
+              "Algo salio mal",
+              this.errorsCreate["detail"][0],
+              "error"
+            );
+          }
 
-        this.errorsCreate = error.response.data.errors
-        if (this.errorsCreate['detail'] != null) {
-          Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
-        }
-
-        this.getErrorDetailSerie(0, 0)
-
-      });
+          this.getErrorDetailSerie(0, 0);
+        });
     },
     // i = index1(detail) , j = index2(series)
-    getErrorDetailSerie(i, j){
-
+    getErrorDetailSerie(i, j) {
       if (i < this.saleData.detail.length) {
-
         if (j < this.saleData.detail[i].quantity) {
-
-          if (this.errorsCreate['detail.' + i + '.series.' + j + '.serie'] != null) {
-
-            console.log('detail.' + i + '.series.' + j + '.serie')
+          if (
+            this.errorsCreate["detail." + i + ".series." + j + ".serie"] != null
+          ) {
+            console.log("detail." + i + ".series." + j + ".serie");
             Swal.fire({
               title: "Algo salio mal",
-              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
-              this.errorsCreate['detail.' + i + '.series.' + j + '.serie'][0],
-              icon: "warning"
-            })
-            .then((result) => {
-              i++
-              this.getErrorDetailSerie(i, 0)
-            })
-
+              html:
+                "Exite un error en el producto  <b>" +
+                this.saleData.detail[i].description +
+                " - " +
+                this.saleData.detail[i].brand +
+                " - " +
+                this.saleData.detail[i].cod +
+                "</b>: </br>" +
+                this.errorsCreate["detail." + i + ".series." + j + ".serie"][0],
+              icon: "warning",
+            }).then((result) => {
+              i++;
+              this.getErrorDetailSerie(i, 0);
+            });
+          } else {
+            j++;
+            this.getErrorDetailSerie(i, j);
           }
-          else{
-            j++
-            this.getErrorDetailSerie(i, j)
-          }
-
+        } else {
+          i++;
+          this.getErrorDetailSerie(i, 0);
         }
-        else{
-          i++
-          this.getErrorDetailSerie(i, 0)
-        }
-
       }
-
     },
-    getQuotation(){
+    getQuotation() {
+      this.saleData.detail = [];
 
-      this.saleData.detail = []
+      this.productSeries = [];
 
-      this.productSeries = []
+      BaseUrl.get(
+        `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
+      )
+        .then((resp) => {
+          let quotation = resp.data.data;
 
-      BaseUrl.get(`api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`).then( resp=>{
-        let quotation = resp.data.data
+          this.saleData.voucher.discount = quotation.discount;
+          this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
+          this.saleData.voucher.observation = quotation.observation;
+          this.saleData.voucher.payment_type_id = quotation.payment_type_id;
 
-        this.saleData.voucher.discount = quotation.discount
-        this.saleData.voucher.warranty = Boolean(quotation.have_warranty)
-        this.saleData.voucher.observation = quotation.observation
-        this.saleData.voucher.payment_type_id = quotation.payment_type_id
+          quotation.quotation_details.forEach((e, index) => {
+            this.productSerieSearchFilter.push([]);
 
-        quotation.quotation_details.forEach((e, index) => {
+            const product = {
+              discount: e.discount,
+              subtotal: 0,
+              total: 0,
 
-          this.productSerieSearchFilter.push([])
+              product_id: e.branch_product_id,
+              cod: e.branch_product.product.cod,
+              affect_icbper: false,
+              igv_type_id: e.igv_type_id,
+              description: e.branch_product.product.name,
+              brand: e.branch_product.product.brand_line.brand.description,
+              sale_price: e.price,
+              quantity: e.quantity,
+              series: [],
+            };
 
-          const product = {
+            this.saleData.detail.push(product);
 
-            discount : e.discount,
-            subtotal: 0,
-            total: 0,
+            //Obtener y Añadir series
+            this.getSeries(e.branch_product_id);
+            this.addSeries(index);
 
-            product_id : e.branch_product_id,
-            cod : e.branch_product.product.cod,
-            affect_icbper : false,
-            igv_type_id : e.igv_type_id,
-            description : e.branch_product.product.name,
-            brand : e.branch_product.product.brand_line.brand.description,
-            sale_price : e.price,
-            quantity : e.quantity,
-            series : []
-
-          }
-
-          this.saleData.detail.push(product)
-
-          //Obtener y Añadir series
-          this.getSeries(e.branch_product_id)
-          this.addSeries(index)
-
-          //Activar descuento
-          this.activateOrDesactivateGlobalDiscount()
-          this.activateOrDesactivateDetailDiscount()
-        });
-
-        // Alertas para las notificaciones y calcular totales
-        this.getQuotationDiscount(0)
-
-
-      })
-      .catch((error) => {
-        if (error.response.status == 404) {
-          Swal.fire({
-            title: 'No encontrado',
-            html: 'No existe la cotización',
-            icon: 'warning'
+            //Activar descuento
+            this.activateOrDesactivateGlobalDiscount();
+            this.activateOrDesactivateDetailDiscount();
           });
-        }
-      })
 
-
+          // Alertas para las notificaciones y calcular totales
+          this.getQuotationDiscount(0);
+        })
+        .catch((error) => {
+          if (error.response.status == 404) {
+            Swal.fire({
+              title: "No encontrado",
+              html: "No existe la cotización",
+              icon: "warning",
+            });
+          }
+        });
     },
-    getQuotationDiscount(index){
-
+    getQuotationDiscount(index) {
       if (index < this.saleData.detail.length) {
         if (this.saleData.detail[index].discount > 0) {
           Swal.fire({
             title: "¿Aceptar Descuento?",
-            html: 'El producto <b>' + this.saleData.detail[index].description + '</b> ' +
-            'tiene un precio <b>S/. ' + this.saleData.detail[index].sale_price + '</b> ' +
-            'y tiene un descuento por un total de <b>S/. ' + this.saleData.detail[index].discount + '</b> ' +
-            'el precio final es de <b>S/. ' + (this.saleData.detail[index].sale_price - this.saleData.detail[index].discount) + '</b>',
+            html:
+              "El producto <b>" +
+              this.saleData.detail[index].description +
+              "</b> " +
+              "tiene un precio <b>S/. " +
+              this.saleData.detail[index].sale_price +
+              "</b> " +
+              "y tiene un descuento por un total de <b>S/. " +
+              this.saleData.detail[index].discount +
+              "</b> " +
+              "el precio final es de <b>S/. " +
+              (this.saleData.detail[index].sale_price -
+                this.saleData.detail[index].discount) +
+              "</b>",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, adelante",
             cancelButtonText: "Cancelar",
-            allowOutsideClick: false
-          })
-          .then((result) => {
+            allowOutsideClick: false,
+          }).then((result) => {
             if (result.isConfirmed) {
               Swal.fire({
-                title: 'Confirmado',
-                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
-                'por un total de <b>S/. ' + this.saleData.detail[index].discount + '</b> '  +
-                'ha sido aceptado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
-                icon: 'success',
-                allowOutsideClick: false
+                title: "Confirmado",
+                html:
+                  "El descuento para el producto <b>" +
+                  this.saleData.detail[index].description +
+                  "</b> " +
+                  "por un total de <b>S/. " +
+                  this.saleData.detail[index].discount +
+                  "</b> " +
+                  "ha sido aceptado el precio final es <b>S/. " +
+                  this.saleData.detail[index].sale_price +
+                  "</b>",
+                icon: "success",
+                allowOutsideClick: false,
               }).then((result) => {
                 if (result.value) {
-                  index++
-                  this.getQuotationDiscount(index)
+                  index++;
+                  this.getQuotationDiscount(index);
                 }
-              })
-
-            } else if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.backdrop) {
-              let discount = this.saleData.detail[index].discount
-              this.saleData.detail[index].discount = 0
+              });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              let discount = this.saleData.detail[index].discount;
+              this.saleData.detail[index].discount = 0;
               Swal.fire({
-                title: 'Cancelado',
-                html: 'El descuento para el producto <b>' + this.saleData.detail[index].description + '</b> ' +
-                'por un total de <b>S/. ' + discount +  '</b> ' +
-                'ha sido eliminado el precio final es <b>S/. ' + this.saleData.detail[index].sale_price + '</b>',
-                icon: 'error',
-                allowOutsideClick: false
+                title: "Cancelado",
+                html:
+                  "El descuento para el producto <b>" +
+                  this.saleData.detail[index].description +
+                  "</b> " +
+                  "por un total de <b>S/. " +
+                  discount +
+                  "</b> " +
+                  "ha sido eliminado el precio final es <b>S/. " +
+                  this.saleData.detail[index].sale_price +
+                  "</b>",
+                icon: "error",
+                allowOutsideClick: false,
               }).then((result) => {
                 if (result.value) {
-                  index++
-                  this.getQuotationDiscount(index)
+                  index++;
+                  this.getQuotationDiscount(index);
                 }
-              })
+              });
             }
-          })
-        }
-        else {
-          index++
-          this.getQuotationDiscount(index)
+          });
+        } else {
+          index++;
+          this.getQuotationDiscount(index);
         }
       } else {
         //Activar descuento
@@ -1185,18 +1467,16 @@ export default {
         //   this.getQuotationDiscount(index)
         // }
 
-        this.activateOrDesactivateGlobalDiscount()
-        this.activateOrDesactivateDetailDiscount()
+        this.activateOrDesactivateGlobalDiscount();
+        this.activateOrDesactivateDetailDiscount();
 
         //calcular totales
-        this.getTotals()
+        this.getTotals();
 
-        console.log(this.saleData)
+        console.log(this.saleData);
       }
-
     },
-
-  }
+  },
 };
 </script>
 

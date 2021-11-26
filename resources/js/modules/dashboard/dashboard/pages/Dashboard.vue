@@ -55,57 +55,7 @@
     </div>
   </div>
   <div class="row">
-    <!-- <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Grafico 1</h3>
-
-          <div class="card-tools">
-            <button
-              type="button"
-              class="btn btn-tool"
-              data-card-widget="collapse"
-            >
-              <i class="fas fa-minus"></i>
-            </button>
-            <button
-              type="button"
-              class="btn btn-tool"
-              data-card-widget="remove"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body" style="display: block">
-          <div class="chart">
-            <div class="chartjs-size-monitor">
-              <div class="chartjs-size-monitor-expand">
-                <div class=""></div>
-              </div>
-              <div class="chartjs-size-monitor-shrink">
-                <div class=""></div>
-              </div>
-            </div>
-            <canvas
-              id="areaChart"
-              style="
-                min-height: 250px;
-                height: 250px;
-                max-height: 250px;
-                max-width: 100%;
-                display: block;
-                width: 487px;
-              "
-              width="487"
-              height="250"
-              class="chartjs-render-monitor"
-            ></canvas>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <div class="col-md">
+    <div class="col-md-8">
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Grafico 2</h3>
@@ -133,6 +83,34 @@
         <!-- /.card-body -->
       </div>
     </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Tipo de pagos</h3>
+
+          <div class="card-tools">
+            <button
+              type="button"
+              class="btn btn-tool"
+              data-card-widget="collapse"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-tool"
+              data-card-widget="remove"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body" style="display: block">
+          <TypePaymentChart/>
+        </div>
+        <!-- /.card-body -->
+      </div>
+    </div>
   </div>
   <!-- <button @click="getDataWidgets" class="btn btn-info">model</button> -->
 </template>
@@ -140,11 +118,12 @@
 <script>
 import Chart from "chart.js/auto";
 import { LineChart } from "vue-chart-3";
+import TypePaymentChart from "../charts/TypePaymentChart.vue"
 import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
   name: "Dashboard",
-  components: { LineChart, BaseUrl },
+  components: { LineChart, BaseUrl, TypePaymentChart},
   data() {
     return {
       widgets: {},

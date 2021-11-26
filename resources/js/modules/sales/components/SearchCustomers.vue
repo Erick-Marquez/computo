@@ -9,11 +9,11 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == 'FACTURA' || voucherType == '01'"
+          v-if="voucherType == 1"
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
-          <option value="6">RUC</option>
+          <option value="6" selected>RUC</option>
         </select>
         <select
           v-else
@@ -194,12 +194,13 @@ export default {
   },
   props: {
     customer: Object,
-    voucherType: String,
+    voucherType: Number,
     errors: Array,
   },
   created() {
     this.getTypeDocuments();
     this.getUbigees();
+    this.customer.identification_document_id = 6
   },
   mounted() {
     $("#select4").select2();
