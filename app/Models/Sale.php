@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    use HasFactory;
+    use ApiTrait, HasFactory;
 
     const ACEPTADO = 'ACEPTADO';
     const RECHAZADO = 'RECHAZADO';
@@ -49,6 +50,10 @@ class Sale extends Model
         'user_id'
 
     ];
+
+    protected $allowIncluded = ['payment_types'];
+    protected $allowFilter = ['id'];
+    protected $allowSort = ['id', 'date_issue'];
 
     public function saleDetails()
     {

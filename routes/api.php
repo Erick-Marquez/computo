@@ -146,6 +146,7 @@ Route::middleware([
     // Dashboard
     Route::get('dashboard/vouchers', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
     Route::get('dashboard/widgets', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
+    Route::get('dashboard/type-payments', [DashboardController::class, 'amountTypePayment'])->name('api.dashboard.type-payments');
 
     Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
 

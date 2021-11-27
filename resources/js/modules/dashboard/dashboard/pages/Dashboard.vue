@@ -1,5 +1,6 @@
 <template>
   <div class="content-header">
+    <button class="btn btn-primary" @click="getAmountTypePayment()">aaaaaaaaa</button>
     <h1>Dashboard</h1>
     <div v-if="$can('dashboard')">tu puedes ver el dashboard</div>
     <div v-if="$can('sales')">tu puedes ver las compras</div>
@@ -106,7 +107,7 @@
           </div>
         </div>
         <div class="card-body" style="display: block">
-          <TypePaymentChart/>
+          <TypePaymentChart />
         </div>
         <!-- /.card-body -->
       </div>
@@ -118,12 +119,12 @@
 <script>
 import Chart from "chart.js/auto";
 import { LineChart } from "vue-chart-3";
-import TypePaymentChart from "../charts/TypePaymentChart.vue"
+import TypePaymentChart from "../charts/TypePaymentChart.vue";
 import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
   name: "Dashboard",
-  components: { LineChart, BaseUrl, TypePaymentChart},
+  components: { LineChart, BaseUrl, TypePaymentChart },
   data() {
     return {
       widgets: {},
@@ -227,6 +228,16 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.widgets = response.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    getAmountTypePayment() {
+      console.log("aaaaa");
+      BaseUrl.get(`/api/dashboard/type-payments`)
+        .then((response) => {
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error.response);

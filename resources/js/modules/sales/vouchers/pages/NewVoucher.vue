@@ -932,12 +932,12 @@ export default {
       }
     },
     setAssemblie(products) {
-        products.forEach((product) => {
-            this.setProductAssembly(product)
+        products.forEach((product, index) => {
+            this.setProductAssembly(product, index)
         })
     },
 
-    setProductAssembly(productAssembly) {
+    setProductAssembly(productAssembly, index) {
       this.productSerieSearchFilter.push([]);
 
       const product = {
@@ -964,11 +964,13 @@ export default {
 
       this.saleData.detail.push(product);
 
-      this.productSearch = "";
-
       this.getTotals();
 
+      this.addSeries(index);
+
       this.getSeries(productAssembly.id);
+          // Alertas para las notificaciones y calcular totales
+        //   this.getQuotationDiscount(0);
     },
 
     priceOne(filSearch) {
@@ -1295,6 +1297,7 @@ export default {
       .catch((error) => {
         this.errors = error.response.data.errors
         console.log(error.response.data.errors);
+        console.log(error.response);
         this.errors = error.response.data.errors
         if (this.errors['detail'] != null) {
           Swal.fire("Algo salio mal", this.errors['detail'][0], "error")

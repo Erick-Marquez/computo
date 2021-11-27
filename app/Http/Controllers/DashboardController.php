@@ -30,34 +30,34 @@ class DashboardController extends Controller
             $facturas = DB::table('sales')
                 ->join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select('sales.date_issue as x', DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
                 ->where('series.branch_id', $user_id,)
                 ->where('voucher_types.cod', '01')
-                ->where('sales.date_issue', '>', $mes_anterior)
+                ->where('sales.created_at', '>', $mes_anterior)
                 ->groupBy('voucher_types.description')
-                ->groupBy('sales.date_issue')
+                ->groupBy('sales.created_at')
                 ->get(); // OBJETO {X: , Y: }
 
             $boletas = DB::table('sales')
                 ->join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select('sales.date_issue as x', DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
                 ->where('series.branch_id', $user_id,)
                 ->where('voucher_types.cod', '03')
-                ->where('sales.date_issue', '>', $mes_anterior)
+                ->where('sales.created_at', '>', $mes_anterior)
                 ->groupBy('voucher_types.description')
-                ->groupBy('sales.date_issue')
+                ->groupBy('sales.created_at')
                 ->get(); // OBJETO {X: , Y: }
 
             $notas_venta = DB::table('sales')
                 ->join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select('sales.date_issue as x', DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
                 ->where('series.branch_id', $user_id,)
                 ->where('voucher_types.id', 3)
-                ->where('sales.date_issue', '>', $mes_anterior)
+                ->where('sales.created_at', '>', $mes_anterior)
                 ->groupBy('voucher_types.description')
-                ->groupBy('sales.date_issue')
+                ->groupBy('sales.created_at')
                 ->get(); // OBJETO {X: , Y: }
 
             return response()->json(['facturas' => $facturas, 'boletas' => $boletas, 'notas_venta' => $notas_venta, 'fechas' => $fechas]);
@@ -82,5 +82,21 @@ class DashboardController extends Controller
             'sales' => $sales,
             'products' => $products
         ]);
+    }
+
+    public function amountTypePayment()
+    {
+        $mes_anterior = date('y-m-d', strtotime('-30 day'));
+        $query = DB::table('sales')
+        ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
+        ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
+        ->select('payment_types.description', DB::raw('SUM(sales.total) as amount'))
+
+        ->groupBy('payment_types.description')
+        ->where('sales.created_at', '>=', $mes_anterior)
+        ->get(); // OBJETO {X: , Y: }
+
+        return response()->json($query);
+
     }
 }
