@@ -32,7 +32,6 @@ class QuotationRequest extends FormRequest
 
             'quotation.warranty' => ['required', 'boolean'],
 
-            'quotation.payment_type_id' => ['required', 'exists:payment_types,id'],
             'quotation.serie_id' => [
                 'required', 
                 Rule::exists('series', 'id')->where(function ($query) {

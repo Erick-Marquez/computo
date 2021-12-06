@@ -293,11 +293,7 @@ var _hoisted_43 = ["href"];
 
 var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "col-1 mr-3 fas fa-edit"
-<<<<<<< HEAD
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" PDF ")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\r\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\r\n                          Eliminar\r\n                        </a> ")])])], -1
-=======
 }, null, -1
->>>>>>> 7c2e510c46e63ab883ef3213551ad64924bd4dde
 /* HOISTED */
 );
 
@@ -371,7 +367,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: 'http://computo.test/print/cashbox/report/' + occ.id
     }, _hoisted_46, 8
     /* PROPS */
-    , _hoisted_43), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\n                          Eliminar\n                        </a> ")])])])]);
+    , _hoisted_43), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\r\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\r\n                          Eliminar\r\n                        </a> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_47, _hoisted_49))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card ")])]);

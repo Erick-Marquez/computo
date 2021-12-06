@@ -16,15 +16,20 @@ class SaleService
     public function storeSale($request)
     {
         if (is_null($request->customer['id'])) {
+
             $customer = Customer::create([
                 'name' => $request->customer['name'],
                 'document' => $request->customer['document'],
                 'phone' => $request->customer['phone'],
-                'email' => $request->customer['email'],
                 'address' => $request->customer['address'],
                 'identification_document_id' => $request->customer['identification_document_id'],
             ]);
-            $request->customer['id'] = $customer->id;
+
+            $dataCustomer = $request->customer;
+            $dataCustomer['id'] = $customer->id;
+
+            $request->merge(['customer' => $dataCustomer]);
+
         }
 
         
