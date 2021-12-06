@@ -100,7 +100,7 @@
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
-        <div class="col-12 table-responsive mt-4">
+        <div class="col-12 table-responsive mt-4 mb-4 table-product border rounded">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -164,6 +164,17 @@
               </tr>
             </tbody>
           </table>
+          <div
+            class="image-without-products"
+            v-if="quotationData.detail.length == 0"
+          >
+            <img
+              src="../../../../../img/add_product.png"
+              alt=""
+              style="max-height: 120px"
+            >
+            <h1 class="display-4">Agregue productos</h1>
+          </div>
         </div>
       </div>
 
@@ -172,22 +183,6 @@
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
           <div class="row">
-            <div class="col-md">
-              <div class="form-group">
-                <label for="">
-                  <i class="text-danger fas fa-money-bill"></i>
-                  Tipo de pago
-                </label>
-                <select v-model="quotationData.quotation.payment_type_id" :class="'form-control rounded-pill' + (errorsCreate['quotation.payment_type_id'] == null ? '' : ' is-invalid')">
-                  <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
-                    {{ paymentType.description }}
-                  </option>
-                </select>
-                <div class="invalid-feedback" v-if="errorsCreate['quotation.payment_type_id'] ">
-                  {{ errorsCreate['quotation.payment_type_id'][0] }}
-                </div>
-              </div>
-            </div>
             <div class="col-md">
               <div class="form-group">
                 <label for="">
@@ -216,7 +211,88 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-3">
+              <div class="form-group text-center">
+                <label>
+                  <i class="text-danger fas fa-file-contract"></i>
+                  ¿Tiene Anticipos?
+                </label>
+                <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
+                  <input type="checkbox" class="custom-control-input" id="customSwitchCreateHaveAdvancePayments" v-model="quotationData.quotation.have_advance_payments" @change="clearMultipayment()">
+                  <label class="custom-control-label" for="customSwitchCreateHaveAdvancePayments">{{ quotationData.quotation.have_advance_payments ? 'Si' : 'No' }}</label>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <h4 v-if="quotationData.quotation.have_advance_payments">Anticipos</h4>
+          <div class="row" v-if="quotationData.quotation.have_advance_payments">
+            <div class="table-responsive">
+              <table class="table" style="min-width: 600px">
+                <thead>
+                  <tr>
+                    <th>Descripción</th>
+                    <th>
+                      <i class="text-danger fas fa-money-bill"></i> Tipo de pago
+                    </th>
+                    <th>Monto S/.</th>
+                    <th class="col-2 text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(payment, index) in quotationData.quotation.payments"
+                    :key="payment.id"
+                  >
+                    <td class="align-middle">Anticipo {{ index + 1 }}</td>
+                    <td>
+                      <select
+                        v-model="payment.payment_type_id"
+                        class="form-control rounded-pill"
+                      >
+                        <option
+                          v-for="paymentType in paymentTypes"
+                          :key="paymentType.id"
+                          :value="paymentType.id"
+                        >
+                          {{ paymentType.description }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        class="form-control rounded-pill"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        v-model="payment.amount"
+                      >
+                    </td>
+                    <td class="text-center" v-if="index == 0">
+                      <button
+                        type="button"
+                        class="btn btn-dark btn-sm"
+                        @click="addPayment()"
+                      >
+                        <span><i class="fas fa-plus"></i></span>
+                        Añadir
+                      </button>
+                    </td>
+                    <td class="text-center" v-else>
+                      <button
+                        type="button"
+                        class="btn btn-flat"
+                        @click="deletePayment(index)"
+                      >
+                        <i class="text-danger fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -275,8 +351,15 @@
       <div class="row no-print">
         <div class="col-12">
           <form @submit.prevent="createQuotation()">
-            <button type="submit" class="btn btn-dark float-right">
+
+            <button v-if="!loadingQuotation" type="submit" class="btn btn-dark float-right">
               <i class="far fa-credit-card"></i> Guardar Cotización
+            </button>
+
+            <button v-else class="btn btn-dark float-right" :disabled="loadingQuotation">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
             </button>
           </form>
         </div>
@@ -316,6 +399,8 @@ export default {
   data() {
     return {
 
+      loadingQuotation: false,
+
       series: {},
       currentNumber: 'Selecciona una serie',
       paymentTypes: null,
@@ -346,11 +431,15 @@ export default {
 
           discountItems: 0,
 
+          have_advance_payments: false,
+
           observation: '',
           warranty: false,
           date_due: null,
           serie_id: '',
           payment_type_id: null,
+
+          payments: [],
         },
         detail: []
       },
@@ -631,6 +720,8 @@ export default {
     },
     createQuotation() {
 
+      this.loadingQuotation = true
+
       BaseUrl.post("/api/quotations", this.quotationData).then((response) => {
         console.log(response)
 
@@ -653,6 +744,31 @@ export default {
           Swal.fire("Algo salio mal", this.errorsCreate['detail'][0], "error")
         }
       })
+      .finally(() => {
+        this.loadingQuotation = false;
+      })
+    },
+
+    clearMultipayment(){
+
+      this.quotationData.quotation.payments = []
+
+      if (this.quotationData.quotation.have_advance_payments) {
+        this.addPayment()
+      }
+
+    },
+    addPayment(){
+
+      const payment = {
+        payment_type_id: this.paymentTypes[0].id,
+        amount: 0,
+      }
+
+      this.quotationData.quotation.payments.push(payment);
+    },
+    deletePayment(index){
+      this.quotationData.quotation.payments.splice(index, 1);
     },
   }
 }
@@ -728,5 +844,26 @@ label {
   width: 100%;
   height: 40px;
   border-radius: 5px;
+}
+
+.table-product {
+  min-height: 250px;
+}
+.table-product table {
+  min-width: 900px;
+}
+.image-without-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img {
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
 }
 </style>

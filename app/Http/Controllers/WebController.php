@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\BranchProduct;
 use App\Models\CurrencyExchange;
+use App\Models\PaymentTypeQuotation;
 use App\Models\Quotation;
 use App\Models\VoucherType;
 use App\Services\KardexService;
@@ -25,6 +26,11 @@ class WebController extends Controller
     public function saleNotes()
     {
         return view('sales.sale-notes.index');
+    }
+
+    public function advancePayments()
+    {
+        return view('sales.advance-payments.index');
     }
 
     public function quotations()
@@ -170,7 +176,7 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        return SunatService::facturar(7, 'invoice');
+        // return SunatService::facturar(7, 'invoice');
 
         // $currencyExchange = CurrencyExchange::latest()->first()->change;
         // $branchProducts = BranchProduct::select(

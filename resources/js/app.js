@@ -16,6 +16,7 @@ import indexModificactionStock from './modules/inventory/modification-stock/inde
 /* Sales */
 import indexVoucher from './modules/sales/vouchers/index.vue';
 import indexSaleNotes from './modules/sales/sale-notes/index.vue';
+import advancePayments from './modules/sales/advance-payments/index.vue';
 import indexQuotation from './modules/sales/quotations/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
@@ -50,6 +51,7 @@ const app = createApp({});
 /* Sales */
 app.component('index-vouchers', indexVoucher);
 app.component('index-sale-notes', indexSaleNotes);
+app.component('index-advance-payments', advancePayments);
 app.component('index-quotations', indexQuotation);
 app.component('index-warranties', indexWarranty);
 

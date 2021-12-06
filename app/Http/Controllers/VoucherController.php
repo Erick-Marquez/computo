@@ -122,8 +122,8 @@ class VoucherController extends Controller
 
     public function print($type, Sale $sale)
     {
-        $company = Company::find(1);
-        $head = Sale::where('id', $sale->id)->with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType', 'paymentTypes')->firstOrFail();
+        $company = Company::findOrFail(1);
+        $head = Sale::with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType', 'paymentTypes')->findOrFail($sale->id);
         $details = $head->saleDetails;
 
         $text = join('|', [
@@ -142,10 +142,10 @@ class VoucherController extends Controller
         $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
 
         if ($type == 'A4') {
-            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4', 'portrait');
         }
         if ($type == 'TICKET') {
-            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,700),'portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,700), 'portrait');
         }
         if ($type == 'WARRANTY') {
 
@@ -249,7 +249,7 @@ class VoucherController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand')->firstOrFail();
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand', 'paymentTypes')->firstOrFail();
         return QuotationResource::make($quotation);
     }
 

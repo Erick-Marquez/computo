@@ -30,12 +30,9 @@ class CreateQuotationsTable extends Migration
             
             $table->boolean('have_warranty')->nullable()->default(false);
 
+            $table->boolean('have_advance_payments')->nullable()->default(false);
+
             $table->string('observation')->nullable();
-            
-            $table->foreignId('payment_type_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
 
             $table->foreignId('serie_id')
                 ->constrained()

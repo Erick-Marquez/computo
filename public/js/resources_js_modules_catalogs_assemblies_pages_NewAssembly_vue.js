@@ -480,7 +480,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-<<<<<<< HEAD
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newAssembly.description]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [$options.hasImage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
     key: 0,
     "class": "rounded mx-auto d-block mb-4",
@@ -511,10 +510,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "img-format": "png"
   }, null, 8
   /* PROPS */
-  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\n                type=\"search\"\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\n                placeholder=\"Escribe tu producto o código\"\n                v-model=\"productName\"\n                @keyup=\"searchProduct\"\n                @blur=\"toggle = false\"\n                @focus=\"toggle = true\"\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
-=======
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newAssembly.description]])])])])]), _hoisted_18]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\r\n                type=\"search\"\r\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\r\n                placeholder=\"Escribe tu producto o código\"\r\n                v-model=\"productName\"\r\n                @keyup=\"searchProduct\"\r\n                @blur=\"toggle = false\"\r\n                @focus=\"toggle = true\"\r\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
->>>>>>> b3219969e22576df10dd159cfe03c47402110bd3
+  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\r\n                type=\"search\"\r\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\r\n                placeholder=\"Escribe tu producto o código\"\r\n                v-model=\"productName\"\r\n                @keyup=\"searchProduct\"\r\n                @blur=\"toggle = false\"\r\n                @focus=\"toggle = true\"\r\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
     products: $data.newAssembly.products,
     errors: $data.errors
   }, null, 8

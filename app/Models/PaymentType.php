@@ -15,11 +15,11 @@ class PaymentType extends Model
 
     public function sales()
     {
-        return $this->belongsToMany(Sale::class)->withPivot(["amount"]);
+        return $this->belongsToMany(Sale::class)->withPivot(["amount"])->withTimestamps();
     }
 
     public function quotations()
     {
-        return $this->hasMany(Quotation::class);
+        return $this->belongsToMany(Sale::class)->withPivot(["amount"])->withTimestamps();
     }
 }
