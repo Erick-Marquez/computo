@@ -123,13 +123,11 @@
           </div>
         </div>
       </div>
-      {{ saleData.voucher.document_type }}
       <SearchCustomers
         :voucherType="saleData.voucher.document_type"
         :customer="saleData.customer"
         :errors="errors"
       />
-      {{ saleData.detail }}
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
       <div class="row">
         <div class="col-md">
@@ -500,7 +498,7 @@
               src="../../../../../img/add_product.png"
               alt=""
               style="max-height: 120px"
-            />
+            >
             <h1 class="display-4">Agregue productos</h1>
           </div>
         </div>
@@ -509,6 +507,109 @@
       <div class="row">
         <div class="col-md-8">
           <h4>Detalle Documento</h4>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">
+                  <i class="text-danger fas fa-tags"></i>
+                  Descuento
+                </label>
+                <input
+                  :class="$errorsClass(errors['voucher.discount'])"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  v-model="saleData.voucher.discount"
+                  @change="activateOrDesactivateDetailDiscount"
+                  :disabled="activateGlobalDiscount"
+                  @input="getTotals()"
+                />
+                <div
+                  class="invalid-feedback ml-3"
+                  v-if="$errorsExists(errors['voucher.discount'])"
+                >
+                  {{ $errorsPrint(errors["voucher.discount"]) }}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-center">
+                <label>
+                  <i class="text-danger fas fa-file-contract"></i>
+                  ¿Es multipago?
+                </label>
+                <div
+                  class="
+                    custom-control custom-switch custom-switch-on-danger
+                    is-invalid
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="customSwitchCreateIsMultiPayment"
+                    v-model="saleData.voucher.isMultiPayment"
+                    @change="clearMultipayment()"
+                  >
+                  <label
+                    class="custom-control-label"
+                    for="customSwitchCreateIsMultiPayment"
+                    >{{
+                      saleData.voucher.isMultiPayment ? "Si" : "No"
+                    }}</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-center">
+                <label>
+                  <i class="text-danger fas fa-file-contract"></i>
+                  ¿Aplica garantía?
+                </label>
+                <div
+                  class="
+                    custom-control custom-switch custom-switch-on-danger
+                    is-invalid
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="customSwitchCreate"
+                    v-model="saleData.voucher.warranty"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="customSwitchCreate"
+                    >{{ saleData.voucher.warranty ? "Si" : "No" }}</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-2" v-if="saleData.voucher.warranty">
+              <div class="form-group">
+                <label for="">
+                  <i class="text-danger fas fa-barcode"></i>
+                  Serie Garantia
+                </label>
+                <select
+                  v-model="saleData.voucher.warranty_serie_id"
+                  class="form-control rounded-pill"
+                >
+                  <option
+                    v-for="warrantySerie in warrantySeries"
+                    :key="warrantySerie.id"
+                    :value="warrantySerie.id"
+                  >
+                    {{ warrantySerie.serie }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="table-responsive">
@@ -520,7 +621,7 @@
                     </th>
                     <th>Total Recibido S/.</th>
                     <th v-if="!saleData.voucher.isMultiPayment">Vuelto S/.</th>
-                    <th class="col-2 text-center">¿Es multipago?</th>
+                    <th v-if="saleData.voucher.isMultiPayment" class="col-2 text-center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -561,127 +662,34 @@
                       />
                     </td>
 
-                    <td class="text-center" v-if="index == 0">
-                      <div
-                        class="
-                          custom-control custom-switch custom-switch-on-danger
-                          is-invalid
-                        "
-                      >
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="customSwitchCreateIsMultiPayment"
-                          v-model="saleData.voucher.isMultiPayment"
-                          @change="clearMultipayment()"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="customSwitchCreateIsMultiPayment"
-                          >{{
-                            saleData.voucher.isMultiPayment ? "Si" : "No"
-                          }}</label
+                    <template v-if="saleData.voucher.isMultiPayment">
+                      <td class="text-center" v-if="index == 0">
+                        <button
+                          type="button"
+                          class="btn btn-dark btn-sm"
+                          @click="addPayment()"
                         >
-                      </div>
-                    </td>
-                    <td class="text-center" v-else-if="index == 1">
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm"
-                        @click="addPayment()"
-                      >
-                        <span><i class="fas fa-plus"></i></span>
-                        Añadir
-                      </button>
-                    </td>
-                    <td class="text-center" v-else>
-                      <button
-                        type="button"
-                        class="btn btn-flat"
-                        @click="deletePayment(index)"
-                      >
-                        <i class="text-danger fas fa-trash"></i>
-                      </button>
-                    </td>
+                          <span><i class="fas fa-plus"></i></span>
+                          Añadir
+                        </button>
+                      </td>
+                      <td class="text-center" v-else>
+                        <button
+                          type="button"
+                          class="btn btn-flat"
+                          @click="deletePayment(index)"
+                        >
+                          <i class="text-danger fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </template>
+
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="">
-                  <i class="text-danger fas fa-tags"></i>
-                  Descuento
-                </label>
-                <input
-                  :class="$errorsClass(errors['voucher.discount'])"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  v-model="saleData.voucher.discount"
-                  @change="activateOrDesactivateDetailDiscount"
-                  :disabled="activateGlobalDiscount"
-                  @input="getTotals()"
-                />
-                <div
-                  class="invalid-feedback ml-3"
-                  v-if="$errorsExists(errors['voucher.discount'])"
-                >
-                  {{ $errorsPrint(errors["voucher.discount"]) }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group text-center">
-                <label>
-                  <i class="text-danger fas fa-file-contract"></i>
-                  ¿Aplica garantía?
-                </label>
-                <div
-                  class="
-                    custom-control custom-switch custom-switch-on-danger
-                    is-invalid
-                  "
-                >
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="customSwitchCreate"
-                    v-model="saleData.voucher.warranty"
-                  />
-                  <label
-                    class="custom-control-label"
-                    for="customSwitchCreate"
-                    >{{ saleData.voucher.warranty ? "Si" : "No" }}</label
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-3" v-if="saleData.voucher.warranty">
-              <div class="form-group">
-                <label for="">
-                  <i class="text-danger fas fa-barcode"></i>
-                  Serie Garantia
-                </label>
-                <select
-                  v-model="saleData.voucher.warranty_serie_id"
-                  class="form-control rounded-pill"
-                >
-                  <option
-                    v-for="warrantySerie in warrantySeries"
-                    :key="warrantySerie.id"
-                    :value="warrantySerie.id"
-                  >
-                    {{ warrantySerie.serie }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -742,9 +750,17 @@
       <div class="row no-print">
         <div class="col-12">
           <form @submit.prevent="createSale()">
-            <button type="submit" class="btn btn-dark float-right">
+
+            <button v-if="!loadingVoucher" type="submit" class="btn btn-dark float-right">
               <i class="far fa-credit-card"></i> Guarda Documento Electronico
             </button>
+
+            <button v-else class="btn btn-dark float-right" :disabled="loadingVoucher">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+
           </form>
         </div>
       </div>
@@ -807,6 +823,9 @@ export default {
   },
   data() {
     return {
+
+      loadingVoucher: false,
+
       errors: [],
       searchAssemblies: false,
       warrantySeries: {},
@@ -1280,6 +1299,9 @@ export default {
       }
     },
     createSale() {
+
+      this.loadingVoucher = true
+
       this.saleData.voucher.received_money = 0
       if (!this.saleData.voucher.isMultiPayment) {
         this.saleData.voucher.received_money = this.saleData.voucher.payments[0].amount
@@ -1303,6 +1325,9 @@ export default {
           Swal.fire("Algo salio mal", this.errors['detail'][0], "error")
         }
         this.getErrorDetailSerie(0, 0)
+      })
+      .finally(() => {
+        this.loadingVoucher = false;
       });
     },
     // i = index1(detail) , j = index2(series)
@@ -1347,7 +1372,24 @@ export default {
           this.saleData.voucher.discount = quotation.discount;
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
-          this.saleData.voucher.payment_type_id = quotation.payment_type_id;
+
+          this.saleData.voucher.isMultiPayment = Boolean(quotation.have_advance_payments);
+
+          if(this.saleData.voucher.isMultiPayment){
+
+            this.saleData.voucher.payments = []
+
+            quotation.payment_types.forEach(e => {
+
+              const payment = {
+                payment_type_id: e.pivot.payment_type_id,
+                amount: e.pivot.amount
+              }
+              this.saleData.voucher.payments.push(payment)
+
+            });
+
+          }
 
           quotation.quotation_details.forEach((e, index) => {
             this.productSerieSearchFilter.push([]);
@@ -1611,7 +1653,7 @@ label {
   margin-left: auto;
   margin-right: auto;
   /*border-color: #93a8c3;*/
-  outline-color: rgb(128, 189, 255);
+  outline-color: rgb(255, 128, 128);
   border-style: solid;
   border-width: 1px;
   /*color:rgb(172,173,182)*/
@@ -1623,13 +1665,13 @@ label {
 }
 .option__contenedor::-webkit-scrollbar {
   width: 7px;
-  background-color: rgb(128, 189, 255);
+  background-color: rgb(255, 128, 128);
 }
 .option__contenedor::-webkit-scrollbar-thumb {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  border-right: 1px solid rgb(128, 189, 255);
-  border-left: 1px solid rgb(128, 189, 255);
+  border-right: 1px solid rgb(255, 128, 128);
+  border-left: 1px solid rgb(255, 128, 128);
 }
 .search .option__contenedor {
   top: 0;

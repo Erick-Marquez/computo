@@ -61,7 +61,7 @@
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ availableQuotation.customer.name }}
                     </td>
-                    <td class="align-middle text-center">S/. {{ availableQuotation.total }}</td>
+                    <td class="align-middle text-center">S/. {{ availableQuotation.total - availableQuotation.discount }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + availableQuotation.id">
                         <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
@@ -100,6 +100,11 @@
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                          ><a
+                            class="dropdown-item"
+                            href="#"
+                            @click="showModal('#modal-advance', availableQuotation)"
+                            ><i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo</a
                           ><a
                             class="dropdown-item"
                             :href="'print/quotations/' + availableQuotation.id"
@@ -225,25 +230,82 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Anticipo -->
+  <div class="modal fade" id="modal-advance" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Añadir Anticipo para {{ advancePayment.serie }} - {{ advancePayment.document_number }}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="createAdvancePayment()">
+          <div class="modal-body">
+
+            <AdvancePayment
+              :paymentTypes="paymentTypes"
+              :payments="advancePayment.payments"
+              :errors="errorsAdvancePayment"
+            ></AdvancePayment>
+
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Cerrar
+            </button>
+
+            <button v-if="!loadingAdvancePayment" type="submit" class="btn btn-primary">Guardar</button>
+            <button v-else class="btn btn-primary" :disabled="loadingAdvancePayment">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import BaseUrl from '../../../../api/BaseUrl.js'
+import BaseUrl from '../../../../api/BaseUrl.js';
+import AdvancePayment from "../../components/AdvancePayment.vue";
 export default {
-  components:{BaseUrl},
+  components: { BaseUrl, AdvancePayment },
   async created(){
-    await BaseUrl.get(`api/quotations`).then( resp=>{
-      this.availableQuotations = resp.data.availableQuotations
-      this.unavailableQuotations = resp.data.unavailableQuotations
-    })
+    this.showQuotations();
+
+    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
+      this.paymentTypes = resp.data.data;
+    });
   },
   data(){
     return{
       availableQuotations: [],
       unavailableQuotations: [],
+
+      paymentTypes: [],
+      advancePayment: {
+        id_quotation: null,
+        payments: []
+      },
+      errorsAdvancePayment: {},
+
+      loadingAdvancePayment: false,
+
     }
   },
   methods:{
+
+    async showQuotations(){
+      await BaseUrl.get(`api/quotations`).then( resp=>{
+        this.availableQuotations = resp.data.availableQuotations
+        this.unavailableQuotations = resp.data.unavailableQuotations
+      });
+    },
+
     getElapsedTime(endDate){
 
       let elapsedTime = this.getElapsedTimeNumber(endDate)
@@ -282,6 +344,56 @@ export default {
     getTimestamp(date){
       let prueba = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
       return prueba
+    },
+
+    showModal(modal, quotation = null) {
+      if (quotation !== null) {
+
+        let advancePaymentTemp = {
+          id_quotation: quotation.id,
+          serie: quotation.serie.serie,
+          document_number: quotation.document_number,
+
+          payments: []
+        }
+        
+        quotation.payment_types.forEach(e => {
+
+          let temp = {
+            payment_type_id: e.pivot.payment_type_id,
+            amount: e.pivot.amount
+          }
+
+          advancePaymentTemp.payments.push(temp)
+
+        });
+
+        this.advancePayment = advancePaymentTemp
+
+      }
+      $(modal).modal("show")
+    },
+
+    createAdvancePayment(){
+
+      this.loadingAdvancePayment = true;
+
+      BaseUrl.post(`api/advance-payments`, this.advancePayment).then( resp => {
+        
+        $("#modal-advance").modal("hide")
+
+        this.showQuotations()
+
+        Swal.fire("Creado", "El Anticipo ha sido creado", "success");
+
+      })
+      .catch((error) => {
+        this.errorsAdvancePayment = error.response.data.errors
+      })
+      .finally(() => {
+        this.loadingAdvancePayment = false;
+      });
+
     }
   }
 }

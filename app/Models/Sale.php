@@ -72,7 +72,7 @@ class Sale extends Model
 
     public function paymentTypes()
     {
-        return $this->belongsToMany(PaymentType::class)->withPivot(["amount"]);
+        return $this->belongsToMany(PaymentType::class)->withPivot(["amount"])->withTimestamps();
     }
 
     public function customer()

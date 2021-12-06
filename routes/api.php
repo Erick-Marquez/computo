@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountToPayController;
 use App\Http\Controllers\AccountToPayDetailController;
+use App\Http\Controllers\AdvancePaymentController;
 use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BrandController;
@@ -65,6 +66,10 @@ Route::middleware([
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
     Route::get('/sales/currencyexchange', [VoucherController::class, 'currencyExchange'])->name('api.sales.currencyExchange');
 
+    //Advance Payments
+    Route::get('/advance-payments', [AdvancePaymentController::class, 'index'])->name('api.advancePayments.index');
+    Route::post('/advance-payments', [AdvancePaymentController::class, 'store'])->name('api.advancePayments.store');
+    Route::get('/advance-payments/quotation/{serie}/{number}', [AdvancePaymentController::class, 'quotation'])->name('api.advancePayments.quotation');
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');

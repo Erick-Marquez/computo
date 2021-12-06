@@ -49,16 +49,6 @@ class SaleService
             'user_id' => $request->user_id
         ]);
 
-        $paymentToSale = [];
-
-        foreach ($request->voucher['payments'] as $payment) {
-            
-            $paymentToSale[$payment['payment_type_id']] = ['amount' => $payment['amount']];
-
-        }
-
-        $sale->paymentTypes()->attach($paymentToSale);
-
         // Garantia
         if ($request->voucher['warranty']) {
             $serieWarranty = Serie::find($request->voucher['warranty_serie_id']);
@@ -264,6 +254,27 @@ class SaleService
 
         }
 
+
+        if ($request->voucher['isMultiPayment']) {
+
+            foreach ($request->voucher['payments'] as $payment) {
+
+                $sale->paymentTypes()->attach($payment['payment_type_id'], ['amount' => $payment['amount']]);
+
+            }
+
+        }
+        else {
+            $sale->paymentTypes()->attach($request->voucher['payments'][0]['payment_type_id'], ['amount' => $totalSale - $request->voucher['discount']]);
+
+            $sale->update([
+                'received_money' => $request->voucher['received_money'],
+                'change' => $request->voucher['change'],
+            ]);
+
+        }
+
+
         $sale->update([
             'subtotal' => $subtotalSale,
             'total_igv' => $totalIgvSale,
@@ -282,6 +293,7 @@ class SaleService
             ]);
 
         }
+        
 
         // Enviar a Sunat
         if ($request->voucher['document_type'] == 1) { // Factura

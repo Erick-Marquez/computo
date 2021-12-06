@@ -47,6 +47,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
 
+    Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+
     Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
 
     //CashBoxes

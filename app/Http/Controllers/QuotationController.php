@@ -25,7 +25,7 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->with('customer', 'user','serie')->latest()->get();
+        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->with('customer', 'user','serie', 'paymentTypes')->latest()->get();
 
         $unavailableQuotations = Quotation::where('date_due', '<', Carbon::now())->with('customer', 'user','serie')->latest()->get();
 
@@ -46,9 +46,6 @@ class QuotationController extends Controller
      */
     public function store(QuotationRequest $request)
     {
-        
-        
-        // return $request;
 
         if (is_null($request->customer['id'])) {
             $customer = Customer::create([
@@ -77,13 +74,29 @@ class QuotationController extends Controller
 
             'have_warranty' => $request->quotation['warranty'],
 
+            'have_advance_payments' => $request->quotation['have_advance_payments'],
+
             'observation' => $request->quotation['observation'],
 
-            'payment_type_id' => $request->quotation['payment_type_id'],
             'serie_id' => $request->quotation['serie_id'],
             'customer_id' => $request->customer['id'],
             'user_id' => auth()->user()->id
         ]);
+
+        if ($request->quotation['have_advance_payments']) {
+
+            $paymentToQuotation = [];
+
+            foreach ($request->quotation['payments'] as $payment) {
+                
+                $paymentToQuotation[$payment['payment_type_id']] = ['amount' => $payment['amount']];
+
+                $quotation->paymentTypes()->attach($payment['payment_type_id'], ['amount' => $payment['amount']]);
+
+            }
+
+
+        }
 
         // Variables para los totales de la cotizacion
         $subtotalQuotation = 0;

@@ -77,10 +77,10 @@
                           aria-labelledby="dropdownMenuButton"
                           style=""
                         >
-                          <router-link class="dropdown-item" :to="{name: 'edit-assembly', params: {id : assembly.id}}">
+                          <!-- <router-link class="dropdown-item" :to="{name: 'edit-assembly', params: {id : assembly.id}}">
                             <i class="col-1 mr-3 fas fa-eye"></i>
                             Editar
-                          </router-link>
+                          </router-link> -->
                           <a class="dropdown-item" href="#">
                             <i class="col-1 mr-3 fas fa-edit"></i>
                             Eliminar

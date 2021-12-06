@@ -296,11 +296,11 @@ return [
                     'route'  => 'web.sale-notes',
                     // 'can'    => 'vouchers.index',
                 ],
-                // [
-                //     'text' => 'Anticipo de Venta',
-                //     'icon' => 'fas fa-fw',
-                //     'url'  => '#',
-                // ],
+                [
+                    'text' => 'Anticipo de Venta',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.advance-payments',
+                ],
                 // [
                 //     'text' => 'Comunicaciones de Baja',
                 //     'icon' => 'fas fa-fw',

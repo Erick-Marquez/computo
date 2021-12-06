@@ -25,9 +25,10 @@ class Quotation extends Model
 
         'have_warranty',
 
+        'have_advance_payments',
+
         'observation',
 
-        'payment_type_id',
         'serie_id',
         'customer_id',
         'user_id'
@@ -44,9 +45,9 @@ class Quotation extends Model
         return $this->belongsTo(Serie::class);
     }
 
-    public function paymentType()
+    public function paymentTypes()
     {
-        return $this->belongsTo(PaymentType::class);
+        return $this->belongsToMany(PaymentType::class)->withPivot(["amount"])->withTimestamps();
     }
     
     public function customer()

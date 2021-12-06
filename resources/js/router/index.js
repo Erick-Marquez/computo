@@ -34,6 +34,22 @@ const routes = [
         ]
     },
     {
+        path: '/anticipos',
+        name: 'advance-payments-index',
+        component: () => import('../modules/sales/advance-payments/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'advance-payments-list',
+                component: () => import('../modules/sales/advance-payments/pages/AdvancePayments.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'advance-payments-list' }
+            }
+        ]
+    },
+    {
         path: '/cotizaciones',
         name: 'quotations-index',
         component: () => import('../modules/sales/quotations/index.vue'),
