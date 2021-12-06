@@ -21,9 +21,9 @@ class AssemblyController extends Controller
     public function index()
     {
         $assemblies = Assembly::included()
-                                ->filter()
-                                ->sort()
-                                ->getOrPaginate();
+            ->filter()
+            ->sort()
+            ->getOrPaginate();
 
         return AssemblyResource::collection($assemblies);
     }
@@ -39,14 +39,16 @@ class AssemblyController extends Controller
                 'description' => $request->description
             ]);
 
-            $imageName = explode(' ', $request->name);
-            $imageName = implode('-', $imageName);
+            if (!is_null($request->image)) {
+                $imageName = explode(' ', $request->name);
+                $imageName = implode('-', $imageName);
 
-            Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
+                Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
 
-            $assembly->image()->create([
-                'url' => "assemblies/$imageName.png",
-            ]);
+                $assembly->image()->create([
+                    'url' => "assemblies/$imageName.png",
+                ]);
+            }
 
             foreach ($request->products as $product) {
                 AssemblyProduct::create([
@@ -58,10 +60,8 @@ class AssemblyController extends Controller
             }
 
             return response()->json(['message' => 'Ensamblaje registrado']);
-
         } catch (\Throwable $th) {
-            // throw $th;
-            throw $th->getMessage();
+            return $th->getMessage(); # !NO E ES ASI CREO
         }
     }
 
@@ -80,5 +80,4 @@ class AssemblyController extends Controller
     {
         //
     }
-
 }

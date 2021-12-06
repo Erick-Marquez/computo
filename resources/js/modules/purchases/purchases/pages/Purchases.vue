@@ -6,13 +6,13 @@
   </div>
 
   <div class="container-fluid">
-    <router-link
+    <a
       class="btn btn-lg btn-block btn-dark mb-4"
-      :to="{ name: 'new-purchase' }"
+      href="/nueva-compra"
     >
       <i class="fas fa-plus"></i>
       Nueva Compra
-    </router-link>
+    </a>
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -46,6 +46,7 @@
                   <th>Moneda</th>
                   <th>Proveedor</th>
                   <th>Total</th>
+                  <th>Estado</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -69,6 +70,10 @@
                   </td>
                   <td>
                     {{ purchase.total }}
+                  </td>
+                  <td>
+                    <span v-if="purchase.has_debt" class="badge badge-danger">Pendiente</span>
+                    <span v-else class="badge badge-success">Cancelado</span>
                   </td>
                   <td>
                     <div class="dropdown">

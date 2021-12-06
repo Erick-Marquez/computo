@@ -1,9 +1,8 @@
 <template>
   <div class="content-header">
-    <button class="btn btn-primary" @click="getAmountTypePayment()">aaaaaaaaa</button>
     <h1>Dashboard</h1>
-    <div v-if="$can('dashboard')">tu puedes ver el dashboard</div>
-    <div v-if="$can('sales')">tu puedes ver las compras</div>
+    <!-- <div v-if="$can('dashboard')">tu puedes ver el dashboard</div>
+    <div v-if="$can('sales')">tu puedes ver las compras</div> -->
   </div>
   <div class="row">
     <div class="col-lg-4 col-12">
@@ -17,7 +16,7 @@
         <div class="icon">
           <i class="fas fa-funnel-dollar"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <a href="/ventas" class="small-box-footer">
           Más info <i class="fas fa-arrow-circle-right"></i>
         </a>
       </div>
@@ -33,7 +32,7 @@
         <div class="icon">
           <i class="fas fa-shopping-basket"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <a href="/compras" class="small-box-footer">
           Más info <i class="fas fa-arrow-circle-right"></i>
         </a>
       </div>
@@ -49,7 +48,7 @@
         <div class="icon">
           <i class="fas fa-box"></i>
         </div>
-        <a href="#" class="small-box-footer">
+        <a href="/productos" class="small-box-footer">
           Más info <i class="fas fa-arrow-circle-right"></i>
         </a>
       </div>
@@ -234,7 +233,6 @@ export default {
         });
     },
     getAmountTypePayment() {
-      console.log("aaaaa");
       BaseUrl.get(`/api/dashboard/type-payments`)
         .then((response) => {
           console.log(response.data);

@@ -27,6 +27,7 @@ class CreatePurchasesTable extends Migration
             // $table->decimal('total_free', 12, 3)->default(0);
             // $table->decimal('total_taxed', 12, 3)->default(0);
             $table->unsignedDecimal('total', 12, 3)->default(0);
+            $table->boolean('has_debt')->default(false);
             $table->string('observation')->nullable();
 
             $table->foreignId('provider_id')

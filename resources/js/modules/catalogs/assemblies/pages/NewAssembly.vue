@@ -161,6 +161,21 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td colspan="4">
+                      <div
+                        class="image-without-products"
+                        v-if="!newAssembly.products.length"
+                      >
+                        <img
+                          src="/images/add_product.png"
+                          alt=""
+                          style="max-height: 120px"
+                        />
+                        <h1 class="display-4">Agregue productos</h1>
+                      </div>
+                    </td>
+                  </tr>
                   <tr
                     v-for="(product, index) in newAssembly.products"
                     :key="product.id"
@@ -221,7 +236,7 @@ export default {
         cod: null,
         description: null,
         price: 0,
-        image: "",
+        image: null,
         products: [],
       },
       imageUpload: {
@@ -263,6 +278,7 @@ export default {
           Swal.fire("Ensamblaje Registrado", ":)", "success");
         })
         .catch((error) => {
+          this.disabled = false;
           this.errors = error.response.data.errors;
           console.log(error.response);
         });
@@ -280,6 +296,9 @@ export default {
     srcFileSet(fileName, fileType, fileSize) {
       console.log(fileSize);
     },
+    removeProduct(index) {
+      this.newAssembly.products.splice(index, 1);
+    },
   },
   computed: {
     hasImage() {
@@ -290,4 +309,18 @@ export default {
 </script>
 
 <style>
+.image-without-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img {
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
 </style>

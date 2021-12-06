@@ -235,6 +235,18 @@ const routes = [
         ]
     },
     {
+        path: '/cuentas-por-pagar',
+        name: 'accounts-to-pay-index',
+        component: () => import('../modules/cashboxes/accounts-to-pay/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'layout-accounts-to-pay',
+                component: () => import('../modules/cashboxes/accounts-to-pay/pages/AccountsToPay.vue')
+            }
+        ],
+    },
+    {
         path: '/dashboard',
         name: 'dashboard-index',
         component: () => import('../modules/dashboard/dashboard/index.vue'),

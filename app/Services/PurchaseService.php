@@ -32,11 +32,16 @@ class PurchaseService
                 'total' => $request->voucherDetail['total'],
                 'total_igv' => $request->voucherDetail['total_igv'],
                 'observation' => $request->voucherDetail['observation'],
+                'has_debt' => $request->voucherDetail['is_credit'],
                 'provider_id' => $provider['id'],
                 'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             ]);
 
             $result = $this->updateProductsAndSeries($request->products, $purchase);
+
+            $purchase->accountToPay()->create([
+                'debt' => $purchase['total']
+            ]);
 
             if (!$result) {
                 $purchase->delete();
@@ -102,5 +107,4 @@ class PurchaseService
 
         return true;
     }
-
 }

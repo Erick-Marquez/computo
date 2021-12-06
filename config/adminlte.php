@@ -347,7 +347,7 @@ return [
                 [
                     'text' => 'Por Pagar',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route' => 'web.accounts-to-pay'
                 ]
             ],
         ],

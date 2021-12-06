@@ -5,7 +5,8 @@
   <div class="card">
     <form @submit.prevent="createPurchase" novalidate>
       <div class="card-body">
-        <h4>Comprobante</h4>
+        <h4>Datos del Comprobante</h4>
+
         <div class="row mt-3">
           <!-- TIPO DE COMPROBANTE -->
           <div class="col-md-3">
@@ -92,8 +93,14 @@
           :voucherType="newPurchase.voucherDetail.document_type"
           :errors="errors"
         ></search-provider>
-        <search-products :products="newPurchase.products" :errors="errors"></search-products>
-        <set-products :products="newPurchase.products" :errors="errors"></set-products>
+        <search-products
+          :products="newPurchase.products"
+          :errors="errors"
+        ></search-products>
+        <set-products
+          :products="newPurchase.products"
+          :errors="errors"
+        ></set-products>
         <!-- Observación -->
         <div class="row mt-4">
           <div class="col-md-8 pr-5">
@@ -114,6 +121,11 @@
                       >
                         Maneja tipo de cambio
                       </label>
+                      <br />
+                      <span v-if="isCreditPurchase" class="badge badge-danger"
+                        >dolares</span
+                      >
+                      <span v-else class="badge badge-danger">soles</span>
                     </div>
                   </div>
 
@@ -123,16 +135,35 @@
                       :class="
                         $errorsClass(errors['voucherDetail.exchange_rate'])
                       "
-                      v-show="newPurchase.voucherDetail.handle_exchange_rate"
+                      v-show="isCreditPurchase"
                       v-model.number="newPurchase.voucherDetail.exchange_rate"
                       step="0.001"
                     />
                     <div
-                      v-if="$errorsExists(errors['voucherDetail.exchange_rate'])"
+                      v-if="
+                        $errorsExists(errors['voucherDetail.exchange_rate'])
+                      "
                       class="invalid-feedback ml-3"
                     >
                       {{ $errorsPrint(errors["voucherDetail.exchange_rate"]) }}
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md">
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      class="custom-control-input custom-control-input-danger"
+                      type="checkbox"
+                      id="is_credit"
+                      v-model="newPurchase.voucherDetail.is_credit"
+                    />
+                    <label for="is_credit" class="custom-control-label">
+                      Compra a credito
+                    </label>
                   </div>
                 </div>
               </div>
@@ -164,7 +195,7 @@
                   <tr>
                     <th>Subtotal:</th>
                     <td>
-                      $
+                      {{ currencySymbol }}
                       {{
                         newPurchase.products.length
                           ? (newPurchase.voucherDetail.subtotal =
@@ -183,7 +214,7 @@
                   <tr>
                     <th>Total:</th>
                     <td>
-                      $
+                      {{ currencySymbol }}
                       {{
                         newPurchase.products.length
                           ? (newPurchase.voucherDetail.total =
@@ -202,7 +233,7 @@
                   <tr>
                     <th>Total igv:</th>
                     <td>
-                      $
+                      {{ currencySymbol }}
                       {{
                         (newPurchase.voucherDetail.total_igv = parseFloat(
                           newPurchase.voucherDetail.total -
@@ -220,8 +251,13 @@
         <!-- Resumen de ventas -->
         <div class="row no-print">
           <div class="col-12">
-            <button type="submit" class="btn btn-dark float-right">
-              <i class="far fa-credit-card"></i> Guardar Nueva Compra
+            <button
+              type="submit"
+              class="btn btn-dark float-right"
+              :disabled="disabled"
+            >
+              <i class="far fa-credit-card"></i>
+              Guardar Nueva Compra
             </button>
           </div>
         </div>
@@ -233,20 +269,20 @@
 <script>
 import SearchProvider from "../components/SearchProvider.vue";
 import SearchProducts from "../components/SearchProducts.vue";
-import SetProducts from '../components/SetProducts.vue';
+import SetProducts from "../components/SetProducts.vue";
 import BaseUrl from "../../../../api/BaseUrl";
 // import ErrorsForm from "../../../../api/ErrorsForm";
 
 export default {
   components: { SearchProvider, SearchProducts, SetProducts },
-//   setup() {
-//     const {errorsExists, errorsClass, errorsPrint } = ErrorsForm();
-//     return {
-//       errorsExists,
-//       errorsClass,
-//       errorsPrint,
-//     };
-//   },
+  //   setup() {
+  //     const {errorsExists, errorsClass, errorsPrint } = ErrorsForm();
+  //     return {
+  //       errorsExists,
+  //       errorsClass,
+  //       errorsPrint,
+  //     };
+  //   },
   data() {
     return {
       newPurchase: {
@@ -257,6 +293,7 @@ export default {
           document_number: null,
           handle_exchange_rate: true,
           exchange_rate: null,
+          is_credit: false,
           observation: null,
           subtotal: 0,
           total_igv: 0,
@@ -269,6 +306,7 @@ export default {
         products: [],
       },
       errors: [],
+      disabled: false,
     };
   },
   mounted() {
@@ -276,9 +314,11 @@ export default {
   },
   methods: {
     async createPurchase() {
+      this.disabled = true;
+
       await BaseUrl.post(`/api/purchases`, this.newPurchase)
         .then((response) => {
-          console.log(response.data);
+          this.disabled = false;
           this.$router.push({ name: "purchase-list" });
           Swal.fire(
             "Compra Registrada!",
@@ -287,6 +327,7 @@ export default {
           );
         })
         .catch((error) => {
+          this.disabled = false;
           this.errors = error.response.data.errors;
           console.log(this.errors);
         });
@@ -302,7 +343,14 @@ export default {
         });
     },
   },
-  computed: {},
+  computed: {
+    isCreditPurchase() {
+      return this.newPurchase.voucherDetail.handle_exchange_rate ? true : false;
+    },
+    currencySymbol() {
+      return this.newPurchase.voucherDetail.handle_exchange_rate ? "$" : "S/";
+    },
+  },
 };
 </script>
 

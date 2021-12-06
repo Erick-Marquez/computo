@@ -43,6 +43,11 @@ class Purchase extends Model
         return $this->belongsTo(OpenClosedCashbox::class);
     }
 
+    public function accountToPay()
+    {
+        return $this->hasOne(AccountToPay::class);
+    }
+
     /**
      * * METODOS ESTATICOS DEL MODELO
     */

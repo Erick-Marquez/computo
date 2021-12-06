@@ -44,8 +44,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       cashboxes: [],
       cashbox: {
         id: null,
-        description: "",
-        opening_amount: 0
+        description: ""
       }
     };
   },
@@ -214,6 +213,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       if (cashbox !== null) {
         this.cashbox = cashbox;
+        this.cashbox.opening_amount = 0;
       }
 
       $(modal).modal("show");
@@ -493,7 +493,7 @@ var _hoisted_45 = {
 var _hoisted_46 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "name"
-  }, "Monto de apertura", -1
+  }, "Monto de apertura:", -1
   /* HOISTED */
   );
 });

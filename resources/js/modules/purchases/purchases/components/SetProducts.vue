@@ -16,6 +16,21 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td colspan="8">
+              <div
+                class="image-without-products"
+                v-if="!products.length"
+              >
+                <img
+                  src="/images/add_product.png"
+                  alt=""
+                  style="max-height: 120px"
+                />
+                <h1 class="display-4">Agregue productos</h1>
+              </div>
+            </td>
+          </tr>
           <tr v-for="(product, index) in products" :key="product.id">
             <td class="px-1">{{ product.name }}</td>
 
@@ -175,5 +190,19 @@ export default {
 </script>
 
 <style>
+.image-without-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img {
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
 </style>
 

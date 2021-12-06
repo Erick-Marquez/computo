@@ -104,7 +104,7 @@ export default {
       this.productsFound = [];
       this.productName = null;
 
-      product.sale_price = product.referential_sale_price_one;
+      product.sale_price = product.referential_sale_price;
       product.discount = 0;
 
       let index = this.products.findIndex(

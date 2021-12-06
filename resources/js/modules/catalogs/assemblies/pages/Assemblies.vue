@@ -44,6 +44,7 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    <tH>Imagen</tH>
                     <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Descripcion</th>
@@ -54,6 +55,7 @@
                 <tbody>
                   <tr v-for="assembly in assemblies" :key="assembly.id">
                     <td>{{ assembly.id }}</td>
+                    <td><img :src="`/storage/${assembly.image}`" class="img-fluid" alt="" style="width:150px"></td>
                     <td>{{ assembly.cod }}</td>
                     <td>{{ assembly.name }}</td>
                     <td>{{ assembly.description }}</td>

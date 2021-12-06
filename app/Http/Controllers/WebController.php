@@ -78,6 +78,11 @@ class WebController extends Controller
         return view('cashboxes.expenses-incomes.index');
     }
 
+    public function accountsToPay()
+    {
+        return view('cashboxes.accounts-to-pay.index');
+    }
+
     public function sales()
     {
         return view('sales.vouchers.index');

@@ -196,7 +196,7 @@
         <form @submit.prevent="openCashbox()">
           <div class="modal-body">
             <div class="form-group">
-              <label for="name">Monto de apertura</label>
+              <label for="name">Monto de apertura:</label>
               <input
                 id="description"
                 type="number"
@@ -236,7 +236,6 @@ export default {
       cashbox: {
         id: null,
         description: "",
-        opening_amount: 0,
       },
     };
   },
@@ -327,6 +326,8 @@ export default {
     showModal(modal, cashbox = null) {
       if (cashbox !== null) {
         this.cashbox = cashbox;
+
+        this.cashbox.opening_amount = 0;
       }
       $(modal).modal("show");
     },

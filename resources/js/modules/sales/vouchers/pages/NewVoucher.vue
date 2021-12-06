@@ -951,7 +951,7 @@ export default {
         igv_type_id: productAssembly.igv_type_id,
         description: productAssembly.name,
         brand: productAssembly.brand,
-        sale_price: productAssembly.sale_price,
+        sale_price: (productAssembly.sale_price * this.currencyExchange.change).toFixed(2),
         quantity: productAssembly.quantity,
         series: [],
       };

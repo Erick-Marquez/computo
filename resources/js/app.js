@@ -27,6 +27,7 @@ import indexAssemblies from './modules/catalogs/assemblies/index.vue';
 
 import indexCashbox from './modules/cashboxes/open-closed/index.vue';
 import indexExpensesIncomes from './modules/cashboxes/expenses-incomes/index.vue';
+import indexAccountsToPay from './modules/cashboxes/accounts-to-pay/index.vue';
 import indexPurchase from './modules/purchases/purchases/index.vue';
 import indexDashboard from './modules/dashboard/dashboard/index.vue';
 import indexProviders from './modules/third-parties/providers/index.vue'
@@ -64,6 +65,7 @@ app.component('index-modification-stock', indexModificactionStock);
 app.component('index-branches', indexBranches);
 app.component('index-cashboxes', indexCashbox);
 app.component('index-expenses-incomes', indexExpensesIncomes);
+app.component('index-accounts-to-pay', indexAccountsToPay);
 app.component('index-purchases', indexPurchase);
 app.component('index-dashboard', indexDashboard);
 app.component('index-providers', indexProviders);

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AccountToPayController;
+use App\Http\Controllers\AccountToPayDetailController;
 use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BrandController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\BranchProductSerieController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
@@ -86,6 +89,12 @@ Route::middleware([
         'egresos-ingresos' => 'expenseIncome'
     ])->names('api.egresos-ingresos');
 
+    Route::apiResource('accounts-to-pay', AccountToPayController::class)->parameters([
+        'accounts-to-pay' => 'account-to-pay'
+    ])->names('api.accounts-to-pay');
+
+    Route::apiResource('account-to-pay-details', AccountToPayDetailController::class)->names('api.account-to-pay-details');
+
     Route::apiResource('tipos-documentos', IdentificationDocumentController::class)->names('api.tipos-documentos');
     Route::get('/data-document/{cod}/{number}', [IdentificationDocumentController::class, 'getDataApi'])->name('api.data-document');
 
@@ -148,6 +157,8 @@ Route::middleware([
     Route::get('dashboard/widgets', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
     Route::get('dashboard/type-payments', [DashboardController::class, 'amountTypePayment'])->name('api.dashboard.type-payments');
 
-    Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
+    // catalogos
 
+    Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
+    Route::get('payment-types', [PaymentTypeController::class, 'index'])->name('api.payment-types');
 });
