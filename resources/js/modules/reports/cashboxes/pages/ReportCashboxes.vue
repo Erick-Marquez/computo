@@ -120,7 +120,7 @@
                         aria-labelledby="dropdownMenuButton"
                         style=""
                       >
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" target="_blank" :href="'http://computo.test/print/cashbox/report/' + occ.id">
                           <i class="col-1 mr-3 fas fa-edit"></i>
                           PDF
                         </a>
@@ -188,7 +188,7 @@ export default {
     },
     async getOCC(cashbox_id) {
       await BaseUrl.get(
-        `/api/openClosedCashboxes?included=cashbox,user&filter[cashbox_id]=${cashbox_id}&filter[state]=false&dateInterval=${this.fromDate},${this.untilDate}`
+        `/api/openClosedCashboxes?included=cashbox,user&filter[cashbox_id]=${cashbox_id}&filter[state]=0&dateInterval=${this.fromDate},${this.untilDate}`
       )
         .then((response) => {
           this.openClosedCashboxes = response.data.data;

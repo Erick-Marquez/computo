@@ -33,22 +33,22 @@ class VoucherRequest extends FormRequest
 
             'voucher.warranty' => ['required', 'boolean'],
 
-            
+
 
             'voucher.payment.*.payment_type_id' => ['required', 'exists:payment_types,id'],
 
             'voucher.document_type' => [
-                'required', 
+                'required',
                 Rule::exists('voucher_types', 'id')->where(function ($query) {
                     $query->whereIn('id', [1, 2, 3]); // id 1, 2, 3  = factura, boleta, nota de venta
                 }),
             ],
 
             'voucher.serie_id' => [
-                'required', 
+                'required',
                 Rule::exists('series', 'id')->where(function ($query) {
                     $query->where('branch_id', auth()->user()->branch_id)->whereIn('voucher_type_id', [1, 2, 3]); // id 1, 2, 3  = factura, boleta, nota de venta
-                }), 
+                }),
             ],
 
             // Validar Cliente
@@ -73,13 +73,13 @@ class VoucherRequest extends FormRequest
                 }),
                 'distinct'
             ],
-            
+
         ];
 
         // TODO: Validar las series solo si el producto maneja series
-        
+
         foreach ($this->detail as $i => $detail) {
-            
+
             $branchProduct = BranchProduct::where('id', $detail['product_id'])->with('product')->first();
 
             if ($branchProduct->product->manager_series) {
@@ -140,7 +140,7 @@ class VoucherRequest extends FormRequest
             'detail.*.igv_type_id.exists' => 'Debe seleccionar un tipo de IGV válido.',
 
             'detail.*.product_id.required' => 'Debe ingresar un producto.',
-            'detail.*.product_id.exists' => 'Ingrese un producto válido.',
+            'detail.*.product_id.exists' => 'Este producto no existe en la sucursal',
             'detail.*.product_id.distinct' => 'Los productos no deben ser iguales.',
 
             // Serie de los productos

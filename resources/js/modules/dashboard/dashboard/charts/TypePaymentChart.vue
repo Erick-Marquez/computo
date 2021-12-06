@@ -4,18 +4,20 @@
 
 <script>
 import { DoughnutChart } from "vue-chart-3";
+import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
   components: {
     DoughnutChart,
+    BaseUrl,
   },
   data() {
     return {
       testData: {
-        labels: ["Paris", "Nîmes", "Toulon", "Perpignan", "Autre"],
+        labels: [],
         datasets: [
           {
-            data: [30, 40, 60, 70, 5],
+            data: [],
             backgroundColor: [
               "#77CEFF",
               "#0079AF",
@@ -29,7 +31,29 @@ export default {
       options: {
         scales: {}, // boom
       },
+      dataChart: [],
+      dataArray: [],
     };
+  },
+  created() {
+    this.getAmountTypePayment();
+  },
+  methods: {
+    getAmountTypePayment() {
+      BaseUrl.get(`/api/dashboard/type-payments`)
+        .then((response) => {
+          this.dataChart = response.data;
+          this.dataChart.forEach((element) => {
+              this.testData.labels.push(element.description)
+              this.dataArray.push(element.amount);
+          });
+          this.testData.datasets[0].data = this.dataArray
+          console.log(this.testData.datasets[0].data)
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
   },
 };
 </script>
