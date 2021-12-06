@@ -223,12 +223,10 @@ export default {
       )
         .then((response) => {
           console.log(response.data);
-          this.customer.phone = "";
-          this.customer.address = "";
           this.customer.id = null;
           this.customer.name = response.data.name;
-          this.customer.address = response.data.address;
-          this.customer.phone = response.data.phone;
+          this.customer.address = response.data.address ? response.data.address : null;
+          this.customer.phone = response.data.phone ? response.data.phone : null;
           this.customer.ubigee_id = null;
           //this.customer.ubigee_id = response.data.ubigee_id;
           this.responseApi = "HABIDO";

@@ -25,8 +25,6 @@ class Quotation extends Model
 
         'have_warranty',
 
-        'have_advance_payments',
-
         'observation',
 
         'serie_id',

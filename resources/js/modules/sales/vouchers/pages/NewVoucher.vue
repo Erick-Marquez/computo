@@ -1373,7 +1373,7 @@ export default {
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
 
-          this.saleData.voucher.isMultiPayment = Boolean(quotation.have_advance_payments);
+          this.saleData.voucher.isMultiPayment = quotation.payment_types.length > 0 ? true : false;
 
           if(this.saleData.voucher.isMultiPayment){
 

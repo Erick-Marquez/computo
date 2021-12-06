@@ -48,15 +48,19 @@ class QuotationController extends Controller
     {
 
         if (is_null($request->customer['id'])) {
+            
             $customer = Customer::create([
                 'name' => $request->customer['name'],
                 'document' => $request->customer['document'],
                 'phone' => $request->customer['phone'],
-                'email' => $request->customer['email'],
                 'address' => $request->customer['address'],
                 'identification_document_id' => $request->customer['identification_document_id'],
             ]);
-            $request->customer['id'] = $customer->id;
+
+            $dataCustomer = $request->customer;
+            $dataCustomer['id'] = $customer->id;
+
+            $request->merge(['customer' => $dataCustomer]);
         }
 
         // Obtener la numeracion siguiente
@@ -74,29 +78,12 @@ class QuotationController extends Controller
 
             'have_warranty' => $request->quotation['warranty'],
 
-            'have_advance_payments' => $request->quotation['have_advance_payments'],
-
             'observation' => $request->quotation['observation'],
 
             'serie_id' => $request->quotation['serie_id'],
             'customer_id' => $request->customer['id'],
             'user_id' => auth()->user()->id
         ]);
-
-        if ($request->quotation['have_advance_payments']) {
-
-            $paymentToQuotation = [];
-
-            foreach ($request->quotation['payments'] as $payment) {
-                
-                $paymentToQuotation[$payment['payment_type_id']] = ['amount' => $payment['amount']];
-
-                $quotation->paymentTypes()->attach($payment['payment_type_id'], ['amount' => $payment['amount']]);
-
-            }
-
-
-        }
 
         // Variables para los totales de la cotizacion
         $subtotalQuotation = 0;

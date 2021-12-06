@@ -211,86 +211,6 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="form-group text-center">
-                <label>
-                  <i class="text-danger fas fa-file-contract"></i>
-                  ¿Tiene Anticipos?
-                </label>
-                <div class="custom-control custom-switch custom-switch-on-danger is-invalid">
-                  <input type="checkbox" class="custom-control-input" id="customSwitchCreateHaveAdvancePayments" v-model="quotationData.quotation.have_advance_payments" @change="clearMultipayment()">
-                  <label class="custom-control-label" for="customSwitchCreateHaveAdvancePayments">{{ quotationData.quotation.have_advance_payments ? 'Si' : 'No' }}</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h4 v-if="quotationData.quotation.have_advance_payments">Anticipos</h4>
-          <div class="row" v-if="quotationData.quotation.have_advance_payments">
-            <div class="table-responsive">
-              <table class="table" style="min-width: 600px">
-                <thead>
-                  <tr>
-                    <th>Descripción</th>
-                    <th>
-                      <i class="text-danger fas fa-money-bill"></i> Tipo de pago
-                    </th>
-                    <th>Monto S/.</th>
-                    <th class="col-2 text-center">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(payment, index) in quotationData.quotation.payments"
-                    :key="payment.id"
-                  >
-                    <td class="align-middle">Anticipo {{ index + 1 }}</td>
-                    <td>
-                      <select
-                        v-model="payment.payment_type_id"
-                        class="form-control rounded-pill"
-                      >
-                        <option
-                          v-for="paymentType in paymentTypes"
-                          :key="paymentType.id"
-                          :value="paymentType.id"
-                        >
-                          {{ paymentType.description }}
-                        </option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        class="form-control rounded-pill"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        v-model="payment.amount"
-                      >
-                    </td>
-                    <td class="text-center" v-if="index == 0">
-                      <button
-                        type="button"
-                        class="btn btn-dark btn-sm"
-                        @click="addPayment()"
-                      >
-                        <span><i class="fas fa-plus"></i></span>
-                        Añadir
-                      </button>
-                    </td>
-                    <td class="text-center" v-else>
-                      <button
-                        type="button"
-                        class="btn btn-flat"
-                        @click="deletePayment(index)"
-                      >
-                        <i class="text-danger fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
 
           <div class="row">
@@ -380,17 +300,23 @@ export default {
       this.identificationDocuments = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
-    });
-
     await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
       this.igvTypes = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
-      this.paymentTypes = resp.data.data;
-      this.quotationData.quotation.payment_type_id = this.paymentTypes[0].id
+    await BaseUrl.get(`api/sales/currencyexchange`).then((resp) => {
+      this.currencyExchange = resp.data.data;
+    });
+
+    await BaseUrl.get(`api/sales/products`).then((resp) => {
+      this.products = resp.data.data;
+
+      this.products.forEach(product => {
+        product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
+        product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
+      });
+      
     });
 
     this.getSeries()
@@ -401,9 +327,10 @@ export default {
 
       loadingQuotation: false,
 
+      currencyExchange: {},
+
       series: {},
       currentNumber: 'Selecciona una serie',
-      paymentTypes: null,
 
       productSearch:'',
       productSearchFilter: [],
@@ -413,7 +340,7 @@ export default {
 
       identificationDocuments: [],
       igvTypes: [],
-      products: {},
+      products: [],
       quotationData: {
         customer: {
           id: null
@@ -431,15 +358,10 @@ export default {
 
           discountItems: 0,
 
-          have_advance_payments: false,
-
           observation: '',
           warranty: false,
           date_due: null,
           serie_id: '',
-          payment_type_id: null,
-
-          payments: [],
         },
         detail: []
       },
@@ -747,28 +669,6 @@ export default {
       .finally(() => {
         this.loadingQuotation = false;
       })
-    },
-
-    clearMultipayment(){
-
-      this.quotationData.quotation.payments = []
-
-      if (this.quotationData.quotation.have_advance_payments) {
-        this.addPayment()
-      }
-
-    },
-    addPayment(){
-
-      const payment = {
-        payment_type_id: this.paymentTypes[0].id,
-        amount: 0,
-      }
-
-      this.quotationData.quotation.payments.push(payment);
-    },
-    deletePayment(index){
-      this.quotationData.quotation.payments.splice(index, 1);
     },
   }
 }
