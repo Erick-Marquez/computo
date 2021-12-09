@@ -456,7 +456,7 @@ return [
                 [
                     'text' => 'Reporte de Compras',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.purchases',
                 ],
                 [
                     'text' => 'Reporte de Caja',

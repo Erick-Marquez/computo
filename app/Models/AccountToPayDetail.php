@@ -11,10 +11,12 @@ class AccountToPayDetail extends Model
     use ApiTrait, HasFactory;
 
     protected $fillable = [
+        'installment',
+        'amount',
+        'payd',
+        'date_issue',
         'account_to_pay_id',
         'payment_type_id',
-        'amount',
-        'date_issue',
     ];
 
     public $timestamps = false;

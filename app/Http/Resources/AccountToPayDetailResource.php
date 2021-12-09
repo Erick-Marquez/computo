@@ -16,9 +16,12 @@ class AccountToPayDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'installment' => $this->installment,
             'amount' => $this->amount,
             'date_issue' => $this->date_issue,
-            'payment' => PaymentTypeResource::make($this->whenLoaded('paymentType'))
+            'account_to_pay_id' => $this->account_to_pay_id,
+            'payment' => PaymentTypeResource::make($this->whenLoaded('paymentType')),
+            'payd' => $this->payd,
         ];
     }
 }

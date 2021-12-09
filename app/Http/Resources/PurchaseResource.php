@@ -22,8 +22,8 @@ class PurchaseResource extends JsonResource
             'exchange_rate' => $this->exchange_rate,
             'date_issue' => $this->date_issue,
             'total' => $this->total,
-            'has_debt' => $this->has_debt,
             'provider' => ProviderResource::make($this->whenLoaded('provider')),
+            'account_to_pay' => AccountToPayResource::make($this->whenLoaded('accountToPay')),
         ];
     }
 }

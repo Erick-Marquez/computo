@@ -71,9 +71,12 @@
                   <td>
                     {{ purchase.total }}
                   </td>
-                  <td>
-                    <span v-if="purchase.has_debt" class="badge badge-danger">Pendiente</span>
-                    <span v-else class="badge badge-success">Cancelado</span>
+                  <td v-if="purchase.account_to_pay != null">
+                    <span v-if="purchase.account_to_pay.debt == 0" class="badge badge-success">Cancelado</span>
+                    <span v-else class="badge badge-danger">Pendiente</span>
+                  </td>
+                  <td v-else>
+                      <span class="badge badge-info">Sin credito</span>
                   </td>
                   <td>
                     <div class="dropdown">
@@ -128,12 +131,13 @@ export default {
   },
   methods: {
     async getPurchases() {
-      await BaseUrl.get(`/api/purchases?included=provider&perPage=10`)
+      await BaseUrl.get(`/api/purchases?included=provider,accountToPay&perPage=10`)
         .then((response) => {
           this.purchases = response.data.data;
+          console.log(this.purchases)
         })
-        .catch((response) => {
-          console.log(error.response);
+        .catch((error) => {
+          console.log(error.response.data);
         });
     },
   },

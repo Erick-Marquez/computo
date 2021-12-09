@@ -92,7 +92,7 @@ trait ApiTrait{
         $range = explode(',', request('dateInterval'));
         $from = date($range[0]);
         $until = date($range[1]);
-        $query->whereDate('created_at', '>=', '2021-11-26')->whereDate('created_at', '<=', '2021-11-26');
+        $query->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $until);
     }
 
     public function scopeGetOrPaginate(Builder $query)

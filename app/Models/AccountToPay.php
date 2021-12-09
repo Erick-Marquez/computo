@@ -11,6 +11,7 @@ class AccountToPay extends Model
     use ApiTrait, HasFactory;
 
     protected $fillable = [
+        'number_installments',
         'purchase_id',
         'residue',
         'debt',

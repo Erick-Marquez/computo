@@ -57,78 +57,60 @@ $establishment = $cash->user->establishment;
             text-align: center;
         }
 
-        .td-custom {
-            line-height: 0.1em;
-        }
-
-        .width-custom {
-            width: 50%
-        }
-
     </style>
 </head>
 
 <body>
     <div>
-        <p align="center" class="title"><strong>Reporte Punto de Venta</strong></p>
+        <p align="center" class="title"><strong>Reporte de Cierre de caja</strong></p>
     </div>
     <div style="margin-top:20px; margin-bottom:20px;">
-        <table>
+        <table style="padding-left:9em; border: 0">
             <tr>
                 <td class="width-custom">
-                    <p><strong>Empresa: </strong>  {{ $company->name }}</p>
+                    <p><strong>Empresa: </strong> {{ $company->name }}</p>
                 </td>
-                <td class="td-custom">
-                    <p><strong>Fecha reporte: </strong>{{ date('Y-m-d') }}</p>
+                <td class="width-custom">
+                    <p><strong>Fecha y hora apertura: </strong>{{ $occ->opening_date }}</p>
                 </td>
             </tr>
+
             <tr>
                 <td class="td-custom">
                     <p><strong>Ruc: </strong>{{ $company->ruc }}</p>
                 </td>
-                {{-- <td class="width-custom">
-                    <p><strong>Establecimiento: </strong>{{ $establishment->address }} -
-                        {{ $establishment->department->description }} - {{ $establishment->district->description }}</p>
-                </td> --}}
+                <td class="td-custom">
+                    <p><strong>Monto de apertura: </strong>{{ $occ->opening_amount }}</p>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="td-custom">
+                    <p><strong>Nombre de Caja: </strong>{{ $occ->cashbox->description }}</p>
+                </td>
+                <td class="td-custom">
+                    <p><strong>Fecha y hora cierre: </strong>{{ $occ->closing_date }}</p>
+                </td>
             </tr>
 
             <tr>
                 <td class="td-custom">
                     <p><strong>Cajero: </strong>{{ $occ->user->name }}</p>
                 </td>
-                <td class="td-custom">
-                    <p><strong>Fecha y hora apertura: </strong>{{ $occ->opening_date }}</p>
-                </td>
-            </tr>
-            <tr>
-                {{-- <td class="td-custom">
-                    <p><strong>Estado de caja: </strong>{{ $cash->state ? 'Aperturada' : 'Cerrada' }}</p>
-                </td>
-                @if (!$cash->state)
-                    <td class="td-custom">
-                        <p><strong>Fecha y hora cierre: </strong>{{ $cash->date_closed }} {{ $cash->time_closed }}</p>
-                    </td>
-                @endif --}}
-                <td class="td-custom">
-                    <p><strong>Fecha y hora cierre: </strong>{{ $occ->closing_date }}</p>
-                </td>
-            </tr>
-            <tr>
                 <td colspan="2" class="td-custom">
-                    <p><strong>Montos de operación: </strong></p>
+                    <p><strong>Monto de cierre: </strong>{{ $occ->closing_amount }}</p>
                 </td>
             </tr>
 
 
         </table>
     </div>
-    @if ($movements->count())
+    @if (count($movements))
         <div class="">
             <div class=" ">
                 <table class="">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Descripcion</th>
                             <th>Total</th>
                         </tr>
@@ -140,11 +122,10 @@ $establishment = $cash->user->establishment;
                             <td class="celda">{{ $purchases }}</td>
                         </tr> --}}
 
-                        @foreach ($movements as $item)
+                        @foreach ($movements as $key => $item)
                             <tr>
-                                <td class="celda">{{ $loop->iteration }}</td>
-                                <td class="celda">{{ $item->description }}</td>
-                                <td class="celda">{{ $item->total }}</td>
+                                <td class="celda">{{ $key }} </td>
+                                <td class="celda">{{ $item }} </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -156,6 +137,118 @@ $establishment = $cash->user->establishment;
             <p>No se encontraron registros.</p>
         </div>
     @endif
+
+    <br><br>
+
+    <div class="">
+        <div class=" ">
+            <table class="">
+                <thead>
+                    <tr>
+                        <th colspan="5">
+                            VENTAS
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Descripcion</th>
+                        <th>Serie</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($salesDetails as $item)
+                        <tr>
+                            <td class="celda">{{ $loop->iteration }}</td>
+                            <td class="celda">{{ $item->created_at }}</td>
+                            <td class="celda">{{ $item->description }}</td>
+                            <td class="celda">{{ $item->serie }} - {{ $item->document_number }}</td>
+                            <td class="celda">{{ $item->total }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="">
+        <div class=" ">
+            <table class="">
+                <thead>
+                    <tr>
+                        <th colspan="7">
+                            COMPRAS
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Proveedor</th>
+                        <th>Descripcion</th>
+                        <th>Serie</th>
+                        <th>Divisas</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($purchasesDetails as $item)
+                        <tr>
+                            <td class="celda">{{ $loop->iteration }}</td>
+                            <td class="celda">{{ $item->created_at }}</td>
+                            <td class="celda">{{ $item->provider->name }}</td>
+                            <td class="celda">{{ $item->document_type }}</td>
+                            <td class="celda">{{ $item->serie }} - {{ $item->document_number }}</td>
+                            <td class="celda">
+                                {{ $item->handles_exchange_rate ? 'USD' : 'PEN' }}
+                                <br>
+                                {{ $item->exchange_rate }}
+                            </td>
+                            <td class="celda">{{ $item->total }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="">
+        <div class=" ">
+            <table class="">
+                <thead>
+                    <tr>
+                        <th colspan="4">
+                            INGRESOS y EGRESOS
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($cashboxMovements as $item)
+                        <tr>
+                            <td class="celda">{{ $loop->iteration }}</td>
+                            <td class="celda">{{ $item->created_at }}</td>
+                            <td class="celda">{{ $item->type }}</td>
+                            <td class="celda">{{ $item->observation }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 
 </html>

@@ -12,6 +12,11 @@ export default {
         ? "form-control rounded-pill is-invalid"
         : "form-control rounded-pill";
     },
+    $errorsClassSquare(error) {
+      return this.$errorsExists(error)
+        ? "form-control is-invalid"
+        : "form-control";
+    },
   },
 };
 

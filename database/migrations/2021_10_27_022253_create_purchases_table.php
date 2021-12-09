@@ -18,7 +18,9 @@ class CreatePurchasesTable extends Migration
             $table->string('document_type');
             $table->bigInteger('document_number');
             $table->string('serie');
+            $table->boolean('handles_exchange_rate')->default(false);
             $table->decimal('exchange_rate')->nullable();
+            $table->boolean('is_credit')->default(false);
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
             $table->decimal('total_igv', 12, 3)->default(0);
@@ -27,7 +29,6 @@ class CreatePurchasesTable extends Migration
             // $table->decimal('total_free', 12, 3)->default(0);
             // $table->decimal('total_taxed', 12, 3)->default(0);
             $table->unsignedDecimal('total', 12, 3)->default(0);
-            $table->boolean('has_debt')->default(false);
             $table->string('observation')->nullable();
 
             $table->foreignId('provider_id')

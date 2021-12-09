@@ -224,7 +224,6 @@ export default {
           console.log(response.data);
           this.provider.phone = "";
           this.provider.address = "";
-          this.provider.id = null;
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
@@ -265,7 +264,6 @@ export default {
         });
     },
     setData(providerFind) {
-      this.provider.id = providerFind.id;
       this.provider.document = providerFind.document;
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;

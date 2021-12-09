@@ -292,15 +292,22 @@ const routes = [
                     }
                 ]
             },
-            // {
-            //     path: '/reporte-compras',
-            //     name: 'report-purchases',
-            //     component: () => import('../modules/catalogs/assemblies/pages/NewAssemblie.vue'),
-            // },
-            // {
-            //     path: '',
-            //     redirect: { name: 'assemblies-list' }
-            // }
+            {
+                path: 'compras',
+                name: 'report-purchases-index',
+                component: () => import('../modules/reports/purchases/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-purchases',
+                        component: () => import('../modules/reports/purchases/pages/ReportPurchases.vue'),
+                    }
+                ]
+            },
+            {
+                path: '',
+                redirect: { name: 'assemblies-list' }
+            }
         ]
     },
 

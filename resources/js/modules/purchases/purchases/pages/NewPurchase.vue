@@ -112,11 +112,13 @@
                       <input
                         class="custom-control-input custom-control-input-danger"
                         type="checkbox"
-                        id="handle_exchange_rate"
-                        v-model="newPurchase.voucherDetail.handle_exchange_rate"
+                        id="handles_exchange_rate"
+                        v-model="
+                          newPurchase.voucherDetail.handles_exchange_rate
+                        "
                       />
                       <label
-                        for="handle_exchange_rate"
+                        for="handles_exchange_rate"
                         class="custom-control-label"
                       >
                         Maneja tipo de cambio
@@ -151,23 +153,38 @@
                 </div>
               </div>
             </div>
+
+            <!-- COMPRA A CREDITO -->
             <div class="row">
               <div class="col-md">
-                <div class="form-group">
-                  <div class="custom-control custom-checkbox">
-                    <input
-                      class="custom-control-input custom-control-input-danger"
-                      type="checkbox"
-                      id="is_credit"
-                      v-model="newPurchase.voucherDetail.is_credit"
-                    />
-                    <label for="is_credit" class="custom-control-label">
-                      Compra a credito
-                    </label>
+                <div class="d-flex justify-content-start">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input
+                        class="custom-control-input custom-control-input-danger"
+                        type="checkbox"
+                        id="is_credit"
+                        v-model="newPurchase.voucherDetail.is_credit"
+                      />
+                      <label for="is_credit" class="custom-control-label">
+                        Compra a credito
+                      </label>
+                    </div>
+                  </div>
+                  <!-- Definir fechas si es compra a creditos -->
+                  <div
+                    v-if="newPurchase.voucherDetail.is_credit"
+                    class="form-group ml-4"
+                  >
+                    <purchase-credit
+                      :installments="newPurchase.installments"
+                      :total_installment="newPurchase.voucherDetail.total/newPurchase.installments.number"
+                    ></purchase-credit>
                   </div>
                 </div>
               </div>
             </div>
+
             <div class="row mt-3">
               <div class="col-md">
                 <div class="form-group">
@@ -270,11 +287,12 @@
 import SearchProvider from "../components/SearchProvider.vue";
 import SearchProducts from "../components/SearchProducts.vue";
 import SetProducts from "../components/SetProducts.vue";
+import PurchaseCredit from "../components/PurchaseCredit.vue";
 import BaseUrl from "../../../../api/BaseUrl";
 // import ErrorsForm from "../../../../api/ErrorsForm";
 
 export default {
-  components: { SearchProvider, SearchProducts, SetProducts },
+  components: { SearchProvider, SearchProducts, SetProducts, PurchaseCredit },
   //   setup() {
   //     const {errorsExists, errorsClass, errorsPrint } = ErrorsForm();
   //     return {
@@ -291,7 +309,7 @@ export default {
           serie: null,
           date_issue: null,
           document_number: null,
-          handle_exchange_rate: true,
+          handles_exchange_rate: true,
           exchange_rate: null,
           is_credit: false,
           observation: null,
@@ -300,8 +318,16 @@ export default {
           total: 0,
         },
         provider: {
-          id: null,
+          // SE BEBERIA INICIALIZAR EN EL COMPONENTE COMO PROP
           identification_document_id: 6,
+          phone: null,
+          address: null,
+          ubigee_id: null,
+        },
+        installments: {
+          number: 1,
+          dates: [],
+          amounts: [],
         },
         products: [],
       },
@@ -325,9 +351,11 @@ export default {
             "Su compra se registro con exito.",
             "success"
           );
+          console.log(response.data);
         })
         .catch((error) => {
           this.disabled = false;
+          console.log(error.response.data);
           this.errors = error.response.data.errors;
           console.log(this.errors);
         });
@@ -339,22 +367,24 @@ export default {
             response.data.data[0].change; // lo en  via en un array xd
         })
         .catch(() => {
-          console.log(error.response);
+          console.log(error.response.data);
         });
     },
   },
   computed: {
     isCreditPurchase() {
-      return this.newPurchase.voucherDetail.handle_exchange_rate ? true : false;
+      return this.newPurchase.voucherDetail.handles_exchange_rate
+        ? true
+        : false;
     },
     currencySymbol() {
-      return this.newPurchase.voucherDetail.handle_exchange_rate ? "$" : "S/";
+      return this.newPurchase.voucherDetail.handles_exchange_rate ? "$" : "S/";
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .btn.btn-dark {
   border-top-right-radius: 23px;
   border-bottom-right-radius: 23px;

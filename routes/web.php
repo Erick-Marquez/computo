@@ -103,6 +103,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Rutas reportes
     Route::get('/reportes/cajas', [WebController::class, 'reportCashboxes'])->name('web.reports.cashboxes');
+    Route::get('/reportes/compras', [WebController::class, 'reportPurchases'])->name('web.reports.purchases');
 
 });
 

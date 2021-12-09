@@ -99,7 +99,7 @@ export default {
         : false;
 
       product.manager_series ? (product.series = []) : (product.series = null);
-      product.igv = false;
+      product.igv = true;
 
       this.productsFound = [];
       this.productName = null;

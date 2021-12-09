@@ -15,13 +15,14 @@ class CreateAccountsToPayTable extends Migration
     {
         Schema::create('accounts_to_pay', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->integer('number_installments');
             $table->decimal('residue')->default(0);
             $table->decimal('debt');
             $table->boolean('active')->default(true);
+            $table->foreignId('purchase_id')
+                ->constrained()
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
             $table->timestamps();
         });
     }

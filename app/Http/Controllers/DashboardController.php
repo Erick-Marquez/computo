@@ -90,7 +90,7 @@ class DashboardController extends Controller
         $query = DB::table('sales')
         ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
         ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
-        ->select('payment_types.description', DB::raw('SUM(sales.total) as amount'))
+        ->select('payment_types.description', DB::raw('SUM(payment_type_sale.amount) as amount'))
 
         ->groupBy('payment_types.description')
         ->where('sales.created_at', '>=', $mes_anterior)

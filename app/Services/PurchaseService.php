@@ -16,32 +16,53 @@ class PurchaseService
     {
 
         try {
-            $provider = Provider::where('document', $request->provider['document'])->first();
 
-            if (is_null($provider)) {
-                $provider = Provider::updateOrCreate();
-            }
+            $provider = Provider::updateOrCreate(
+                ['document' => $request->provider['document']],
+                [
+                    'name' => $request->provider['name'],
+                    'phone' => $request->provider['phone'],
+                    'address' => $request->provider['address'],
+                    'identification_document_id' => $request->provider['identification_document_id'],
+                    'ubigee_id' => $request->provider['ubigee_id'],
+                ]
+            );
 
             $purchase = Purchase::create([
                 'document_type' => $request->voucherDetail['document_type'],
                 'document_number' => $request->voucherDetail['document_number'],
                 'serie' => $request->voucherDetail['serie'],
-                'exchange_rate' => $request->voucherDetail['exchange_rate'],
+                'handles_exchange_rate' => $request->voucherDetail['handles_exchange_rate'],
+                'exchange_rate' => $request->voucherDetail['exchange_rate'], // ? Deberia de haber un IF
                 'date_issue' => $request->voucherDetail['date_issue'],
                 'subtotal' => $request->voucherDetail['subtotal'],
                 'total' => $request->voucherDetail['total'],
                 'total_igv' => $request->voucherDetail['total_igv'],
                 'observation' => $request->voucherDetail['observation'],
-                'has_debt' => $request->voucherDetail['is_credit'],
-                'provider_id' => $provider['id'],
+                'is_credit' => $request->voucherDetail['is_credit'],
+                'provider_id' => $provider->id,
                 'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             ]);
 
-            $result = $this->updateProductsAndSeries($request->products, $purchase);
 
-            $purchase->accountToPay()->create([
-                'debt' => $purchase['total']
-            ]);
+            // COMPRA A CREDITOS X CUOTAS
+
+            if ($purchase->is_credit) {
+                $accountToPay = $purchase->accountToPay()->create([
+                    'debt' => array_sum($request->installments['amounts']),
+                    'number_installments' => $request->installments['number'],
+                ]);
+
+                for ($i = 0; $i < $request->installments['number']; $i++) {
+                    $accountToPay->accountToPayDetails()->create([
+                        'date_issue' => $request->installments['dates'][$i],
+                        'amount' => $request->installments['amounts'][$i],
+                        'installment' => $i + 1,
+                    ]);
+                }
+            }
+
+            $result = $this->updateProductsAndSeries($request->products, $purchase);
 
             if (!$result) {
                 $purchase->delete();
@@ -52,7 +73,7 @@ class PurchaseService
                 'message' => 'Compra registrada con exito!!'
             ]);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json(['message' => $th->getMessage()], 405);
         }
     }
 
@@ -103,6 +124,10 @@ class PurchaseService
             ];
 
             KardexService::purchase($purchaseKardex);
+
+            Product::where('id', $product['id'])->update([
+                'referential_purchase_price' => $product['referential_purchase_price']
+            ]);
         }
 
         return true;

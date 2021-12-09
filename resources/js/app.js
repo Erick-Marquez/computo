@@ -82,6 +82,7 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 
 /* Reportes */
 app.component('index-report-cashboxes', indexReportCashboxes);
+app.component('index-report-purchases', indexReportPurchases);
 
 /* uy */
 app.component('image-upload', imageUpload)

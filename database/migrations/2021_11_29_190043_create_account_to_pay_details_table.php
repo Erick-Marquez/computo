@@ -15,6 +15,10 @@ class CreateAccountToPayDetailsTable extends Migration
     {
         Schema::create('account_to_pay_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('installment');
+            $table->date('date_issue');
+            $table->decimal('amount');
+            $table->boolean('payd')->default(false);
             $table->foreignId('account_to_pay_id')
                 ->constrained('accounts_to_pay')
                 ->onUpdate('cascade')
@@ -24,8 +28,6 @@ class CreateAccountToPayDetailsTable extends Migration
                 ->constrained('payment_types')
                 ->onUpdate('cascade')
                 ->onDelete('SET NULL');
-            $table->decimal('amount');
-            $table->date('date_issue');
             // $table->timestamps();
         });
     }

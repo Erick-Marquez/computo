@@ -51,7 +51,7 @@
             <td>{{ account.debt }}</td>
             <td>{{ account.residue }}</td>
             <td>
-              <span v-if="account.purchase.has_debt" class="badge badge-danger"
+              <span v-if="account.debt != 0" class="badge badge-danger"
                 >Pendiente</span
               >
               <span v-else class="badge badge-success">Cancelado</span>
@@ -100,33 +100,57 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th style="width: 33%">Fecha</th>
-                    <th style="width: 33%">Método de pago</th>
-                    <th style="width: 33%" class="text-center">Monto</th>
-                    <th style="width: 1%">Del</th>
+                    <th style="width: 6%">#</th>
+                    <th style="width: 20%">Fecha</th>
+                    <th style="width: 30%">Método de pago</th>
+                    <th style="width: 30%" class="text-center">Monto</th>
+                    <th style="width: 15%">Accion</th>
                   </tr>
                 </thead>
                 <tbody>
                   <!-- mostrar lista de pago de cuentas -->
                   <tr v-for="detail in account.details" :key="detail.id">
+                    <td>{{ detail.installment }}</td>
                     <td>{{ detail.date_issue }}</td>
-                    <td>{{ detail.payment.description }}</td>
+
+                    <td v-if="detail.payment == null">
+                      <select
+                        :class="$errorsClass(errors['payment_type_id'])"
+                        v-model="detail.payment_type_id"
+                      >
+                        <option
+                          :value="pt.id"
+                          v-for="pt in paymentTypes"
+                          :key="pt.id"
+                        >
+                          {{ pt.description }}
+                        </option>
+                      </select>
+                    </td>
+
+                    <td v-else>{{ detail.payment.description }}</td>
+
                     <td class="text-center">{{ detail.amount }}</td>
                     <td>
-                      <!-- <button class="btn btn-sm btn-fat btn-outline-info mr-1">
-                      <i class="fas fa-check"></i>
-                    </button> -->
                       <button
+                        v-if="!detail.payd"
+                        @click.prevent="payInstallment(detail)"
+                        class="btn btn-sm btn-fat btn-outline-success"
+                      >
+                        <i class="far fa-money-bill-alt"></i>
+                      </button>
+                      <span v-else class="badge badge-success">Pagado</span>
+                      <!-- <button
                         class="btn btn-sm btn-fat btn-outline-danger"
                         @click.prevent="destroyNewPay(detail.id)"
                       >
                         <i class="fas fa-trash"></i>
-                      </button>
+                      </button> -->
                     </td>
                   </tr>
 
                   <!-- form para crear nuevo pago -->
-                  <tr v-if="account.debt > 0">
+                  <!-- <tr v-if="account.debt > 0">
                     <td>
                       <input
                         :class="$errorsClass(errors['date_issue'])"
@@ -182,17 +206,17 @@
                         <i class="fas fa-check"></i>
                       </button>
                     </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="2" class="pb-0">
+                    <td colspan="3" class="pb-0">
                       <p class="text-right font-weight-bold">TOTAL PAGADO:</p>
                     </td>
                     <td class="text-center">{{ account.residue }}</td>
                   </tr>
                   <tr>
-                    <td colspan="2" class="pb-0">
+                    <td colspan="3" class="pb-0">
                       <p class="text-right font-weight-bold">TOTAL A PAGAR:</p>
                     </td>
                     <td class="text-center">
@@ -202,7 +226,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td colspan="2" class="pb-0">
+                    <td colspan="3" class="pb-0">
                       <p class="text-right font-weight-bold">
                         PENDIENTE DE PAGO:
                       </p>
@@ -293,6 +317,23 @@ export default {
         })
         .catch((error) => {
           console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
+        });
+    },
+
+    async payInstallment(installment) {
+      await BaseUrl.put(
+        `/api/account-to-pay-details/${installment.id}`,
+        installment
+      )
+        .then((response) => {
+          console.log(response.data);
+          this.getAccountDetails(this.account.id);
+          this.getAccountsToPay();
+          this.errors = [];
+        })
+        .catch((error) => {
+          console.log(error.response.data);
           this.errors = error.response.data.errors;
         });
     },

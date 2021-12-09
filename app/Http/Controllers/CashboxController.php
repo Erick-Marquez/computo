@@ -148,7 +148,7 @@ class CashboxController extends Controller
         $request->validate([
             'type' => ['required', Rule::in(['INGRESO', 'EGRESO'])],
             'amount' => 'required|min:0|numeric',
-            'observation' => 'required|min:10|string',
+            'observation' => 'required|string',
         ]);
 
         return $this->cashboxService->movement($id, $request->all());

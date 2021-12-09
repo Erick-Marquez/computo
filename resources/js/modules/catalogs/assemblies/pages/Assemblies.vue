@@ -44,7 +44,7 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <tH>Imagen</tH>
+                    <th>Imagen</th>
                     <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Descripcion</th>
@@ -55,7 +55,17 @@
                 <tbody>
                   <tr v-for="assembly in assemblies" :key="assembly.id">
                     <td>{{ assembly.id }}</td>
-                    <td><img :src="`/storage/${assembly.image}`" class="img-fluid" alt="" style="width:150px"></td>
+                    <td v-if="assembly.image != null">
+                      <img
+                        :src="`/storage/${assembly.image.url}`"
+                        class="img-fluid"
+                        alt=""
+                        style="width: 150px"
+                      />
+                    </td>
+                    <td v-else>
+                        No tiene imagen
+                    </td>
                     <td>{{ assembly.cod }}</td>
                     <td>{{ assembly.name }}</td>
                     <td>{{ assembly.description }}</td>
@@ -115,7 +125,7 @@ export default {
   },
   methods: {
     async getAssemblies() {
-      await BaseUrl.get(`/api/assemblies?included=image&included=products`)
+      await BaseUrl.get(`/api/assemblies?included=products,image`)
         .then((response) => {
           this.assemblies = response.data.data;
           console.log(response.data);

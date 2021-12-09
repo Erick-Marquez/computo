@@ -120,7 +120,7 @@
                         aria-labelledby="dropdownMenuButton"
                         style=""
                       >
-                        <a class="dropdown-item" target="_blank" :href="'http://computo.test/print/cashbox/report/' + occ.id">
+                        <a class="dropdown-item" target="_blank" :href="'/print/cashbox/report/' + occ.id">
                           <i class="col-1 mr-3 fas fa-edit"></i>
                           PDF
                         </a>

@@ -61,11 +61,9 @@ class AccountToPayDetailController extends Controller
             }
 
             return response()->json(['message' => 'Pago exitoso']);
-
         } catch (\Throwable $th) {
 
             return $th->getMessage();
-
         }
     }
 
@@ -89,7 +87,30 @@ class AccountToPayDetailController extends Controller
      */
     public function update(Request $request, AccountToPayDetail $accountToPayDetail)
     {
-        //
+        $request->validate([
+            'id' => 'required|exists:account_to_pay_details,id',
+            'payment_type_id' => 'required|exists:payment_types,id',
+        ]);
+
+        try {
+
+            $accountToPayDetail->update([
+                'payment_type_id' => $request->payment_type_id,
+                'payd' => true,
+            ]);
+
+            $account = $accountToPayDetail->accountToPay;
+
+            $account->update([
+                'debt' => $account['debt'] - $accountToPayDetail['amount'],
+                'residue' => $account['residue'] + $accountToPayDetail['amount']
+            ]);
+
+            return response()->json(['message' => 'Pago exitoso']);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
 
     /**

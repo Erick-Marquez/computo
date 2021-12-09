@@ -14,17 +14,19 @@ class Purchase extends Model
         'document_type',
         'document_number',
         'serie',
+        'handles_exchange_rate',
         'exchange_rate',
+        'is_credit',
         'date_issue',
         'subtotal',
         'total_igv',
         'total',
         'observation',
         'provider_id',
-        'open_closed_cashbox_id'
+        'open_closed_cashbox_id',
     ];
 
-    protected $allowIncluded = ['provider'];
+    protected $allowIncluded = ['provider', 'accountToPay'];
     protected $allowFilter = ['id', 'document_type', 'date_issue', 'provider_id'];
     protected $allowSort = ['id'];
 

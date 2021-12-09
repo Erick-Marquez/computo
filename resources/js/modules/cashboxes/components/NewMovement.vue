@@ -15,7 +15,6 @@
           </button>
         </div>
         <div class="modal-body">
-
           <div class="d-flex justify-content-around mb-2">
             <div class="custom-control custom-radio">
               <input
@@ -41,55 +40,26 @@
               <label for="incomes" class="custom-control-label">Ingreso</label>
             </div>
           </div>
-          <span
-            class="text-danger"
-            v-for="error in errors.type"
-            :key="error.index"
+          <div
+            class="invalid-feedback ml-3"
+            v-if="$errorsExists(errors['type'])"
           >
-            {{ error }}
-          </span>
-          <!-- <div class="form-group" v-if="movement.type == 'expense'">
-            <label for="">Tipo de movimiento</label>
-            <select
-              name=""
-              id=""
-              class="form-control"
-              v-model="movement.description"
-              key="movement-description"
-            >
-              <option value="servicio" selected="true">Servicios</option>
-              <option value="remuneracion">Remuneración</option>
-            </select>
+            {{ $errorsPrint(errors["type"]) }}
           </div>
-
-          <div class="form-group" v-if="movement.description == 'remuneracion'">
-            <label for="">Empleado</label>
-            <select
-              name=""
-              id=""
-              class="form-control"
-              v-model="movement.employed"
-              key="movement-employed"
-            >
-              <option value="juan">Juan</option>
-              <option value="roberto">Roberto</option>
-            </select>
-          </div> -->
           <div class="form-group">
             <label for="">Monto</label>
             <input
               type="number"
               step="0.0001"
-              class="form-control"
+              :class="$errorsClass(errors['amount'])"
               v-model.number="movement.amount"
             />
-            <span
-              class="text-danger"
-              v-for="error in errors.amount"
-              :key="error.index"
+            <div
+              class="invalid-feedback ml-3"
+              v-if="$errorsExists(errors['amount'])"
             >
-              {{ error }}
-            </span>
+              {{ $errorsPrint(errors["amount"]) }}
+            </div>
           </div>
           <div class="form-group">
             <label for="">Observación</label>
@@ -98,16 +68,15 @@
               id=""
               cols="30"
               rows="5"
-              class="form-control"
+              :class="$errorsClassSquare(errors['observation'])"
               v-model="movement.observation"
             ></textarea>
-            <span
-              class="text-danger"
-              v-for="error in errors.observation"
-              :key="error.index"
+            <div
+              class="invalid-feedback ml-3"
+              v-if="$errorsExists(errors['observation'])"
             >
-              {{ error }}
-            </span>
+              {{ $errorsPrint(errors["observation"]) }}
+            </div>
           </div>
         </div>
 
@@ -119,7 +88,9 @@
           >
             Cerrar
           </button>
-          <button type="submit" class="btn btn-dark">Guardar</button>
+          <button type="submit" class="btn btn-dark" :disabled="disabled">
+            Guardar
+          </button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -131,17 +102,12 @@
 <script>
 export default {
   data() {
-    return {
-      errors: {
-        amount: {},
-        type: {},
-        observation: {},
-      },
-    };
+    return {};
   },
   props: {
     movement: Object,
     errors: Object,
+    disabled: Boolean,
   },
 };
 </script>

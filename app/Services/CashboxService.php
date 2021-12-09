@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\VoucherController;
 use App\Models\Cashbox;
 use App\Models\Company;
 use App\Models\OpenClosedCashbox;
 use App\Models\OpenClosedCashboxDetail;
+use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\User;
 use Carbon\Carbon;
@@ -47,7 +49,6 @@ class CashboxService
             $user->update(['open_closed_cashbox_id' => $openClosedCashbox['id']]);
 
             return response()->json([$openClosedCashbox]);
-
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -66,7 +67,7 @@ class CashboxService
             ], 405);
         }
 
-        if ( $user['open_closed_cashbox_id'] != $id ) {
+        if ($user['open_closed_cashbox_id'] != $id) {
             return response()->json([   //  Devuelvo un mensaje y un 405 de metodo no permitido
                 'message' => 'Usted no tiene permitido esta acción',
             ], 405);
@@ -82,7 +83,6 @@ class CashboxService
             $user->update(['open_closed_cashbox_id' => null]);
 
             return response()->json($id);
-
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
@@ -114,22 +114,22 @@ class CashboxService
             ];
 
             $sales = $occ->sales()
-                            ->select('created_at as date', 'observation', 'total as amount')
-                            ->get()
-                            ->each(function ($item, $key) {
-                                return $item['concept'] = 'VENTA';
-                            });
+                ->select('created_at as date', 'observation', 'total as amount')
+                ->get()
+                ->each(function ($item, $key) {
+                    return $item['concept'] = 'VENTA';
+                });
 
             $purchases = $occ->purchases()
-                            ->select('created_at as date', 'observation', 'total as amount')
-                            ->get()
-                            ->each(function ($item, $key) {
-                                return $item['concept'] = 'COMPRA';
-                            });
+                ->select('created_at as date', 'observation', 'total as amount')
+                ->get()
+                ->each(function ($item, $key) {
+                    return $item['concept'] = 'COMPRA';
+                });
 
             $occd = $occ->openClosedCashboxDetails()
-                        ->select('created_at as date', 'observation', 'amount', 'type as concept')
-                        ->get();
+                ->select('created_at as date', 'observation', 'amount', 'type as concept')
+                ->get();
 
             $movements = $sales->mergeRecursive($purchases)->mergeRecursive($occd)->sortBy(['create_at', 'desc']);
 
@@ -176,28 +176,31 @@ class CashboxService
         }
     }
 
-    public function getDataReport($occId)
+    public function getDataReport($occ_id)
     {
-        $occ = OpenClosedCashbox::findOrFail($occId);
+        $occ = OpenClosedCashbox::findOrFail($occ_id);
         $cashbox = $occ->cashbox;
         $company = Company::first();
 
-        $occ_details = $occ->openClosedCashboxDetails()
-                            ->select('type as description', DB::raw('SUM(amount) as total'))
-                            ->groupBy('type')
-                            ->get();
+        $movements = [
+            'INGRESOS' => $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
+            'EGRESOS' => $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
+            'VENTAS' => $occ->sales()->sum('total'),
+            'COMPRAS' => $occ->purchases()->sum('total')
+        ];
 
-        $sales = DB::table('sales')
-                    ->join('series', 'sales.serie_id', '=', 'series.id')
-                    ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                    ->select('voucher_types.description as description', DB::raw('SUM(sales.total) as total'))
-                    ->where('open_closed_cashbox_id', $occ['id'])
-                    ->groupBy('voucher_types.description')
-                    ->get(); // OBJETO {X: , Y: }
 
-        $movements = $sales->merge($occ_details);
+        $salesDetails = DB::table('sales')
+            ->join('series', 'sales.serie_id', '=', 'series.id')
+            ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
+            ->select('series.serie', 'sales.document_number', 'sales.created_at', 'sales.total', 'voucher_types.description')
+            ->where('open_closed_cashbox_id', $occ['id'])
+            ->get();
 
-        return compact("occ", "cashbox", "company", "movements");
+        $purchasesDetails = $occ->purchases()->with('provider')->get();
 
+        $cashboxMovements = $occ->openClosedCashboxDetails;
+
+        return compact("occ", "cashbox", "company", "movements", 'salesDetails', 'purchasesDetails', 'cashboxMovements');
     }
 }
