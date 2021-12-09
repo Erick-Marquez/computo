@@ -77,7 +77,7 @@
                             @if ($loop->last)
                                 {{ $payment->description }}
                             @else
-                            {{ $payment->description }},
+                                {{ $payment->description }},
                             @endif
 
                         @endforeach
@@ -97,23 +97,53 @@
         <tr>
             <th>[Cant] Descripción </th>
             <th>Precio</th>
-            <th>Importe</th>
+            <th>Total</th>
         </tr>
     </thead>
     <tbody>
+
         @php
             $discount = 0;
         @endphp
+
         @foreach ($details as $detail)
-            <tr>
-                <td><span>[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}</td>
-                <td>S/. {{ round($detail->price, 2) }}</td>
-                <td>S/. {{ round($detail->total, 2) }}</td>
-            </tr>
+
+            @if ($detail->discount > 0)
+                <tr>
+                    <td>
+                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}
+                        <br>
+                        <span style="font-size: 0.6rem; vertical-align: middle; color: white;">[{{ $detail->quantity }}]</span> Descuento</span>
+                    </td>
+                    <td>
+                        S/. {{ round($detail->price, 2) }}
+                        <br>
+                        S/. {{ round($detail->discount, 2) }}
+                    </td>
+                    <td>
+                        S/. {{ round($detail->total, 2) }}
+                        <br>
+                        &nbsp;
+                    </td>
+                </tr> 
+            @else
+                
+                <tr>
+                    <td>
+                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}
+                    </td>
+                    <td>S/. {{ round($detail->price, 2) }}</td>
+                    <td>S/. {{ round($detail->total, 2) }}</td>
+                </tr>
+
+            @endif
+
             @php
                 $discount += $detail->discount;
             @endphp
+
         @endforeach
+
     </tbody>
     </table>
     <div class="hr"></div>
@@ -168,7 +198,7 @@
 
     @else
 
-        <p><span class="bold">FORMAS DE PAGO (CONTADO):</p>
+        <p><span class="bold">FORMAS DE PAGO (CONTADO):</span></p>
 
         @foreach ($head->paymentTypes as $payment)
             
@@ -181,5 +211,7 @@
     <div>
         <img src="data:image/png;base64, {{ $qr }}" class="qr"/>
     </div>
+
+    <p><span class="bold">HASH: </span>{{ $head->hash_cpe }}</p>
 </body>
 </html>

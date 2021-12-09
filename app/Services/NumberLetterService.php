@@ -65,6 +65,12 @@ class NumberLetterService
         if(count($div_decimales) > 1){
             $number = $div_decimales[0];
             $decNumberStr = (string) $div_decimales[1];
+            if(strlen($decNumberStr) == 1){
+                $decNumberStr = str_pad($decNumberStr, 2, '0', STR_PAD_RIGHT);
+                $decNumberStrFill = str_pad($decNumberStr, 9, '0', STR_PAD_LEFT);
+                $decCientos = substr($decNumberStrFill, 6);
+                $decimales = self::convertGroup($decCientos);
+            }
             if(strlen($decNumberStr) == 2){
                 $decNumberStrFill = str_pad($decNumberStr, 9, '0', STR_PAD_LEFT);
                 $decCientos = substr($decNumberStrFill, 6);
@@ -74,7 +80,6 @@ class NumberLetterService
         else if (count($div_decimales) == 1 && $forzarCentimos){
             $decimales = 'CERO ';
         }
-
         $numberStr = (string) $number;
         $numberStrFill = str_pad($numberStr, 9, '0', STR_PAD_LEFT);
         $millones = substr($numberStrFill, 0, 3);
@@ -104,13 +109,12 @@ class NumberLetterService
                 $converted .= sprintf('%s ', self::convertGroup($cientos));
             }
         }
-
+        
         if(empty($decimales)){
             $valor_convertido = rtrim($converted) . ' CON ' . '00/100 ' . strtoupper($moneda);
         } else {
             $valor_convertido = rtrim($converted) . ' CON ' . rtrim($decNumberStr) . '/100 ' . strtoupper($moneda);
         }
-
         return $valor_convertido;
     }
 

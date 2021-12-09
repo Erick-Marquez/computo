@@ -65,11 +65,10 @@ body{
 }
 .sale thead th{
     text-align: start;
-
+    
 }
 .sale tbody{
     font-size: 0.7rem;
-    padding: 15px;
 }
 span{
     font-weight: bold;

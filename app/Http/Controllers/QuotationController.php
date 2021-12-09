@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\QuotationRequest;
 use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SerieResource;
+use App\Http\Resources\UserResource;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
 use App\Models\Serie;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -82,7 +84,7 @@ class QuotationController extends Controller
 
             'serie_id' => $request->quotation['serie_id'],
             'customer_id' => $request->customer['id'],
-            'user_id' => auth()->user()->id
+            'user_id' => $request->quotation['seller_id']
         ]);
 
         // Variables para los totales de la cotizacion
@@ -96,7 +98,7 @@ class QuotationController extends Controller
 
         $igv = 0.18;
         // Crear los detalles de la cotizacion
-        foreach ($request->detail as $key => $detail) {
+        foreach ($request->detail as $detail) {
 
             $subtotal = 0;
             $totalIgv = 0;
@@ -284,5 +286,11 @@ class QuotationController extends Controller
     {
         $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', 8)->get(); //voucher type 8 = cotizacion
         return SerieResource::collection($series);
+    }
+
+    public function sellers()
+    {
+        $sellers = User::where('branch_id', auth()->user()->branch_id)->role('Vendedor')->get(); //voucher type 8 = cotizacion
+        return UserResource::collection($sellers);
     }
 }

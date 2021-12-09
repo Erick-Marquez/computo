@@ -47,7 +47,7 @@ class FamilyController extends Controller
      */
     public function show(Family $family)
     {
-        return $family;
+        return FamilyResource::make($family);
     }
 
     /**
@@ -79,7 +79,11 @@ class FamilyController extends Controller
      */
     public function destroy(Family $family)
     {
+        if ($family->lines()->count()) {
+            return response()->json(['error' => 'Para eliminar la familia tiene que eliminar las lineas.'], 405);
+        }
+
         $family->delete();
-        return redirect()->route('families.index');
+        return FamilyResource::make($family);
     }
 }

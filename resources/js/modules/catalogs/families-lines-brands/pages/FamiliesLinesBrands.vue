@@ -60,15 +60,15 @@
                       <table class="table table-hover text-nowrap">
                         <thead>
                           <tr>
-                            <th>ID</th>
+                            <th>N°</th>
                             <th>Codigo</th>
                             <th>Descripción</th>
                             <th>Acciones</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="family in families" :key="family.id">
-                            <td>{{ family.id }}</td>
+                          <tr v-for="(family, index) in families" :key="family.id">
+                            <td>{{ index+1 }}</td>
                             <td>{{ family.cod }}</td>
                             <td>{{ family.description }}</td>
                             <td>
@@ -77,11 +77,11 @@
                                   Acciones
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="#">
-                                    <i class="col-1 mr-3 fas fa-eye"></i>Mostrar
-                                  </a>
                                   <a class="dropdown-item" href="#" @click="showModal('#modal-family-edit', 'F', family)">
                                     <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                                  </a>
+                                  <a class="dropdown-item" href="#" @click="deleteFamily(family.id)">
+                                    <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
                                   </a>
                                 </div>
                               </div>
@@ -312,12 +312,20 @@
 
           <div class="modal-footer justify-content-between">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+
+            <button v-if="!loading" type="submit" class="btn btn-primary">Guardar</button>
+            <button v-else class="btn btn-primary" :disabled="loading">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+
           </div>
         </form>
       </div>
     </div>
   </div>
+
   <!-- Modal Editar Familia -->
   <div class="modal fade" id="modal-family-edit" aria-hidden="true">
     <div class="modal-dialog">
@@ -345,7 +353,13 @@
 
           <div class="modal-footer justify-content-between">
             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+
+            <button v-if="!loading" type="submit" class="btn btn-primary">Guardar</button>
+            <button v-else class="btn btn-primary" :disabled="loading">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
           </div>
         </form>
       </div>
@@ -364,6 +378,8 @@ export default {
   },
   data(){
     return{
+      loading: false,
+
       families: {},
       family: {
         cod: '',
@@ -401,7 +417,7 @@ export default {
   methods:{
     async showFamilies(){
       await BaseUrl.get(`api/families`).then( resp => {
-        this.families=resp.data.data
+        this.families = resp.data.data
       })
     },
     async showLines(){
@@ -428,9 +444,10 @@ export default {
     },
 
     createFamily(){
+
+      this.loading = true
       BaseUrl.post(`api/families`, this.family).then( resp => {
         
-        console.log(resp)
         $("#modal-family-create").modal("hide")
         this.showFamilies()
         this.family = {
@@ -441,12 +458,16 @@ export default {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     editFamily(){
+
+      this.loading = true
       BaseUrl.put(`api/families/${this.familyEdit.id}`, this.familyEdit).then( resp => {
         
-        console.log(resp)
         $("#modal-family-edit").modal("hide")
         this.showFamilies()
         this.familyEdit = {}
@@ -455,9 +476,13 @@ export default {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        this.loading = false;
       });
     },
     deleteFamily(id) {
+
       Swal.fire({
         title: "¿Estas Seguro?",
         text: "Esta acción no puede revertirse",
@@ -467,22 +492,24 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Si, adelante",
         cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          BaseUrl.delete(`api/currencyexchanges/${id}`).then( resp => {
-              this.showCurrencyExchanges();
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
 
-          Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
-        }
+          try {
+            const resp=await BaseUrl.delete(`api/families/${id}`)
+            this.showFamilies()
+            Swal.fire("Eliminado", "La familia ha sido eliminada", "success")
+          } catch(error) {
+            console.log(error.response.data.error)
+            Swal.fire("Cancelado", "La familia no se puede eliminar", "error")
+          }
+        },
       });
+
     },
 
     /* --------------------CRUD Lineas----------------------------- */
-    createFamily(){
+    createLine(){
       BaseUrl.post(`api/lines`, this.line).then( resp => {
         
         console.log(resp)
@@ -498,7 +525,7 @@ export default {
         console.log(error);
       });
     },
-    editFamily(){
+    editLine(){
       BaseUrl.put(`api/families/${this.familyEdit.id}`, this.familyEdit).then( resp => {
         
         console.log(resp)
@@ -512,7 +539,7 @@ export default {
         console.log(error);
       });
     },
-    deleteFamily(id) {
+    deleteLine(id) {
       Swal.fire({
         title: "¿Estas Seguro?",
         text: "Esta acción no puede revertirse",
