@@ -105,6 +105,9 @@
                     <div class="compra__texto">
                         <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
                     </div>
+                    <div class="compra__texto">
+                        <p class="compra__vendedor">CAJERO: {{ $head->user->name }}</p>
+                    </div>
                 </td>
                 <td>
                     <div class="resumen">

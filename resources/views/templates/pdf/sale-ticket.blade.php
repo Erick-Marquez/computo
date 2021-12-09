@@ -97,7 +97,7 @@
         <tr>
             <th>[Cant] Descripción </th>
             <th>Precio</th>
-            <th>Importe</th>
+            <th>Total</th>
         </tr>
     </thead>
     <tbody>
