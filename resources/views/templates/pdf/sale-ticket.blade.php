@@ -77,7 +77,7 @@
                             @if ($loop->last)
                                 {{ $payment->description }}
                             @else
-                            {{ $payment->description }},
+                                {{ $payment->description }},
                             @endif
 
                         @endforeach
@@ -110,6 +110,14 @@
                 <td>S/. {{ round($detail->price, 2) }}</td>
                 <td>S/. {{ round($detail->total, 2) }}</td>
             </tr>
+
+            @if ($detail->discount > 0)
+                <tr>
+                    <td><span style="color: white">[{{ $detail->quantity }}]</span> Descuento</td>
+                    <td>S/. {{ round($detail->discount, 2) }}</td>
+                    <td></td>
+                </tr>
+            @endif
             @php
                 $discount += $detail->discount;
             @endphp

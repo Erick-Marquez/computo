@@ -187,6 +187,24 @@
               <div class="form-group">
                 <label for="">
                   <i class="text-danger fas fa-tags"></i>
+                  Vendedor
+                </label>
+                <select v-model="quotationData.quotation.seller_id" :class="'form-control rounded-pill' + (errorsCreate['quotation.seller_id'] == null ? '' : ' is-invalid')">
+                  <option v-for="seller in sellers" :key="seller.id" :value="seller.id">
+                    {{ seller.name }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" v-if="errorsCreate['quotation.seller_id'] ">
+                  {{ errorsCreate['quotation.seller_id'][0] }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Descuento Global -->
+            <div class="col-md">
+              <div class="form-group">
+                <label for="">
+                  <i class="text-danger fas fa-tags"></i>
                   Descuento
                 </label>
                 <input :class="'form-control rounded-pill' + (errorsCreate['quotation.discount'] == null ? '' : ' is-invalid')" type="number" min="0" step="0.001"
@@ -196,6 +214,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Aplica Garantia -->
             <div class="col-md-3">
               <div class="form-group text-center">
                 <label>
@@ -212,7 +232,7 @@
               </div>
             </div>
           </div>
-
+          <!-- Observacion -->
           <div class="row">
             <div class="col-md">
               <div class="form-group">
@@ -225,6 +245,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Totales -->
         <div class="col-md-4">
           <div class="table-responsive">
             <table class="table">
@@ -319,6 +341,10 @@ export default {
       
     });
 
+    await BaseUrl.get(`api/quotations/sellers`).then((resp) => {
+      this.sellers = resp.data.data;
+    });
+
     this.getSeries()
 
   },
@@ -328,6 +354,8 @@ export default {
       loadingQuotation: false,
 
       currencyExchange: {},
+
+      sellers: [],
 
       series: {},
       currentNumber: 'Selecciona una serie',
@@ -347,6 +375,7 @@ export default {
         },
         quotation: {
 
+          seller_id: null,
           subtotal : 0,
           discount : 0,
           totalIgv : 0,

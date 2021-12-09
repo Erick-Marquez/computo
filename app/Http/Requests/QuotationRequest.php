@@ -26,6 +26,13 @@ class QuotationRequest extends FormRequest
     {
         return [
 
+            'quotation.seller_id' => [
+                'required', 
+                Rule::exists('users', 'id')->where(function ($query) {
+                    $query->where('branch_id', auth()->user()->branch_id); // vendedor de la misma sucursal
+                }),
+            ],
+
             'quotation.date_due' => ['required', 'date', 'after_or_equal:' . now()->toDateString()],
 
             'quotation.discount' => ['nullable', 'numeric', 'min:0'],
@@ -61,6 +68,9 @@ class QuotationRequest extends FormRequest
     public function messages()
     {
         return [
+
+            'quotation.seller_id.required' => 'El vendedor es requerido.',
+            'quotation.seller_id.exists' => 'Seleccione un vendedor válido.',
 
             'quotation.date_due.required' => 'La fecha de validez es requerida.',
             'quotation.date_due.after_or_equal' => 'La fecha de validez debe ser mayor o igual a ' . now()->toDateString() .'.',

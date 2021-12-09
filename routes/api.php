@@ -75,6 +75,7 @@ Route::middleware([
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
     Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
+    Route::get('/quotations/sellers', [QuotationController::class, 'sellers'])->name('api.quotations.sellers');
 
     //Warranties
     Route::get('/warranties', [WarrantyController::class, 'index'])->name('api.warranties.index');
