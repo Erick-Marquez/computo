@@ -88,7 +88,7 @@
                     @endphp
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert($head->total - $head->discount, 'SOLES') }}</td>
+                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert(round($head->total - $head->discount, 2), 'SOLES') }}</td>
                 </tr>
             </tbody>
         </table>
