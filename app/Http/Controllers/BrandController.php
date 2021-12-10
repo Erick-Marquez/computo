@@ -15,7 +15,10 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::all();
+        $brands = Brand::included()
+                            ->filter()
+                            ->sort()
+                            ->getOrPaginate();
         return BrandResource::collection($brands);
     }
 

@@ -51,10 +51,10 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#" @click="showModal('#modal-family-edit', family)">
-                            <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                                <i class="col-1 mr-3 fas fa-edit"></i>Editar
                             </a>
                             <a class="dropdown-item" href="#" @click="deleteFamily(family.id)">
-                            <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                                <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
                             </a>
                         </div>
                         </div>
@@ -187,7 +187,9 @@ export default {
       
             if (data !== null) {
 
-                this.familyEdit = data
+                this.familyEdit.id = data.id
+                this.familyEdit.cod = data.cod
+                this.familyEdit.description = data.description
             
             }
             $(modal).modal("show");

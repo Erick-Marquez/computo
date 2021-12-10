@@ -61,15 +61,15 @@
                             aria-labelledby="dropdownMenuButton"
                             style=""
                         >
-                            <a
-                            class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                            ><a
-                            class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                            >
+                            <a class="dropdown-item" href="#">
+                                <i class="col-1 mr-3 fas fa-eye"></i>Mostrar
+                            </a>
+                            <a class="dropdown-item" href="#" @click="showModal('#modal-line-edit', line)">
+                                <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                            </a>
+                            <a class="dropdown-item" href="#" @click="deleteLine(line.id)">
+                                <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                            </a>
                         </div>
                         </div>
                     </td>
@@ -89,7 +89,7 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h4 class="modal-title">Nueva Marca</h4>
+            <h4 class="modal-title">Nueva Linea</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
@@ -98,13 +98,20 @@
             <div class="modal-body">
             
                 <div class="form-group">
-                <label for="name">Código</label>
-                <input type="text" class="form-control" v-model="line.cod">
+                    <label for="name">Código</label>
+                    <input type="text" class="form-control" v-model="line.cod">
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="line.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" class="form-control" v-model="line.description" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Familia</label>
+                    <select style="width: 100%;" class="form-control" id="select-families-create" v-model="line.family_id" required>
+                        <option v-for="family in families" :key="family.id" :value="family.id">{{ family.description }}</option>
+                    </select>
                 </div>
 
             </div>
@@ -139,13 +146,20 @@
             <div class="modal-body">
             
                 <div class="form-group">
-                <label for="name">Código</label>
-                <input type="text" class="form-control" v-model="lineEdit.cod">
+                    <label for="name">Código</label>
+                    <input type="text" class="form-control" v-model="lineEdit.cod">
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="lineEdit.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" class="form-control" v-model="lineEdit.description" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Familia</label>
+                    <select style="width: 100%;" class="form-control" id="select-families-edit" v-model="lineEdit.family_id" required>
+                        <option v-for="family in families" :key="family.id" :value="family.id">{{ family.description }}</option>
+                    </select>
                 </div>
 
             </div>
@@ -179,22 +193,32 @@ export default {
             line: {
                 cod: '',
                 description: '',
+                family_id: '',
             },
             lineEdit: {
                 id: '',
                 cod: '',
                 description: '',
+                family_id: '',
             },
 
         };
     },
+    props: {
+        families: Array,
+    },
     async created() {
         this.showLines()
+    },
+    mounted() {
+        $("#select-families-create").select2();
+        $("#select-families-edit").select2();
     },
     methods: {
         async showLines(){
             await BaseUrl.get(`api/lines`).then( resp => {
-                this.lines=resp.data.data
+                this.lines = resp.data.data
+                console.log(this.lines);
             })
         },
 
@@ -202,7 +226,13 @@ export default {
       
             if (data !== null) {
 
-                this.brandEdit = data
+                this.lineEdit.id = data.id
+                this.lineEdit.cod = data.cod
+                this.lineEdit.description = data.description
+                this.lineEdit.family_id = data.family_id
+
+                $("#select-families-edit").val(this.lineEdit.family_id); // Select the option with a value of '1'
+                $("#select-families-edit").trigger("change"); // Notify any JS components that the value changed
             
             }
             $(modal).modal("show");
@@ -210,36 +240,47 @@ export default {
 
         /* --------------------CRUD Lineas----------------------------- */
         createLine(){
+
+            this.line.family_id = $("#select-families-create").val();
+            console.log(this.line);
+
+            this.loading = true
             BaseUrl.post(`api/lines`, this.line).then( resp => {
                 
-                console.log(resp)
                 $("#modal-line-create").modal("hide")
                 this.showLines()
-                this.lines = {
+                this.line = {
                     cod: '',
                     description: '',
+                    family_id: '',
                 },
                 Swal.fire("Creado", "La linea ha sido creada", "success");
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response);
+            }).finally(() => {
+                this.loading = false;
             });
         },
         editLine(){
-            BaseUrl.put(`api/families/${this.familyEdit.id}`, this.familyEdit).then( resp => {
+            this.loading = true
+            BaseUrl.put(`api/lines/${this.lineEdit.id}`, this.lineEdit).then( resp => {
                 
-                console.log(resp)
                 $("#modal-line-edit").modal("hide")
-                this.showFamilies()
-                this.familyEdit = {}
+                this.showLines()
+                this.lineEdit = {}
 
-                Swal.fire("Actualizado", "La familia ha sido actualizada", "success");
+                Swal.fire("Actualizado", "La linea ha sido actualizada", "success");
             })
             .catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                this.loading = false;
             });
         },
         deleteLine(id) {
+
             Swal.fire({
                 title: "¿Estas Seguro?",
                 text: "Esta acción no puede revertirse",
@@ -249,19 +290,26 @@ export default {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si, adelante",
                 cancelButtonText: "Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                BaseUrl.delete(`api/currencyexchanges/${id}`).then( resp => {
-                    this.showCurrencyExchanges();
-                    })
-                    .catch((error) => {
-                    console.log(error);
-                    });
+                showLoaderOnConfirm: true,
+                preConfirm: async () => {
 
-                Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
-                }
+                    try {
+                        const resp = await BaseUrl.delete(`api/lines/${id}`)
+                        this.showLines()
+                        Swal.fire("Eliminado", "La linea ha sido eliminada", "success")
+                    } catch(error) {
+                        console.log(error.response.data.error)
+                        Swal.fire("Cancelado", "La linea no se puede eliminar", "error")
+                    }
+
+                },
             });
+
         },
+
+        setFamily(){
+            console.log(this.line)
+        }
     },
 };
 </script>

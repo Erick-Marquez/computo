@@ -6,73 +6,87 @@
     
     <div class="row">
         <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">Lista de Marcas</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Lista de Marcas</h3>
 
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px">
-                <input
-                    type="text"
-                    name="table_search"
-                    class="form-control float-right"
-                    placeholder="Search"
-                >
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px">
+                        <input
+                            type="text"
+                            name="table_search"
+                            class="form-control float-right"
+                            placeholder="Search"
+                        >
 
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-default">
-                    <i class="fas fa-search"></i>
-                    </button>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">N°</th>
+                                <th style="width: 10%;">Codigo</th>
+                                <th style="width: 75%;">Descripción</th>
+                                <th style="width: 10%;" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(brand, index) in brands" :key="brand.id">
+                                <td>{{ index + meta.from }}</td>
+                                <td>{{ brand.cod }}</td>
+                                <td>{{ brand.description }}</td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-danger dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                            Acciones
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#" @click="showModal('#modal-brand-edit', brand)">
+                                                <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                                            </a>
+                                            <a class="dropdown-item" href="#" @click="deleteBrand(brand.id)">
+                                                <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li v-for="(link, index) in meta.links" :key="link.index" 
+                        :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                            <button type="button"
+                                class="page-link"
+                                @click="(link.url == null || link.active) ? null : showPaginateBrands(link.url)" 
+                            >
+                                {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover text-nowrap">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Codigo</th>
-                        <th>Descripción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(brand, index) in brands" :key="brand.id">
-                        <td>{{ index+1 }}</td>
-                        <td>{{ brand.cod }}</td>
-                        <td>{{ brand.description }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-danger dropdown-toggle"
-                                    type="button"
-                                    id="dropdownMenuButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    Acciones
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" @click="showModal('#modal-brand-edit', brand)">
-                                        <i class="col-1 mr-3 fas fa-edit"></i>Editar
-                                    </a>
-                                    <a class="dropdown-item" href="#" @click="deleteBrand(brand.id)">
-                                        <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                </table>
-            </div>
-            </div>
-            <!-- /.card-body -->
-        </div>
         <!-- /.card -->
         </div>
     </div>
@@ -167,6 +181,9 @@ export default {
         return {
 
             loading: false,
+            meta: {},
+
+            perPage: 10,
 
             brands: [],
             brand: {
@@ -186,8 +203,18 @@ export default {
     },
     methods: {
         async showBrands(){
-            await BaseUrl.get(`api/brands`).then( resp => {
-                this.brands=resp.data.data
+            await BaseUrl.get(`api/brands?page=1&perPage=${this.perPage}`)
+            .then( resp => {
+                this.brands = resp.data.data
+                this.meta = resp.data.meta
+            })
+        },
+
+        async showPaginateBrands(url){
+            await axios.get(`${url}&perPage=${this.perPage}`)
+            .then( resp => {
+                this.brands = resp.data.data
+                this.meta = resp.data.meta
             })
         },
 
@@ -195,10 +222,14 @@ export default {
       
             if (data !== null) {
 
-                this.brandEdit = data
+                this.brandEdit.id = data.id
+                this.brandEdit.cod = data.cod
+                this.brandEdit.description = data.description
             
             }
+
             $(modal).modal("show");
+
         },
 
         /* --------------------CRUD Marcas----------------------------- */
@@ -252,7 +283,7 @@ export default {
                 preConfirm: async () => {
 
                     try {
-                        const resp=await BaseUrl.delete(`api/brands/${id}`)
+                        const resp = await BaseUrl.delete(`api/brands/${id}`)
                         this.showBrands()
                         Swal.fire("Eliminado", "La marca ha sido eliminada", "success")
                     } catch(error) {

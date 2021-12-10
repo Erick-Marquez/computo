@@ -22,19 +22,6 @@ class LineController extends Controller
         return LineResource::collection($lines);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $families = Family::all();
-        $brands = Brand::all();
-        return view('catalogs.lines.create', compact('families', 'brands'));
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -43,7 +30,6 @@ class LineController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
         $request->validate([
             'description' => 'required',
             'family_id' => 'required'
@@ -55,9 +41,7 @@ class LineController extends Controller
             'family_id' => $request->family_id,
         ]);
 
-        $line->brands()->sync($request->brand_id);
-
-        return redirect()->route('lines.index');
+        return LineResource::make($line);
     }
 
     /**
