@@ -5,7 +5,8 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Builder;
 
 // ApiTrait es una clase abstracte que incluye todos los metodos en un modelo
-trait ApiTrait{
+trait ApiTrait
+{
 
     // La instancia $query hace referencia a la consulta que tienes en el controlador
     public function scopeIncluded(Builder $query)
@@ -23,9 +24,7 @@ trait ApiTrait{
             if (!$allowIncluded->contains($relationship)) {
 
                 unset($relations[$key]);
-
             }
-
         }
 
         $query->with($relations);
@@ -43,7 +42,7 @@ trait ApiTrait{
 
         foreach ($filters as $filter => $valor) {
             if ($allowFilter->contains($filter)) {
-                $query->where($filter, 'LIKE' , '%' . $valor . '%');
+                $query->where($filter, 'LIKE', '%' . $valor . '%');
             }
         }
     }
@@ -62,20 +61,20 @@ trait ApiTrait{
         $allowSort = collect($this->allowSort);
 
         // se itera los elementos de la matriz y se compara con la lista blanca
-        foreach ( $sortFields as $sortField ) {
+        foreach ($sortFields as $sortField) {
 
             // + ó - para ordenar por ascendente o descendente
             $direction = 'asc';
 
             // si la matriz se envia con un -, ejem: sort=-name, se detectara el signo
-            if( substr($sortField, 0, 1) == '-' ){
+            if (substr($sortField, 0, 1) == '-') {
                 $direction = 'desc';
                 // de ser el caso que este se extrara del parametro
                 $sortField = substr($sortField, 1);
             }
 
             // por ultimo se verifica si la lista blanca contiene a algun indice de la matriz
-            if ( $allowSort->contains($sortField) ) {
+            if ($allowSort->contains($sortField)) {
                 // de ser el caso se ejecutara un order by a la consulta
                 $query->orderBy($sortField, $direction);
             }
@@ -97,14 +96,12 @@ trait ApiTrait{
 
     public function scopeGetOrPaginate(Builder $query)
     {
-        if ( request('perPage') ) {
+        if (request('perPage')) {
             $perPage = intVal(request('perPage'));
 
-            if ($perPage > 0) {
-                return $query->paginate($perPage);
-            }
-        }
 
+            return $query->paginate($perPage);
+        }
         return $query->get();
     }
 }
