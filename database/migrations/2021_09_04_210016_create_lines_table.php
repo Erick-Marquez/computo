@@ -21,8 +21,8 @@ class CreateLinesTable extends Migration
 
             $table->foreignId('family_id') 
                 ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
+                // ->onDelete('cascade');
 
             $table->timestamps();
         });

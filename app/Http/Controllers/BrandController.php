@@ -20,16 +20,6 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('catalogs.brands.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,12 +31,12 @@ class BrandController extends Controller
             'description' => 'required'
         ]);
 
-        brand::create([
+        $brand = brand::create([
             'cod' => $request->cod,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('brands.index');
+        return BrandResource::make($brand);
     }
 
     /**
@@ -58,17 +48,6 @@ class BrandController extends Controller
     public function show(Brand $brand)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Brand $brand)
-    {
-        return view('catalogs.brands.edit', compact('brand'));
     }
 
     /**
@@ -84,9 +63,12 @@ class BrandController extends Controller
             'description' => 'required'
         ]);
 
-        $brand->update($request->all());
+        $brand->update([
+            'cod' => $request->cod,
+            'description' => $request->description
+        ]);
 
-        return redirect()->route('brands.index');
+        return BrandResource::make($brand);
     }
 
     /**
@@ -97,7 +79,12 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        if ($brand->lines()->count()) {
+            return response()->json(['error' => 'Esta marca esta siendo usada por una linea.'], 405);
+        }
+
         $brand->delete();
-        return redirect()->route('brands.index');
+        return BrandResource::make($brand);
+
     }
 }
