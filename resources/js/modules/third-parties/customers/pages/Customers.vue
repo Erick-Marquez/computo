@@ -103,24 +103,18 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
-      <ul class="pagination pagination-sm m-0 float-right">
-        <li class="page-item" v-for="link in links" :key="link.index">
-          <a class="page-link" href="#" @click="showCustomers(link.label)">{{
-            link.label
-          }}</a>
-        </li>
-      </ul>
+      <Paginator :links="links" v-on:getDataPaginate="getCustomers" />
     </div>
   </div>
 </template>
 
 <script>
-import baseUrl from "../../../../api/BaseUrl";
 import BaseUrl from "../../../../api/BaseUrl";
 import NewCustomer from "../components/NewCustomer.vue";
+import Paginator from "../../../../compositions/Paginator.vue";
 
 export default {
-  components: { BaseUrl, NewCustomer },
+  components: { BaseUrl, NewCustomer, Paginator },
   data() {
     return {
       customer: {
@@ -130,12 +124,13 @@ export default {
       customers: {},
     };
   },
+
   created() {
-    this.showCustomers();
+    this.getCustomers();
   },
   methods: {
-    async showCustomers(page = 1) {
-      await BaseUrl.get(`/api/clientes?sort=-id&page=${page}&perPage=10`)
+    async getCustomers() {
+      await BaseUrl.get(`/api/clientes?sort=-id&perPage=10&page=${this.$route.query.page}`)
         .then((response) => {
           this.customers = response.data.data;
           this.links = response.data.meta.links;
@@ -144,13 +139,14 @@ export default {
           console.log(error.response);
         });
     },
+
     async createCustomer() {
       await BaseUrl.post("/api/clientes", this.customer)
         .then((response) => {
           console.log(response.data);
           $("#new-customer").modal("hide");
           this.customer = {};
-          this.showCustomers();
+          this.getCustomers();
         })
         .catch((error) => {
           console.log(error.response);
@@ -170,7 +166,7 @@ export default {
           BaseUrl.delete(`/api/clientes/${id}`)
             .then((response) => {
               Swal.fire("Deleted!", response.data.message, "success");
-              this.showCustomers();
+              this.getCustomers();
             })
             .catch((error) => {
               console.log(error.response);
