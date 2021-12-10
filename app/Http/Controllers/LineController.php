@@ -43,7 +43,7 @@ class LineController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        return $request;
         $request->validate([
             'description' => 'required',
             'family_id' => 'required'

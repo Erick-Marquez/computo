@@ -18,13 +18,13 @@ class CreateBrandLineTable extends Migration
 
             $table->foreignId('line_id') 
                 ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
+                // ->onDelete('cascade');
 
             $table->foreignId('brand_id') 
                 ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
+                // ->onDelete('cascade');
 
             $table->timestamps();
         });
