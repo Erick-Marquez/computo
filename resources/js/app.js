@@ -6,6 +6,9 @@ import router from "./router";
 
 import { createApp } from 'vue';
 
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+
 import Permissions from './mixins/Permissions';
 import ErrorsForm from './mixins/ErrorsForm';
 
@@ -48,6 +51,8 @@ import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.
 import imageUpload from './mixins/ImageUpload.vue'
 
 const app = createApp({});
+
+app.component('v-select', vSelect)
 
 /* Sales */
 app.component('index-vouchers', indexVoucher);

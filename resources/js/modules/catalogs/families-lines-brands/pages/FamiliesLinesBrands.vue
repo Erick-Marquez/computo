@@ -34,7 +34,7 @@
           <!-- Lines -->
           <div class="tab-pane fade" id="custom-tabs-lines" role="tabpanel" aria-labelledby="custom-tabs-lines-tab">
 
-            <Lines :families="families"/>
+            <Lines :families="families" :brands="brands"/>
 
           </div>
           <!-- /.Lines -->
@@ -73,14 +73,17 @@ export default {
   },
   methods:{
     async getBrands(){
-      await BaseUrl.get(`api/brands`)
-      .then( resp => {
+      await BaseUrl.get(`api/brands`).then( resp => {
+
         this.brands = resp.data.data
+
       })
     },
     async getFamilies(){
       await BaseUrl.get(`api/families`).then( resp => {
-        this.families = resp.data.data
+
+        this.families = resp.data.data  
+
       })
     },
   }

@@ -115,6 +115,7 @@ Route::middleware([
     //------------------------Catalogs-----------------------
     //Families-Lines-Brands
     Route::apiResource('families', FamilyController::class)->names('api.families');
+    Route::put('lines/add-brands/{line}', [LineController::class, 'addBrands'])->name('api.lines.addBrands');
     Route::apiResource('lines', LineController::class)->names('api.lines');
     Route::apiResource('brands', BrandController::class)->names('api.brands');
 

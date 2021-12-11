@@ -12,6 +12,7 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.3.1",
         "@tailwindcss/typography": "^0.4.0",
+        "@types/vue-select": "^3.16.0",
         "@vue/compiler-sfc": "^3.2.12",
         "alpinejs": "^3.0.6",
         "axios": "^0.21",
@@ -27,6 +28,7 @@
         "chart.js": "^3.6.0",
         "vue-chart-3": "^0.5.11",
         "vue-image-crop-upload": "^3.0.3",
-        "vue-router": "^4.0.11"
+        "vue-router": "^4.0.11",
+        "vue-select": "^4.0.0-beta.1"
     }
 }
