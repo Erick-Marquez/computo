@@ -171,6 +171,11 @@ class WebController extends Controller
         return view('settings.currency-exchanges.index');
     }
 
+    public function paymentTypes()
+    {
+        return view('settings.payment-types.index');
+    }
+
     public function prueba()
     {
         // $data['branch_product_id'] = 1;

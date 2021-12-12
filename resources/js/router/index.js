@@ -411,6 +411,22 @@ const routes = [
         ]
     },
     {
+        path: '/tipo-de-pagos',
+        name: 'payment-types-index',
+        component: () => import('../modules/settings/payment-types/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'payment-types',
+                component: () => import('../modules/settings/payment-types/pages/Payment-types.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'payment-types' }
+            }
+        ]
+    },
+    {
         path: '/terceros',
         name: 'terceros-index',
         component: () => import('../modules/third-parties/index.vue'),

@@ -47,6 +47,7 @@ import indexUsers from './modules/settings/users/index.vue';
 import indexRoles from './modules/settings/roles/index.vue';
 import indexSeries from './modules/settings/series/index.vue';
 import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.vue';
+import indexPaymentTypes from './modules/settings/payment-types/index.vue';
 
 import imageUpload from './mixins/ImageUpload.vue'
 
@@ -84,6 +85,7 @@ app.component('index-users', indexUsers);
 app.component('index-roles', indexRoles);
 app.component('index-series', indexSeries);
 app.component('index-currency-exchanges', indexCurrencyExchanges);
+app.component('index-payment-types', indexPaymentTypes);
 
 /* Reportes */
 app.component('index-report-cashboxes', indexReportCashboxes);

@@ -524,6 +524,12 @@ return [
                     'route'  => 'web.currency-exchanges',
                     // 'can'    => 'currency-exchanges.index',
                 ],
+                [
+                    'text'   => 'Tipo de Pagos',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'web.payment-types',
+                    // 'can'    => 'currency-exchanges.index',
+                ],
             ],
         ],
 
