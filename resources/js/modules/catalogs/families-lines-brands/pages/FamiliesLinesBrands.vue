@@ -26,7 +26,7 @@
           <!-- Families -->
           <div class="tab-pane fade active show" id="custom-tabs-families" role="tabpanel" aria-labelledby="custom-tabs-families-tab">
 
-            <Families/>
+            <Families v-on:getFamilies="getFamilies"/>
 
           </div>
           <!-- /.Families -->
@@ -42,7 +42,7 @@
           <!-- Brands -->
           <div class="tab-pane fade" id="custom-tabs-brands" role="tabpanel" aria-labelledby="custom-tabs-brands-tab">
 
-            <Brands/>
+            <Brands v-on:getBrands="getBrands"/>
 
           </div>
           <!-- /.Brands -->

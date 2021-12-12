@@ -63,7 +63,7 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        //
+        return BranchResource::make($branch);
     }
 
     /**

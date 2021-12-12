@@ -201,6 +201,7 @@ export default {
     async created() {
         this.showBrands()
     },
+    emits: ["getBrands"],
     methods: {
         async showBrands(){
             await BaseUrl.get(`api/brands?page=1&perPage=${this.perPage}`)
@@ -242,13 +243,15 @@ export default {
                 this.brand = {
                     cod: '',
                     description: '',
-                },
-                Swal.fire("Creado", "La marca ha sido creada", "success");
+                }
+                Swal.fire("Creado", "La marca ha sido creada", "success")
+
+                this.$emit("getBrands")
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             }).finally(() => {
-                this.loading = false;
+                this.loading = false
             });
         },
         editBrand(){
@@ -259,7 +262,9 @@ export default {
                 this.showBrands()
                 this.brandEdit = {}
 
-                Swal.fire("Actualizado", "La marca ha sido actualizada", "success");
+                Swal.fire("Actualizado", "La marca ha sido actualizada", "success")
+
+                this.$emit("getBrands")
             })
             .catch((error) => {
                 console.log(error);
@@ -286,6 +291,8 @@ export default {
                         const resp = await BaseUrl.delete(`api/brands/${id}`)
                         this.showBrands()
                         Swal.fire("Eliminado", "La marca ha sido eliminada", "success")
+
+                        this.$emit("getBrands")
                     } catch(error) {
                         console.log(error.response.data.error)
                         Swal.fire("Cancelado", "La marca no se puede eliminar", "error")

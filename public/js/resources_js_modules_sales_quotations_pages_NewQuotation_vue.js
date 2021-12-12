@@ -381,7 +381,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.productSearchFilter = '';
       } else {
         this.productSearchFilter = produtsBackup.filter(function (products) {
-          return products.name.toLowerCase().indexOf(wordFilter) !== -1;
+          return products.product.name.toLowerCase().indexOf(wordFilter) !== -1;
         });
       }
     },
@@ -391,11 +391,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.sale_price,
         quantity: 1
       };
@@ -409,11 +409,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_one,
         quantity: 1
       };
@@ -427,11 +427,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_two,
         quantity: 1
       };
@@ -1521,9 +1521,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.productSearch]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_24, [$data.productSearchFilter.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("thead", _hoisted_25, _hoisted_27)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.productSearchFilter, function (filSearch) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: filSearch
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.product.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.brand), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.product.brand_line.brand.description), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "btn btn-sm btn-success w-50",

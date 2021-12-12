@@ -109,7 +109,13 @@
 
                 <div class="form-group">
                     <label for="name">Familia</label>
-                    <v-select v-model="line.family_id" label="description" :reduce="family => family.id" :options="families"></v-select>
+                    <v-select v-model="line.family_id" label="description" :reduce="family => family.id" :options="families">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
                 </div>
 
             </div>
@@ -155,7 +161,13 @@
 
                 <div class="form-group">
                     <label for="name">Familia</label>
-                    <v-select v-model="lineEdit.family_id" label="description" :reduce="family => family.id" :options="families"></v-select>
+                    <v-select v-model="lineEdit.family_id" label="description" :reduce="family => family.id" :options="families">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
                 </div>
 
             </div>
@@ -194,7 +206,13 @@
 
                 <div class="form-group">
                     <label for="name">Marcas</label>
-                    <v-select multiple v-model="lineAddBrands.brands" label="description" :reduce="brand => brand.id" :options="brands"></v-select>
+                    <v-select multiple v-model="lineAddBrands.brands" label="description" :reduce="brand => brand.id" :options="brands">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
                 </div>
 
             </div>

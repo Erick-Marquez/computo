@@ -181,7 +181,7 @@ const routes = [
             {
                 path: 'productos/:id',
                 name: 'show-product',
-                component: () => import('../modules/inventory/branches/pages/products.vue'),
+                component: () => import('../modules/inventory/branches/pages/Products.vue'),
             },
             {
                 path: '',

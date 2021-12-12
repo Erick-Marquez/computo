@@ -133,6 +133,7 @@ Route::middleware([
     Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
     //------------------------Inventory----------------------
+    Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
 
     //------------------------Settings-----------------------

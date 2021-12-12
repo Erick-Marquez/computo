@@ -84,6 +84,6 @@ class FamilyController extends Controller
         }
 
         $family->delete();
-        return FamilyResource::make($family);
+        return response()->noContent();
     }
 }

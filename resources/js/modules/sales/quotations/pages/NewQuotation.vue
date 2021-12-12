@@ -76,8 +76,8 @@
                     </thead>
                     <tbody>
                       <tr v-for="filSearch in productSearchFilter" :key="filSearch">
-                        <td>{{ filSearch.name }}</td>
-                        <td class="col-2 text-center">{{ filSearch.brand }}</td>
+                        <td>{{ filSearch.product.name }}</td>
+                        <td class="col-2 text-center">{{ filSearch.product.brand_line.brand.description }}</td>
                         <td class="col-2 text-center">
                           <input class="btn btn-sm btn-success w-50" type="button" :value="filSearch.sale_price" @click="priceOne(filSearch)">
                         </td>
@@ -434,7 +434,7 @@ export default {
         this.productSearchFilter=''
       }else{
         this.productSearchFilter = produtsBackup.filter(products =>
-          (products.name.toLowerCase().indexOf(wordFilter) !== -1)
+          (products.product.name.toLowerCase().indexOf(wordFilter) !== -1)
         );
       }
 
@@ -447,11 +447,11 @@ export default {
         total: 0,
 
         product_id : filSearch.id,
-        cod : filSearch.cod,
+        cod : filSearch.product.cod,
         affect_icbper : false,
         igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price : filSearch.sale_price,
         quantity : 1,
       }
@@ -470,11 +470,11 @@ export default {
         total: 0,
 
         product_id : filSearch.id,
-        cod : filSearch.cod,
+        cod : filSearch.product.cod,
         affect_icbper : false,
         igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price : filSearch.referential_sale_price_one,
         quantity : 1,
       }
@@ -494,11 +494,11 @@ export default {
         total: 0,
 
         product_id : filSearch.id,
-        cod : filSearch.cod,
+        cod : filSearch.product.cod,
         affect_icbper : false,
         igv_type_id : filSearch.igv_type_id,
-        description : filSearch.name,
-        brand : filSearch.brand,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price : filSearch.referential_sale_price_two,
         quantity : 1,
       }
