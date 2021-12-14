@@ -19523,10 +19523,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_demi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-demi */ "./node_modules/vue-demi/lib/index.esm.js");
-/* harmony import */ var vue_image_crop_upload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-image-crop-upload */ "./node_modules/vue-image-crop-upload/upload-3.vue");
+/* harmony import */ var vue_image_crop_upload__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-image-crop-upload */ "./node_modules/vue-image-crop-upload/upload-3.vue");
 var _this = undefined;
-
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -19580,7 +19578,7 @@ var _this = undefined;
   },
   props: {},
   components: {
-    "my-upload": vue_image_crop_upload__WEBPACK_IMPORTED_MODULE_1__["default"]
+    "my-upload": vue_image_crop_upload__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
     toggleShow: function toggleShow() {
@@ -20895,42 +20893,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-<<<<<<< HEAD
-/* harmony import */ var _mixins_Permissions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mixins/Permissions */ "./resources/js/mixins/Permissions.vue");
-/* harmony import */ var _mixins_ErrorsForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mixins/ErrorsForm */ "./resources/js/mixins/ErrorsForm.vue");
-/* harmony import */ var _modules_inventory_kardex_index_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/inventory/kardex/index.vue */ "./resources/js/modules/inventory/kardex/index.vue");
-/* harmony import */ var _modules_inventory_branches_index_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/inventory/branches/index.vue */ "./resources/js/modules/inventory/branches/index.vue");
-/* harmony import */ var _modules_inventory_modification_stock_index_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/inventory/modification-stock/index.vue */ "./resources/js/modules/inventory/modification-stock/index.vue");
-/* harmony import */ var _modules_sales_vouchers_index_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/sales/vouchers/index.vue */ "./resources/js/modules/sales/vouchers/index.vue");
-/* harmony import */ var _modules_sales_sale_notes_index_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/sales/sale-notes/index.vue */ "./resources/js/modules/sales/sale-notes/index.vue");
-/* harmony import */ var _modules_sales_advance_payments_index_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/sales/advance-payments/index.vue */ "./resources/js/modules/sales/advance-payments/index.vue");
-/* harmony import */ var _modules_sales_quotations_index_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/sales/quotations/index.vue */ "./resources/js/modules/sales/quotations/index.vue");
-/* harmony import */ var _modules_sales_warranties_index_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/sales/warranties/index.vue */ "./resources/js/modules/sales/warranties/index.vue");
-/* harmony import */ var _modules_catalogs_families_lines_brands_index_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/catalogs/families-lines-brands/index.vue */ "./resources/js/modules/catalogs/families-lines-brands/index.vue");
-/* harmony import */ var _modules_catalogs_products_index_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/catalogs/products/index.vue */ "./resources/js/modules/catalogs/products/index.vue");
-/* harmony import */ var _modules_catalogs_product_series_index_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./modules/catalogs/product-series/index.vue */ "./resources/js/modules/catalogs/product-series/index.vue");
-/* harmony import */ var _modules_catalogs_assemblies_index_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./modules/catalogs/assemblies/index.vue */ "./resources/js/modules/catalogs/assemblies/index.vue");
-/* harmony import */ var _modules_cashboxes_open_closed_index_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./modules/cashboxes/open-closed/index.vue */ "./resources/js/modules/cashboxes/open-closed/index.vue");
-/* harmony import */ var _modules_cashboxes_expenses_incomes_index_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./modules/cashboxes/expenses-incomes/index.vue */ "./resources/js/modules/cashboxes/expenses-incomes/index.vue");
-/* harmony import */ var _modules_cashboxes_accounts_to_pay_index_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./modules/cashboxes/accounts-to-pay/index.vue */ "./resources/js/modules/cashboxes/accounts-to-pay/index.vue");
-/* harmony import */ var _modules_purchases_purchases_index_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./modules/purchases/purchases/index.vue */ "./resources/js/modules/purchases/purchases/index.vue");
-/* harmony import */ var _modules_dashboard_dashboard_index_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./modules/dashboard/dashboard/index.vue */ "./resources/js/modules/dashboard/dashboard/index.vue");
-/* harmony import */ var _modules_third_parties_providers_index_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./modules/third-parties/providers/index.vue */ "./resources/js/modules/third-parties/providers/index.vue");
-/* harmony import */ var _modules_third_parties_customers_index_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./modules/third-parties/customers/index.vue */ "./resources/js/modules/third-parties/customers/index.vue");
-/* harmony import */ var _modules_reports_cashboxes_index_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./modules/reports/cashboxes/index.vue */ "./resources/js/modules/reports/cashboxes/index.vue");
-/* harmony import */ var _modules_reports_purchases_index_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./modules/reports/purchases/index.vue */ "./resources/js/modules/reports/purchases/index.vue");
-/* harmony import */ var _modules_reports_sales_index_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./modules/reports/sales/index.vue */ "./resources/js/modules/reports/sales/index.vue");
-/* harmony import */ var _modules_reports_details_index_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./modules/reports/details/index.vue */ "./resources/js/modules/reports/details/index.vue");
-/* harmony import */ var _modules_reports_products_index_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./modules/reports/products/index.vue */ "./resources/js/modules/reports/products/index.vue");
-/* harmony import */ var _modules_reports_inventory_index_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./modules/reports/inventory/index.vue */ "./resources/js/modules/reports/inventory/index.vue");
-/* harmony import */ var _modules_reports_utility_index_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./modules/reports/utility/index.vue */ "./resources/js/modules/reports/utility/index.vue");
-/* harmony import */ var _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./modules/settings/company/index.vue */ "./resources/js/modules/settings/company/index.vue");
-/* harmony import */ var _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./modules/settings/users/index.vue */ "./resources/js/modules/settings/users/index.vue");
-/* harmony import */ var _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./modules/settings/roles/index.vue */ "./resources/js/modules/settings/roles/index.vue");
-/* harmony import */ var _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./modules/settings/series/index.vue */ "./resources/js/modules/settings/series/index.vue");
-/* harmony import */ var _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./modules/settings/currency-exchanges/index.vue */ "./resources/js/modules/settings/currency-exchanges/index.vue");
-/* harmony import */ var _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./mixins/ImageUpload.vue */ "./resources/js/mixins/ImageUpload.vue");
-=======
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
@@ -20958,14 +20920,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_third_parties_customers_index_vue__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./modules/third-parties/customers/index.vue */ "./resources/js/modules/third-parties/customers/index.vue");
 /* harmony import */ var _modules_reports_cashboxes_index_vue__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./modules/reports/cashboxes/index.vue */ "./resources/js/modules/reports/cashboxes/index.vue");
 /* harmony import */ var _modules_reports_purchases_index_vue__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./modules/reports/purchases/index.vue */ "./resources/js/modules/reports/purchases/index.vue");
-/* harmony import */ var _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./modules/settings/company/index.vue */ "./resources/js/modules/settings/company/index.vue");
-/* harmony import */ var _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./modules/settings/users/index.vue */ "./resources/js/modules/settings/users/index.vue");
-/* harmony import */ var _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./modules/settings/roles/index.vue */ "./resources/js/modules/settings/roles/index.vue");
-/* harmony import */ var _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./modules/settings/series/index.vue */ "./resources/js/modules/settings/series/index.vue");
-/* harmony import */ var _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./modules/settings/currency-exchanges/index.vue */ "./resources/js/modules/settings/currency-exchanges/index.vue");
-/* harmony import */ var _modules_settings_payment_types_index_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./modules/settings/payment-types/index.vue */ "./resources/js/modules/settings/payment-types/index.vue");
-/* harmony import */ var _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./mixins/ImageUpload.vue */ "./resources/js/mixins/ImageUpload.vue");
->>>>>>> dcb194247ea73d92dae846015d9aa5133285c9a8
+/* harmony import */ var _modules_reports_sales_index_vue__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./modules/reports/sales/index.vue */ "./resources/js/modules/reports/sales/index.vue");
+/* harmony import */ var _modules_reports_details_index_vue__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./modules/reports/details/index.vue */ "./resources/js/modules/reports/details/index.vue");
+/* harmony import */ var _modules_reports_products_index_vue__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./modules/reports/products/index.vue */ "./resources/js/modules/reports/products/index.vue");
+/* harmony import */ var _modules_reports_inventory_index_vue__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./modules/reports/inventory/index.vue */ "./resources/js/modules/reports/inventory/index.vue");
+/* harmony import */ var _modules_reports_utility_index_vue__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./modules/reports/utility/index.vue */ "./resources/js/modules/reports/utility/index.vue");
+/* harmony import */ var _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./modules/settings/company/index.vue */ "./resources/js/modules/settings/company/index.vue");
+/* harmony import */ var _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./modules/settings/users/index.vue */ "./resources/js/modules/settings/users/index.vue");
+/* harmony import */ var _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./modules/settings/roles/index.vue */ "./resources/js/modules/settings/roles/index.vue");
+/* harmony import */ var _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./modules/settings/series/index.vue */ "./resources/js/modules/settings/series/index.vue");
+/* harmony import */ var _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./modules/settings/currency-exchanges/index.vue */ "./resources/js/modules/settings/currency-exchanges/index.vue");
+/* harmony import */ var _modules_settings_payment_types_index_vue__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./modules/settings/payment-types/index.vue */ "./resources/js/modules/settings/payment-types/index.vue");
+/* harmony import */ var _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./mixins/ImageUpload.vue */ "./resources/js/mixins/ImageUpload.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -21043,43 +21009,26 @@ app.component('index-providers', _modules_third_parties_providers_index_vue__WEB
 app.component('index-customers', _modules_third_parties_customers_index_vue__WEBPACK_IMPORTED_MODULE_25__["default"]);
 /* Settings */
 
-<<<<<<< HEAD
-app.component('index-company', _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_30__["default"]);
-app.component('index-users', _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_31__["default"]);
-app.component('index-roles', _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_32__["default"]);
-app.component('index-series', _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_33__["default"]);
-app.component('index-currency-exchanges', _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_34__["default"]);
-/* Reportes */
-
-app.component('index-report-cashboxes', _modules_reports_cashboxes_index_vue__WEBPACK_IMPORTED_MODULE_23__["default"]);
-app.component('index-report-purchases', _modules_reports_purchases_index_vue__WEBPACK_IMPORTED_MODULE_24__["default"]);
-app.component('index-report-sales', _modules_reports_sales_index_vue__WEBPACK_IMPORTED_MODULE_25__["default"]);
-app.component('index-report-details', _modules_reports_details_index_vue__WEBPACK_IMPORTED_MODULE_26__["default"]);
-app.component('index-report-products', _modules_reports_products_index_vue__WEBPACK_IMPORTED_MODULE_27__["default"]);
-app.component('index-report-inventory', _modules_reports_inventory_index_vue__WEBPACK_IMPORTED_MODULE_28__["default"]);
-app.component('index-report-utility', _modules_reports_utility_index_vue__WEBPACK_IMPORTED_MODULE_29__["default"]);
-/* uy */
-
-app.component('image-upload', _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_35__["default"]);
-app.mixin(_mixins_Permissions__WEBPACK_IMPORTED_MODULE_2__["default"]);
-app.mixin(_mixins_ErrorsForm__WEBPACK_IMPORTED_MODULE_3__["default"]);
-=======
-app.component('index-company', _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_28__["default"]);
-app.component('index-users', _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_29__["default"]);
-app.component('index-roles', _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_30__["default"]);
-app.component('index-series', _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_31__["default"]);
-app.component('index-currency-exchanges', _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_32__["default"]);
-app.component('index-payment-types', _modules_settings_payment_types_index_vue__WEBPACK_IMPORTED_MODULE_33__["default"]);
+app.component('index-company', _modules_settings_company_index_vue__WEBPACK_IMPORTED_MODULE_33__["default"]);
+app.component('index-users', _modules_settings_users_index_vue__WEBPACK_IMPORTED_MODULE_34__["default"]);
+app.component('index-roles', _modules_settings_roles_index_vue__WEBPACK_IMPORTED_MODULE_35__["default"]);
+app.component('index-series', _modules_settings_series_index_vue__WEBPACK_IMPORTED_MODULE_36__["default"]);
+app.component('index-currency-exchanges', _modules_settings_currency_exchanges_index_vue__WEBPACK_IMPORTED_MODULE_37__["default"]);
+app.component('index-payment-types', _modules_settings_payment_types_index_vue__WEBPACK_IMPORTED_MODULE_38__["default"]);
 /* Reportes */
 
 app.component('index-report-cashboxes', _modules_reports_cashboxes_index_vue__WEBPACK_IMPORTED_MODULE_26__["default"]);
 app.component('index-report-purchases', _modules_reports_purchases_index_vue__WEBPACK_IMPORTED_MODULE_27__["default"]);
+app.component('index-report-sales', _modules_reports_sales_index_vue__WEBPACK_IMPORTED_MODULE_28__["default"]);
+app.component('index-report-details', _modules_reports_details_index_vue__WEBPACK_IMPORTED_MODULE_29__["default"]);
+app.component('index-report-products', _modules_reports_products_index_vue__WEBPACK_IMPORTED_MODULE_30__["default"]);
+app.component('index-report-inventory', _modules_reports_inventory_index_vue__WEBPACK_IMPORTED_MODULE_31__["default"]);
+app.component('index-report-utility', _modules_reports_utility_index_vue__WEBPACK_IMPORTED_MODULE_32__["default"]);
 /* uy */
 
-app.component('image-upload', _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_34__["default"]);
+app.component('image-upload', _mixins_ImageUpload_vue__WEBPACK_IMPORTED_MODULE_39__["default"]);
 app.mixin(_mixins_Permissions__WEBPACK_IMPORTED_MODULE_4__["default"]);
 app.mixin(_mixins_ErrorsForm__WEBPACK_IMPORTED_MODULE_5__["default"]);
->>>>>>> dcb194247ea73d92dae846015d9aa5133285c9a8
 app.use(_router__WEBPACK_IMPORTED_MODULE_0__["default"]).mount('#app');
 
 /***/ }),
@@ -39622,200 +39571,6 @@ module.exports = function (list, options) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-demi/lib/index.esm.js":
-/*!************************************************!*\
-  !*** ./node_modules/vue-demi/lib/index.esm.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "set": () => (/* binding */ set),
-/* harmony export */   "del": () => (/* binding */ del),
-/* harmony export */   "BaseTransition": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.BaseTransition),
-/* harmony export */   "Comment": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Comment),
-/* harmony export */   "EffectScope": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.EffectScope),
-/* harmony export */   "Fragment": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Fragment),
-/* harmony export */   "KeepAlive": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.KeepAlive),
-/* harmony export */   "ReactiveEffect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.ReactiveEffect),
-/* harmony export */   "Static": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Static),
-/* harmony export */   "Suspense": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Suspense),
-/* harmony export */   "Teleport": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Teleport),
-/* harmony export */   "Text": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Text),
-/* harmony export */   "Transition": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.Transition),
-/* harmony export */   "TransitionGroup": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup),
-/* harmony export */   "VueElement": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.VueElement),
-/* harmony export */   "callWithAsyncErrorHandling": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.callWithAsyncErrorHandling),
-/* harmony export */   "callWithErrorHandling": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.callWithErrorHandling),
-/* harmony export */   "camelize": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.camelize),
-/* harmony export */   "capitalize": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.capitalize),
-/* harmony export */   "cloneVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.cloneVNode),
-/* harmony export */   "compatUtils": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.compatUtils),
-/* harmony export */   "compile": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.compile),
-/* harmony export */   "computed": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.computed),
-/* harmony export */   "createApp": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createApp),
-/* harmony export */   "createBlock": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createBlock),
-/* harmony export */   "createCommentVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode),
-/* harmony export */   "createElementBlock": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock),
-/* harmony export */   "createElementVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode),
-/* harmony export */   "createHydrationRenderer": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createHydrationRenderer),
-/* harmony export */   "createPropsRestProxy": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createPropsRestProxy),
-/* harmony export */   "createRenderer": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createRenderer),
-/* harmony export */   "createSSRApp": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createSSRApp),
-/* harmony export */   "createSlots": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createSlots),
-/* harmony export */   "createStaticVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode),
-/* harmony export */   "createTextVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode),
-/* harmony export */   "createVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.createVNode),
-/* harmony export */   "customRef": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.customRef),
-/* harmony export */   "defineAsyncComponent": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineAsyncComponent),
-/* harmony export */   "defineComponent": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent),
-/* harmony export */   "defineCustomElement": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineCustomElement),
-/* harmony export */   "defineEmits": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineEmits),
-/* harmony export */   "defineExpose": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineExpose),
-/* harmony export */   "defineProps": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineProps),
-/* harmony export */   "defineSSRCustomElement": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.defineSSRCustomElement),
-/* harmony export */   "devtools": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.devtools),
-/* harmony export */   "effect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.effect),
-/* harmony export */   "effectScope": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.effectScope),
-/* harmony export */   "getCurrentInstance": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.getCurrentInstance),
-/* harmony export */   "getCurrentScope": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.getCurrentScope),
-/* harmony export */   "getTransitionRawChildren": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.getTransitionRawChildren),
-/* harmony export */   "guardReactiveProps": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps),
-/* harmony export */   "h": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.h),
-/* harmony export */   "handleError": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.handleError),
-/* harmony export */   "hydrate": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.hydrate),
-/* harmony export */   "initCustomFormatter": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.initCustomFormatter),
-/* harmony export */   "initDirectivesForSSR": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.initDirectivesForSSR),
-/* harmony export */   "inject": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.inject),
-/* harmony export */   "isMemoSame": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isMemoSame),
-/* harmony export */   "isProxy": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isProxy),
-/* harmony export */   "isReactive": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isReactive),
-/* harmony export */   "isReadonly": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isReadonly),
-/* harmony export */   "isRef": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isRef),
-/* harmony export */   "isRuntimeOnly": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isRuntimeOnly),
-/* harmony export */   "isVNode": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.isVNode),
-/* harmony export */   "markRaw": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.markRaw),
-/* harmony export */   "mergeDefaults": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.mergeDefaults),
-/* harmony export */   "mergeProps": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps),
-/* harmony export */   "nextTick": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.nextTick),
-/* harmony export */   "normalizeClass": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass),
-/* harmony export */   "normalizeProps": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps),
-/* harmony export */   "normalizeStyle": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle),
-/* harmony export */   "onActivated": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onActivated),
-/* harmony export */   "onBeforeMount": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onBeforeMount),
-/* harmony export */   "onBeforeUnmount": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onBeforeUnmount),
-/* harmony export */   "onBeforeUpdate": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onBeforeUpdate),
-/* harmony export */   "onDeactivated": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onDeactivated),
-/* harmony export */   "onErrorCaptured": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onErrorCaptured),
-/* harmony export */   "onMounted": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onMounted),
-/* harmony export */   "onRenderTracked": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onRenderTracked),
-/* harmony export */   "onRenderTriggered": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onRenderTriggered),
-/* harmony export */   "onScopeDispose": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onScopeDispose),
-/* harmony export */   "onServerPrefetch": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onServerPrefetch),
-/* harmony export */   "onUnmounted": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onUnmounted),
-/* harmony export */   "onUpdated": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.onUpdated),
-/* harmony export */   "openBlock": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.openBlock),
-/* harmony export */   "popScopeId": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId),
-/* harmony export */   "provide": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.provide),
-/* harmony export */   "proxyRefs": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.proxyRefs),
-/* harmony export */   "pushScopeId": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId),
-/* harmony export */   "queuePostFlushCb": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.queuePostFlushCb),
-/* harmony export */   "reactive": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.reactive),
-/* harmony export */   "readonly": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.readonly),
-/* harmony export */   "ref": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.ref),
-/* harmony export */   "registerRuntimeCompiler": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.registerRuntimeCompiler),
-/* harmony export */   "render": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "renderList": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.renderList),
-/* harmony export */   "renderSlot": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot),
-/* harmony export */   "resolveComponent": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent),
-/* harmony export */   "resolveDirective": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective),
-/* harmony export */   "resolveDynamicComponent": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent),
-/* harmony export */   "resolveFilter": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.resolveFilter),
-/* harmony export */   "resolveTransitionHooks": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.resolveTransitionHooks),
-/* harmony export */   "setBlockTracking": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.setBlockTracking),
-/* harmony export */   "setDevtoolsHook": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.setDevtoolsHook),
-/* harmony export */   "setTransitionHooks": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.setTransitionHooks),
-/* harmony export */   "shallowReactive": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.shallowReactive),
-/* harmony export */   "shallowReadonly": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.shallowReadonly),
-/* harmony export */   "shallowRef": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.shallowRef),
-/* harmony export */   "ssrContextKey": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.ssrContextKey),
-/* harmony export */   "ssrUtils": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.ssrUtils),
-/* harmony export */   "stop": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.stop),
-/* harmony export */   "toDisplayString": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString),
-/* harmony export */   "toHandlerKey": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toHandlerKey),
-/* harmony export */   "toHandlers": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toHandlers),
-/* harmony export */   "toRaw": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toRaw),
-/* harmony export */   "toRef": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toRef),
-/* harmony export */   "toRefs": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.toRefs),
-/* harmony export */   "transformVNodeArgs": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.transformVNodeArgs),
-/* harmony export */   "triggerRef": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.triggerRef),
-/* harmony export */   "unref": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.unref),
-/* harmony export */   "useAttrs": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useAttrs),
-/* harmony export */   "useCssModule": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useCssModule),
-/* harmony export */   "useCssVars": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useCssVars),
-/* harmony export */   "useSSRContext": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useSSRContext),
-/* harmony export */   "useSlots": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useSlots),
-/* harmony export */   "useTransitionState": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.useTransitionState),
-/* harmony export */   "vModelCheckbox": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox),
-/* harmony export */   "vModelDynamic": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vModelDynamic),
-/* harmony export */   "vModelRadio": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio),
-/* harmony export */   "vModelSelect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect),
-/* harmony export */   "vModelText": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vModelText),
-/* harmony export */   "vShow": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.vShow),
-/* harmony export */   "version": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.version),
-/* harmony export */   "warn": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.warn),
-/* harmony export */   "watch": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.watch),
-/* harmony export */   "watchEffect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.watchEffect),
-/* harmony export */   "watchPostEffect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.watchPostEffect),
-/* harmony export */   "watchSyncEffect": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.watchSyncEffect),
-/* harmony export */   "withAsyncContext": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withAsyncContext),
-/* harmony export */   "withCtx": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withCtx),
-/* harmony export */   "withDefaults": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withDefaults),
-/* harmony export */   "withDirectives": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives),
-/* harmony export */   "withKeys": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withKeys),
-/* harmony export */   "withMemo": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withMemo),
-/* harmony export */   "withModifiers": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers),
-/* harmony export */   "withScopeId": () => (/* reexport safe */ vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId),
-/* harmony export */   "Vue": () => (/* reexport module object */ vue__WEBPACK_IMPORTED_MODULE_0__),
-/* harmony export */   "Vue2": () => (/* binding */ Vue2),
-/* harmony export */   "isVue2": () => (/* binding */ isVue2),
-/* harmony export */   "isVue3": () => (/* binding */ isVue3),
-/* harmony export */   "install": () => (/* binding */ install)
-/* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
-
-var isVue2 = false
-var isVue3 = true
-var Vue2 = undefined
-
-function install() {}
-
-function set(target, key, val) {
-  if (Array.isArray(target)) {
-    target.length = Math.max(target.length, key)
-    target.splice(key, 1, val)
-    return val
-  }
-  target[key] = val
-  return val
-}
-
-function del(target, key) {
-  if (Array.isArray(target)) {
-    target.splice(key, 1)
-    return
-  }
-  delete target[key]
-}
-
-
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-image-crop-upload/utils/data2blob.js":
 /*!***************************************************************!*\
   !*** ./node_modules/vue-image-crop-upload/utils/data2blob.js ***!
@@ -47620,11 +47375,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBun
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-<<<<<<< HEAD
-/******/ 			if ({"resources_js_modules_sales_vouchers_pages_Vouchers_vue":1,"resources_js_modules_sales_vouchers_pages_NewVoucher_vue":1,"resources_js_modules_sales_sale-notes_pages_SaleNotes_vue":1,"resources_js_modules_sales_advance-payments_pages_AdvancePayments_vue":1,"resources_js_modules_sales_quotations_pages_Quotation_vue":1,"resources_js_modules_sales_quotations_pages_NewQuotation_vue":1,"resources_js_modules_sales_warranties_pages_Warranties_vue":1,"resources_js_modules_catalogs_families-lines-brands_pages_FamiliesLinesBrands_vue":1,"resources_js_modules_catalogs_product-series_pages_ProductSeries_vue":1,"resources_js_modules_catalogs_products_pages_Product_vue":1,"resources_js_modules_catalogs_products_pages_NewProduct_vue":1,"resources_js_modules_catalogs_assemblies_pages_Assemblies_vue":1,"resources_js_modules_catalogs_assemblies_pages_NewAssembly_vue":1,"resources_js_modules_catalogs_assemblies_pages_EditAssembly_vue":1,"resources_js_modules_inventory_branches_pages_Branches_vue":1,"resources_js_modules_inventory_branches_pages_products_vue":1,"resources_js_modules_inventory_kardex_pages_kardex_vue":1,"resources_js_modules_inventory_modification-stock_pages_layout_vue":1,"resources_js_modules_cashboxes_open-closed_pages_Cashbox_vue":1,"resources_js_modules_cashboxes_open-closed_pages_CashboxDetail_vue":1,"resources_js_modules_cashboxes_expenses-incomes_pages_ExpensesIncomes_vue":1,"resources_js_modules_cashboxes_accounts-to-pay_pages_AccountsToPay_vue":1,"resources_js_modules_dashboard_dashboard_pages_Dashboard_vue":1,"resources_js_modules_reports_index_vue":1,"resources_js_modules_reports_cashboxes_pages_ReportCashboxes_vue":1,"resources_js_modules_reports_purchases_pages_ReportPurchases_vue":1,"resources_js_modules_reports_sales_pages_ReportSales_vue":1,"resources_js_modules_reports_details_pages_ReportDetails_vue":1,"resources_js_modules_reports_products_pages_ReportProducts_vue":1,"resources_js_modules_reports_inventory_pages_ReportInventory_vue":1,"resources_js_modules_reports_utility_pages_ReportUtility_vue":1,"resources_js_modules_purchases_purchases_pages_Purchases_vue":1,"resources_js_modules_purchases_purchases_pages_NewPurchase_vue":1,"resources_js_modules_settings_company_pages_company_vue":1,"resources_js_modules_settings_users_pages_Users_vue":1,"resources_js_modules_settings_roles_pages_Roles_vue":1,"resources_js_modules_settings_roles_pages_Permissions_vue":1,"resources_js_modules_settings_series_pages_Series_vue":1,"resources_js_modules_settings_currency-exchanges_pages_currency-exchanges_vue":1,"resources_js_modules_third-parties_index_vue":1,"resources_js_modules_third-parties_providers_pages_Providers_vue":1,"resources_js_modules_third-parties_customers_pages_Customers_vue":1}[chunkId]) return "js/" + chunkId + ".js";
-=======
-/******/ 			if ({"resources_js_modules_sales_vouchers_pages_Vouchers_vue":1,"resources_js_modules_sales_vouchers_pages_NewVoucher_vue":1,"resources_js_modules_sales_sale-notes_pages_SaleNotes_vue":1,"resources_js_modules_sales_advance-payments_pages_AdvancePayments_vue":1,"resources_js_modules_sales_voideds_pages_Voideds_vue":1,"resources_js_modules_sales_quotations_pages_Quotation_vue":1,"resources_js_modules_sales_quotations_pages_NewQuotation_vue":1,"resources_js_modules_sales_warranties_pages_Warranties_vue":1,"resources_js_modules_catalogs_families-lines-brands_pages_FamiliesLinesBrands_vue":1,"resources_js_modules_catalogs_product-series_pages_ProductSeries_vue":1,"resources_js_modules_catalogs_products_pages_Product_vue":1,"resources_js_modules_catalogs_products_pages_NewProduct_vue":1,"resources_js_modules_catalogs_assemblies_pages_Assemblies_vue":1,"resources_js_modules_catalogs_assemblies_pages_NewAssembly_vue":1,"resources_js_modules_catalogs_assemblies_pages_EditAssembly_vue":1,"resources_js_modules_inventory_branches_pages_Branches_vue":1,"resources_js_modules_inventory_branches_pages_Products_vue":1,"resources_js_modules_inventory_kardex_pages_kardex_vue":1,"resources_js_modules_inventory_modification-stock_pages_layout_vue":1,"resources_js_modules_cashboxes_open-closed_pages_Cashbox_vue":1,"resources_js_modules_cashboxes_open-closed_pages_CashboxDetail_vue":1,"resources_js_modules_cashboxes_expenses-incomes_pages_ExpensesIncomes_vue":1,"resources_js_modules_cashboxes_accounts-to-pay_pages_AccountsToPay_vue":1,"resources_js_modules_dashboard_dashboard_pages_Dashboard_vue":1,"resources_js_modules_reports_index_vue":1,"resources_js_modules_reports_cashboxes_pages_ReportCashboxes_vue":1,"resources_js_modules_reports_purchases_pages_ReportPurchases_vue":1,"resources_js_modules_purchases_purchases_pages_Purchases_vue":1,"resources_js_modules_purchases_purchases_pages_NewPurchase_vue":1,"resources_js_modules_settings_company_pages_company_vue":1,"resources_js_modules_settings_users_pages_Users_vue":1,"resources_js_modules_settings_roles_pages_Roles_vue":1,"resources_js_modules_settings_roles_pages_Permissions_vue":1,"resources_js_modules_settings_series_pages_Series_vue":1,"resources_js_modules_settings_currency-exchanges_pages_currency-exchanges_vue":1,"resources_js_modules_settings_payment-types_pages_Payment-types_vue":1,"resources_js_modules_third-parties_index_vue":1,"resources_js_modules_third-parties_providers_pages_Providers_vue":1,"resources_js_modules_third-parties_customers_pages_Customers_vue":1}[chunkId]) return "js/" + chunkId + ".js";
->>>>>>> dcb194247ea73d92dae846015d9aa5133285c9a8
+/******/ 			if ({"resources_js_modules_sales_vouchers_pages_Vouchers_vue":1,"resources_js_modules_sales_vouchers_pages_NewVoucher_vue":1,"resources_js_modules_sales_sale-notes_pages_SaleNotes_vue":1,"resources_js_modules_sales_advance-payments_pages_AdvancePayments_vue":1,"resources_js_modules_sales_voideds_pages_Voideds_vue":1,"resources_js_modules_sales_quotations_pages_Quotation_vue":1,"resources_js_modules_sales_quotations_pages_NewQuotation_vue":1,"resources_js_modules_sales_warranties_pages_Warranties_vue":1,"resources_js_modules_catalogs_families-lines-brands_pages_FamiliesLinesBrands_vue":1,"resources_js_modules_catalogs_product-series_pages_ProductSeries_vue":1,"resources_js_modules_catalogs_products_pages_Product_vue":1,"resources_js_modules_catalogs_products_pages_NewProduct_vue":1,"resources_js_modules_catalogs_assemblies_pages_Assemblies_vue":1,"resources_js_modules_catalogs_assemblies_pages_NewAssembly_vue":1,"resources_js_modules_catalogs_assemblies_pages_EditAssembly_vue":1,"resources_js_modules_inventory_branches_pages_Branches_vue":1,"resources_js_modules_inventory_branches_pages_Products_vue":1,"resources_js_modules_inventory_kardex_pages_kardex_vue":1,"resources_js_modules_inventory_modification-stock_pages_layout_vue":1,"resources_js_modules_cashboxes_open-closed_pages_Cashbox_vue":1,"resources_js_modules_cashboxes_open-closed_pages_CashboxDetail_vue":1,"resources_js_modules_cashboxes_expenses-incomes_pages_ExpensesIncomes_vue":1,"resources_js_modules_cashboxes_accounts-to-pay_pages_AccountsToPay_vue":1,"resources_js_modules_dashboard_dashboard_pages_Dashboard_vue":1,"resources_js_modules_reports_index_vue":1,"resources_js_modules_reports_cashboxes_pages_ReportCashboxes_vue":1,"resources_js_modules_reports_purchases_pages_ReportPurchases_vue":1,"resources_js_modules_reports_sales_pages_ReportSales_vue":1,"resources_js_modules_reports_details_pages_ReportDetails_vue":1,"resources_js_modules_reports_products_pages_ReportProducts_vue":1,"resources_js_modules_reports_inventory_pages_ReportInventory_vue":1,"resources_js_modules_reports_utility_pages_ReportUtility_vue":1,"resources_js_modules_purchases_purchases_pages_Purchases_vue":1,"resources_js_modules_purchases_purchases_pages_NewPurchase_vue":1,"resources_js_modules_settings_company_pages_company_vue":1,"resources_js_modules_settings_users_pages_Users_vue":1,"resources_js_modules_settings_roles_pages_Roles_vue":1,"resources_js_modules_settings_roles_pages_Permissions_vue":1,"resources_js_modules_settings_series_pages_Series_vue":1,"resources_js_modules_settings_currency-exchanges_pages_currency-exchanges_vue":1,"resources_js_modules_settings_payment-types_pages_Payment-types_vue":1,"resources_js_modules_third-parties_index_vue":1,"resources_js_modules_third-parties_providers_pages_Providers_vue":1,"resources_js_modules_third-parties_customers_pages_Customers_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

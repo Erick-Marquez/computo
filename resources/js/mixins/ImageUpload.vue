@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { ref } from "vue-demi";
 import myUpload from "vue-image-crop-upload";
 export default {
   data() {
