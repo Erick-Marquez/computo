@@ -29,6 +29,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\WarrantyController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -70,6 +71,10 @@ Route::middleware([
     Route::get('/advance-payments', [AdvancePaymentController::class, 'index'])->name('api.advancePayments.index');
     Route::post('/advance-payments', [AdvancePaymentController::class, 'store'])->name('api.advancePayments.store');
     Route::get('/advance-payments/quotation/{serie}/{number}', [AdvancePaymentController::class, 'quotation'])->name('api.advancePayments.quotation');
+
+    //Voideds
+    Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
+    Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');

@@ -301,11 +301,11 @@ return [
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.advance-payments',
                 ],
-                // [
-                //     'text' => 'Comunicaciones de Baja',
-                //     'icon' => 'fas fa-fw',
-                //     'url'  => '#',
-                // ],
+                [
+                    'text' => 'Comunicaciones de Baja',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.voideds',
+                ],
                 [
                     'text' => 'Cotización',
                     'icon' => 'fas fa-fw',

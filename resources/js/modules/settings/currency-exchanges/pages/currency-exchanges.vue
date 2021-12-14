@@ -219,7 +219,6 @@ export default {
       errors: null,
       currencyExchangeEdit: {}
 
-
     }
   },
   methods:{

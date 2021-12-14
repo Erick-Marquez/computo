@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Comprobantes')
+@section('title', 'Comunicaciones de Baja')
 
 @section('content_header')
 @stop
 
 @section('content')
-    <index-vouchers></index-vouchers>
+    <index-voideds></index-voideds>
 @stop
 
 @section('css')

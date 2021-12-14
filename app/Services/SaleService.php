@@ -39,8 +39,8 @@ class SaleService
 
         $sale = Sale::create([
             'document_number' => $serie->current_number,
-            'date_issue' => $request->voucher['date_issue'],
-            'date_due' => $request->voucher['date_due'],
+            'date_issue' => now(),
+            'date_due' => now(),
 
             'observation' => $request->voucher['observation'],
             'discount' => $request->voucher['discount'],
@@ -306,9 +306,9 @@ class SaleService
             $sunat = SunatService::facturar($sale->id, 'invoice');
 
             $sale->update([
-                'send_sunat' => $sunat['send'],
-                'state' => $sunat['state'],
-                'response_sunat' => $sunat['response_sunat'],
+                'send_sunat' => $sunat['response']['send'],
+                'state' => $sunat['response']['state'],
+                'response_sunat' => $sunat['response']['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
                 'hash_cdr' => $sunat['response']['hash_cdr'],
                 'hash_cpe' => $sunat['response']['hash_cpe']
@@ -319,9 +319,9 @@ class SaleService
             $sunat = SunatService::facturar($sale->id, 'ticket');
 
             $sale->update([
-                'send_sunat' => $sunat['send'],
-                'state' => $sunat['state'],
-                'response_sunat' => $sunat['response_sunat'],
+                'send_sunat' => $sunat['response']['send'],
+                'state' => $sunat['response']['state'],
+                'response_sunat' => $sunat['response']['response_sunat'],
                 'description_sunat_cdr' => $sunat['response']['message'],
                 'hash_cdr' => $sunat['response']['hash_cdr'],
                 'hash_cpe' => $sunat['response']['hash_cpe']

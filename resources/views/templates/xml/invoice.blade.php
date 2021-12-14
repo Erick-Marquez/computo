@@ -189,9 +189,9 @@
         <cbc:PrepaidAmount currencyID="PEN">0.00</cbc:PrepaidAmount>
         <cbc:PayableAmount currencyID="PEN">{{ round($sale->total - $sale->discount, 2) }}</cbc:PayableAmount>
     </cac:LegalMonetaryTotal>
-    @foreach ($sale->saleDetails as $i => $saleDetail)
+    @foreach ($sale->saleDetails as $saleDetail)
     <cac:InvoiceLine>
-        <cbc:ID>{{ $i+1 }}</cbc:ID>
+        <cbc:ID>{{ $loop->iteration }}</cbc:ID>
         <cbc:InvoicedQuantity unitCode="NIU" unitCodeListID="UN/ECE rec 20" unitCodeListAgencyName="United Nations Economic Commission for Europe">{{ number_format($saleDetail->quantity, 10, '.', '') }}</cbc:InvoicedQuantity>
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($saleDetail->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cac:PricingReference>

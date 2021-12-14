@@ -50,6 +50,22 @@ const routes = [
         ]
     },
     {
+        path: '/comunicaciones-de-baja',
+        name: 'voideds-index',
+        component: () => import('../modules/sales/voideds/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'voideds-list',
+                component: () => import('../modules/sales/voideds/pages/Voideds.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'voideds-list' }
+            }
+        ]
+    },
+    {
         path: '/cotizaciones',
         name: 'quotations-index',
         component: () => import('../modules/sales/quotations/index.vue'),

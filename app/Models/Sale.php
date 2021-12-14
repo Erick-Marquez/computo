@@ -60,6 +60,11 @@ class Sale extends Model
         return $this->hasMany(SaleDetail::class);
     }
 
+    public function voided()
+    {
+        return $this->hasOne(Voided::class);
+    }
+
     public function warranty()
     {
         return $this->hasOne(Warranty::class);

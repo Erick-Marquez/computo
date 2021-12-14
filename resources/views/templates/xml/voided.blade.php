@@ -12,23 +12,39 @@
     </ext:UBLExtensions>
     <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
     <cbc:CustomizationID>1.0</cbc:CustomizationID>
-    <cbc:ID>{{ $document->identifier }}</cbc:ID>
-    <cbc:ReferenceDate>{{ $document->date_of_reference->format('Y-m-d') }}</cbc:ReferenceDate>
-    <cbc:IssueDate>{{ $document->date_of_issue->format('Y-m-d') }}</cbc:IssueDate>
+    <cbc:ID>{{ $voided->identifier }}</cbc:ID>
+    <cbc:ReferenceDate>{{ $voided->sale->date_issue }}</cbc:ReferenceDate>
+    <cbc:IssueDate>{{ $voided->date_issue }}</cbc:IssueDate>
+    <cac:Signature>
+        <cbc:ID>{{ $voided->identifier }}</cbc:ID>
+        <cac:SignatoryParty>
+            <cac:PartyIdentification>
+                <cbc:ID>{{ $company->ruc }}</cbc:ID>
+            </cac:PartyIdentification>
+            <cac:PartyName>
+                <cbc:Name><![CDATA[{{ $company->comercial_name }}]]></cbc:Name>
+            </cac:PartyName>
+        </cac:SignatoryParty>
+        <cac:DigitalSignatureAttachment>
+            <cac:ExternalReference>
+                <cbc:URI>#{{ $voided->identifier }}</cbc:URI>
+            </cac:ExternalReference>
+        </cac:DigitalSignatureAttachment>
+    </cac:Signature>
     <cac:AccountingSupplierParty>
         <cbc:CustomerAssignedAccountID>{{ $company->ruc }}</cbc:CustomerAssignedAccountID>
         <cbc:AdditionalAccountID>6</cbc:AdditionalAccountID>
         <cac:Party>
             <cac:PartyLegalEntity>
-                <cbc:RegistrationName><![CDATA[{{ $company->name }}]]></cbc:RegistrationName>
+                <cbc:RegistrationName><![CDATA[ {{ $company->name }} ]]></cbc:RegistrationName>
             </cac:PartyLegalEntity>
         </cac:Party>
     </cac:AccountingSupplierParty>
     <sac:VoidedDocumentsLine>
         <cbc:LineID>1</cbc:LineID>
-        <cbc:DocumentTypeCode>codigo del tipo de docuento</cbc:DocumentTypeCode>
-        <sac:DocumentSerialID>serie a dar de baja</sac:DocumentSerialID>
-        <sac:DocumentNumberID>numero a dar de baja</sac:DocumentNumberID>
-        <sac:VoidReasonDescription><![CDATA[Motivo de baja]]></sac:VoidReasonDescription>
+        <cbc:DocumentTypeCode>{{ $voided->sale->serie->voucherType->cod }}</cbc:DocumentTypeCode>
+        <sac:DocumentSerialID>{{ $voided->sale->serie->serie }}</sac:DocumentSerialID>
+        <sac:DocumentNumberID>{{ $voided->sale->document_number }}</sac:DocumentNumberID>
+        <sac:VoidReasonDescription><![CDATA[ {{ $voided->description }} ]]></sac:VoidReasonDescription>
     </sac:VoidedDocumentsLine>
 </VoidedDocuments>
