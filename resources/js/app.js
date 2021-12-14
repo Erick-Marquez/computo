@@ -6,6 +6,9 @@ import router from "./router";
 
 import { createApp } from 'vue';
 
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+
 import Permissions from './mixins/Permissions';
 import ErrorsForm from './mixins/ErrorsForm';
 
@@ -17,6 +20,7 @@ import indexModificactionStock from './modules/inventory/modification-stock/inde
 import indexVoucher from './modules/sales/vouchers/index.vue';
 import indexSaleNotes from './modules/sales/sale-notes/index.vue';
 import advancePayments from './modules/sales/advance-payments/index.vue';
+import voided from './modules/sales/voideds/index.vue';
 import indexQuotation from './modules/sales/quotations/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
@@ -49,15 +53,19 @@ import indexUsers from './modules/settings/users/index.vue';
 import indexRoles from './modules/settings/roles/index.vue';
 import indexSeries from './modules/settings/series/index.vue';
 import indexCurrencyExchanges from './modules/settings/currency-exchanges/index.vue';
+import indexPaymentTypes from './modules/settings/payment-types/index.vue';
 
 import imageUpload from './mixins/ImageUpload.vue'
 
 const app = createApp({});
 
+app.component('v-select', vSelect)
+
 /* Sales */
 app.component('index-vouchers', indexVoucher);
 app.component('index-sale-notes', indexSaleNotes);
 app.component('index-advance-payments', advancePayments);
+app.component('index-voideds', voided);
 app.component('index-quotations', indexQuotation);
 app.component('index-warranties', indexWarranty);
 
@@ -84,6 +92,7 @@ app.component('index-users', indexUsers);
 app.component('index-roles', indexRoles);
 app.component('index-series', indexSeries);
 app.component('index-currency-exchanges', indexCurrencyExchanges);
+app.component('index-payment-types', indexPaymentTypes);
 
 /* Reportes */
 app.component('index-report-cashboxes', indexReportCashboxes);

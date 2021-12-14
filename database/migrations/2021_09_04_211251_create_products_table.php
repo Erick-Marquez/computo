@@ -33,13 +33,13 @@ class CreateProductsTable extends Migration
             $table->foreign('igv_type_id')
                 ->references('id')
                 ->on('igv_types') 
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
+                // ->onDelete('cascade');
 
             $table->foreignId('brand_line_id') 
                 ->constrained('brand_line')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
+                // ->onDelete('cascade');
             $table->timestamps();
         });
     }

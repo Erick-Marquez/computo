@@ -30,6 +30,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoidedController;
 use App\Http\Controllers\WarrantyController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -72,6 +73,10 @@ Route::middleware([
     Route::post('/advance-payments', [AdvancePaymentController::class, 'store'])->name('api.advancePayments.store');
     Route::get('/advance-payments/quotation/{serie}/{number}', [AdvancePaymentController::class, 'quotation'])->name('api.advancePayments.quotation');
 
+    //Voideds
+    Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
+    Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');
+
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
@@ -112,6 +117,7 @@ Route::middleware([
     //------------------------Catalogs-----------------------
     //Families-Lines-Brands
     Route::apiResource('families', FamilyController::class)->names('api.families');
+    Route::put('lines/add-brands/{line}', [LineController::class, 'addBrands'])->name('api.lines.addBrands');
     Route::apiResource('lines', LineController::class)->names('api.lines');
     Route::apiResource('brands', BrandController::class)->names('api.brands');
 
@@ -129,6 +135,7 @@ Route::middleware([
     Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
     //------------------------Inventory----------------------
+    Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
 
     //------------------------Settings-----------------------

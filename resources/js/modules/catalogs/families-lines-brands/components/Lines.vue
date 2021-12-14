@@ -61,15 +61,15 @@
                             aria-labelledby="dropdownMenuButton"
                             style=""
                         >
-                            <a
-                            class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                            ><a
-                            class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                            >
+                            <a class="dropdown-item" href="#" @click="showModal('#modal-add-brands', line)">
+                                <i class="col-1 mr-3 fas fa-plus-circle"></i>Añadir Marcas
+                            </a>
+                            <a class="dropdown-item" href="#" @click="showModal('#modal-line-edit', line)">
+                                <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                            </a>
+                            <a class="dropdown-item" href="#" @click="deleteLine(line.id)">
+                                <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                            </a>
                         </div>
                         </div>
                     </td>
@@ -89,7 +89,7 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h4 class="modal-title">Nueva Marca</h4>
+            <h4 class="modal-title">Nueva Linea</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">×</span>
             </button>
@@ -98,13 +98,24 @@
             <div class="modal-body">
             
                 <div class="form-group">
-                <label for="name">Código</label>
-                <input type="text" class="form-control" v-model="line.cod">
+                    <label for="name">Código</label>
+                    <input type="text" class="form-control" v-model="line.cod">
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="line.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" class="form-control" v-model="line.description" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Familia</label>
+                    <v-select v-model="line.family_id" label="description" :reduce="family => family.id" :options="families">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
                 </div>
 
             </div>
@@ -139,13 +150,69 @@
             <div class="modal-body">
             
                 <div class="form-group">
-                <label for="name">Código</label>
-                <input type="text" class="form-control" v-model="lineEdit.cod">
+                    <label for="name">Código</label>
+                    <input type="text" class="form-control" v-model="lineEdit.cod">
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="lineEdit.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" class="form-control" v-model="lineEdit.description" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Familia</label>
+                    <v-select v-model="lineEdit.family_id" label="description" :reduce="family => family.id" :options="families">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
+
+                <button v-if="!loading" type="submit" class="btn btn-primary">Guardar</button>
+                <button v-else class="btn btn-primary" :disabled="loading">
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                </button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Añadir Marca -->
+    <div class="modal fade" id="modal-add-brands" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title">Añadir Marcas para {{ lineAddBrands.description }}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            </div>
+            <form @submit.prevent="addBrands()">
+            <div class="modal-body">
+
+                <div v-if="errorBrands.length" class="alert alert-danger" role="alert" style="color: #721c24; background-color: #f8d7da; border-color: #f5c6cb;">
+                    No se puede quitar las marcas: <b v-for="(errorBrand, index) in errorBrands" :key="errorBrand.id">{{ index == 0 ? errorBrand.description : ', ' + errorBrand.description }}</b> porque estan en uso
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Marcas</label>
+                    <v-select multiple v-model="lineAddBrands.brands" label="description" :reduce="brand => brand.id" :options="brands">
+                        <template v-slot:no-options="{ search, searching }">
+                            <template v-if="searching">
+                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                            </template>
+                        </template>
+                    </v-select>
                 </div>
 
             </div>
@@ -168,8 +235,8 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
-
 export default {
+    components: { BaseUrl },
     data() {
         return {
 
@@ -179,22 +246,37 @@ export default {
             line: {
                 cod: '',
                 description: '',
+                family_id: '',
             },
             lineEdit: {
                 id: '',
                 cod: '',
                 description: '',
+                family_id: '',
             },
 
+            lineAddBrands:{
+                id: '',
+                description: '',
+                brands: []
+            },
+
+            errorAddBrands: "",
+            errorBrands: [],
+
         };
+    },
+    props: {
+        families: Array,
+        brands: Array,
     },
     async created() {
         this.showLines()
     },
     methods: {
         async showLines(){
-            await BaseUrl.get(`api/lines`).then( resp => {
-                this.lines=resp.data.data
+            await BaseUrl.get(`api/lines?included=brands`).then( resp => {
+                this.lines = resp.data.data
             })
         },
 
@@ -202,7 +284,21 @@ export default {
       
             if (data !== null) {
 
-                this.brandEdit = data
+                this.lineEdit.id = data.id
+                this.lineEdit.cod = data.cod
+                this.lineEdit.description = data.description
+                this.lineEdit.family_id = data.family_id
+
+                this.lineAddBrands.id = data.id
+                this.lineAddBrands.description = data.description
+                this.lineAddBrands.brands = [] 
+
+                data.brands.forEach(element => {
+                    this.lineAddBrands.brands.push(element.id)
+                })
+
+                this.errorAddBrands = ""
+                this.errorBrands = []
             
             }
             $(modal).modal("show");
@@ -210,36 +306,44 @@ export default {
 
         /* --------------------CRUD Lineas----------------------------- */
         createLine(){
+
+            this.loading = true
             BaseUrl.post(`api/lines`, this.line).then( resp => {
                 
-                console.log(resp)
                 $("#modal-line-create").modal("hide")
                 this.showLines()
-                this.lines = {
+                this.line = {
                     cod: '',
                     description: '',
+                    family_id: '',
                 },
                 Swal.fire("Creado", "La linea ha sido creada", "success");
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response);
+            }).finally(() => {
+                this.loading = false;
             });
         },
         editLine(){
-            BaseUrl.put(`api/families/${this.familyEdit.id}`, this.familyEdit).then( resp => {
+            this.loading = true
+            BaseUrl.put(`api/lines/${this.lineEdit.id}`, this.lineEdit).then( resp => {
                 
-                console.log(resp)
                 $("#modal-line-edit").modal("hide")
-                this.showFamilies()
-                this.familyEdit = {}
+                this.showLines()
+                this.lineEdit = {}
 
-                Swal.fire("Actualizado", "La familia ha sido actualizada", "success");
+                Swal.fire("Actualizado", "La linea ha sido actualizada", "success");
             })
             .catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                this.loading = false;
             });
         },
         deleteLine(id) {
+
             Swal.fire({
                 title: "¿Estas Seguro?",
                 text: "Esta acción no puede revertirse",
@@ -249,22 +353,49 @@ export default {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si, adelante",
                 cancelButtonText: "Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                BaseUrl.delete(`api/currencyexchanges/${id}`).then( resp => {
-                    this.showCurrencyExchanges();
-                    })
-                    .catch((error) => {
-                    console.log(error);
-                    });
+                showLoaderOnConfirm: true,
+                preConfirm: async () => {
 
-                Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
-                }
+                    try {
+                        const resp = await BaseUrl.delete(`api/lines/${id}`)
+                        this.showLines()
+                        Swal.fire("Eliminado", "La linea ha sido eliminada", "success")
+                    } catch(error) {
+                        console.log(error.response.data.error)
+                        Swal.fire("Cancelado", "La linea no se puede eliminar", "error")
+                    }
+
+                },
             });
+
         },
+        addBrands(){
+            this.loading = true
+            BaseUrl.put(`api/lines/add-brands/${this.lineAddBrands.id}`, this.lineAddBrands).then( resp => {
+                
+                console.log(resp);
+                $("#modal-add-brands").modal("hide")
+                this.showLines()
+                this.lineAddBrands = {}
+
+                Swal.fire("Actualizado", "La marcas han sido agregadas", "success");
+            })
+            .catch((error) => {
+                console.log(error.response);
+                if (error.response.status == 422) {
+                    this.errorAddBrands = error.response.data.error
+                    this.errorBrands = error.response.data.brands
+                }
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        }
+
     },
 };
 </script>
 
-<style scoped>
+<style>
+
 </style>

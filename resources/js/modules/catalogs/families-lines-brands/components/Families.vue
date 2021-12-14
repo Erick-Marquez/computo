@@ -51,10 +51,10 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#" @click="showModal('#modal-family-edit', family)">
-                            <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                                <i class="col-1 mr-3 fas fa-edit"></i>Editar
                             </a>
                             <a class="dropdown-item" href="#" @click="deleteFamily(family.id)">
-                            <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                                <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
                             </a>
                         </div>
                         </div>
@@ -176,6 +176,7 @@ export default {
     async created() {
         this.showFamilies()
     },
+    emits: ["getFamilies"],
     methods: {
         async showFamilies(){
             await BaseUrl.get(`api/families`).then( resp => {
@@ -187,7 +188,9 @@ export default {
       
             if (data !== null) {
 
-                this.familyEdit = data
+                this.familyEdit.id = data.id
+                this.familyEdit.cod = data.cod
+                this.familyEdit.description = data.description
             
             }
             $(modal).modal("show");
@@ -206,12 +209,14 @@ export default {
                     description: '',
                 },
                 Swal.fire("Creado", "La familia ha sido creada", "success");
+
+                this.$emit("getFamilies")
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             })
             .finally(() => {
-                this.loading = false;
+                this.loading = false
             });
         },
         editFamily(){
@@ -223,13 +228,15 @@ export default {
                 this.showFamilies()
                 this.familyEdit = {}
 
-                Swal.fire("Actualizado", "La familia ha sido actualizada", "success");
+                Swal.fire("Actualizado", "La familia ha sido actualizada", "success")
+
+                this.$emit("getFamilies")
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             })
             .finally(() => {
-                this.loading = false;
+                this.loading = false
             });
         },
         deleteFamily(id) {
@@ -250,6 +257,8 @@ export default {
                         const resp=await BaseUrl.delete(`api/families/${id}`)
                         this.showFamilies()
                         Swal.fire("Eliminado", "La familia ha sido eliminada", "success")
+
+                        this.$emit("getFamilies")
                     } catch(error) {
                         console.log(error.response.data.error)
                         Swal.fire("Cancelado", "La familia no se puede eliminar", "error")

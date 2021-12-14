@@ -301,11 +301,11 @@ return [
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.advance-payments',
                 ],
-                // [
-                //     'text' => 'Comunicaciones de Baja',
-                //     'icon' => 'fas fa-fw',
-                //     'url'  => '#',
-                // ],
+                [
+                    'text' => 'Comunicaciones de Baja',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.voideds',
+                ],
                 [
                     'text' => 'Cotización',
                     'icon' => 'fas fa-fw',
@@ -527,6 +527,12 @@ return [
                     'text'   => 'Cambio de Divisas',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.currency-exchanges',
+                    // 'can'    => 'currency-exchanges.index',
+                ],
+                [
+                    'text'   => 'Tipo de Pagos',
+                    'icon'   => 'fas fa-fw ',
+                    'route'  => 'web.payment-types',
                     // 'can'    => 'currency-exchanges.index',
                 ],
             ],

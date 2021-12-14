@@ -110,17 +110,13 @@
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Crear Nota de Débito</a
-                          ><a
-                            class="dropdown-item"
-                            :href="'print/vouchers/A4/' + sale.id"
-                            target="_blank"
-                            ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                           >
                           <a
+                            v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
-                            :href="'print/vouchers/WARRANTY/' + sale.id"
-                            target="_blank"
-                            ><i class="col-1 mr-3 fas fa-receipt"></i>Garantia</a
+                            href="#"
+                            @click="prepareVoided(sale)"
+                            ><i class="col-1 mr-3 fas fa-window-close"></i>Anular Comprobante</a
                           >
                         </div>
                       </div>
@@ -136,6 +132,52 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Anulacion -->
+  <div class="modal fade" id="modal-voided" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Anular - {{ voided.voucher_type + ': ' + voided.serie + '-' + voided.document_number }} </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form @submit.prevent="sendVoided()">
+          <div class="modal-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert" style="color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb;">
+              <strong>Si existen FACTURAS Y BOLETAS DE VENTA ELECTRÓNICAS que no han sido entregadas a sus clientes, pueden ser dadas de baja a través de una comunicación a la SUNAT, siempre que se cumpla lo siguiente:</strong>
+              <ul class="mt-2">
+                <li>Que previamente hayan sido informadas a SUNAT y cuente con un CDR – ACEPTADO (Constancia de Recepción – Aceptada).</li>
+                <li>Plazo para enviar la comunicación de baja: hasta las 7 días, contados desde el día siguiente de la fecha consignada en la Constancia de Recepción.</li>
+                <li>Las Boletas, Notas Crédito y Débito relaciona a una Boleta son anuladas con un Resumen Diario a partir de la <a href="" class="alert-link" style="text-decoration: none">R. Superintendencia N° 117-2017.</a></li>
+              </ul>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="form-group">
+              <label for="name">Motivo de la Anulación: </label>
+              <textarea cols="30" rows="4" class="form-control" v-model="voided.description" required placeholder="Escribe aquí el motivo para anular este documento"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Cerrar
+            </button>
+            <button v-if="!loading" type="submit" class="btn btn-primary">Crear Comunicacion de Baja</button>
+
+            <button v-else class="btn btn-primary" :disabled="loading">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -143,21 +185,76 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   async created(){
-    await BaseUrl.get(`api/sales`).then( resp=>{
-      console.log(resp.data)
-      this.sales=resp.data.data
-    })
+    this.showVouchers()
   },
   data(){
     return{
-      sales:{}
+      loading: false,
+
+      sales: [],
+      voided: {
+        sale_id: null,
+        description: null,
+
+        voucher_type: null,
+        serie: null,
+        document_number: null
+      }
     }
   },
   methods:{
+    async showVouchers(){
+      await BaseUrl.get(`api/sales`).then( resp=>{
+        this.sales=resp.data.data
+      })
+    },
     getTimestamp(date){
       let dateString = new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
       return dateString
+    },
+    showModal(modal) {
+      $(modal).modal("show");
+    },
+    prepareVoided(sale){
+
+      this.voided.sale_id = sale.id
+      this.voided.description = null
+
+      this.voided.voucher_type = sale.serie.voucher_type.description
+      this.voided.serie = sale.serie.serie
+      this.voided.document_number = sale.document_number
+
+      if (sale.serie.voucher_type.cod == "01") {
+        this.showModal("#modal-voided")
+      }
+      else if (sale.serie.voucher_type.cod == "03") {
+        
+      }
+
+    },
+    sendVoided(){
+      this.loading = true
+
+      BaseUrl.post("/api/voideds", this.voided).then((response) => {
+        this.errors = []
+        console.log(response)
+        this.showVouchers()
+        Swal.fire(
+          "Comprobante Anulado",
+          response.data,
+          "success"
+        );
+      })
+      .catch((error) => {
+
+        console.log(error.response.data.errors);
+
+      })
+      .finally(() => {
+        this.loading = false;
+      });
     }
+
   }
 }
 </script>

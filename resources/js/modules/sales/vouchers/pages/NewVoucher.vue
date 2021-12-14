@@ -191,8 +191,8 @@
                         v-for="filSearch in productSearchFilter"
                         :key="filSearch"
                       >
-                        <td>{{ filSearch.name }}</td>
-                        <td class="col-2 text-center">{{ filSearch.brand }}</td>
+                        <td>{{ filSearch.product.name }}</td>
+                        <td class="col-2 text-center">{{ filSearch.product.brand_line.brand.description }}</td>
                         <td class="col-2 text-center">
                           <input
                             class="btn btn-sm btn-success w-50"
@@ -927,7 +927,7 @@ export default {
       } else {
         this.productSearchFilter = produtsBackup
           .filter(
-            (products) => products.name.toLowerCase().indexOf(wordFilter) !== -1
+            (products) => products.product.name.toLowerCase().indexOf(wordFilter) !== -1
           )
           .slice(0, 10);
       }
@@ -951,6 +951,9 @@ export default {
       }
     },
     setAssemblie(products) {
+        this.saleData.detail = [];
+
+        this.productSeries = [];
         products.forEach((product, index) => {
             this.setProductAssembly(product, index)
         })
@@ -987,7 +990,7 @@ export default {
 
       this.addSeries(index);
 
-      this.getSeries(productAssembly.id);
+      this.getSeries(productAssembly.id, index);
           // Alertas para las notificaciones y calcular totales
         //   this.getQuotationDiscount(0);
     },
@@ -1000,12 +1003,12 @@ export default {
         subtotal: 0,
         total: 0,
 
-        product_id: filSearch.id,
-        cod: filSearch.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        product_id : filSearch.id,
+        cod : filSearch.product.cod,
+        affect_icbper : false,
+        igv_type_id : filSearch.igv_type_id,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.sale_price,
         quantity: 1,
         series: [],
@@ -1023,7 +1026,7 @@ export default {
 
       this.getTotals();
 
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     priceTwo(filSearch) {
       this.productSerieSearchFilter.push([]);
@@ -1033,12 +1036,12 @@ export default {
         subtotal: 0,
         total: 0,
 
-        product_id: filSearch.id,
-        cod: filSearch.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        product_id : filSearch.id,
+        cod : filSearch.product.cod,
+        affect_icbper : false,
+        igv_type_id : filSearch.igv_type_id,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_one,
         quantity: 1,
         series: [],
@@ -1056,7 +1059,7 @@ export default {
 
       this.getTotals();
 
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     priceThree(filSearch) {
       this.productSerieSearchFilter.push([]);
@@ -1066,12 +1069,12 @@ export default {
         subtotal: 0,
         total: 0,
 
-        product_id: filSearch.id,
-        cod: filSearch.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        product_id : filSearch.id,
+        cod : filSearch.product.cod,
+        affect_icbper : false,
+        igv_type_id : filSearch.igv_type_id,
+        description : filSearch.product.name,
+        brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_two,
         quantity: 1,
         series: [],
@@ -1089,7 +1092,7 @@ export default {
 
       this.getTotals();
 
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     selectSerieSearch(filSerieSearch, i, j) {
       this.saleData.detail[i].series[j].id = filSerieSearch.id;
@@ -1130,9 +1133,9 @@ export default {
       }
       this.saleData.detail[index].series = temp;
     },
-    async getSeries(id) {
+    async getSeries(id, index) {
       await BaseUrl.get(`api/sales/products/series/${id}`).then((resp) => {
-        this.productSeries.push(resp.data.data);
+        this.productSeries[index] = resp.data.data;
       });
     },
     getTotals() {
@@ -1362,7 +1365,6 @@ export default {
       this.saleData.detail = [];
 
       this.productSeries = [];
-
       BaseUrl.get(
         `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
       )
@@ -1413,7 +1415,7 @@ export default {
             this.saleData.detail.push(product);
 
             //Obtener y Añadir series
-            this.getSeries(e.branch_product_id);
+            this.getSeries(e.branch_product_id, index);
             this.addSeries(index);
 
             //Activar descuento

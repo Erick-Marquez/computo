@@ -539,7 +539,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "img-format": "png"
   }, null, 8
   /* PROPS */
-  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\n                type=\"search\"\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\n                placeholder=\"Escribe tu producto o código\"\n                v-model=\"productName\"\n                @keyup=\"searchProduct\"\n                @blur=\"toggle = false\"\n                @focus=\"toggle = true\"\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
+  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\r\n                type=\"search\"\r\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\r\n                placeholder=\"Escribe tu producto o código\"\r\n                v-model=\"productName\"\r\n                @keyup=\"searchProduct\"\r\n                @blur=\"toggle = false\"\r\n                @focus=\"toggle = true\"\r\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
     products: $data.newAssembly.products,
     errors: $data.errors
   }, null, 8
@@ -740,7 +740,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n  opacity: 0.7;\n  height: 150px;\n  width: 100%;\n  min-width: 850px;\n}\n.image-without-products img {\n  margin-bottom: 0.5rem;\n  margin-right: 0.5rem;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  align-content: center;\r\n  opacity: 0.7;\r\n  height: 150px;\r\n  width: 100%;\r\n  min-width: 850px;\n}\n.image-without-products img {\r\n  margin-bottom: 0.5rem;\r\n  margin-right: 0.5rem;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

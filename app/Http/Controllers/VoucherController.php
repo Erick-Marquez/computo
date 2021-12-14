@@ -55,8 +55,11 @@ class VoucherController extends Controller
     public function index()
     {
         $vouchers = Sale::whereHas('serie', function($q) {
-            $q->where('voucher_type_id', '!=', 3); // 3 - id de nota de venta
-        })->with('serie.voucherType', 'customer')->get();
+            $q->where('voucher_type_id', '!=', 3)
+            ->where('branch_id', auth()->user()->branch_id); // 3 - id de nota de venta
+        })
+        ->where('canceled', false)
+        ->with('serie.voucherType', 'customer')->latest()->get();
         
         return SaleResource::collection($vouchers);
     }
@@ -64,8 +67,9 @@ class VoucherController extends Controller
     public function saleNotes()
     {
         $vouchers = Sale::whereHas('serie', function($q) {
-            $q->where('voucher_type_id', '=', 3);
-        })->with('serie.voucherType', 'customer')->get();
+            $q->where('voucher_type_id', '=', 3)
+            ->where('branch_id', auth()->user()->branch_id);
+        })->with('serie.voucherType', 'customer')->latest()->get();
         
         return SaleResource::collection($vouchers);
     }

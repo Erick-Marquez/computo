@@ -50,6 +50,22 @@ const routes = [
         ]
     },
     {
+        path: '/comunicaciones-de-baja',
+        name: 'voideds-index',
+        component: () => import('../modules/sales/voideds/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'voideds-list',
+                component: () => import('../modules/sales/voideds/pages/Voideds.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'voideds-list' }
+            }
+        ]
+    },
+    {
         path: '/cotizaciones',
         name: 'quotations-index',
         component: () => import('../modules/sales/quotations/index.vue'),
@@ -181,7 +197,7 @@ const routes = [
             {
                 path: 'productos/:id',
                 name: 'show-product',
-                component: () => import('../modules/inventory/branches/pages/products.vue'),
+                component: () => import('../modules/inventory/branches/pages/Products.vue'),
             },
             {
                 path: '',
@@ -467,6 +483,22 @@ const routes = [
             {
                 path: '',
                 redirect: { name: 'currency-exchanges' }
+            }
+        ]
+    },
+    {
+        path: '/tipo-de-pagos',
+        name: 'payment-types-index',
+        component: () => import('../modules/settings/payment-types/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'payment-types',
+                component: () => import('../modules/settings/payment-types/pages/Payment-types.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'payment-types' }
             }
         ]
     },

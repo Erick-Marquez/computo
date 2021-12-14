@@ -489,7 +489,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.productSearchFilter = "";
       } else {
         this.productSearchFilter = produtsBackup.filter(function (products) {
-          return products.name.toLowerCase().indexOf(wordFilter) !== -1;
+          return products.product.name.toLowerCase().indexOf(wordFilter) !== -1;
         }).slice(0, 10);
       }
     },
@@ -514,6 +514,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     setAssemblie: function setAssemblie(products) {
       var _this5 = this;
 
+      this.saleData.detail = [];
+      this.productSeries = [];
       products.forEach(function (product, index) {
         _this5.setProductAssembly(product, index);
       });
@@ -542,7 +544,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.saleData.detail.push(product);
       this.getTotals();
       this.addSeries(index);
-      this.getSeries(productAssembly.id); // Alertas para las notificaciones y calcular totales
+      this.getSeries(productAssembly.id, index); // Alertas para las notificaciones y calcular totales
       //   this.getQuotationDiscount(0);
     },
     priceOne: function priceOne(filSearch) {
@@ -552,11 +554,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.sale_price,
         quantity: 1,
         series: []
@@ -569,7 +571,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.saleData.detail.push(product);
       this.productSearch = "";
       this.getTotals();
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     priceTwo: function priceTwo(filSearch) {
       this.productSerieSearchFilter.push([]);
@@ -578,11 +580,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_one,
         quantity: 1,
         series: []
@@ -595,7 +597,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.saleData.detail.push(product);
       this.productSearch = "";
       this.getTotals();
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     priceThree: function priceThree(filSearch) {
       this.productSerieSearchFilter.push([]);
@@ -604,11 +606,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: filSearch.id,
-        cod: filSearch.cod,
+        cod: filSearch.product.cod,
         affect_icbper: false,
         igv_type_id: filSearch.igv_type_id,
-        description: filSearch.name,
-        brand: filSearch.brand,
+        description: filSearch.product.name,
+        brand: filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_two,
         quantity: 1,
         series: []
@@ -621,7 +623,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.saleData.detail.push(product);
       this.productSearch = "";
       this.getTotals();
-      this.getSeries(filSearch.id);
+      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
     },
     selectSerieSearch: function selectSerieSearch(filSerieSearch, i, j) {
       this.saleData.detail[i].series[j].id = filSerieSearch.id;
@@ -662,7 +664,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.saleData.detail[index].series = temp;
     },
-    getSeries: function getSeries(id) {
+    getSeries: function getSeries(id, index) {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -672,7 +674,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.next = 2;
                 return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/products/series/".concat(id)).then(function (resp) {
-                  _this6.productSeries.push(resp.data.data);
+                  _this6.productSeries[index] = resp.data.data;
                 });
 
               case 2:
@@ -958,7 +960,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this10.saleData.detail.push(product); //Obtener y Añadir series
 
 
-          _this10.getSeries(e.branch_product_id);
+          _this10.getSeries(e.branch_product_id, index);
 
           _this10.addSeries(index); //Activar descuento
 
@@ -2352,9 +2354,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.productSearch]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_41, [$data.productSearchFilter.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("thead", _hoisted_42, _hoisted_44)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.productSearchFilter, function (filSearch) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: filSearch
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.product.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.brand), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(filSearch.product.brand_line.brand.description), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "btn btn-sm btn-success w-50",

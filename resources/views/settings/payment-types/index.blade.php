@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Comprobantes')
+@section('title', 'Dashboard')
 
 @section('content_header')
 @stop
 
 @section('content')
-    <index-vouchers></index-vouchers>
+    <index-payment-types></index-payment-types>
 @stop
 
 @section('css')

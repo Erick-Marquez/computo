@@ -51,7 +51,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><span class="bold">Fecha de Emisión: </span>{{ date_format($head->created_at, 'd-m-Y H:i:s') }}</td>
+                <td><span class="bold">Fecha de Emisión: </span>{{ date_format($head->created_at, 'd-m-Y / H:i:s') }}</td>
             </tr>
             <tr>
                 <td><span class="bold">Cliente:  </span>{{ $head->customer->name }}</td>
@@ -86,7 +86,7 @@
                 
             </tr>
             <tr>
-                <td><span class="bold">Fecha Vencimiento: </span>{{ $head->date_due }}</td>
+                <td><span class="bold">Fecha Vencimiento: </span>{{ date_format(date_create($head->date_due), 'd-m-Y') }}</td>
             </tr>
         </tbody>
   </table>
@@ -97,7 +97,7 @@
         <tr>
             <th>[Cant] Descripción </th>
             <th>Precio</th>
-            <th>Total</th>
+            <th>Importe</th>
         </tr>
     </thead>
     <tbody>

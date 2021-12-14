@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\CreditNote;
 use App\Models\DebitNote;
 use App\Models\Sale;
+use App\Models\Voided;
 use DOMDocument;
 use Illuminate\Support\Facades\Storage;
 use Greenter\XMLSecLibs\Sunat\SignedXml;
@@ -13,10 +14,16 @@ use ZipArchive;
 
 class SunatService
 {
+    const ACEPTADO = 'ACEPTADO';
+    const RECHAZADO = 'RECHAZADO';
+    const ENVIADO = 'ENVIADO';
+    const PENDIENTE = 'PENDIENTE';
+    const ANULADO = 'ANULADO';
     
     private static $sale;
     private static $creditNote; 
     private static $debitNote; 
+    private static $voided; 
     private static $company;
     private static $data;    
 
@@ -33,10 +40,6 @@ class SunatService
     public static function facturar($id, $type)
     {   
         self::template($id, $type);
-        self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
-        self::signXml();
-        self::zipXml();
-        self::sendSunat();
         return self::$message;
     }
 
@@ -73,6 +76,17 @@ class SunatService
         ];
     }
 
+    public static function getVoided($id)
+    {
+        self::$voided = Voided::findorFail($id);
+        self::$company = Company::findorFail(1);
+
+        self::$data = [
+            'voided' => self::$voided,
+            'company' => self::$company
+        ];
+    }
+
     public static function createXml()
     {
         // Convierte el string a un elemento simplexml
@@ -90,7 +104,7 @@ class SunatService
         $xml = $dom->saveXML();
         // Se guarda el string como tipo xml 
         Storage::disk('local')->put(self::$directoryXml.self::$nameXml, $xml);
-        self::$message['xml']['creado'] = true;
+        self::$message['response']['xml']['creado'] = true;
 
     }
 
@@ -116,7 +130,7 @@ class SunatService
         $docCpe->load(storage_path('app'.DIRECTORY_SEPARATOR.self::$directoryXml.self::$nameXml));
 
 
-        self::$message['xml']['firmado'] = true;
+        self::$message['response']['xml']['firmado'] = true;
         self::$message['response']['hash_cpe'] = $docCpe->getElementsByTagName('DigestValue')->item(0)->nodeValue;
     }
 
@@ -131,7 +145,7 @@ class SunatService
             $zip->addFile($xmlSignedPath, self::$nameXml); //Origen , Nombre Destino
             $zip->close();
         }
-        self::$message['zip'] = true;
+        self::$message['response']['zip'] = true;
         
     }
 
@@ -194,15 +208,16 @@ class SunatService
         
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Obtener el codigo de verificacion
 
-        
+        curl_close($ch);
+
         if ($httpCode == 200) {
-            self::$message['send'] = true;
+            self::$message['response']['send'] = true;
             $doc = new DOMDocument();
             $doc->loadXML($response);
             if (isset($doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
 
-                self::$message['response_sunat'] = true;
-
+                self::$message['response']['response_sunat'] = true;
+                self::$message['response']['state'] = self::ACEPTADO;
                 
                 $cdr = $doc->getElementsByTagName('applicationResponse')->item(0)->nodeValue; // Obtener el valor de la etiqueta de respuesta
                 $cdr = base64_decode($cdr); // Descodificar la respuesta
@@ -211,19 +226,17 @@ class SunatService
                 self::getCdr();
 
             } else {
-                self::$message['response_sunat'] = false;
-                self::$message['state'] = Sale::RECHAZADO;
+                self::$message['response']['response_sunat'] = false;
+                self::$message['response']['state'] = self::RECHAZADO;
                 self::$message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
                 self::$message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
                 self::$message['response']['hash_cdr'] = "Error";
             }
             
         } else {
-            self::$message['state'] = Sale::PENDIENTE;
-            self::$message['send'] = false;
+            self::$message['response']['state'] = self::PENDIENTE;
+            self::$message['response']['send'] = false;
         }
-        curl_close($ch);
-
         
     }
 
@@ -239,7 +252,6 @@ class SunatService
         //=============hash CDR=================
         $docCdr = new DOMDocument();
         $docCdr->load($zipCdrPath.'R-'.self::$nameXml);
-        self::$message['state'] = Sale::ACEPTADO;
         self::$message['response']['cod'] = $docCdr->getElementsByTagName('ResponseCode')->item(0)->nodeValue;
         self::$message['response']['message'] = $docCdr->getElementsByTagName('Description')->item(0)->nodeValue;
         self::$message['response']['hash_cdr'] = $docCdr->getElementsByTagName('DigestValue')->item(0)->nodeValue;
@@ -265,6 +277,11 @@ class SunatService
                 self::$directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'Boleta'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
                 self::$directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'Boleta'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
                 self::$directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'Boleta'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+
+                self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
+                self::signXml();
+                self::zipXml();
+                self::sendSunat();
             break;
 
             case 'invoice':
@@ -282,6 +299,11 @@ class SunatService
                 self::$directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'Factura'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
                 self::$directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'Factura'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
                 self::$directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'Factura'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+
+                self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
+                self::signXml();
+                self::zipXml();
+                self::sendSunat();
             break;
             
             case 'credit':
@@ -298,6 +320,11 @@ class SunatService
                 self::$directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaCredito'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
                 self::$directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaCredito'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
                 self::$directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaCredito'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+
+                self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
+                self::signXml();
+                self::zipXml();
+                self::sendSunat();
             break;
 
             case 'debit':
@@ -314,6 +341,11 @@ class SunatService
                 self::$directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaDebito'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
                 self::$directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaDebito'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
                 self::$directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'NotaDebito'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+
+                self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
+                self::signXml();
+                self::zipXml();
+                self::sendSunat();
             break;
             
             case 'summary':
@@ -324,10 +356,24 @@ class SunatService
             break;
             
             case 'voided':
+                // Obtener datos nesesarios para la comunicacion de baja
+                self::getVoided($id);
+                // Obtener los nombres de los archivos
+                self::$nameXml = self::$company->ruc.'-'.self::$voided->identifier.'.xml';
+                self::$nameZip = self::$company->ruc.'-'.self::$voided->identifier.'.zip';
+                // Crear plantilla xml
+                $voided = self::$voided;
+                $company = self::$company;
+                self::$templateXml = view('templates.xml.voided',compact('voided', 'company'))->render();
 
                 self::$directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
                 self::$directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
                 self::$directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+
+                self::createXml(); // Factura, Boleta, Nota Credito, Nota Debito
+                self::signXml();
+                self::zipXml();
+                self::sendSunatVoided();
             break;
             
             default:
@@ -335,5 +381,186 @@ class SunatService
             break;
         }
 
+    }
+
+    public static function sendSunatVoided()
+    {
+        //---------------- Enviar el xml --------------------
+        // Comprimir en base 64 el zip generado
+        $zipSend = base64_encode(file_get_contents(self::$zipPath));
+        $usuarioSol = 'MODDATOS';
+        $passSol = 'moddatos';
+        $ws = "https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService"; // Url beta
+
+        $xmlSend = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.sunat.gob.pe"
+        xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+        <soapenv:Header>
+            <wsse:Security>
+                <wsse:UsernameToken>
+                    <wsse:Username>' . self::$company->ruc . $usuarioSol . '</wsse:Username>
+                    <wsse:Password>' . $passSol . '</wsse:Password>
+                </wsse:UsernameToken>
+            </wsse:Security>
+        </soapenv:Header>
+        <soapenv:Body>
+            <ser:sendSummary>
+                <fileName>' . self::$nameZip . '</fileName>
+                <contentFile>' . $zipSend . '</contentFile>
+            </ser:sendSummary>
+        </soapenv:Body>
+        </soapenv:Envelope>';
+
+        $headers = array(
+            "Content-type: text/xml;charset=\"utf-8\"",
+            "Accept: text/xml",
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+            "SOAPAction: ",
+            "Content-length: " . strlen($xmlSend),
+        );
+
+        $ch = curl_init(); // Establecer una comunicacion HTTP
+        
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1); // Verificar SSL
+        curl_setopt($ch, CURLOPT_URL, $ws); // Url con el cual se comunica    
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Recibire un retorno
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); // Tipo de autorizacion
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 5s
+        curl_setopt($ch, CURLOPT_POST, true); // Se enviara Datos por post
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlSend); // El xml de envio
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Cabecera de la comunicacion
+
+        // Certificado para pruebas en local en produccion no aplica
+        $cacertPath = storage_path('app'.DIRECTORY_SEPARATOR.'Facturacion'.DIRECTORY_SEPARATOR.'cacert.pem');
+        curl_setopt($ch, CURLOPT_CAINFO, $cacertPath);
+
+        //---------------- Obtener CDR --------------------
+
+        $response =  curl_exec($ch); // Respuesta del web service Sunat
+        
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Obtener el codigo de verificacion
+        curl_close($ch);
+
+        if ($httpCode == 200) {
+            self::$message['response']['send'] = true;
+            $doc = new DOMDocument();
+            $doc->loadXML($response);
+            if (isset($doc->getElementsByTagName('ticket')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
+
+                self::$message['response']['response_sunat'] = true;
+                self::$message['response']['response_sunat_ticket'] = false;
+                self::$message['response']['state'] = self::ENVIADO;
+
+                $ticket = $doc->getElementsByTagName('ticket')->item(0)->nodeValue;
+
+                self::$message['response']['cod_ticket'] = $ticket;
+
+                sleep(1.5);
+                self::getCdrTicket($ticket);
+
+            } else {
+                self::$message['response']['response_sunat'] = false;
+                self::$message['response']['send'] = false;
+                self::$message['response']['state'] = self::RECHAZADO;
+                self::$message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
+                self::$message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
+                self::$message['response']['hash_cdr'] = "Error";
+            }
+            
+        } else {
+            self::$message['response']['state'] = self::PENDIENTE;
+            self::$message['response']['message'] = "Vuelva a intentar en unos minutos.";
+            self::$message['response']['send'] = false;
+        }
+    }
+
+    public static function getCdrTicket(String $ticket)
+    {
+           //---------------- Enviar el xml --------------------
+        // Comprimir en base 64 el zip generado
+        $usuarioSol = 'MODDATOS';
+        $passSol = 'moddatos';
+        $ws = "https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService"; // Url beta
+
+        $xmlSend = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.sunat.gob.pe"
+        xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+        <soapenv:Header>
+            <wsse:Security>
+                <wsse:UsernameToken>
+                    <wsse:Username>' . self::$company->ruc . $usuarioSol . '</wsse:Username>
+                    <wsse:Password>' . $passSol . '</wsse:Password>
+                </wsse:UsernameToken>
+            </wsse:Security>
+        </soapenv:Header>
+        <soapenv:Body>
+            <ser:getStatus>
+                <ticket>' . $ticket . '</ticket>
+            </ser:getStatus>
+        </soapenv:Body>
+        </soapenv:Envelope>';
+
+        $headers = array(
+            "Content-type: text/xml;charset=\"utf-8\"",
+            "Accept: text/xml",
+            "Cache-Control: no-cache",
+            "Pragma: no-cache",
+            "SOAPAction: ",
+            "Content-length: " . strlen($xmlSend),
+        );
+
+        $ch = curl_init(); // Establecer una comunicacion HTTP
+        
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1); // Verificar SSL
+        curl_setopt($ch, CURLOPT_URL, $ws); // Url con el cual se comunica    
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Recibire un retorno
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); // Tipo de autorizacion
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera  de respuesta 5s
+        curl_setopt($ch, CURLOPT_POST, true); // Se enviara Datos por post
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlSend); // El xml de envio
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Cabecera de la comunicacion
+
+        // Certificado para pruebas en local en produccion no aplica
+        $cacertPath = storage_path('app'.DIRECTORY_SEPARATOR.'Facturacion'.DIRECTORY_SEPARATOR.'cacert.pem');
+        curl_setopt($ch, CURLOPT_CAINFO, $cacertPath);
+
+        //---------------- Obtener CDR --------------------
+
+        $response =  curl_exec($ch); // Respuesta del web service Sunat
+        
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Obtener el codigo de verificacion
+        curl_close($ch);
+
+        if ($httpCode == 200) {
+            self::$message['ticket']['send'] = true;
+            $doc = new DOMDocument();
+            $doc->loadXML($response);
+            if (isset($doc->getElementsByTagName('content')->item(0)->nodeValue)) { //Si existe una etiquta de respuesta
+
+                self::$message['ticket']['response_sunat'] = true;
+                self::$message['ticket']['state'] = self::ACEPTADO;
+                self::$message['response']['response_sunat_ticket'] = true;
+                
+                $cdr = $doc->getElementsByTagName('content')->item(0)->nodeValue; // Obtener el valor de la etiqueta de respuesta
+                $cdr = base64_decode($cdr); // Descodificar la respuesta
+                // Guardo el archivo cdr
+                Storage::disk('local')->put(self::$directoryCdr.'R-'.self::$nameZip, $cdr);
+                self::getCdr();
+
+            } else {
+                self::$message['ticket']['response_sunat'] = false;
+                self::$message['ticket']['state'] = self::RECHAZADO;
+                self::$message['ticket']['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
+                self::$message['ticket']['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
+                self::$message['ticket']['response']['hash_cdr'] = "Error";
+            }
+            
+        } else {
+            self::$message['ticket']['state'] = self::PENDIENTE;
+            self::$message['ticket']['response_sunat'] = false;
+            self::$message['ticket']['message'] = "La consulta de ticket no pudo realizarse, vuelva a intentar en unos minutos.";
+            self::$message['ticket']['send'] = false;
+        }
     }
 }

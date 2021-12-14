@@ -45,10 +45,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['opening.cashbox'])->get('/nueva-venta/{id}', [WebController::class, 'newSale'])->name('web.new-sale-quotations');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
+
+    Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
 
-    Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+    Route::get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
 
     Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
 
@@ -87,6 +90,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/empresa', [WebController::class, 'company'])->name('web.company');
     Route::get('/usuarios', [WebController::class, 'users'])->name('web.users');
     Route::get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
+    Route::get('/tipo-de-pagos', [WebController::class, 'paymentTypes'])->name('web.payment-types');
     Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
     Route::get('/roles/{id}', [WebController::class, 'roles'])->name('web.roles.update');
     Route::get('/series', [WebController::class, 'series'])->name('web.series');
