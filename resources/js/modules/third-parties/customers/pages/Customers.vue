@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     async getCustomers() {
-      await BaseUrl.get(`/api/clientes?sort=-id&perPage=10&page=${this.$route.query.page}`)
+      await BaseUrl.get(`/api/customers?sort=-id&perPage=10&page=${this.$route.query.page}`)
         .then((response) => {
           this.customers = response.data.data;
           this.links = response.data.meta.links;
@@ -141,7 +141,7 @@ export default {
     },
 
     async createCustomer() {
-      await BaseUrl.post("/api/clientes", this.customer)
+      await BaseUrl.post("/api/customers", this.customer)
         .then((response) => {
           console.log(response.data);
           $("#new-customer").modal("hide");
@@ -163,7 +163,7 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          BaseUrl.delete(`/api/clientes/${id}`)
+          BaseUrl.delete(`/api/customers/${id}`)
             .then((response) => {
               Swal.fire("Deleted!", response.data.message, "success");
               this.getCustomers();

@@ -441,17 +441,17 @@ return [
                 [
                     'text' => 'Reporte de Inventario',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.inventory',
                 ],
                 [
                     'text' => 'Reporte de Ventas',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.sales',
                 ],
                 [
                     'text' => 'Reporte de Productos',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.products',
                 ],
                 [
                     'text' => 'Reporte de Compras',
@@ -466,7 +466,12 @@ return [
                 [
                     'text' => 'Reporte Detallado',
                     'icon' => 'fas fa-fw ',
-                    'url'  => '#',
+                    'route'  => 'web.reports.details',
+                ],
+                [
+                    'text' => 'Reporte de Utilidad',
+                    'icon' => 'fas fa-fw ',
+                    'route'  => 'web.reports.utility',
                 ],
             ],
         ],

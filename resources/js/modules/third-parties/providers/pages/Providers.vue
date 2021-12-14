@@ -138,7 +138,7 @@ export default {
   },
   methods: {
     async showProviders(page = 1) {
-      await BaseUrl.get(`/api/proveedores?sort=-id&page=${page}&perPage=10`)
+      await BaseUrl.get(`/api/providers?sort=-id&page=${page}&perPage=10`)
         .then((response) => {
           this.providers = response.data.data;
           this.links = response.data.meta.links;
@@ -148,7 +148,7 @@ export default {
         });
     },
     async createProvider() {
-      await BaseUrl.post("/api/proveedores", this.provider)
+      await BaseUrl.post("/api/providers", this.provider)
         .then((response) => {
           console.log(response.data);
           $("#new-provider").modal("hide");
@@ -170,7 +170,7 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          BaseUrl.delete(`/api/proveedores/${id}`)
+          BaseUrl.delete(`/api/providers/${id}`)
             .then((response) => {
               Swal.fire("Deleted!", response.data.message, "success");
               this.showProviders();

@@ -18,7 +18,7 @@ class Cashbox extends Model
     ];
 
     protected $allowIncluded = ['openClosedCashboxes'];
-    protected $allowFilter = ['is_open'];
+    protected $allowFilter = ['is_open', 'branch_id'];
     protected $allowSort = ['id'];
 
     // Relacion inversa de muchos a uno

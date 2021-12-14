@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Date;
 
 // ApiTrait es una clase abstracte que incluye todos los metodos en un modelo
 trait ApiTrait
@@ -84,14 +85,19 @@ trait ApiTrait
     public function scopeDateInterval(Builder $query)
     {
 
-        if (empty(request('dateInterval'))) {
+        if (empty($this->allowDateInterval) || empty(request('dateInterval'))) {
             return;
         }
 
-        $range = explode(',', request('dateInterval'));
-        $from = date($range[0]);
-        $until = date($range[1]);
-        $query->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $until);
+        $dates = request('dateInterval');
+        $allowDateInterval = collect($this->allowDateInterval);
+
+        foreach ($dates as $date => $valor) {
+            if ($allowDateInterval->contains($date)) {
+                $fechas = explode(',', $valor);
+                $query->whereDate($date, '>=', $fechas[0])->whereDate($date, '<=', $fechas[1]);
+            }
+        }
     }
 
     public function scopeGetOrPaginate(Builder $query)
@@ -103,5 +109,11 @@ trait ApiTrait
             return $query->paginate($perPage);
         }
         return $query->get();
+    }
+
+    function validateDate($date, $format = 'Y-m-d')
+    {
+        $d = Date::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 }

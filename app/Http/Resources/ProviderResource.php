@@ -18,13 +18,12 @@ class ProviderResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'comercial_name' => $this->comercial_name,
-            'type_document' => $this->identificationDocument->description,
-            'identification_document_id' => $this->identification_document_id,
             'document' => $this->document,
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
             'ubigee_id' => $this->ubigee_id,
+            'identification_document' => IdentificationDocumentResource::make($this->whenLoaded('identificationDocument')),
         ];
     }
 }

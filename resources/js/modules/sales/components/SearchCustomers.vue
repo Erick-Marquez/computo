@@ -252,7 +252,7 @@ export default {
     },
     async getcustomers() {
       await BaseUrl.get(
-        `/api/clientes?filter[document]=${this.customer.document}
+        `/api/customers?filter[document]=${this.customer.document}
                             &filter[identification_document_id]=${this.customer.identification_document_id}
                             &perPage=10`
       )

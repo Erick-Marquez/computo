@@ -26,7 +26,7 @@ class Purchase extends Model
         'open_closed_cashbox_id',
     ];
 
-    protected $allowIncluded = ['provider', 'accountToPay'];
+    protected $allowIncluded = ['provider', 'provider.identificationDocument','accountToPay'];
     protected $allowFilter = ['id', 'document_type', 'date_issue', 'provider_id'];
     protected $allowSort = ['id'];
 

@@ -252,7 +252,7 @@ export default {
     },
     async getproviders() {
       await BaseUrl.get(
-        `/api/proveedores?filter[document]=${this.provider.document}
+        `/api/providers?filter[document]=${this.provider.document}
                             &filter[identification_document_id]=${this.provider.identification_document_id}
                             &perPage=10`
       )

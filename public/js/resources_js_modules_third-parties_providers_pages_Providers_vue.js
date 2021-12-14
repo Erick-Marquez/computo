@@ -164,7 +164,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 _context.next = 3;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/proveedores?sort=-id&page=".concat(page, "&perPage=10")).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/providers?sort=-id&page=".concat(page, "&perPage=10")).then(function (response) {
                   _this.providers = response.data.data;
                   _this.links = response.data.meta.links;
                 })["catch"](function (error) {
@@ -188,7 +188,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/proveedores", _this2.provider).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/providers", _this2.provider).then(function (response) {
                   console.log(response.data);
                   $("#new-provider").modal("hide");
                   _this2.provider = {
@@ -221,7 +221,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.isConfirmed) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/proveedores/".concat(id)).then(function (response) {
+          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/providers/".concat(id)).then(function (response) {
             Swal.fire("Deleted!", response.data.message, "success");
 
             _this3.showProviders();
@@ -711,7 +711,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

@@ -17,7 +17,7 @@ class CreateBranchProductTable extends Migration
             $table->id();
             //$table->string('cod')->nullable();
             $table->bigInteger('stock')->nullable();
-            $table->unsignedDecimal('referential_purchase_price', 9,3)->nullable();
+            $table->unsignedDecimal('referential_purchase_price', 9,3)->default(0);
             $table->unsignedDecimal('sale_price', 9,3)->nullable();
             $table->unsignedDecimal('referential_sale_price_one', 9,3)->nullable();
             $table->unsignedDecimal('referential_sale_price_two', 9,3)->nullable();
@@ -32,16 +32,16 @@ class CreateBranchProductTable extends Migration
             $table->string('igv_type_id');
             $table->foreign('igv_type_id')
                 ->references('id')
-                ->on('igv_types') 
+                ->on('igv_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('product_id') 
+            $table->foreignId('product_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('branch_id') 
+            $table->foreignId('branch_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

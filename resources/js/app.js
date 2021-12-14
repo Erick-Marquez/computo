@@ -37,6 +37,11 @@ import indexCustomers from './modules/third-parties/customers/index.vue'
 // Reportes
 import indexReportCashboxes from './modules/reports/cashboxes/index.vue';
 import indexReportPurchases from './modules/reports/purchases/index.vue';
+import indexReportSales from './modules/reports/sales/index.vue';
+import indexReportDetails from './modules/reports/details/index.vue';
+import indexReportProducts from './modules/reports/products/index.vue';
+import indexReportInventory from './modules/reports/inventory/index.vue';
+import indexReportUtility from './modules/reports/utility/index.vue';
 
 /* Settings */
 import indexCompany from './modules/settings/company/index.vue';
@@ -83,6 +88,11 @@ app.component('index-currency-exchanges', indexCurrencyExchanges);
 /* Reportes */
 app.component('index-report-cashboxes', indexReportCashboxes);
 app.component('index-report-purchases', indexReportPurchases);
+app.component('index-report-sales', indexReportSales);
+app.component('index-report-details', indexReportDetails);
+app.component('index-report-products', indexReportProducts);
+app.component('index-report-inventory', indexReportInventory);
+app.component('index-report-utility', indexReportUtility);
 
 /* uy */
 app.component('image-upload', imageUpload)

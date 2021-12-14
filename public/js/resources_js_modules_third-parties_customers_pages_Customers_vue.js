@@ -199,7 +199,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/clientes?sort=-id&perPage=10&page=".concat(_this.$route.query.page)).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/customers?sort=-id&perPage=10&page=".concat(_this.$route.query.page)).then(function (response) {
                   _this.customers = response.data.data;
                   _this.links = response.data.meta.links;
                 })["catch"](function (error) {
@@ -223,7 +223,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/clientes", _this2.customer).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/customers", _this2.customer).then(function (response) {
                   console.log(response.data);
                   $("#new-customer").modal("hide");
                   _this2.customer = {};
@@ -254,7 +254,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.isConfirmed) {
-          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/clientes/".concat(id)).then(function (response) {
+          _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/customers/".concat(id)).then(function (response) {
             Swal.fire("Deleted!", response.data.message, "success");
 
             _this3.getCustomers();
@@ -757,7 +757,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
