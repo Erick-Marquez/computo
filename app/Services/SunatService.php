@@ -198,10 +198,6 @@ class SunatService
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlSend); // El xml de envio
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); // Cabecera de la comunicacion
 
-        // Certificado para pruebas en local en produccion no aplica
-        $cacertPath = storage_path('app'.DIRECTORY_SEPARATOR.'Facturacion'.DIRECTORY_SEPARATOR.'cacert.pem');
-        curl_setopt($ch, CURLOPT_CAINFO, $cacertPath);
-
         //---------------- Obtener CDR --------------------
 
         $response =  curl_exec($ch); // Respuesta del web service Sunat

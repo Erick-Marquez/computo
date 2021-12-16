@@ -27,6 +27,7 @@ class Quotation extends Model
 
         'observation',
 
+        'sale_id',
         'serie_id',
         'customer_id',
         'user_id'
@@ -36,6 +37,11 @@ class Quotation extends Model
     public function quotationDetails()
     {
         return $this->hasMany(QuotationDetail::class);
+    }
+
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
     }
 
     public function serie()

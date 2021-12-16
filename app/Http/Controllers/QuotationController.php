@@ -27,9 +27,9 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->with('customer', 'user','serie', 'paymentTypes')->latest()->get();
+        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->doesnthave('sale')->with('customer', 'user','serie', 'paymentTypes')->withCount('sale')->latest()->get();
 
-        $unavailableQuotations = Quotation::where('date_due', '<', Carbon::now())->with('customer', 'user','serie')->latest()->get();
+        $unavailableQuotations = Quotation::has('sale')->orWhere('date_due', '<', Carbon::now())->with('customer', 'user','serie')->withCount('sale')->latest()->get();
 
         return response()->json([
 

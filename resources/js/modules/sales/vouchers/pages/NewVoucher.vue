@@ -158,13 +158,13 @@
             <input
               type="search"
               v-model="productSearch"
-              @keyup="searchProducts"
+              @keyup="searchProducts()"
               class="form-control rounded-pill form-control rounded-pill-lg"
               placeholder="Escribe tu producto o código"
             />
             <div class="option__relative">
               <div class="option__contenedor">
-                <div>
+                <div v-if="productSearch.length > 0">
                   <table
                     table
                     class="
@@ -395,6 +395,7 @@
 
                 <td>
                   <input
+                    :disabled="!detail.manager_series"
                     type="button"
                     class="btn btn-dark btn-sm"
                     data-toggle="modal"
@@ -420,6 +421,7 @@
 
                 <!-- Modal Serie -->
                 <div
+                  v-if="detail.manager_series"
                   class="modal fade"
                   :id="'seriesModal' + index"
                   tabindex="-1"
@@ -776,6 +778,9 @@ import SearchAssemblies from "../../components/SearchAssemblies.vue";
 export default {
   components: { BaseUrl, SearchCustomers, SearchAssemblies },
   async created() {
+
+    
+
     await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
       this.voucherTypes = resp.data.data;
       this.saleData.voucher.document_type = this.voucherTypes[0].id;
@@ -809,20 +814,20 @@ export default {
       this.currencyExchange = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
+    if(this.$route.query.serieQuotation && this.$route.query.numberQuotation){
+      this.quotationSerieSelect = this.$route.query.serieQuotation
+      this.numberQuotation = this.$route.query.numberQuotation
 
-      this.products.forEach(product => {
-        product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
-        product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
-        product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
-      });
-    });
+      this.getQuotation()
+    }
 
+    this.loader.hide()
 
   },
   data() {
     return {
+
+      loader: null,
 
       loadingVoucher: false,
 
@@ -851,7 +856,6 @@ export default {
       identificationDocuments: {},
       paymentTypes: [],
       igvTypes: [],
-      products: [],
       productSeries: [],
       saleData: {
         customer: {
@@ -868,6 +872,8 @@ export default {
           total: 0,
 
           discountItems: 0,
+
+          quotation_id: null,
 
           document_type: 2,
           serie_id: "",
@@ -894,6 +900,9 @@ export default {
     };
   },
   mounted() {
+    this.loader = this.$loading.show({
+      canCancel: true,
+    });
     const contain = document.querySelector(".card");
     contain.addEventListener("click", (e) => {
       if (e.target.className != "inputContent") {
@@ -918,18 +927,25 @@ export default {
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
-    searchProducts() {
-      let produtsBackup = this.products;
-      let wordFilter = this.productSearch.toLowerCase();
+    async searchProducts() {
 
-      if (wordFilter === "") {
-        this.productSearchFilter = "";
+      if (this.productSearch == "") {
+        this.productSearchFilter = [];
       } else {
-        this.productSearchFilter = produtsBackup
-          .filter(
-            (products) => products.product.name.toLowerCase().indexOf(wordFilter) !== -1
-          )
-          .slice(0, 10);
+
+        await BaseUrl.get(`api/sales/products/${this.productSearch}`).then((resp) => {
+
+          let products = resp.data.data;
+
+          products.forEach(product => {
+            product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
+            product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
+            product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
+          });
+
+          this.productSearchFilter = products
+
+        });
       }
     },
     searchProductSeries(i, j) {
@@ -1010,6 +1026,7 @@ export default {
         description : filSearch.product.name,
         brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.sale_price,
+        manager_series: Boolean(filSearch.product.manager_series),
         quantity: 1,
         series: [],
       };
@@ -1043,6 +1060,7 @@ export default {
         description : filSearch.product.name,
         brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_one,
+        manager_series: Boolean(filSearch.product.manager_series),
         quantity: 1,
         series: [],
       };
@@ -1076,6 +1094,7 @@ export default {
         description : filSearch.product.name,
         brand : filSearch.product.brand_line.brand.description,
         sale_price: filSearch.referential_sale_price_two,
+        manager_series: Boolean(filSearch.product.manager_series),
         quantity: 1,
         series: [],
       };
@@ -1309,10 +1328,13 @@ export default {
       if (!this.saleData.voucher.isMultiPayment) {
         this.saleData.voucher.received_money = this.saleData.voucher.payments[0].amount
       }
+
+      
+
       BaseUrl.post("/api/sales", this.saleData).then((response) => {
         this.errors = []
         console.log(response)
-        this.$router.push({ name: "voucher-list" });
+        this.$router.replace({ name: "voucher-list" });
         Swal.fire(
           "Comprobante Creado",
           response.data,
@@ -1338,7 +1360,6 @@ export default {
       if (i < this.saleData.detail.length) {
         if (j < this.saleData.detail[i].quantity) {
           if (this.errors['detail.' + i + '.series.' + j + '.serie'] != null) {
-            console.log('detail.' + i + '.series.' + j + '.serie')
             Swal.fire({
               title: "Algo salio mal",
               html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
@@ -1369,9 +1390,13 @@ export default {
         `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
       )
         .then((resp) => {
+
+          
           let quotation = resp.data.data;
 
-          this.saleData.voucher.discount = quotation.discount;
+          this.saleData.voucher.quotation_id = Number(quotation.id)
+
+          this.saleData.voucher.discount = Number(quotation.discount);
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
 
@@ -1397,7 +1422,7 @@ export default {
             this.productSerieSearchFilter.push([]);
 
             const product = {
-              discount: e.discount,
+              discount: Number(e.discount),
               subtotal: 0,
               total: 0,
 
@@ -1408,6 +1433,7 @@ export default {
               description: e.branch_product.product.name,
               brand: e.branch_product.product.brand_line.brand.description,
               sale_price: e.price,
+              manager_series: Boolean(e.branch_product.product.manager_series),
               quantity: e.quantity,
               series: [],
             };
@@ -1578,8 +1604,6 @@ export default {
 
         //calcular totales
         this.getTotals();
-
-        console.log(this.saleData);
       }
     },
     addPayment(){

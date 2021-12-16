@@ -44,11 +44,12 @@
                   <tr>
                     <th style="width: 10%">Fecha</th>
                     <th class="text-center" style="width: 5%">Cotización</th>
+                    <th class="text-center" style="width: 10%">Vendedor</th>
                     <th style="width: 15%">Cliente</th>
                     <th class="text-center" style="width: 10%">Total</th>
                     <th class="text-center" style="width: 5%">PDF</th>
                     <th class="text-center" style="width: 10%">Valido Hasta</th>
-                    <th class="text-center" style="width: 10%">Vendedor</th>
+                    <th class="text-center" style="width: 8%">Estado</th>
                     <th class="text-center" style="width: 5%">Acciones</th>
                   </tr>
                 </thead>
@@ -56,6 +57,7 @@
                   <tr v-for="availableQuotation in availableQuotations" :key="availableQuotation.id">
                     <td class="align-middle">{{ getTimestamp(availableQuotation.created_at) }}</td>
                     <td class="align-middle text-center">{{availableQuotation.serie.serie}}-{{ availableQuotation.document_number }}</td>
+                    <td class="align-middle text-center">{{ availableQuotation.user.name }}</td>
                     <td class="align-middle">
                       <span class="badge bg-maroon">{{ availableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ availableQuotation.customer.document }}
                       <br>
@@ -74,7 +76,11 @@
                         {{ getElapsedTimeNumber(availableQuotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(availableQuotation.date_due) }}
                       </span>
                     </td>
-                    <td class="align-middle text-center">{{ availableQuotation.user.name }}</td>
+                    <td class="align-middle text-center">
+                      <h6><span :class="'badge bg-' + (availableQuotation.sale_count == 0 ? 'success' : 'maroon')">
+                        {{ availableQuotation.sale_count == 0 ? 'Pendiente' : 'Convertido' }}
+                      </span></h6>
+                    </td>
                     <td class="align-middle text-center">
                       <div class="dropdown">
                         <button
@@ -95,10 +101,6 @@
                           <a
                             class="dropdown-item"
                             href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                          ><a
-                            class="dropdown-item"
-                            href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                           ><a
                             class="dropdown-item"
@@ -107,9 +109,8 @@
                             ><i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo</a
                           ><a
                             class="dropdown-item"
-                            :href="'print/quotations/' + availableQuotation.id"
-                            target="_blank"
-                            ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                            :href="`nueva-venta?serieQuotation=${availableQuotation.serie.id}&numberQuotation=${availableQuotation.document_number}`"
+                            ><i class="col-1 mr-3 far fa-file-pdf"></i>Convertir a Comprobante</a
                           >
                         </div>
                       </div>
@@ -155,11 +156,12 @@
                   <tr>
                     <th class="" style="width: 10%">Fecha</th>
                     <th class="text-center" style="width: 5%">Cotización</th>
+                    <th class="text-center" style="width: 10%">Vendedor</th>
                     <th class="" style="width: 15%">Cliente</th>
                     <th class="text-center" style="width: 10%">Total</th>
                     <th class="text-center" style="width: 5%">PDF</th>
                     <th class="text-center" style="width: 10%">Valido Hasta</th>
-                    <th class="text-center" style="width: 10%">Vendedor</th>
+                    <th class="text-center" style="width: 8%">Estado</th>
                     <th class="text-center" style="width: 5%">Acciones</th>
                   </tr>
                 </thead>
@@ -167,6 +169,7 @@
                   <tr v-for="unavailableQuotation in unavailableQuotations" :key="unavailableQuotation.id">
                     <td class="align-middle">{{ getTimestamp(unavailableQuotation.created_at) }}</td>
                     <td class="align-middle text-center">{{unavailableQuotation.serie.serie}}-{{ unavailableQuotation.document_number }}</td>
+                    <td class="align-middle text-center">{{ unavailableQuotation.user.name }}</td>
                     <td class="align-middle">
                       <span class="badge bg-maroon">{{ unavailableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ unavailableQuotation.customer.document }}
                       <br>
@@ -185,7 +188,11 @@
                         {{ getElapsedTimeNumber(unavailableQuotation.date_due) > 0 ? 'Faltan: ' : 'Días Vencidos: ' }} {{ getElapsedTime(unavailableQuotation.date_due) }}
                       </span>
                     </td>
-                    <td class="align-middle text-center">{{ unavailableQuotation.user.name }}</td>
+                    <td class="align-middle text-center">
+                      <h6><span :class="'badge bg-' + (unavailableQuotation.sale_count == 0 ? 'success' : 'maroon')">
+                        {{ unavailableQuotation.sale_count == 0 ? 'Pendiente' : 'Convertido' }}
+                      </span></h6>
+                    </td>
                     <td class="align-middle text-center">
                       <div class="dropdown">
                         <button

@@ -103,7 +103,7 @@
                 </td>
                 <td>
                     <div class="compra__texto">
-                        <p class="compra__vendedor">VENDEDOR: {{ $head->user->name }}</p>
+                        <p class="compra__vendedor">VENDEDOR: {{ $head->quotation ? $head->quotation->user->name : $head->user->name }}</p>
                     </div>
                     <div class="compra__texto">
                         <p class="compra__vendedor">CAJERO: {{ $head->user->name }}</p>

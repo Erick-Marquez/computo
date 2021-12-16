@@ -53,7 +53,7 @@
                 <tbody>
                   <tr v-for="sale in sales" :key="sale.id">
                     <td class="align-middle">{{ getTimestamp(sale.created_at) }}</td>
-                    <td class="align-middle">
+                    <td :class="['align-middle', sale.state == 'ANULADO' ? 'voided' : null]">
                       <span class="text-muted">{{ sale.serie.voucher_type.description }}: </span>{{ sale.serie.serie }}-{{ sale.document_number }}
                     </td>
                     <td class="align-middle">
@@ -103,10 +103,12 @@
                           style=""
                         >
                           <a
+                            v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-eye"></i>Crear Nota de Crédito</a
                           ><a
+                            v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Crear Nota de Débito</a
@@ -247,7 +249,7 @@ export default {
       })
       .catch((error) => {
 
-        console.log(error.response.data.errors);
+        console.log(error.response);
 
       })
       .finally(() => {
@@ -259,5 +261,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.voided{
+
+  text-decoration:line-through;
+  text-decoration-color: red;
+
+}
 </style>
