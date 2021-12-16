@@ -23,6 +23,7 @@ class OpenClosedCashbox extends Model
     protected $allowIncluded = ['cashbox', 'user'];
     protected $allowFilter = ['cashbox_id', 'user_id', 'opening_date', 'state'];
     protected $allowSort = ['id', 'opening_date'];
+    protected $allowDateInterval = ['opening_date', 'created_at'];
 
     public function cashbox()
     {

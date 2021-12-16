@@ -152,6 +152,30 @@ class WebController extends Controller
         return view('reports.purchases.index');
     }
 
+    public function reportSales()
+    {
+        return view('reports.sales.index');
+    }
+
+    public function reportDetails()
+    {
+        return view('reports.details.index');
+    }
+
+    public function reportProducts()
+    {
+        return view('reports.products.index');
+    }
+
+    public function reportInventory()
+    {
+        return view('reports.inventory.index');
+    }
+
+    public function reportUtility()
+    {
+        return view('reports.utility.index');
+    }
     /*========Configuracion=========*/
 
     public function company()

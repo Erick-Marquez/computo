@@ -321,6 +321,66 @@ const routes = [
                 ]
             },
             {
+                path: 'ventas',
+                name: 'report-sales-index',
+                component: () => import('../modules/reports/sales/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-sales',
+                        component: () => import('../modules/reports/sales/pages/ReportSales.vue'),
+                    }
+                ]
+            },
+            {
+                path: 'detallado',
+                name: 'report-details-index',
+                component: () => import('../modules/reports/details/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-details',
+                        component: () => import('../modules/reports/details/pages/ReportDetails.vue'),
+                    }
+                ]
+            },
+            {
+                path: 'productos',
+                name: 'report-products-index',
+                component: () => import('../modules/reports/products/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-products',
+                        component: () => import('../modules/reports/products/pages/ReportProducts.vue'),
+                    }
+                ]
+            },
+            {
+                path: 'inventario',
+                name: 'report-inventory-index',
+                component: () => import('../modules/reports/inventory/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-inventory',
+                        component: () => import('../modules/reports/inventory/pages/ReportInventory.vue'),
+                    }
+                ]
+            },
+            {
+                path: 'utilidad',
+                name: 'report-utility-index',
+                component: () => import('../modules/reports/utility/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-utility',
+                        component: () => import('../modules/reports/utility/pages/ReportUtility.vue'),
+                    }
+                ]
+            },
+            {
                 path: '',
                 redirect: { name: 'assemblies-list' }
             }

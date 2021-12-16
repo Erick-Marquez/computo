@@ -26,6 +26,7 @@ use App\Http\Controllers\BranchProductSerieController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
@@ -109,13 +110,9 @@ Route::middleware([
     Route::apiResource('tipos-documentos', IdentificationDocumentController::class)->names('api.tipos-documentos');
     Route::get('/data-document/{cod}/{number}', [IdentificationDocumentController::class, 'getDataApi'])->name('api.data-document');
 
-    Route::apiResource('clientes', CustomerController::class)->parameters([
-        'clientes' => 'customer'
-    ])->names('api.clientes');
+    Route::apiResource('customers', CustomerController::class)->names('api.customers');
 
-    Route::apiResource('proveedores', ProviderController::class)->parameters([
-        'proveedores' => 'provider'
-    ])->names('api.proveedores');
+    Route::apiResource('providers', ProviderController::class)->names('api.providers');
 
     //------------------------Catalogs-----------------------
     //Families-Lines-Brands
@@ -174,4 +171,14 @@ Route::middleware([
 
     Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
     Route::get('payment-types', [PaymentTypeController::class, 'index'])->name('api.payment-types');
+
+
+    // reports
+    route::post('reports/purchases', [ReportController::class, 'purchases'])->name('api.reports.purchases');
+    route::post('reports/cashboxes', [ReportController::class, 'cashboxes'])->name('api.reports.cashboxes');
+    route::post('reports/sales', [ReportController::class, 'sales'])->name('api.reports.sales');
+    route::post('reports/products', [ReportController::class, 'products'])->name('api.reports.products');
+    route::post('reports/inventory', [ReportController::class, 'inventory'])->name('api.reports.inventory');
+    route::post('reports/details', [ReportController::class, 'details'])->name('api.reports.details');
+    route::post('reports/utility', [ReportController::class, 'utility'])->name('api.reports.utility');
 });

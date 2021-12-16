@@ -21,7 +21,7 @@ class Provider extends Model
         'identification_document_id'
     ];
 
-    protected $allowIncluded = [];
+    protected $allowIncluded = ['identificationDocument'];
     protected $allowFilter = ['id', 'document', 'comercial_name', 'identification_document_id'];
     protected $allowSort = ['id'];
 

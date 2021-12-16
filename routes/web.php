@@ -16,6 +16,7 @@ use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SerieController;
@@ -107,6 +108,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Rutas reportes
     Route::get('/reportes/cajas', [WebController::class, 'reportCashboxes'])->name('web.reports.cashboxes');
     Route::get('/reportes/compras', [WebController::class, 'reportPurchases'])->name('web.reports.purchases');
+    Route::get('/reportes/ventas', [WebController::class, 'reportSales'])->name('web.reports.sales');
+    Route::get('/reportes/productos', [WebController::class, 'reportProducts'])->name('web.reports.products');
+    Route::get('/reportes/detallado', [WebController::class, 'reportDetails'])->name('web.reports.details');
+    Route::get('/reportes/inventario', [WebController::class, 'reportInventory'])->name('web.reports.inventory');
+    Route::get('/reportes/utilidad', [WebController::class, 'reportUtility'])->name('web.reports.utility');
 
 });
 
@@ -129,3 +135,10 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchCont
 
 Route::get('print/cashbox/report/{occId}', [CashboxController::class, 'reportCashboxOpenClosed'])->name('cashbox.reportOC');
 Route::get('print/purchase/{purchase}', [PurchaseController::class, 'printPurchase'])->name('purchase.print');
+
+
+Route::get('/reports/sales/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{voucher_type_id?}', [ReportController::class, 'printReportSales'])->name('reports.sales.print');
+Route::get('/reports/products/print/{branch_id?}', [ReportController::class, 'printReportProducts'])->name('reports.products.print');
+Route::get('/reports/purchases/print/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'printReportPurchases'])->name('reports.purchases.print');
+Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{product_id?}', [ReportController::class, 'printReportSalesDetails'])->name('reports.details.print');
+
