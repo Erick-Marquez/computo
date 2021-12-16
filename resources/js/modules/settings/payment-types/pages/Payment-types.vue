@@ -2,29 +2,7 @@
   <div class="content-header">
     <div class="row">
       <div class="col">
-        <h1>Cambios de Divisas</h1>
-      </div>
-      <div class="col text-center">
-        <div class="row">
-          <div class="col">
-                <span class="badge bg-maroon">Fecha:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.fecha }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Compra:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.compra }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Venta:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.venta }}
-              </div>
-        </div>
+        <h1>Tipos de Pago</h1>
       </div>
     </div>
   </div>
@@ -36,13 +14,13 @@
       data-target="#modal-create"
     >
       <span><i class="fas fa-plus"></i></span>
-      Nuevo Cambio de Divisa
+      Nuevo Tipo de Pago
     </button>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de Cambios de Divisas</h3>
+            <h3 class="card-title">Lista de los Tipos de Pago</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -73,17 +51,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="currencyExchange in currencyExchanges" :key="currencyExchange.id">
-                    <td class="align-middle">{{ currencyExchange.date }}</td>
-                    <td class="align-middle">{{ currencyExchange.change }}</td>
+                  <tr v-for="(paymentType, index) in paymentTypes" :key="paymentType.id">
+                    <td class="align-middle">{{ index + 1 }}</td>
+                    <td class="align-middle">{{ paymentType.description }}</td>
                     <td class="align-middle">
                       <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Acciones
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#" @click="showModal('#modal-edit', currencyExchange)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
-                          <a class="dropdown-item" href="#" @click="deleteCurrencyExchange(currencyExchange.id)"><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a>
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-edit', paymentType)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
+                          <a class="dropdown-item" href="#" @click="deletePaymentType(paymentType.id)"><i class="col-1 mr-3 fas fa-trash"></i>Eliminar</a>
                         </div>
                       </div>
                     </td>
@@ -104,37 +82,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Nuevo Cambio de Divisa</h4>
+          <h4 class="modal-title">Nuevo Tipo de Pago</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form @submit.prevent="createCurrencyExchange()">
+        <form @submit.prevent="createPaymentType()">
           <div class="modal-body">
-            <div class="row text-center">
-              <div class="col">
-                <span class="badge bg-maroon">Fecha:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.fecha }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Compra:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.compra }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Venta:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.venta }}
-              </div>
-            </div>
-            <br>
             <div class="form-group">
-              <label for="name">Monto de Cambio</label>
-              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchange.change" required>
+              <label for="name">Descripcion</label>
+              <input type="text" class="form-control" v-model="paymentType.description" required>
             </div>
           </div>
           
@@ -159,32 +116,11 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form @submit.prevent="editCurrencyExchange()">
+        <form @submit.prevent="editPaymentType()">
           <div class="modal-body">
-            <div class="row text-center">
-              <div class="col">
-                <span class="badge bg-maroon">Fecha:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.fecha }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Compra:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.compra }}
-              </div>
-              <div class="col">
-                <span class="badge bg-maroon">Venta:</span>
-              </div>
-              <div class="col">
-                {{ currentCurrencyExchange.venta }}
-              </div>
-            </div>
-            <br>
             <div class="form-group">
-              <label for="name">Monto de Cambio</label>
-              <input type="number" min="0" step="0.001" class="form-control" v-model="currencyExchangeEdit.change" required>
+              <label for="name">Descripcion</label>
+              <input type="text" class="form-control" v-model="paymentTypeEdit.description" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -204,74 +140,65 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   created(){
-    this.showCurrencyExchanges()
-    this.getCurrentCurrencyExchange()
+    this.showPaymentTypes()
   },
   data(){
     return{
-      currentCurrencyExchange : '',
-      currencyExchanges: {},
+      paymentTypes: {},
 
-      currencyExchange: {
-        change: '',
-        date: ''
+      paymentType: {
+        description: null,
       },
       errors: null,
-      currencyExchangeEdit: {}
+      paymentTypeEdit: {}
 
 
     }
   },
   methods:{
-    async showCurrencyExchanges(){
-      await BaseUrl.get(`api/currencyexchanges`).then( resp=>{
-        this.currencyExchanges=resp.data.data
-      })
-    },
-    async getCurrentCurrencyExchange(){
-      await BaseUrl.get(`api/currencyexchanges/current`).then( resp=>{
-        this.currentCurrencyExchange=resp.data
+    async showPaymentTypes(){
+      await BaseUrl.get(`api/payment-types`).then( resp=>{
+        this.paymentTypes=resp.data.data
       })
     },
 
-    showModal(modal, currencyExchange = null) {
-      if (currencyExchange !== null) {
-        this.currencyExchangeEdit = currencyExchange;
+    showModal(modal, paymentType = null) {
+      if (paymentType !== null) {
+        this.paymentTypeEdit = paymentType;
       }
       $(modal).modal("show");
     },
-    createCurrencyExchange(){
-      BaseUrl.post(`api/currencyexchanges`, this.currencyExchange).then( resp => {
+    createPaymentType(){
+      BaseUrl.post(`api/payment-types`, this.paymentType).then( resp => {
         
         console.log(resp)
         $("#modal-create").modal("hide")
-        this.showCurrencyExchanges()
-        this.currencyExchange = {
-          change: '',
-          date: ''
+        this.showPaymentTypes()
+        this.paymentType = {
+          description: null,
         }
-        Swal.fire("Creado", "El Cambio de Divisa ha sido creado", "success");
+        Swal.fire("Creado", "El tipo de pago ha sido creado", "success");
       })
       .catch((error) => {
         console.log(error.response);
         this.errors = error.response.data.errors
       });
     },
-    editCurrencyExchange(){
-      BaseUrl.put(`api/currencyexchanges/${this.currencyExchangeEdit.id}`, this.currencyExchangeEdit).then( resp => {
+    editPaymentType(){
+      BaseUrl.put(`api/payment-types/${this.paymentTypeEdit.id}`, this.paymentTypeEdit).then( resp => {
         
         console.log(resp)
         $("#modal-edit").modal("hide")
-        this.showCurrencyExchanges()
-        this.currencyExchangeEdit = {}
+        this.showPaymentTypes()
+        this.paymentTypeEdit = {}
 
-        Swal.fire("Actualizado", "El Cambio de Divisa ha sido actualizado", "success");
+        Swal.fire("Actualizado", "El tipo de pago ha sido actualizado", "success");
       })
       .catch((error) => {
         console.log(error);
       });
     },
-    deleteCurrencyExchange(id) {
+    deletePaymentType(id) {
       Swal.fire({
         title: "¿Estas Seguro?",
         text: "Esta acción no puede revertirse",
@@ -281,17 +208,20 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Si, adelante",
         cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          BaseUrl.delete(`api/currencyexchanges/${id}`).then( resp => {
-              this.showCurrencyExchanges();
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
 
-          Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
-        }
+          try {
+            const resp=await BaseUrl.delete(`api/payment-types/${id}`)
+            this.showPaymentTypes()
+            Swal.fire("Eliminado", "El tipo de pago ha sido eliminado.", "success")
+
+          } catch(error) {
+            console.log(error.response.data.error)
+            Swal.fire("Cancelado", "Este tipo de pago esta siendo utilizado.", "error")
+          }
+
+        },
       });
     },
   }

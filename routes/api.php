@@ -159,6 +159,9 @@ Route::middleware([
     Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
     Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
 
+    //Payment Types
+    Route::apiResource('payment-types', PaymentTypeController::class)->names('api.payment-types');
+
     //------------------------Purchases-----------------------//
     Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
 
@@ -170,7 +173,6 @@ Route::middleware([
     // catalogos
 
     Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
-    Route::get('payment-types', [PaymentTypeController::class, 'index'])->name('api.payment-types');
 
 
     // reports
