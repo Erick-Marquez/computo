@@ -32,6 +32,12 @@ class CreateQuotationsTable extends Migration
 
             $table->string('observation')->nullable();
 
+            $table->unsignedBigInteger('sale_id')->nullable()->unique();
+            $table->foreign('sale_id')
+                ->references('id')
+                ->on('sales')
+                ->onUpdate('cascade');
+
             $table->foreignId('serie_id')
                 ->constrained()
                 ->onUpdate('cascade')

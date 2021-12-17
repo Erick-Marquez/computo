@@ -9,6 +9,7 @@ use App\Models\PaymentTypeQuotation;
 use App\Models\Quotation;
 use App\Models\Voided;
 use App\Models\VoucherType;
+use App\Services\Facturacion\VoidedService;
 use App\Services\KardexService;
 use App\Services\SunatService;
 use Carbon\Carbon;
@@ -217,7 +218,51 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        return SunatService::facturar(20, 'voided');
+        // return SunatService::facturar(10, 'invoice');
+
+
+        try {
+            $service = new VoidedService;
+            $service->setDataVoided([
+                'company' => [
+                    'is_demo' => 1,
+                    'user_sol' => 'asd',
+                    'password_sol' => 'asd',
+
+                    'ruc' => 20100066603,
+                    'comercial_name' => 'Hola',
+                    'name' => 'Hola S.A.C'
+                ],
+                'voided' => [
+                    'date_issue' => now()->format('Y-m-d'),
+                    'identifier' => 'RA-20211215-1',
+                    'description' => 'Error'
+                ],
+                'sale' => [
+                    'date_reference' => '2021-12-13',
+
+                    'voucher_type' => '01',
+                    'serie' => 'F001',
+                    'document_number' => 2
+                ]
+            ]);
+
+            $service->createXml();
+            $service->singXml();
+            $service->zipXml();
+            $service->sendXmlSunat();
+            $service->sendTicketSunat();
+            $service->getCdr();
+
+            return $service->getResponse();
+
+        } catch (\Exception $e) {
+
+            return $service->getResponse();
+            // return $e->getMessage();
+        }
+
+
 
     }
 }

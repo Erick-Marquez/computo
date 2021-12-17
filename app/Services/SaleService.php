@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\BranchProduct;
 use App\Models\Customer;
+use App\Models\Quotation;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Serie;
@@ -53,6 +54,10 @@ class SaleService
             'open_closed_cashbox_id' => $request->open_closed_cashbox_id,
             'user_id' => $request->user_id
         ]);
+
+        if (isset($request->voucher['quotation_id'])) {
+            Quotation::find($request->voucher['quotation_id'])->update(['sale_id' => $sale->id]);
+        }
 
         // Garantia
         if ($request->voucher['warranty']) {

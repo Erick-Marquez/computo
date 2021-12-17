@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SaleResource;
+use App\Models\Company;
 use App\Models\Sale;
 use App\Models\Voided;
+use App\Services\Facturacion\Adapters\VoidedInputs;
+use App\Services\Facturacion\VoidedService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
 
@@ -55,6 +58,36 @@ class VoidedController extends Controller
         ]);
 
         $sunat = SunatService::facturar($voided->id, 'voided');
+
+        // $company = Company::active();
+
+        // try {
+
+        //     $inputs = VoidedInputs::getVoidedServiceInputs($voided, $company, $numeration, $request->description);
+
+        //     $sunat = new VoidedService();
+        //     $sunat->setDataVoided($inputs);
+        //     $sunat->createXml();
+        //     $sunat->singXml();
+        //     $sunat->zipXml();
+        //     $sunat->sendXmlSunat();
+        //     $sunat->sendTicketSunat();
+        //     $sunat->getCdr();
+        //     $respose = $sunat->getResponse();
+
+        //     $voided->update([
+
+        //     ]);
+
+        //     return $sunat->getMessage();
+            
+        // } catch (\Exception $e) {
+
+        //     return response()->json($sunat->getMessage(), 500);
+
+        // }
+
+
         
         if (!$sunat['response']['send']) { // Si no ha sido enviado
             $voided->update([
@@ -104,7 +137,7 @@ class VoidedController extends Controller
 
         $voided->update([
             'ticket_number' => $sunat['response']['cod_ticket'],
-            'state' => $sunat['response']['state'],
+            'state' => $sunat['ticket']['state'],
 
             'send_sunat' => $sunat['response']['send'],
             'response_sunat' => $sunat['response']['response_sunat'],

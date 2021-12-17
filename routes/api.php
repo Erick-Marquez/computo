@@ -61,7 +61,7 @@ Route::middleware([
     Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
     Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes');
     Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes');
-    Route::get('/sales/products', [VoucherController::class, 'products'])->name('api.sales.products');
+    Route::get('/sales/products/{search}', [VoucherController::class, 'products'])->name('api.sales.products');
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
     Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
     Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
@@ -159,6 +159,9 @@ Route::middleware([
     Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
     Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
 
+    //Payment Types
+    Route::apiResource('payment-types', PaymentTypeController::class)->names('api.payment-types');
+
     //------------------------Purchases-----------------------//
     Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
 
@@ -170,7 +173,6 @@ Route::middleware([
     // catalogos
 
     Route::get('ubigees', [UbigeeController::class, 'index'])->name('api.ubigees');
-    Route::get('payment-types', [PaymentTypeController::class, 'index'])->name('api.payment-types');
 
 
     // reports

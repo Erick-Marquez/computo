@@ -460,18 +460,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getTotals: function getTotals() {
       var _this5 = this;
 
-      this.quotationData.quotation.subtotal = 0;
-      this.quotationData.quotation.totalIgv = 0;
-      this.quotationData.quotation.totalExonerated = 0;
-      this.quotationData.quotation.totalUnaffected = 0;
-      this.quotationData.quotation.totalFree = 0;
-      this.quotationData.quotation.totalTaxed = 0;
-      this.quotationData.quotation.total = 0;
-      this.quotationData.quotation.discountItems = 0; // igv constante
+      var subtotal = 0;
+      var totalIgv = 0;
+      var totalExonerated = 0;
+      var totalUnaffected = 0;
+      var totalFree = 0;
+      var totalTaxed = 0;
+      var discountItems = 0;
+      var total = 0; //TODO cambiar el switch por un objeto
+
+      var totals = {
+        10: 0 //totalTaxed
+
+      }; // igv constante
 
       var igv = 0.18;
       this.quotationData.detail.forEach(function (e) {
-        _this5.quotationData.quotation.discountItems += e.discount;
+        discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {
           case 10:
@@ -483,137 +488,147 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             e.total = parseFloat((e.subtotal * (1 + igv)).toFixed(2)); // Actualizar totales globales
 
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalIgv += parseFloat((e.total - e.subtotal).toFixed(2));
-            _this5.quotationData.quotation.totalTaxed += e.subtotal;
-            _this5.quotationData.quotation.total += e.total;
+            subtotal += e.subtotal;
+            totalIgv += parseFloat((e.total - e.subtotal).toFixed(2));
+            totalTaxed += e.subtotal;
+            total += e.total;
             break;
 
           case 11:
             //[Gratuita] Gravado – Retiro por premio
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 12:
             //[Gratuita] Gravado – Retiro por donación
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 13:
             //[Gratuita] Gravado – Retiro
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 14:
             //[Gratuita] Gravado – Retiro por publicidad
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 15:
             //[Gratuita] Gravado – Bonificaciones
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 16:
             //[Gratuita] Gravado – Retiro por entrega a trabajadores
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 20:
             //Exonerado - Operación Onerosa
-            e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalExonerated += e.subtotal;
-            _this5.quotationData.quotation.total += e.total;
+            e.subtotal = e.sale_price * e.quantity - e.discount;
+            e.total = _this5.roundToTwo(e.subtotal);
+            subtotal += e.subtotal;
+            totalExonerated += e.subtotal;
+            total += e.total;
             break;
 
           case 30:
             //Inafecto - Operación Onerosa
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalUnaffected += e.subtotal;
-            _this5.quotationData.quotation.total += e.total;
+            subtotal += e.subtotal;
+            totalUnaffected += e.subtotal;
+            total += e.total;
             break;
 
           case 31:
             //[Gratuita] Inafecto – Retiro por Bonificación
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 32:
             //[Gratuita] Inafecto – Retiro
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 33:
             //[Gratuita] Inafecto – Retiro por Muestras Médicas
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 34:
             //[Gratuita] Inafecto - Retiro por Convenio Colectivo
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 35:
             //[Gratuita] Inafecto – Retiro por premio
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 36:
             //[Gratuita] Inafecto - Retiro por publicidad
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalFree += e.total;
+            subtotal += e.subtotal;
+            totalFree += e.total;
             break;
 
           case 40:
             //Exportación
             e.subtotal = parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
             e.total = e.subtotal;
-            _this5.quotationData.quotation.subtotal += e.subtotal;
-            _this5.quotationData.quotation.totalUnaffected += e.subtotal;
-            _this5.quotationData.quotation.total += e.total;
+            subtotal += e.subtotal;
+            totalUnaffected += e.subtotal;
+            total += e.total;
             break;
         }
       });
-      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount;
+      this.quotationData.quotation.subtotal = subtotal;
+      this.quotationData.quotation.totalIgv = totalIgv;
+      this.quotationData.quotation.totalExonerated = totalExonerated;
+      this.quotationData.quotation.totalUnaffected = totalUnaffected;
+      this.quotationData.quotation.totalFree = totalFree;
+      this.quotationData.quotation.totalTaxed = totalTaxed;
+      this.quotationData.quotation.discountItems = discountItems;
+      this.quotationData.quotation.total = total - this.quotationData.quotation.discount;
+    },
+    roundToTwo: function roundToTwo(num) {
+      return +(Math.round(num + "e+2") + "e-2");
     },
     createQuotation: function createQuotation() {
       var _this6 = this;
@@ -623,7 +638,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         console.log(response);
         _this6.errorsCreate = {};
 
-        _this6.$router.push({
+        _this6.$router.replace({
           name: "quotation-list"
         });
 
@@ -1372,19 +1387,17 @@ var _hoisted_86 = {
 };
 
 var _hoisted_87 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento global:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravado:", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_88 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento por item:", -1
-  /* HOISTED */
-  );
-});
+var _hoisted_88 = {
+  "class": "d-flex justify-content-between"
+};
 
 var _hoisted_89 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravado:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
   /* HOISTED */
   );
 });
@@ -1395,43 +1408,141 @@ var _hoisted_90 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_91 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Inafecto:", -1
-  /* HOISTED */
-  );
-});
+var _hoisted_91 = {
+  "class": "d-flex justify-content-between"
+};
 
 var _hoisted_92 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gratuita:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_93 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Inafecto:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_94 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_95 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_96 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gratuita:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_97 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_98 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_99 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Igv (18%):", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_94 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_100 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_101 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_102 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Subtotal:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_103 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_104 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_105 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento global:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_106 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_107 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_108 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento por item:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_109 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_110 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_111 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Total:", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_95 = {
+var _hoisted_112 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_113 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_114 = {
   "class": "row no-print"
 };
-var _hoisted_96 = {
+var _hoisted_115 = {
   "class": "col-12"
 };
-var _hoisted_97 = {
+var _hoisted_116 = {
   key: 0,
   type: "submit",
   "class": "btn btn-dark float-right"
 };
 
-var _hoisted_98 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_117 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "far fa-credit-card"
   }, null, -1
@@ -1439,12 +1550,12 @@ var _hoisted_98 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_99 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guardar Cotización ");
+var _hoisted_118 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guardar Cotización ");
 
-var _hoisted_100 = [_hoisted_98, _hoisted_99];
-var _hoisted_101 = ["disabled"];
+var _hoisted_119 = [_hoisted_117, _hoisted_118];
+var _hoisted_120 = ["disabled"];
 
-var _hoisted_102 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_121 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "spinner-border spinner-border-sm",
     role: "status"
@@ -1455,7 +1566,7 @@ var _hoisted_102 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_103 = [_hoisted_102];
+var _hoisted_122 = [_hoisted_121];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_SearchCustomers = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SearchCustomers");
 
@@ -1717,47 +1828,51 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.quotationData.quotation.observation]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Totales "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_86, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_87, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.discount), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.quotationData.quotation.observation]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Totales "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_86, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_87, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_88, [_hoisted_89, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalTaxed), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.discount > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_88, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.discountItems), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalTaxed > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_90, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_91, [_hoisted_92, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalExonerated), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_89, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalTaxed), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalExonerated > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_93, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_94, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalUnaffected), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalTaxed > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_90, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalExonerated), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalUnaffected > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_96, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_97, [_hoisted_98, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalFree), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalExonerated > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_91, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalUnaffected), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalFree > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_99, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_100, [_hoisted_101, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalIgv), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalUnaffected > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_92, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalFree), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalIgv > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_102, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_103, [_hoisted_104, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.subtotal), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalFree > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_93, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.totalIgv), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.discount || $data.quotationData.quotation.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_105, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_106, [_hoisted_107, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.discount), 1
   /* TEXT */
-  )], 512
+  )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.totalIgv > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_94, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.total), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.discount > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_108, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_109, [_hoisted_110, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.discountItems), 1
   /* TEXT */
-  )])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_95, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  )])], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.quotationData.quotation.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_111, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_112, [_hoisted_113, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.quotationData.quotation.total), 1
+  /* TEXT */
+  )])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_114, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_115, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[16] || (_cache[16] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.createQuotation();
     }, ["prevent"]))
-  }, [!$data.loadingQuotation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_97, _hoisted_100)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, [!$data.loadingQuotation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_116, _hoisted_119)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "btn btn-dark float-right",
     disabled: $data.loadingQuotation
-  }, _hoisted_103, 8
+  }, _hoisted_122, 8
   /* PROPS */
-  , _hoisted_101))], 32
+  , _hoisted_120))], 32
   /* HYDRATE_EVENTS */
   )])])])])], 64
   /* STABLE_FRAGMENT */
@@ -1781,7 +1896,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1804,7 +1919,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-27533446] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item[data-v-27533446] {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n#searchcustomer[data-v-27533446] {\n  border-top-right-radius: 0 !important;\n  border-bottom-right-radius: 0 !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-27533446] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item[data-v-27533446] {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\n#searchcustomer[data-v-27533446] {\r\n  border-top-right-radius: 0 !important;\r\n  border-bottom-right-radius: 0 !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
