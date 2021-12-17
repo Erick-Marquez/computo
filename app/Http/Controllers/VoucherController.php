@@ -58,7 +58,6 @@ class VoucherController extends Controller
             $q->where('voucher_type_id', '!=', 3)
             ->where('branch_id', auth()->user()->branch_id); // 3 - id de nota de venta
         })
-        ->where('canceled', false)
         ->with('serie.voucherType', 'customer')->latest()->get();
         
         return SaleResource::collection($vouchers);
@@ -85,7 +84,7 @@ class VoucherController extends Controller
         //Datos adicionales para el guardar la venta en el servicio
         $request->offsetSet('open_closed_cashbox_id', auth()->user()->open_closed_cashbox_id);
         $request->offsetSet('user_id', auth()->user()->id);
-
+        
         return $this->saleService->storeSale($request);
 
     }
@@ -127,7 +126,8 @@ class VoucherController extends Controller
     public function print($type, Sale $sale)
     {
         $company = Company::findOrFail(1);
-        $head = Sale::with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType', 'paymentTypes')->findOrFail($sale->id);
+        $head = Sale::with('saleDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType', 'paymentTypes', 'quotation.user')->findOrFail($sale->id);
+
         $details = $head->saleDetails;
 
         $text = join('|', [
@@ -239,9 +239,13 @@ class VoucherController extends Controller
         return PaymentTypeResource::collection($paymentTypes);
     }
 
-    public function products()
+    public function products($search)
     {
-        $branchProducts = BranchProduct::where('branch_id', auth()->user()->branch_id)->with('product.brandLine.brand')->get();
+        $branchProducts = BranchProduct::where('branch_id', auth()->user()->branch_id)
+            ->whereHas('product', function($query) use ($search){
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->with('product.brandLine.brand')->limit(10)->get();
         return BranchProductResource::collection($branchProducts);
     }
 

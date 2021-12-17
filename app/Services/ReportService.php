@@ -152,8 +152,11 @@ class ReportService
                 'cust.name',
                 's.date_issue',
                 's.created_at',
+                's.total',
+                's.discount',
+                's.state',
 
-                DB::raw('SUM((sd.price - (bp.referential_purchase_price * 3.70)) * sd.quantity) as utility'),
+                DB::raw('SUM((sd.price - (bp.referential_purchase_price * 3.70) - sd.discount) * sd.quantity) as utility'),
             )
             ->whereDate('s.created_at', '>=', $request['fromDate'])
             ->whereDate('s.created_at', '<=', $request['untilDate'])
@@ -164,6 +167,9 @@ class ReportService
                 'cust.name',
                 's.date_issue',
                 's.created_at',
+                's.total',
+                's.discount',
+                's.state',
             );
 
         $utility = is_null($request['voucher_type_id']) ?  $utility : $utility->where('vt.id', '=', $request['voucher_type_id']);

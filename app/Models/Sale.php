@@ -65,6 +65,11 @@ class Sale extends Model
         return $this->hasOne(Voided::class);
     }
 
+    public function quotation()
+    {
+        return $this->hasOne(Quotation::class);
+    }
+
     public function warranty()
     {
         return $this->hasOne(Warranty::class);

@@ -6,8 +6,14 @@ import router from "./router";
 
 import { createApp } from 'vue';
 
+/* Plugins */
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
+
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+/* Mixins */
 
 import Permissions from './mixins/Permissions';
 import ErrorsForm from './mixins/ErrorsForm';
@@ -59,8 +65,6 @@ import imageUpload from './mixins/ImageUpload.vue'
 
 const app = createApp({});
 
-app.component('v-select', vSelect)
-
 /* Sales */
 app.component('index-vouchers', indexVoucher);
 app.component('index-sale-notes', indexSaleNotes);
@@ -105,6 +109,16 @@ app.component('index-report-utility', indexReportUtility);
 
 /* uy */
 app.component('image-upload', imageUpload)
+
+
+app.component('v-select', vSelect)
+
+app.use(VueLoading, {
+    color: '#dd2246',
+    loader: 'bars',
+    height: 80,
+    width: 80
+});
 
 app.mixin(Permissions);
 app.mixin(ErrorsForm);

@@ -33,4 +33,9 @@ class Company extends Model
     ];
 
     protected $table = "company";
+
+    public static function active()
+    {
+        return Company::find(1);
+    }
 }

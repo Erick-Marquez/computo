@@ -251,37 +251,41 @@
           <div class="table-responsive">
             <table class="table">
               <tbody>
-                <tr v-show="quotationData.quotation.discount > 0">
-                  <th>Descuento global:</th>
-                  <td>S/. {{ quotationData.quotation.discount }}</td>
-                </tr>
-                <tr v-show="quotationData.quotation.discountItems > 0">
-                  <th>Descuento por item:</th>
-                  <td>S/. {{ quotationData.quotation.discountItems }}</td>
-                </tr>
                 <tr v-show="quotationData.quotation.totalTaxed > 0">
                   <th>Gravado:</th>
-                  <td>S/. {{ quotationData.quotation.totalTaxed }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.totalTaxed }}</span></td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalExonerated > 0">
                   <th>Exonerado:</th>
-                  <td>S/. {{ quotationData.quotation.totalExonerated }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.totalExonerated }}</span></td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalUnaffected > 0">
                   <th>Inafecto:</th>
-                  <td>S/. {{ quotationData.quotation.totalUnaffected }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.totalUnaffected }}</span></td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalFree > 0">
                   <th>Gratuita:</th>
-                  <td>S/. {{ quotationData.quotation.totalFree }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.totalFree }}</span></td>
                 </tr>
                 <tr v-show="quotationData.quotation.totalIgv > 0">
                   <th>Igv (18%):</th>
-                  <td>S/. {{ quotationData.quotation.totalIgv }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.totalIgv }}</span></td>
+                </tr>
+                <tr v-show="quotationData.quotation.discount || quotationData.quotation.discountItems > 0">
+                  <th>Subtotal:</th>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.subtotal }}</span></td>
+                </tr>
+                <tr v-show="quotationData.quotation.discount > 0">
+                  <th>Descuento global:</th>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.discount }}</span></td>
+                </tr>
+                <tr v-show="quotationData.quotation.discountItems > 0">
+                  <th>Descuento por item:</th>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.discountItems }}</span></td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>S/. {{ quotationData.quotation.total }}</td>
+                  <td class="d-flex justify-content-between"><span>S/.</span><span>{{ quotationData.quotation.total }}</span></td>
                 </tr>
               </tbody>
             </table>
@@ -534,22 +538,26 @@ export default {
     },
     getTotals(){
 
-      this.quotationData.quotation.subtotal = 0
-      this.quotationData.quotation.totalIgv = 0
-      this.quotationData.quotation.totalExonerated = 0
-      this.quotationData.quotation.totalUnaffected = 0
-      this.quotationData.quotation.totalFree = 0
-      this.quotationData.quotation.totalTaxed = 0
-      this.quotationData.quotation.total = 0
+      let subtotal = 0
+      let totalIgv = 0
+      let totalExonerated = 0
+      let totalUnaffected = 0
+      let totalFree = 0
+      let totalTaxed = 0
+      let discountItems = 0
+      let total = 0
+      //TODO cambiar el switch por un objeto
+      let totals = {
+        10: 0, //totalTaxed
 
-      this.quotationData.quotation.discountItems = 0
+      }
 
       // igv constante
       const igv = 0.18
 
       this.quotationData.detail.forEach( e => {
 
-        this.quotationData.quotation.discountItems += e.discount
+        discountItems += e.discount
 
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
@@ -564,111 +572,122 @@ export default {
             e.total = parseFloat(( e.subtotal * (1 + igv)).toFixed(2))
 
             // Actualizar totales globales
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalIgv += parseFloat((e.total - e.subtotal).toFixed(2))
-            this.quotationData.quotation.totalTaxed += e.subtotal
-            this.quotationData.quotation.total += e.total
+            subtotal += e.subtotal
+            totalIgv += parseFloat((e.total - e.subtotal).toFixed(2))
+            totalTaxed += e.subtotal
+            total += e.total
             break
           case 11: //[Gratuita] Gravado – Retiro por premio
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 12: //[Gratuita] Gravado – Retiro por donación
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 13: //[Gratuita] Gravado – Retiro
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 14: //[Gratuita] Gravado – Retiro por publicidad
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 15: //[Gratuita] Gravado – Bonificaciones
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
-            e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalExonerated += e.subtotal
-            this.quotationData.quotation.total += e.total
+            e.subtotal = ((e.sale_price * e.quantity) - e.discount)
+            e.total = this.roundToTwo(e.subtotal)
+            subtotal += e.subtotal
+            totalExonerated += e.subtotal
+            total += e.total
             break
           case 30: //Inafecto - Operación Onerosa
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalUnaffected += e.subtotal
-            this.quotationData.quotation.total += e.total
+            subtotal += e.subtotal
+            totalUnaffected += e.subtotal
+            total += e.total
             break
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 32: //[Gratuita] Inafecto – Retiro
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 35: //[Gratuita] Inafecto – Retiro por premio
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalFree += e.total
+            subtotal += e.subtotal
+            totalFree += e.total
             break
           case 40: //Exportación
             e.subtotal = (parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount)
             e.total = e.subtotal
-            this.quotationData.quotation.subtotal += e.subtotal
-            this.quotationData.quotation.totalUnaffected += e.subtotal
-            this.quotationData.quotation.total += e.total
+            subtotal += e.subtotal
+            totalUnaffected += e.subtotal
+            total += e.total
             break
         }
 
       })
 
-      this.quotationData.quotation.total = this.quotationData.quotation.total - this.quotationData.quotation.discount
+      this.quotationData.quotation.subtotal = subtotal
+      this.quotationData.quotation.totalIgv = totalIgv
+      this.quotationData.quotation.totalExonerated = totalExonerated
+      this.quotationData.quotation.totalUnaffected = totalUnaffected
+      this.quotationData.quotation.totalFree = totalFree
+      this.quotationData.quotation.totalTaxed = totalTaxed
+      this.quotationData.quotation.discountItems = discountItems
+      this.quotationData.quotation.total = total - this.quotationData.quotation.discount
 
     },
+    roundToTwo(num) {
+      return +(Math.round(num + "e+2")  + "e-2");
+    },
+
     createQuotation() {
 
       this.loadingQuotation = true
@@ -679,7 +698,7 @@ export default {
         this.errorsCreate = {
         }
 
-        this.$router.push({ name: "quotation-list" })
+        this.$router.replace({ name: "quotation-list" })
         Swal.fire(
           "Cotización Creada",
           "Se ha creado la Cotización " + response.data,
