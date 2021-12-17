@@ -62,7 +62,7 @@
             <input type="search"  v-model="productSearch" @keyup="searchProducts" class="form-control rounded-pill form-control rounded-pill-lg" placeholder="Escribe tu producto o código">
             <div class="option__relative">
               <div class="option__contenedor" >
-                <div>
+                <div v-if="productSearch.length > 0">
                   <table table class="table table-sm table-bordered table-hover bg-white shadow-lg">
                     <thead v-if="productSearchFilter.length > 0" class="thead-dark text-center">
                       <tr>
@@ -334,26 +334,19 @@ export default {
       this.currencyExchange = resp.data.data;
     });
 
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
-
-      this.products.forEach(product => {
-        product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
-        product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
-        product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
-      });
-      
-    });
-
     await BaseUrl.get(`api/quotations/sellers`).then((resp) => {
       this.sellers = resp.data.data;
     });
 
     this.getSeries()
 
+    this.loader.hide()
+
   },
   data() {
     return {
+
+      loader: null,
 
       loadingQuotation: false,
 
@@ -372,7 +365,6 @@ export default {
 
       identificationDocuments: [],
       igvTypes: [],
-      products: [],
       quotationData: {
         customer: {
           id: null
@@ -405,6 +397,9 @@ export default {
     };
   },
   mounted(){
+    this.loader = this.$loading.show({
+      canCancel: true,
+    });
     const contain = document.querySelector('.card')
     contain.addEventListener('click', (e)=> {
       if (e.target.className !='inputContent') {
@@ -429,17 +424,25 @@ export default {
       this.currentNumber = serieFilter[0].current_number + 1;
     },
 
-    searchProducts(){
+    async searchProducts(){
 
-      let produtsBackup = this.products
-      let wordFilter = this.productSearch.toLowerCase();
+      if (this.productSearch == "") {
+        this.productSearchFilter = [];
+      } else {
 
-      if(wordFilter===''){
-        this.productSearchFilter=''
-      }else{
-        this.productSearchFilter = produtsBackup.filter(products =>
-          (products.product.name.toLowerCase().indexOf(wordFilter) !== -1)
-        );
+        await BaseUrl.get(`api/sales/products/${this.productSearch}`).then((resp) => {
+
+          let products = resp.data.data;
+
+          products.forEach(product => {
+            product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
+            product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
+            product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
+          });
+
+          this.productSearchFilter = products
+
+        });
       }
 
     },
