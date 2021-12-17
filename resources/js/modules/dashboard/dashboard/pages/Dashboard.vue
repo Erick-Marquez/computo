@@ -78,7 +78,7 @@
           </div>
         </div>
         <div class="card-body" style="display: block">
-          <LineChart :chartData="testData" :options="options" />
+          <LineChart :chartData="testData" />
         </div>
         <!-- /.card-body -->
       </div>

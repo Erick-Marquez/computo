@@ -33,7 +33,7 @@ class CreateCustomersTable extends Migration
                 ->nullable()
                 ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->onDelete('SET NULL');
 
             $table->timestamps();
         });

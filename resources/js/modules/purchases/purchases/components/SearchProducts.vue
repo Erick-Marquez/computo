@@ -68,7 +68,7 @@ export default {
   },
   props: {
     products: Object,
-    errors: Array,
+    errors: Object,
   },
   methods: {
     async getProducts() {

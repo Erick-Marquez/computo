@@ -44,13 +44,16 @@
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
-            id="searchProvider"
-            :class="$errorsClass(errors['provider.document'])"
+            :class="[
+              $errorsClassSquare(errors['provider.document']),
+              'rounded-pill-left',
+            ]"
             v-model="provider.document"
             :maxlength="maxLenghDocument"
             @keyup="searchDocument"
             @blur="toggle = false"
             @focus="toggle = true"
+            autocomplete="nop"
           />
           <div v-if="!loading" class="input-group-append">
             <button
@@ -68,16 +71,34 @@
               </div>
             </button>
           </div>
+
+          <div
+            v-if="$errorsExists(errors['provider.document'])"
+            class="invalid-feedback ml-3"
+          >
+            {{ $errorsPrint(errors["provider.document"]) }}
+          </div>
         </div>
 
         <input
           v-else
           type="text"
-          class="form-control rounded-pill"
+          :class="[
+            $errorsClassSquare(errors['provider.document']),
+            'rounded-pill-left',
+          ]"
           @keyup="searchDocument"
           @blur="toggle = false"
           @focus="toggle = true"
+          autocomplete="nop"
         />
+
+        <div
+          v-if="$errorsExists(errors['provider.document'])"
+          class="invalid-feedback ml-3"
+        >
+          {{ $errorsPrint(errors["provider.document"]) }}
+        </div>
 
         <!-- Autocomplete -->
         <div v-show="toggle" class="autocomplete mt-0">
@@ -138,28 +159,33 @@
     </div>
 
     <!-- UBIGEO -->
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-globe"></i>
           Ubigeo</label
         >
-        <select
-          id="select4"
-          class="js-states form-control rounded-pill"
-          name=""
-          style="width: 100%"
+        <v-select
+          class="style-chooser"
           v-model="provider.ubigee_id"
+          label="place_description"
+          :reduce="(ubigee) => ubigee.cod"
+          :options="ubigees"
         >
-          <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.id">
-            {{ ubigee.place_description }}
-          </option>
-        </select>
+          <template v-slot:no-options="{ search, searching }">
+            <template v-if="searching">
+              No se encontraron resultados para
+              <b
+                ><em>{{ search }}</em></b
+              >.
+            </template>
+          </template>
+        </v-select>
       </div>
     </div>
 
     <!-- N° CELULAR -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-phone"></i>
@@ -195,16 +221,13 @@ export default {
   props: {
     provider: Object,
     voucherType: String,
-    errors: Array,
+    errors: Object,
   },
   created() {
     this.getTypeDocuments();
     this.getUbigees();
   },
-  mounted() {
-    $("#select4").select2();
-    $(".select2-selection.select2-selection--single").addClass("rounded-pill");
-  },
+  mounted() {},
   methods: {
     async getTypeDocuments() {
       await BaseUrl.get(`/api/tipos-documentos`)
@@ -227,7 +250,7 @@ export default {
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
-          this.provider.ubigee_id = null;
+          this.provider.ubigee_id = response.data.ubigee;
           //this.provider.ubigee_id = response.data.ubigee_id;
           this.responseApi = "HABIDO";
           console.log(this.responseApi);
@@ -252,7 +275,7 @@ export default {
     },
     async getproviders() {
       await BaseUrl.get(
-        `/api/providers?filter[document]=${this.provider.document}
+        `/api/providers?included=ubigee&filter[document]=${this.provider.document}
                             &filter[identification_document_id]=${this.provider.identification_document_id}
                             &perPage=10`
       )
@@ -268,7 +291,7 @@ export default {
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
       this.provider.phone = providerFind.phone;
-      this.provider.ubigee_id = providerFind.ubigee_id;
+      this.provider.ubigee_id = providerFind.ubigee.cod;
       this.providers = null;
       this.selectUbigee;
     },
@@ -303,7 +326,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .autocomplete {
   position: relative;
   cursor: pointer;
@@ -341,8 +364,23 @@ export default {
   border-bottom-right-radius: 50px;
 }
 
-#searchProvider {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
+.style-chooser .vs__dropdown-toggle {
+  border-radius: 50px;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-color: #ced4da;
+  box-shadow: inset 0 0 0 transparent;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
 }
 </style>

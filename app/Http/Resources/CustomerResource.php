@@ -23,6 +23,7 @@ class CustomerResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
+            'ubigee' => UbigeeResource::make($this->whenLoaded('ubigee')),
         ];
     }
 }

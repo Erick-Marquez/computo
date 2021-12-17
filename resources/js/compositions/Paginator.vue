@@ -1,11 +1,11 @@
 <template>
   <ul class="pagination pagination-sm m-0 float-right">
-    <li :class="['page-item', link.active ?  'active' : '']" v-for="(link, index) in links" :key="link.index">
+    <li :class="['page-item', link.active ?  'active' : '']" v-for="(link) in links" :key="link.index">
       <router-link v-if="link.url == null ? false : true"
         class="page-link"
-        :to="{ path: '/clientes', query: { page: link.label } }"
+        :to="{ path: '/clientes', query: { page: getPage(link.url) } }"
       >
-        {{ index == 0 ? 'Anterior' : index == links.length - 1 ? 'Siguiente' : getPage(link.url) }}
+        {{ link.label }}
       </router-link>
     </li>
   </ul>
@@ -33,5 +33,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.page-link {
+    color: #23272b;
+}
+
+.page-item.active .page-link {
+    background-color: #23272b;
+    border-color: #1d2124;
+}
+
+.page-link:hover {
+    color: #23272b;
+}
 </style>

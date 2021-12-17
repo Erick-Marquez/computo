@@ -22,7 +22,7 @@ class ProviderResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
-            'ubigee_id' => $this->ubigee_id,
+            'ubigee' => UbigeeResource::make($this->whenLoaded('ubigee')),
             'identification_document' => IdentificationDocumentResource::make($this->whenLoaded('identificationDocument')),
         ];
     }
