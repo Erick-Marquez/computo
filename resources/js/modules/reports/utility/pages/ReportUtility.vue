@@ -64,6 +64,7 @@
                     <th>CLIENTE</th>
                     <th>F. EMISIÓN</th>
                     <th>TOTAL</th>
+                    <th>UTILIDAD</th>
                   </tr>
                 </thead>
 
@@ -76,12 +77,13 @@
                     </td>
                     <td>{{ sale.name }}</td>
                     <td>{{ sale.created_at }}</td>
-                    <td>{{ parseFloat(sale.utility).toFixed(2) }}</td>
+                    <td>{{ sale.state === 'ANULADO' ? 0 : sale.total }}</td>
+                    <td>{{ sale.utility2 = sale.state === 'ANULADO' ? 0 : sale.discount === 0 ? parseFloat(sale.utility).toFixed(2) : parseFloat(sale.utility).toFixed(2) - sale.discount }}</td>
                   </tr>
                 </tbody>
                 <tfoot v-if="utility.length >= 1">
                   <tr>
-                    <td colspan="3" class="text-right">
+                    <td colspan="4" class="text-right">
                       <strong>TOTAL:</strong>
                     </td>
                     <td>
@@ -90,7 +92,7 @@
                           .reduce((previousValue, currentValue) => {
                             return (
                               parseFloat(previousValue) +
-                              parseFloat(currentValue.utility)
+                              parseFloat(currentValue.utility2)
                             );
                           }, 0)
                           .toFixed(2)
@@ -100,7 +102,7 @@
                 </tfoot>
                 <tbody v-else>
                   <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                       <p class="lead">
                         <b>No existen Registros las fechas seleccionadas </b>
                       </p>

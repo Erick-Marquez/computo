@@ -173,7 +173,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   props: {
     products: Object,
-    errors: Array
+    errors: Object
   },
   methods: {
     getProducts: function getProducts() {

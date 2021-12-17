@@ -15,12 +15,12 @@ class DashboardController extends Controller
 {
     public function vouchers()
     {
-        $mes_anterior = date('y-m-d', strtotime('-30 day'));
+        $mes_anterior = date('y-m-d', strtotime('-7 day'));
         $user_id = auth()->user()->id;
 
         $fechas = [];
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $fechas[$i] = date('Y-m-d', strtotime("-$i day"));
         }
 

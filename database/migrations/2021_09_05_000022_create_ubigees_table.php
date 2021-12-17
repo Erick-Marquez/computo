@@ -15,7 +15,7 @@ class CreateUbigeesTable extends Migration
     {
         Schema::create('ubigees', function (Blueprint $table) {
             $table->id();
-            $table->string('cod')->unique();
+            $table->char('cod', 6)->index()->unique();
             $table->string('place_description');
         });
     }

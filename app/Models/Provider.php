@@ -18,16 +18,22 @@ class Provider extends Model
         'phone',
         'email',
         'address',
+        'ubigee_id',
         'identification_document_id'
     ];
 
-    protected $allowIncluded = ['identificationDocument'];
+    protected $allowIncluded = ['identificationDocument', 'ubigee'];
     protected $allowFilter = ['id', 'document', 'comercial_name', 'identification_document_id'];
     protected $allowSort = ['id'];
 
     public function identificationDocument()
     {
         return $this->belongsTo(IdentificationDocument::class);
+    }
+
+    public function ubigee()
+    {
+        return $this->belongsTo(Ubigee::class);
     }
 
 }

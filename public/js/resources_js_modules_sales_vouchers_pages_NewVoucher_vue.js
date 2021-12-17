@@ -483,25 +483,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     searchProducts: function searchProducts() {
       var produtsBackup = this.products;
-      var wordFilter = this.productSearch;
+      var wordFilter = this.productSearch.toLowerCase();
 
       if (wordFilter === "") {
         this.productSearchFilter = "";
       } else {
         this.productSearchFilter = produtsBackup.filter(function (products) {
-          return products.product.name.indexOf(wordFilter) !== -1;
+          return products.product.name.toLowerCase().indexOf(wordFilter) !== -1;
         }).slice(0, 10);
       }
     },
     searchProductSeries: function searchProductSeries(i, j) {
       var produtSeriesBackup = this.productSeries[i];
-      var wordFilter = this.saleData.detail[i].series[j].serie;
+      var wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
 
       if (wordFilter === "") {
         this.productSerieSearchFilter[i][j] = "";
       } else {
         this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(function (productSeries) {
-          return productSeries.serie.indexOf(wordFilter) !== -1;
+          return productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1;
         });
 
         if (this.productSerieSearchFilter[i][j].length === 0) {

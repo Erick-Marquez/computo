@@ -178,7 +178,7 @@
                   >
                     <purchase-credit
                       :installments="newPurchase.installments"
-                      :total_installment="newPurchase.voucherDetail.total/newPurchase.installments.number"
+                      :total_installment="parseFloat(newPurchase.voucherDetail.total/newPurchase.installments.number).toFixed(3)"
                     ></purchase-credit>
                   </div>
                 </div>

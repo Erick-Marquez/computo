@@ -18,10 +18,7 @@
         <tbody>
           <tr>
             <td colspan="8">
-              <div
-                class="image-without-products"
-                v-if="!products.length"
-              >
+              <div class="image-without-products" v-if="!products.length">
                 <img
                   src="/images/add_product.png"
                   alt=""
@@ -32,7 +29,17 @@
             </td>
           </tr>
           <tr v-for="(product, index) in products" :key="product.id">
-            <td class="px-1">{{ product.name }}</td>
+            <td class="px-1">
+              {{ product.name }}
+              <p v-if="$errorsExists(errors[`products.${index}.series`])" class="text-danger text-sm">
+                {{
+                  $errorsPrint(
+                    errors[`products.${index}.series`]
+                  )
+                }}
+                <i class="fas fa-exclamation-circle"></i>
+              </p>
+            </td>
 
             <td class="px-1">
               <select class="form-control rounded-pill" v-model="product.igv">
@@ -42,17 +49,55 @@
             </td>
             <td class="px-1">
               <input
-                class="form-control form-control-border p-0 text-center"
+                :class="[
+                  $errorsClassSquare(
+                    errors[`products.${index}.quantity`]
+                  ),
+                  'form-control-border p-0 text-center',
+                ]"
                 type="text"
                 v-model="product.quantity"
               />
+              <div
+                v-if="
+                  $errorsExists(
+                    errors[`products.${index}.quantity`]
+                  )
+                "
+                class="invalid-feedback"
+              >
+                {{
+                  $errorsPrint(
+                    errors[`products.${index}.quantity`]
+                  )
+                }}
+              </div>
             </td>
             <td class="px-1">
               <input
-                class="form-control form-control-border p-0 text-center"
+                :class="[
+                  $errorsClassSquare(
+                    errors[`products.${index}.referential_purchase_price`]
+                  ),
+                  'form-control-border p-0 text-center',
+                ]"
                 type="text"
                 v-model="product.referential_purchase_price"
               />
+              <div
+                v-if="
+                  $errorsExists(
+                    errors[`products.${index}.referential_purchase_price`]
+                  )
+                "
+                class="invalid-feedback"
+              >
+                {{
+                  $errorsPrint(
+                    errors[`products.${index}.referential_purchase_price`]
+                  )
+                }}
+              </div>
             </td>
             <td class="px-1">
               <input
@@ -169,7 +214,7 @@ export default {
   },
   props: {
     products: Object,
-    errors: Array,
+    errors: Object,
   },
   methods: {
     showModalSeries(index) {

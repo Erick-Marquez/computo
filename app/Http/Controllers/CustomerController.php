@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Models\IdentificationDocument;
@@ -17,9 +18,9 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::included()
-                                ->filter()
-                                ->sort()
-                                ->getOrPaginate();
+            ->filter()
+            ->sort()
+            ->getOrPaginate();
 
         return CustomerResource::collection($customers);
     }
@@ -30,19 +31,14 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'document' => 'required',
-            'identification_document_id' => 'required'
-        ]);
-
-        Customer::create($request->all());
-
-        return response()->json([
-            'message' => 'cliente creado'
-        ]);
+        try {
+            $customer = Customer::createCustomer($request->all());
+            return response()->json(['message' => 'cliente creado', 'request' => $customer], 201);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
     }
 
     /**
@@ -87,6 +83,6 @@ class CustomerController extends Controller
         $customer->delete();
         return response()->json([
             'message' => 'cliente eliminado'
-        ]);
+        ], 200);
     }
 }

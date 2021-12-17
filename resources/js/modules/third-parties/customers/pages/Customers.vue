@@ -8,7 +8,7 @@
   </button>
 
   <form @submit.prevent="createCustomer">
-    <NewCustomer :customer="customer" />
+    <NewCustomer :customer="customer" :errors="errors" />
   </form>
 
   <div class="card">
@@ -59,6 +59,10 @@
               <p class="font-weight-light">
                 <strong>Email: </strong>
                 {{ customer.email == null ? "ninguno" : customer.email }}
+              </p>
+              <p class="font-weight-light">
+                <strong>Ubigeo: </strong>
+                {{ customer.ubigee == null ? "ninguno" : customer.ubigee.place_description }}
               </p>
               <p class="font-weight-light">
                 <strong>Dirección: </strong>
@@ -122,6 +126,7 @@ export default {
       },
       links: {},
       customers: {},
+      errors: [],
     };
   },
 
@@ -130,7 +135,9 @@ export default {
   },
   methods: {
     async getCustomers() {
-      await BaseUrl.get(`/api/customers?sort=-id&perPage=10&page=${this.$route.query.page}`)
+      await BaseUrl.get(
+        `/api/customers?included=ubigee&sort=-id&perPage=10&page=${this.$route.query.page}`
+      )
         .then((response) => {
           this.customers = response.data.data;
           this.links = response.data.meta.links;
@@ -143,13 +150,16 @@ export default {
     async createCustomer() {
       await BaseUrl.post("/api/customers", this.customer)
         .then((response) => {
+            $("#new-customer").modal("hide");
+          Swal.fire("Cliente Registrado", "", "success");
           console.log(response.data);
-          $("#new-customer").modal("hide");
           this.customer = {};
+          this.errors = [];
           this.getCustomers();
         })
         .catch((error) => {
           console.log(error.response);
+          this.errors = error.response.data.errors;
         });
     },
     deleteCustomer(id) {
