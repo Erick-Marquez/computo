@@ -1,5 +1,5 @@
 <template>
-  <h4 class="mb-3">Datos del clientes</h4>
+  <h4 class="mb-3">Datos del Cliente</h4>
   <div class="row">
     <!-- TIPO DOCUMENTO -->
     <div class="col-md-3">
@@ -9,11 +9,13 @@
           Tipo documento
         </label>
         <select
-          v-if="voucherType == 'FACTURA' || voucherType == '01' || voucherType === 1 "
+          v-if="
+            voucherType == 'FACTURA' || voucherType == '01' || voucherType === 1
+          "
           v-model="customer.identification_document_id"
           class="form-control rounded-pill"
         >
-          <option value="6" selected>RUC</option>
+          <option value="6">RUC</option>
         </select>
         <select
           v-else
@@ -44,13 +46,16 @@
         <div v-if="showSearchingData" class="input-group">
           <input
             type="text"
-            id="searchcustomer"
-            :class="$errorsClass(errors['customer.document'])"
+            :class="[
+              $errorsClassSquare(errors['customer.document']),
+              'rounded-pill-left',
+            ]"
             v-model="customer.document"
             :maxlength="maxLenghDocument"
             @keyup="searchDocument"
             @blur="toggle = false"
             @focus="toggle = true"
+            autocomplete="nop"
           />
           <div v-if="!loading" class="input-group-append">
             <button
@@ -68,16 +73,34 @@
               </div>
             </button>
           </div>
+
+          <div
+            v-if="$errorsExists(errors['customer.document'])"
+            class="invalid-feedback ml-3"
+          >
+            {{ $errorsPrint(errors["customer.document"]) }}
+          </div>
         </div>
 
         <input
           v-else
           type="text"
-          class="form-control rounded-pill"
+          :class="[
+            $errorsClassSquare(errors['customer.document']),
+            'rounded-pill-left',
+          ]"
           @keyup="searchDocument"
           @blur="toggle = false"
           @focus="toggle = true"
+          autocomplete="nop"
         />
+
+        <div
+          v-if="$errorsExists(errors['customer.document'])"
+          class="invalid-feedback ml-3"
+        >
+          {{ $errorsPrint(errors["customer.document"]) }}
+        </div>
 
         <!-- Autocomplete -->
         <div v-show="toggle" class="autocomplete mt-0">
@@ -138,28 +161,33 @@
     </div>
 
     <!-- UBIGEO -->
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-globe"></i>
           Ubigeo</label
         >
-        <select
-          id="select4"
-          class="js-states form-control rounded-pill"
-          name=""
-          style="width: 100%"
+        <v-select
+          class="style-chooser"
           v-model="customer.ubigee_id"
+          label="place_description"
+          :reduce="(ubigee) => ubigee.cod"
+          :options="ubigees"
         >
-          <option v-for="ubigee in ubigees" :key="ubigee.id" :value="ubigee.id">
-            {{ ubigee.place_description }}
-          </option>
-        </select>
+          <template v-slot:no-options="{ search, searching }">
+            <template v-if="searching">
+              No se encontraron resultados para
+              <b
+                ><em>{{ search }}</em></b
+              >.
+            </template>
+          </template>
+        </v-select>
       </div>
     </div>
 
     <!-- N° CELULAR -->
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="form-group">
         <label for="">
           <i class="text-danger fas fa-phone"></i>
@@ -195,16 +223,12 @@ export default {
   props: {
     customer: Object,
     voucherType: Number,
-    errors: Array,
+    errors: Object,
   },
   created() {
     this.getTypeDocuments();
     this.getUbigees();
-    this.customer.identification_document_id = 6
-  },
-  mounted() {
-    $("#select4").select2();
-    $(".select2-selection.select2-selection--single").addClass("rounded-pill");
+    this.customer.identification_document_id = 6;
   },
   methods: {
     async getTypeDocuments() {
@@ -225,9 +249,13 @@ export default {
           console.log(response.data);
           this.customer.id = null;
           this.customer.name = response.data.name;
-          this.customer.address = response.data.address ? response.data.address : null;
-          this.customer.phone = response.data.phone ? response.data.phone : null;
-          this.customer.ubigee_id = null;
+          this.customer.address = response.data.address
+            ? response.data.address
+            : null;
+          this.customer.phone = response.data.phone
+            ? response.data.phone
+            : null;
+          this.customer.ubigee_id = response.data.ubigee;
           //this.customer.ubigee_id = response.data.ubigee_id;
           this.responseApi = "HABIDO";
           console.log(this.responseApi);
@@ -252,7 +280,7 @@ export default {
     },
     async getcustomers() {
       await BaseUrl.get(
-        `/api/customers?filter[document]=${this.customer.document}
+        `/api/customers?included=ubigee&filter[document]=${this.customer.document}
                             &filter[identification_document_id]=${this.customer.identification_document_id}
                             &perPage=10`
       )
@@ -264,12 +292,12 @@ export default {
         });
     },
     setData(customerFind) {
-      this.customer.id = customerFind.id;
       this.customer.document = customerFind.document;
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
-      this.customer.ubigee_id = customerFind.ubigee_id;
+      this.customer.ubigee_id =
+        customerFind.ubigee != null ? customerFind.ubigee.cod : null;
       this.customers = null;
       this.selectUbigee;
     },
@@ -293,10 +321,6 @@ export default {
         ? "text-sm font-weight-light text-danger"
         : "text-sm font-weight-light text-success";
     },
-    selectUbigee() {
-      $("#select4").val(this.customer.ubigee_id); // Select the option with a value of '1'
-      $("#select4").trigger("change"); // Notify any JS components that the value changed
-    },
     // enableSearchDocument() {
     //   return true
     // },
@@ -304,7 +328,8 @@ export default {
 };
 </script>
 
-<style scoped>
+
+<style>
 .autocomplete {
   position: relative;
   cursor: pointer;
@@ -342,8 +367,23 @@ export default {
   border-bottom-right-radius: 50px;
 }
 
-#searchcustomer {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
+.style-chooser .vs__dropdown-toggle {
+  border-radius: 50px;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-color: #ced4da;
+  box-shadow: inset 0 0 0 transparent;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
 }
 </style>

@@ -24,7 +24,6 @@ class PurchaseService
                     'phone' => $request->provider['phone'],
                     'address' => $request->provider['address'],
                     'identification_document_id' => $request->provider['identification_document_id'],
-                    'ubigee_id' => $request->provider['ubigee_id'],
                 ]
             );
 
