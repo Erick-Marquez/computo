@@ -474,18 +474,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.currentNumber = serieFilter[0].current_number + 1;
     },
     searchProducts: function searchProducts() {
-<<<<<<< HEAD
-      var produtsBackup = this.products;
-      var wordFilter = this.productSearch.toLowerCase();
-
-      if (wordFilter === "") {
-        this.productSearchFilter = "";
-      } else {
-        this.productSearchFilter = produtsBackup.filter(function (products) {
-          return products.product.name.toLowerCase().indexOf(wordFilter) !== -1;
-        }).slice(0, 10);
-      }
-=======
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -521,7 +509,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
->>>>>>> 3a27f9b2915ead9378505180ef1d0a100016d629
     },
     searchProductSeries: function searchProductSeries(i, j) {
       var produtSeriesBackup = this.productSeries[i];
@@ -2784,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -2831,11 +2818,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-<<<<<<< HEAD
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\n  position: relative;\n  cursor: pointer;\n}\n.list {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\n  border-radius: 50px;\n  width: 100%;\n  height: calc(2.25rem + 2px);\n  font-size: 1rem;\n  font-weight: 400;\n  line-height: 1.5;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border-color: #ced4da;\n  box-shadow: inset 0 0 0 transparent;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\n.style-chooser .vs__open-indicator {\n  fill: #394066;\n}\n", ""]);
-=======
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-27533446] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-27533446] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item[data-v-27533446] {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item[data-v-27533446]:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left[data-v-27533446] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-27533446] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\n#searchcustomer[data-v-27533446] {\r\n  border-top-right-radius: 0 !important;\r\n  border-bottom-right-radius: 0 !important;\n}\r\n", ""]);
->>>>>>> 5d48e1699642d70c545347e049efc8907b169cf8
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

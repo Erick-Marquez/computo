@@ -166,9 +166,9 @@ Route::middleware([
     Route::apiResource('purchases', PurchaseController::class)->names('api.purchases');
 
     // Dashboard
-    Route::get('dashboard/vouchers', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
-    Route::get('dashboard/widgets', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
-    Route::get('dashboard/type-payments', [DashboardController::class, 'amountTypePayment'])->name('api.dashboard.type-payments');
+    Route::get('dashboard/vouchers/{days?}', [DashboardController::class, 'vouchers'])->name('api.dashboard.voucher');
+    Route::get('dashboard/widgets/{days?}', [DashboardController::class, 'widgets'])->name('api.dashboard.widgets');
+    Route::get('dashboard/type-payments/{days?}', [DashboardController::class, 'amountTypePayment'])->name('api.dashboard.type-payments');
 
     // catalogos
 

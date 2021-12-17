@@ -54,8 +54,8 @@ class Purchase extends Model
      * * METODOS ESTATICOS DEL MODELO
     */
 
-    public static function getPurchasesToday()
+    public static function getPurchasesToday($date, $brach_id)
     {
-        return Purchase::where('date_issue', date('Y-m-d'))->sum('total');
+        return Purchase::whereDate('date_issue', '>=', date($date))->sum('total');
     }
 }

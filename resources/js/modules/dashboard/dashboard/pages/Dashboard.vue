@@ -1,10 +1,21 @@
 <template>
   <div class="content-header">
-    <h1>Dashboard</h1>
+    <div class="row mb-2">
+      <div class="col-md">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="col-md">
+        <ol class="breadcrumb float-sm-right bg-white p-2">
+          <button class="btn btn-sm btn-outline-danger" @click="setDays(7)">Semana</button>
+          <button class="btn btn-sm btn-outline-danger mx-2" @click="setDays(15)">Quincena</button>
+          <button class="btn btn-sm btn-outline-danger" @click="setDays(30)">Mes</button>
+        </ol>
+      </div>
+    </div>
     <!-- <div v-if="$can('dashboard')">tu puedes ver el dashboard</div>
     <div v-if="$can('sales')">tu puedes ver las compras</div> -->
   </div>
-  <div class="row">
+  <div class="row mb-4">
     <div class="col-lg-4 col-12">
       <!-- small card -->
       <div class="small-box bg-success caja-1">
@@ -58,7 +69,7 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Grafico 2</h3>
+          <h3 class="card-title">Cantidad de voucher emitidos</h3>
 
           <div class="card-tools">
             <button
@@ -78,7 +89,7 @@
           </div>
         </div>
         <div class="card-body" style="display: block">
-          <LineChart :chartData="testData" />
+          <VoucherChart :days="days"/>
         </div>
         <!-- /.card-body -->
       </div>
@@ -106,7 +117,7 @@
           </div>
         </div>
         <div class="card-body" style="display: block">
-          <TypePaymentChart />
+          <TypePaymentChart :days="days"/>
         </div>
         <!-- /.card-body -->
       </div>
@@ -119,111 +130,24 @@
 import Chart from "chart.js/auto";
 import { LineChart } from "vue-chart-3";
 import TypePaymentChart from "../charts/TypePaymentChart.vue";
+import VoucherChart from "../charts/VoucherChart.vue";
 import BaseUrl from "../../../../api/BaseUrl";
 
 export default {
   name: "Dashboard",
-  components: { LineChart, BaseUrl, TypePaymentChart },
+  components: { LineChart, BaseUrl, TypePaymentChart, VoucherChart },
   data() {
     return {
       widgets: {},
-      options: {
-        scales: {
-          x: {
-            gridLines: {
-              display: false,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            suggestedMax: 50,
-            gridLines: {
-              display: false,
-            },
-          },
-        },
-      },
-      testData: {
-        type: "line",
-        labels: [],
-
-        datasets: [
-          {
-            label: "FACTURAS",
-            fill: true,
-            tension: 0.5,
-            data: [],
-            backgroundColor: ["rgba(23, 165, 137, 0.1)"],
-            borderColor: "#17A589",
-          },
-          {
-            label: "BOLETAS",
-            fill: true,
-            tension: 0.5,
-            data: [],
-            backgroundColor: ["rgba(52, 73, 94, 0.1)"],
-            borderColor: "#34495E",
-          },
-          {
-            label: "NV",
-            fill: true,
-            tension: 0.5,
-            data: [10, 20, 30, 60, 45],
-            backgroundColor: ["rgba(203, 67, 53, 0.1)"],
-            borderColor: "#CB4335",
-          },
-        ],
-      },
+      days: 7,
     };
   },
-  created() {
-    this.getDataVouchers();
+  mounted() {
     this.getDataWidgets();
   },
   methods: {
-    async getDataVouchers() {
-      await BaseUrl.get(`/api/dashboard/vouchers`)
-        .then((response) => {
-          console.log(response.data);
-          this.testData.labels = response.data.fechas.reverse();
-          this.testData.datasets[0].data = this.fillDates(
-            response.data.facturas,
-            response.data.fechas
-          );
-          this.testData.datasets[1].data = this.fillDates(
-            response.data.boletas,
-            response.data.fechas
-          );
-          this.testData.datasets[2].data = this.fillDates(
-            response.data.notas_venta,
-            response.data.fechas
-          );
-        })
-        .catch((error) => {
-          this;
-        });
-    },
-    fillDates(vouchers, fechas) {
-      fechas.forEach((fecha) => {
-        const e = vouchers.find((v) => v.x == fecha);
-        e == undefined ? vouchers.push({ x: fecha, y: 0 }) : null;
-      });
-
-      vouchers.sort(function (a, b) {
-        if (a.x > b.x) {
-          return 1;
-        }
-        if (a.x < b.x) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
-
-      return vouchers;
-    },
     async getDataWidgets() {
-      await BaseUrl.get(`/api/dashboard/widgets`)
+      await BaseUrl.get(`/api/dashboard/widgets/${this.days}`)
         .then((response) => {
           console.log(response.data);
           this.widgets = response.data;
@@ -232,14 +156,9 @@ export default {
           console.log(error.response);
         });
     },
-    getAmountTypePayment() {
-      BaseUrl.get(`/api/dashboard/type-payments`)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
+    setDays($days) {
+      this.days = $days;
+      this.getDataWidgets();
     },
   },
 };

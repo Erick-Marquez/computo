@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 use SebastianBergmann\Environment\Console;
 
 class CompanyController extends Controller
@@ -49,8 +50,7 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //validar
+    {   //validar
         $request->validate([
             'ruc' => 'min:11|max:11|required',
             'name' => 'string|required',
@@ -86,11 +86,19 @@ class CompanyController extends Controller
             $data['password_electronic_certificate'] = $request->password_electronic_certificate;
         }
 
-        $company = Company::findOrFail($id);
+        try {
+            if (!is_null($request->img)) {
+                Image::make($request->img)->save(public_path() . "/images/Logo.png");
+            }
 
-        $company->update($data);
+            $company = Company::findOrFail($id);
 
-        return $company;
+            $company->update($data);
+
+            return $company;
+        } catch (\Throwable $th) {
+            return abort(405, $th->getMessage());
+        }
     }
 
     /**

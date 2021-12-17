@@ -49,6 +49,14 @@ __webpack_require__.r(__webpack_exports__);
       dataArray: []
     };
   },
+  props: {
+    days: Number
+  },
+  watch: {
+    days: function days() {
+      this.getAmountTypePayment();
+    }
+  },
   created: function created() {
     this.getAmountTypePayment();
   },
@@ -56,7 +64,7 @@ __webpack_require__.r(__webpack_exports__);
     getAmountTypePayment: function getAmountTypePayment() {
       var _this = this;
 
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/dashboard/type-payments").then(function (response) {
+      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/dashboard/type-payments/".concat(this.days)).then(function (response) {
         _this.dataChart = response.data;
 
         _this.dataChart.forEach(function (element) {
@@ -76,10 +84,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js ***!
-  \**************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js ***!
+  \******************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -92,8 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.esm.js");
 /* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-chart-3 */ "./node_modules/vue-chart-3/dist/index.js");
 /* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_chart_3__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../charts/TypePaymentChart.vue */ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue");
-/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
+/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -103,28 +110,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Dashboard",
+  name: "VoucherChart",
   components: {
     LineChart: vue_chart_3__WEBPACK_IMPORTED_MODULE_2__.LineChart,
-    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"],
-    TypePaymentChart: _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
-      widgets: {},
       options: {
+        plugins: {
+          tooltip: {
+            mode: "index",
+            intersect: false
+          }
+        },
         scales: {
-          x: {
-            gridLines: {
-              display: false
-            }
-          },
+          x: {},
           y: {
             beginAtZero: true,
-            suggestedMax: 50,
-            gridLines: {
+            suggestedMin: 0,
+            grid: {
               display: false
             }
           }
@@ -158,9 +164,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     };
   },
-  created: function created() {
+  props: {
+    days: Number
+  },
+  watch: {
+    days: function days() {
+      this.getDataVouchers();
+    }
+  },
+  mounted: function mounted() {
     this.getDataVouchers();
-    this.getDataWidgets();
   },
   methods: {
     getDataVouchers: function getDataVouchers() {
@@ -172,14 +185,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/dashboard/vouchers").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_3__["default"].get("/api/dashboard/vouchers/".concat(_this.days)).then(function (response) {
                   console.log(response.data);
                   _this.testData.labels = response.data.fechas.reverse();
                   _this.testData.datasets[0].data = _this.fillDates(response.data.facturas, response.data.fechas);
                   _this.testData.datasets[1].data = _this.fillDates(response.data.boletas, response.data.fechas);
                   _this.testData.datasets[2].data = _this.fillDates(response.data.notas_venta, response.data.fechas);
                 })["catch"](function (error) {
-                  _this;
+                  console.log(error.response);
                 });
 
               case 2:
@@ -213,37 +226,87 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return 0;
       });
       return vouchers;
-    },
-    getDataWidgets: function getDataWidgets() {
-      var _this2 = this;
+    }
+  }
+});
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.esm.js");
+/* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-chart-3 */ "./node_modules/vue-chart-3/dist/index.js");
+/* harmony import */ var vue_chart_3__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_chart_3__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../charts/TypePaymentChart.vue */ "./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue");
+/* harmony import */ var _charts_VoucherChart_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../charts/VoucherChart.vue */ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue");
+/* harmony import */ var _api_BaseUrl__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../api/BaseUrl */ "./resources/js/api/BaseUrl.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "Dashboard",
+  components: {
+    LineChart: vue_chart_3__WEBPACK_IMPORTED_MODULE_2__.LineChart,
+    BaseUrl: _api_BaseUrl__WEBPACK_IMPORTED_MODULE_5__["default"],
+    TypePaymentChart: _charts_TypePaymentChart_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    VoucherChart: _charts_VoucherChart_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  data: function data() {
+    return {
+      widgets: {},
+      days: 7
+    };
+  },
+  mounted: function mounted() {
+    this.getDataWidgets();
+  },
+  methods: {
+    getDataWidgets: function getDataWidgets() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
-                _context2.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/dashboard/widgets").then(function (response) {
+                _context.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_5__["default"].get("/api/dashboard/widgets/".concat(_this.days)).then(function (response) {
                   console.log(response.data);
-                  _this2.widgets = response.data;
+                  _this.widgets = response.data;
                 })["catch"](function (error) {
                   console.log(error.response);
                 });
 
               case 2:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2);
+        }, _callee);
       }))();
     },
-    getAmountTypePayment: function getAmountTypePayment() {
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_4__["default"].get("/api/dashboard/type-payments").then(function (response) {
-        console.log(response.data);
-      })["catch"](function (error) {
-        console.log(error.response);
-      });
+    setDays: function setDays($days) {
+      this.days = $days;
+      this.getDataWidgets();
     }
   }
 });
@@ -275,6 +338,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_LineChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LineChart");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_LineChart, {
+    chartData: $data.testData,
+    options: $data.options
+  }, null, 8
+  /* PROPS */
+  , ["chartData", "options"]);
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=template&id=1c35a19d&scoped=true":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=template&id=1c35a19d&scoped=true ***!
@@ -293,34 +382,47 @@ var _withScopeId = function _withScopeId(n) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-1c35a19d"), n = n(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)(), n;
 };
 
-var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_1 = {
+  "class": "content-header"
+};
+var _hoisted_2 = {
+  "class": "row mb-2"
+};
+
+var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "content-header"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Dashboard"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"$can('dashboard')\">tu puedes ver el dashboard</div>\r\n    <div v-if=\"$can('sales')\">tu puedes ver las compras</div> ")], -1
+    "class": "col-md"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Dashboard")], -1
   /* HOISTED */
   );
 });
 
-var _hoisted_2 = {
-  "class": "row"
-};
-var _hoisted_3 = {
-  "class": "col-lg-4 col-12"
-};
 var _hoisted_4 = {
-  "class": "small-box bg-success caja-1"
+  "class": "col-md"
 };
 var _hoisted_5 = {
+  "class": "breadcrumb float-sm-right bg-white p-2"
+};
+var _hoisted_6 = {
+  "class": "row mb-4"
+};
+var _hoisted_7 = {
+  "class": "col-lg-4 col-12"
+};
+var _hoisted_8 = {
+  "class": "small-box bg-success caja-1"
+};
+var _hoisted_9 = {
   "class": "inner"
 };
 
-var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "VENTAS", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "icon"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -330,7 +432,7 @@ var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "/ventas",
     "class": "small-box-footer"
@@ -341,23 +443,23 @@ var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_9 = {
+var _hoisted_13 = {
   "class": "col-lg-4 col-12"
 };
-var _hoisted_10 = {
+var _hoisted_14 = {
   "class": "small-box bg-success caja-2"
 };
-var _hoisted_11 = {
+var _hoisted_15 = {
   "class": "inner"
 };
 
-var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "COMPRAS", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "icon"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -367,7 +469,7 @@ var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "/compras",
     "class": "small-box-footer"
@@ -378,23 +480,23 @@ var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_15 = {
+var _hoisted_19 = {
   "class": "col-lg-4 col-12"
 };
-var _hoisted_16 = {
+var _hoisted_20 = {
   "class": "small-box bg-success caja-3"
 };
-var _hoisted_17 = {
+var _hoisted_21 = {
   "class": "inner"
 };
 
-var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_22 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "CANTIDAD DE PRODUCTOS", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "icon"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
@@ -404,7 +506,7 @@ var _hoisted_19 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_24 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "/productos",
     "class": "small-box-footer"
@@ -415,32 +517,17 @@ var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_21 = {
+var _hoisted_25 = {
   "class": "row"
 };
-var _hoisted_22 = {
-  "class": "col-md-8"
-};
-var _hoisted_23 = {
-  "class": "card"
-};
-
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Grafico 2</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
-
-var _hoisted_25 = {
-  "class": "card-body",
-  style: {
-    "display": "block"
-  }
-};
 var _hoisted_26 = {
-  "class": "col-md-4"
+  "class": "col-md-8"
 };
 var _hoisted_27 = {
   "class": "card"
 };
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Tipo de pagos</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Cantidad de voucher emitidos</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
 
 var _hoisted_29 = {
   "class": "card-body",
@@ -448,22 +535,56 @@ var _hoisted_29 = {
     "display": "block"
   }
 };
+var _hoisted_30 = {
+  "class": "col-md-4"
+};
+var _hoisted_31 = {
+  "class": "card"
+};
+
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-1c35a19d><h3 class=\"card-title\" data-v-1c35a19d>Tipo de pagos</h3><div class=\"card-tools\" data-v-1c35a19d><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"collapse\" data-v-1c35a19d><i class=\"fas fa-minus\" data-v-1c35a19d></i></button><button type=\"button\" class=\"btn btn-tool\" data-card-widget=\"remove\" data-v-1c35a19d><i class=\"fas fa-times\" data-v-1c35a19d></i></button></div></div>", 1);
+
+var _hoisted_33 = {
+  "class": "card-body",
+  style: {
+    "display": "block"
+  }
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_LineChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LineChart");
+  var _component_VoucherChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("VoucherChart");
 
   var _component_TypePaymentChart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TypePaymentChart");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.sales), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ol", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-sm btn-outline-danger",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.setDays(7);
+    })
+  }, "Semana"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-sm btn-outline-danger mx-2",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.setDays(15);
+    })
+  }, "Quincena"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-sm btn-outline-danger",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $options.setDays(30);
+    })
+  }, "Mes")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"$can('dashboard')\">tu puedes ver el dashboard</div>\n    <div v-if=\"$can('sales')\">tu puedes ver las compras</div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.sales), 1
   /* TEXT */
-  ), _hoisted_6]), _hoisted_7, _hoisted_8])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.purchases), 1
+  ), _hoisted_10]), _hoisted_11, _hoisted_12])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.purchases), 1
   /* TEXT */
-  ), _hoisted_12]), _hoisted_13, _hoisted_14])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.products), 1
+  ), _hoisted_16]), _hoisted_17, _hoisted_18])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" small card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.widgets.products), 1
   /* TEXT */
-  ), _hoisted_18]), _hoisted_19, _hoisted_20])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LineChart, {
-    chartData: $data.testData
+  ), _hoisted_22]), _hoisted_23, _hoisted_24])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_VoucherChart, {
+    days: $data.days
   }, null, 8
   /* PROPS */
-  , ["chartData"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TypePaymentChart)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"getDataWidgets\" class=\"btn btn-info\">model</button> ")], 64
+  , ["days"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TypePaymentChart, {
+    days: $data.days
+  }, null, 8
+  /* PROPS */
+  , ["days"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button @click=\"getDataWidgets\" class=\"btn btn-info\">model</button> ")], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -485,7 +606,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -13680,7 +13801,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #84d9d2, #07cdae);\n}\n.caja-1[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #ffbf96, #fe7096);\n}\n.caja-2[data-v-1c35a19d] {\r\n  background: linear-gradient(to right, #90caf9, #047edf 99%);\n}\n.fas[data-v-1c35a19d] {\r\n  color: #f2f2f2;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.caja-3[data-v-1c35a19d] {\n  background: linear-gradient(to right, #84d9d2, #07cdae);\n}\n.caja-1[data-v-1c35a19d] {\n  background: linear-gradient(to right, #ffbf96, #fe7096);\n}\n.caja-2[data-v-1c35a19d] {\n  background: linear-gradient(to right, #90caf9, #047edf 99%);\n}\n.fas[data-v-1c35a19d] {\n  color: #f2f2f2;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -19908,6 +20029,34 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue":
+/*!**************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _VoucherChart_vue_vue_type_template_id_23481a9e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VoucherChart.vue?vue&type=template&id=23481a9e */ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e");
+/* harmony import */ var _VoucherChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VoucherChart.vue?vue&type=script&lang=js */ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js");
+/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_VoucherChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_VoucherChart_vue_vue_type_template_id_23481a9e__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue":
 /*!**********************************************************************!*\
   !*** ./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue ***!
@@ -19955,6 +20104,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VoucherChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VoucherChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VoucherChart.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js":
 /*!**********************************************************************************************!*\
   !*** ./resources/js/modules/dashboard/dashboard/pages/Dashboard.vue?vue&type=script&lang=js ***!
@@ -19983,6 +20148,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_TypePaymentChart_vue_vue_type_template_id_acc062c0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./TypePaymentChart.vue?vue&type=template&id=acc062c0 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/TypePaymentChart.vue?vue&type=template&id=acc062c0");
+
+
+/***/ }),
+
+/***/ "./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VoucherChart_vue_vue_type_template_id_23481a9e__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_VoucherChart_vue_vue_type_template_id_23481a9e__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./VoucherChart.vue?vue&type=template&id=23481a9e */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/modules/dashboard/dashboard/charts/VoucherChart.vue?vue&type=template&id=23481a9e");
 
 
 /***/ }),

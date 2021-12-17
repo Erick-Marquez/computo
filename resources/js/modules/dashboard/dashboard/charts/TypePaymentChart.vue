@@ -35,12 +35,18 @@ export default {
       dataArray: [],
     };
   },
+  props: { days: Number },
+  watch: {
+    days() {
+        this.getAmountTypePayment();
+    },
+  },
   created() {
     this.getAmountTypePayment();
   },
   methods: {
     getAmountTypePayment() {
-      BaseUrl.get(`/api/dashboard/type-payments`)
+      BaseUrl.get(`/api/dashboard/type-payments/${this.days}`)
         .then((response) => {
           this.dataChart = response.data;
           this.dataChart.forEach((element) => {

@@ -104,8 +104,9 @@ class Sale extends Model
      * * METODOS ESTATICOS DEL MODELO
     */
 
-    public static function getSalesToday()
+    public static function getSalesToday($date, $branch)
     {
-        return Sale::where('date_issue', date('Y-m-d'))->sum('total');
+        return Sale::whereDate('created_at', '>=', $date)->sum('total');
+
     }
 }
