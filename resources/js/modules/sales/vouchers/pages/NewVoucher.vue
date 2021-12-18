@@ -928,7 +928,6 @@ export default {
       this.currentNumber = serieFilter[0].current_number + 1;
     },
     async searchProducts() {
-
       if (this.productSearch == "") {
         this.productSearchFilter = [];
       } else {
