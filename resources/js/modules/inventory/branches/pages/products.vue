@@ -45,38 +45,34 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Descripción</th>
-                                <th>Dirección</th>
-                                <th>Telefono</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Marca</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="branch in branches" :key="branch.id">
-                                <td>{{ branch.id }}</td>
-                                <td>{{ branch.description }}</td>
-                                <td>{{ branch.direction }}</td>
-                                <td>{{ branch.phone }}</td>
+                            <tr v-for="(product, index) in products" :key="product.id">
+                                <td>{{ index+1 }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.direction }}</td>
+                                <td>{{ product.phone }}</td>
                                 <td>
-                                <div class="dropdown">
-                                    <button
-                                    class="btn btn-danger dropdown-toggle"
-                                    type="button"
-                                    id="dropdownMenuButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    Acciones
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
-                                    <a class="dropdown-item" href="#" @click="showModal('#modal-edit', branch)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
-                                    <router-link class="dropdown-item" :to="{ name:'show-product' ,params:{id:branch.id}}">
-                                        <i class="col-1 mr-3 fas fa-edit fas fa-plus"></i>
-                                        Productos
-                                    </router-link>
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-danger dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                        Acciones
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="#" @click="showModal('#modal-edit', product)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
+                                        </div>
                                     </div>
-                                </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -96,28 +92,17 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components:{BaseUrl},
   async created(){
-    this.showBranches()
+    this.showProducts()
   },
   data(){
     return{
-      branches: [],
-      voucherTypes: [],
-      branch: {
-        codSunat: '0000',
-        description: '',
-        direction: '',
-        ubigeo: '',
-        phone: '',
-        series: []
-      },
-      branchEdit: {},
-      errorsCreate: {}
+      products: [],
     }
   },
   methods:{
-    async showBranches(){
-      await BaseUrl.get(`api/branches`).then( resp => {
-        this.branches=resp.data.data
+    async showProducts(){
+      await BaseUrl.get(`branches/products/${this.$route.params.id}`).then( resp => {
+        this.products=resp.data.data
       })
     }
   }

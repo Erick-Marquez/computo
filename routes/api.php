@@ -23,6 +23,7 @@ use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\BranchProductSerieController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
@@ -137,6 +138,9 @@ Route::middleware([
     //------------------------Inventory----------------------
     Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
+
+    Route::get('kardex/{id}', [KardexController::class, 'show']);
+    Route::get('kardex/search-products/{branchId}/{search}', [KardexController::class, 'searchProducts'])->name('api.branches.searchProducts');
 
     //------------------------Settings-----------------------
 

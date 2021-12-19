@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\KardexResource;
+use App\Models\BranchProduct;
 use App\Models\Kardex;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,7 @@ class KardexController extends Controller
      */
     public function show($id)
     {
+        // $kardex = Kardex::where('branch_product_id', $id)->paginate(3)->sum('quantity');
         $kardex = Kardex::where('branch_product_id', $id)->get();
         return KardexResource::collection($kardex);
     }
@@ -83,5 +86,23 @@ class KardexController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchProducts($branchId, $search)
+    {
+        $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'b.description as brand')
+            ->where('branch_id', $branchId)
+            ->join('products as p', 'branch_product.product_id', '=', 'p.id')
+            ->join('brand_line as bl', 'p.brand_line_id', '=', 'bl.id')
+            ->join('brands as b', 'bl.brand_id', '=', 'b.id')
+            ->where('p.name', 'like', '%'. $search .'%')
+            ->limit(10)->get();
+        return BranchProductResource::collection($branchProducts);
+    }
+    
+    public function print($branchProductId)
+    {
+        $kardex = Kardex::where('branch_product_id', $branchProductId)->get();
+        return KardexResource::collection($kardex);
     }
 }

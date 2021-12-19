@@ -126,7 +126,6 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', Assembly
 
 
 //Modulo Inventario
-Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
     Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
     Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');

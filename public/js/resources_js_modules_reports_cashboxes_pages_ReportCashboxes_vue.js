@@ -360,7 +360,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "card-title"
 }, "Aperturas y Cierres"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-tools"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-flat btn-danger mr-2 rounded-pill\">\n          <i class=\"fas fa-file-excel\"></i> PDF\n        </button>\n        <button class=\"btn btn-flat bg-olive rounded-pill\">\n          <i class=\"fas fa-file-pdf\"></i> Excel\n        </button> ")])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-flat btn-danger mr-2 rounded-pill\">\r\n          <i class=\"fas fa-file-excel\"></i> PDF\r\n        </button>\r\n        <button class=\"btn btn-flat bg-olive rounded-pill\">\r\n          <i class=\"fas fa-file-pdf\"></i> Excel\r\n        </button> ")])], -1
 /* HOISTED */
 );
 
@@ -518,7 +518,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: '/print/cashbox/report/' + occ.id
     }, _hoisted_29, 8
     /* PROPS */
-    , _hoisted_26), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\n                          Eliminar\n                        </a> ")])])])]);
+    , _hoisted_26), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\r\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\r\n                          Eliminar\r\n                        </a> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_30, _hoisted_32))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])], 64

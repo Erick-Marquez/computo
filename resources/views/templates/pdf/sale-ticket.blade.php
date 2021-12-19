@@ -89,10 +89,10 @@
                 <td><span class="bold">Fecha Vencimiento: </span>{{ date_format(date_create($head->date_due), 'd-m-Y') }}</td>
             </tr>
             <tr>
-                <td><span class="bold">Cajero: </span>{{ $head->quotation ? $head->quotation->user->name : $head->user->name }}</td>
+                <td><span class="bold">Cajero: </span>{{ $head->user->name }}</td>
             </tr>
             <tr>
-                <td><span class="bold">Vendedor: </span>{{ $head->user->name }}</td>
+                <td><span class="bold">Vendedor: </span>{{ $head->quotation ? $head->quotation->user->name : $head->user->name }}</td>
             </tr>
         </tbody>
   </table>

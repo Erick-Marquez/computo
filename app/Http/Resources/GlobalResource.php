@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class KardexResource extends JsonResource
+class GlobalResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
