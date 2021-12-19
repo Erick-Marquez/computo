@@ -78,6 +78,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Inventory
     Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
     Route::get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
+    Route::get('/sucursales/productos/{id}/añadir', [WebController::class, 'branches'])->name('web.branches.add-products');
 
     Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
     Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BranchRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchResource;
+use App\Http\Resources\GlobalResource;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\BranchProduct;
@@ -112,8 +113,13 @@ class BranchController extends Controller
      */
     public function products($branch)  
     {
-        $branchProducts = BranchProduct::where('branch_id', $branch)->with('product.brandLine.brand')->get();
-        return BranchProductResource::collection($branchProducts);
+        $branchProducts = BranchProduct::select('branch_product.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'branch_product.stock')
+            ->where('branch_id', $branch)
+            ->join('products as p', 'branch_product.product_id', '=', 'p.id')
+            ->join('brand_line as bl', 'p.brand_line_id', '=', 'bl.id')
+            ->join('brands as b', 'bl.brand_id', '=', 'b.id')
+            ->get();
+        return GlobalResource::collection($branchProducts);
     }
 
     public function productsAdd(Branch $branch)  

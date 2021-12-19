@@ -137,6 +137,7 @@ Route::middleware([
 
     //------------------------Inventory----------------------
     Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
+    Route::get('branches/products/{id}/add', [BranchController::class, 'addProducts'])->name('api.branches.products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
 
     Route::get('kardex/{id}', [KardexController::class, 'show']);

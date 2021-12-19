@@ -1,20 +1,24 @@
 <template>
     <div class="content-header">
-        <div class="container-fluid">
-            <h1>Productos de la sucursal </h1>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1>Productos de la sucursal</h1>
+            </div>
+            <div>
+                <router-link class="btn btn-lg btn-block btn-dark" :to="{ name:'branch-list' }">
+                    <i class="mr-2 fas fa-arrow-left"></i>
+                    Atras
+                </router-link>
+            </div>
         </div>
     </div>
 
     <div class="container-fluid">
 
-        <button
-            class="btn btn-lg btn-block btn-dark my-2"
-            data-toggle="modal" 
-            data-target="#modal-create"
-        >
+        <router-link class="btn btn-lg btn-block btn-dark my-2" :to="{ name:'add-product', params:{ id:this.$route.params.id } }">
             <span><i class="fas fa-plus"></i></span>
             Añadir Productos
-        </button>
+        </router-link>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -48,15 +52,19 @@
                                 <th>Código</th>
                                 <th>Nombre</th>
                                 <th>Marca</th>
+                                <th>Maneja Series</th>
+                                <th>Stock</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="(product, index) in products" :key="product.id">
                                 <td>{{ index+1 }}</td>
+                                <td>{{ product.cod }}</td>
                                 <td>{{ product.name }}</td>
-                                <td>{{ product.direction }}</td>
-                                <td>{{ product.phone }}</td>
+                                <td>{{ product.brand }}</td>
+                                <td>{{ product.manager_series ? 'SI' : 'NO' }}</td>
+                                <td>{{ product.stock }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button
