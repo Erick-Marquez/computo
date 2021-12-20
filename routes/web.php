@@ -113,6 +113,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reportes/detallado', [WebController::class, 'reportDetails'])->name('web.reports.details');
     Route::get('/reportes/inventario', [WebController::class, 'reportInventory'])->name('web.reports.inventory');
     Route::get('/reportes/utilidad', [WebController::class, 'reportUtility'])->name('web.reports.utility');
+    Route::get('/reportes/series', [WebController::class, 'reportSeries'])->name('web.reports.series');
+    Route::get('/reportes/egresos-ingresos', [WebController::class, 'reportExpensesIncomes'])->name('web.reports.expenses-incomes');
 
 });
 

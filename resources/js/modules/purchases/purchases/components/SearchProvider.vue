@@ -168,10 +168,14 @@
         <v-select
           class="style-chooser"
           v-model="provider.ubigee_id"
-          label="place_description"
-          :reduce="(ubigee) => ubigee.cod"
+          label="cod"
+          :reduce="(ubigee) => ubigee.id"
           :options="ubigees"
         >
+          <template v-slot:option="ubigee">
+            {{ ubigee.place_description }}
+          </template>
+
           <template v-slot:no-options="{ search, searching }">
             <template v-if="searching">
               No se encontraron resultados para
@@ -250,7 +254,7 @@ export default {
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
-          this.provider.ubigee_id = response.data.ubigee;
+          this.provider.ubigee_id = this.selectUbigee(response.data.ubigee);
           //this.provider.ubigee_id = response.data.ubigee_id;
           this.responseApi = "HABIDO";
           console.log(this.responseApi);
@@ -291,7 +295,8 @@ export default {
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
       this.provider.phone = providerFind.phone;
-      this.provider.ubigee_id = providerFind.ubigee.cod;
+      this.provider.ubigee_id =
+        providerFind.ubigee != null ? providerFind.ubigee.id : null;
       this.providers = null;
       this.selectUbigee;
     },
@@ -315,9 +320,13 @@ export default {
         ? "text-sm font-weight-light text-danger"
         : "text-sm font-weight-light text-success";
     },
-    selectUbigee() {
-      $("#select4").val(this.provider.ubigee_id); // Select the option with a value of '1'
-      $("#select4").trigger("change"); // Notify any JS components that the value changed
+    selectUbigee(codUbigee) {
+      const ubigee = this.ubigees.filter((ubigee) => {
+        ubigee.cod == codUbigee;
+      });
+
+      console.log(ubigee);
+      return ubigee.id;
     },
     // enableSearchDocument() {
     //   return true

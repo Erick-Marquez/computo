@@ -454,6 +454,11 @@ return [
                     'route'  => 'web.reports.products',
                 ],
                 [
+                    'text' => 'Reporte de Series',
+                    'icon' => 'fas fa-fw ',
+                    'route'  => 'web.reports.series',
+                ],
+                [
                     'text' => 'Reporte de Compras',
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.reports.purchases',
@@ -462,6 +467,11 @@ return [
                     'text' => 'Reporte de Caja',
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.reports.cashboxes',
+                ],
+                [
+                    'text' => 'Reporte de Movimientos',
+                    'icon' => 'fas fa-fw ',
+                    'route'  => 'web.reports.expenses-incomes',
                 ],
                 [
                     'text' => 'Reporte Detallado',

@@ -21,8 +21,8 @@ class PurchaseService
                 ['document' => $request->provider['document']],
                 [
                     'name' => $request->provider['name'],
-                    'phone' => $request->provider['phone'],
-                    'address' => $request->provider['address'],
+                    'phone' => isset($request->provider['phone']) ? $request->provider['phone'] : null,
+                    'address' => isset($request->provider['address']) ? $request->provider['address'] : null,
                     'identification_document_id' => $request->provider['identification_document_id'],
                 ]
             );

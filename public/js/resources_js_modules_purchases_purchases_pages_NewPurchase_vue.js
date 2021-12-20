@@ -220,7 +220,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.provider.name = response.data.name;
                   _this2.provider.address = response.data.address;
                   _this2.provider.phone = response.data.phone;
-                  _this2.provider.ubigee_id = response.data.ubigee; //this.provider.ubigee_id = response.data.ubigee_id;
+                  _this2.provider.ubigee_id = _this2.selectUbigee(response.data.ubigee); //this.provider.ubigee_id = response.data.ubigee_id;
 
                   //this.provider.ubigee_id = response.data.ubigee_id;
                   _this2.responseApi = "HABIDO";
@@ -292,7 +292,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
       this.provider.phone = providerFind.phone;
-      this.provider.ubigee_id = providerFind.ubigee.cod;
+      this.provider.ubigee_id = providerFind.ubigee != null ? providerFind.ubigee.id : null;
       this.providers = null;
       this.selectUbigee;
     },
@@ -311,10 +311,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     responseApiClass: function responseApiClass() {
       return this.responseApi === "NO HABIDO" ? "text-sm font-weight-light text-danger" : "text-sm font-weight-light text-success";
     },
-    selectUbigee: function selectUbigee() {
-      $("#select4").val(this.provider.ubigee_id); // Select the option with a value of '1'
-
-      $("#select4").trigger("change"); // Notify any JS components that the value changed
+    selectUbigee: function selectUbigee(codUbigee) {
+      var ubigee = this.ubigees.filter(function (ubigee) {
+        ubigee.cod == codUbigee;
+      });
+      console.log(ubigee);
+      return ubigee.id;
     } // enableSearchDocument() {
     //   return true
     // },
@@ -1064,12 +1066,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
       return $props.provider.ubigee_id = $event;
     }),
-    label: "place_description",
+    label: "cod",
     reduce: function reduce(ubigee) {
-      return ubigee.cod;
+      return ubigee.id;
     },
     options: $data.ubigees
   }, {
+    option: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (ubigee) {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ubigee.place_description), 1
+      /* TEXT */
+      )];
+    }),
     "no-options": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (_ref) {
       var search = _ref.search,
           searching = _ref.searching;
@@ -1866,7 +1873,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\r\n  border-radius: 50px;\r\n  width: 100%;\r\n  height: calc(2.25rem + 2px);\r\n  font-size: 1rem;\r\n  font-weight: 400;\r\n  line-height: 1.5;\r\n  color: #495057;\r\n  background-color: #fff;\r\n  background-clip: padding-box;\r\n  border-color: #ced4da;\r\n  box-shadow: inset 0 0 0 transparent;\r\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\r\n.style-chooser .vs__open-indicator {\r\n  fill: #394066;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\n  position: relative;\n  cursor: pointer;\n}\n.list {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\n  border-radius: 50px;\n  width: 100%;\n  height: calc(2.25rem + 2px);\n  font-size: 1rem;\n  font-weight: 400;\n  line-height: 1.5;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border-color: #ced4da;\n  box-shadow: inset 0 0 0 transparent;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\n.style-chooser .vs__open-indicator {\n  fill: #394066;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -15,6 +15,7 @@ class ExpenseIncome extends Model
         'observation',
         'user_id',
         'branch_id',
+        'payment_type_id'
     ];
 
     protected $table = 'expenses_incomes';
@@ -25,5 +26,10 @@ class ExpenseIncome extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
     }
 }

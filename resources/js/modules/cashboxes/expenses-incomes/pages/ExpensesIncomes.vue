@@ -9,7 +9,21 @@
   </button>
 
   <form @submit.prevent="createMovement()">
-    <NewMovementVue :movement="movement" :errors="errors" />
+    <new-movement-vue :movement="movement" :errors="errors">
+      <div class="form-group">
+        <label for="">Tipo de pago</label>
+        <select
+          name=""
+          id=""
+          class="form-control rounded-pill"
+          v-model="movement.payment_type_id"
+        >
+          <option v-for="pt in paymentTypes" :key="pt.id" :value="pt.id">
+            {{ pt.description }}
+          </option>
+        </select>
+      </div>
+    </new-movement-vue>
   </form>
 
   <div class="card">
@@ -104,13 +118,16 @@ export default {
     return {
       movement: {
         type: "EGRESO",
+        payment_type_id: 1,
       },
       movements: [],
-      errors: {},
+      paymentTypes: [],
+      errors: [],
     };
   },
   created() {
     this.showMovements();
+    this.getPaymentTypes();
   },
   methods: {
     async showMovements() {
@@ -125,16 +142,19 @@ export default {
     async createMovement() {
       await BaseUrl.post("/api/egresos-ingresos", this.movement)
         .then((response) => {
-          console.log(response.data);
           this.showMovements();
-          this.errors = {};
-          this.movement = {type: "EGRESO"};
+          this.errors = [];
+          this.movement = { type: "EGRESO", payment_type_id: 1 };
+          $("#new-movement").modal("hide");
 
-          $('#new-movement').modal('hide');
+          console.log(response.data);
+
+          Swal.fire("Registrado!", response.data.message, "success");
         })
         .catch((error) => {
-          console.log(error.response.data.errors);
-          this.errors = error.response.data.errors;
+          error.response.data.errors != undefined
+            ? (this.errors = error.response.data.errors)
+            : console.log(error.response);
         });
     },
     async deleteMovement(id) {
@@ -159,6 +179,16 @@ export default {
             });
         }
       });
+    },
+
+    async getPaymentTypes() {
+      await BaseUrl.get(`/api/payment-types`)
+        .then((response) => {
+          this.paymentTypes = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
     },
   },
 };

@@ -239,7 +239,7 @@ export default {
         })
         .catch((error) => {
           this.details = [];
-          console.log(error);
+          console.log(error.response);
         });
     },
     async newMovement() {

@@ -114,8 +114,13 @@ class CashboxService
             ];
 
             $sales = $occ->sales()
-                ->select('created_at as date', 'observation', 'total as amount')
+                ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
+                ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
+                ->select('sales.created_at as date', 'sales.observation', 'payment_type_sale.amount as amount')
+                ->whereNotIn('sales.state', ['ANULADO'])
+                ->where('payment_types.id', 1)
                 ->get()
+
                 ->each(function ($item, $key) {
                     return $item['concept'] = 'VENTA';
                 });
@@ -145,7 +150,7 @@ class CashboxService
                 'balance' => $balance,
             ]);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json($th->getMessage(), 405);
         }
     }
 
@@ -167,6 +172,7 @@ class CashboxService
     public function movement($id, $data)
     {
         $occ = $this->recoverOpening($id);
+        $data['payment_type_id'] = 1;
 
         try {
             $occ->openClosedCashboxDetails()->create($data);

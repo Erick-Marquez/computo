@@ -46,6 +46,9 @@
           >
             {{ $errorsPrint(errors["type"]) }}
           </div>
+
+          <slot> </slot>
+
           <div class="form-group">
             <label for="">Monto</label>
             <input
