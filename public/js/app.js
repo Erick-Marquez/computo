@@ -21315,7 +21315,7 @@ var routes = [
       return __webpack_require__.e(/*! import() */ "resources_js_modules_inventory_branches_pages_Products_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/pages/Products.vue */ "./resources/js/modules/inventory/branches/pages/Products.vue"));
     }
   }, {
-    path: 'productos/:id/añadir',
+    path: 'productos/:id/agregar',
     name: 'add-product',
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_modules_inventory_branches_pages_AddProducts_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/inventory/branches/pages/AddProducts.vue */ "./resources/js/modules/inventory/branches/pages/AddProducts.vue"));

@@ -17,7 +17,7 @@
 </style>
 <body>
   <div class="logo">
-    <img src="storage/logo.jpg" alt="este es el logo del negocio">
+    <img src="images/Logo.png" alt="este es el logo del negocio">
   </div>
   <table class="header">
       <tr>

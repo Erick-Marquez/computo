@@ -12,7 +12,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="storage/logo.jpg" alt="este es el logo del negocio">
+            <img src="images/Logo.png" alt="este es el logo del negocio">
         </div>
         <div class="ruc">
             <p>R. U. C.: {{ $company->ruc }}</p>

@@ -6,6 +6,7 @@ use App\Http\Requests\VoucherRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\CurrencyExchangeResource;
+use App\Http\Resources\GlobalResource;
 use App\Http\Resources\IdentificationDocumentResource;
 use App\Http\Resources\IgvTypeResource;
 use App\Http\Resources\PaymentTypeResource;
@@ -71,6 +72,32 @@ class VoucherController extends Controller
         })->with('serie.voucherType', 'customer')->latest()->get();
         
         return SaleResource::collection($vouchers);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $identificationDocuments = IdentificationDocument::all();
+        $currencyExchange = CurrencyExchange::latest()->first();
+        $igvTypes = IgvType::all();
+        $paymentTypes = PaymentType::all();
+        $voucherTypes = VoucherType::whereIn('id', [1, 2, 3])->get();
+
+        $series = Serie::where('branch_id', auth()->user()->branch_id)->whereNotIn('voucher_type_id', [4, 5, 6, 7])->get(); //Filtrar en el fronted
+
+        return GlobalResource::make([ 
+            'currencyExchange' => $currencyExchange,
+            'identificationDocuments' => $identificationDocuments,
+            'igvTypes' => $igvTypes,
+            'paymentTypes' => $paymentTypes,
+            'voucherTypes' => $voucherTypes,
+            
+            'series' => $series,
+        ]);
     }
 
     /**
@@ -241,12 +268,20 @@ class VoucherController extends Controller
 
     public function products($search)
     {
-        $branchProducts = BranchProduct::where('branch_id', auth()->user()->branch_id)
-            ->whereHas('product', function($query) use ($search){
-                return $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->with('product.brandLine.brand')->limit(10)->get();
-        return BranchProductResource::collection($branchProducts);
+        $branchProducts = BranchProduct::from('branch_product AS bp')
+            ->where('bp.branch_id', auth()->user()->branch_id)
+            ->where('p.name', 'like', '%' . $search . '%')
+            ->orWhere('p.cod', 'like', '%' . $search . '%')
+            ->join('products AS p', 'bp.product_id', '=', 'p.id')
+            ->join('brand_line AS bl', 'p.brand_line_id', '=', 'bl.id')
+            ->join('brands AS b', 'bl.brand_id', '=', 'b.id')
+            ->select(
+                'bp.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'bp.stock', 'bp.igv_type_id',
+                'bp.sale_price', 'bp.referential_sale_price_one', 'bp.referential_sale_price_two'
+                )
+            ->limit(10)
+            ->get();
+        return GlobalResource::collection($branchProducts);
     }
 
     public function productSeries($id)

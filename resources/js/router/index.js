@@ -200,7 +200,7 @@ const routes = [
                 component: () => import('../modules/inventory/branches/pages/Products.vue'),
             },
             {
-                path: 'productos/:id/añadir',
+                path: 'productos/:id/agregar',
                 name: 'add-product',
                 component: () => import('../modules/inventory/branches/pages/AddProducts.vue'),
             },

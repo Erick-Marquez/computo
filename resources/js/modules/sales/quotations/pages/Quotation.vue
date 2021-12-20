@@ -102,12 +102,14 @@
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                          ><a
+                          >
+                          <!-- <a
                             class="dropdown-item"
                             href="#"
                             @click="showModal('#modal-advance', availableQuotation)"
                             ><i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo</a
-                          ><a
+                          > -->
+                          <a
                             class="dropdown-item"
                             :href="`nueva-venta?serieQuotation=${availableQuotation.serie.id}&numberQuotation=${availableQuotation.document_number}`"
                             ><i class="col-1 mr-3 far fa-file-pdf"></i>Convertir a Comprobante</a
@@ -214,15 +216,6 @@
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                          ><a
-                            class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                          ><a
-                            class="dropdown-item"
-                            :href="'print/quotations/' + unavailableQuotation.id"
-                            target="_blank"
-                            ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
                           >
                         </div>
                       </div>

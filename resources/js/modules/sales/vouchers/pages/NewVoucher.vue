@@ -95,9 +95,9 @@
                 (errors['voucher.serie_id'] == null ? '' : ' is-invalid')
               "
               v-model="saleData.voucher.serie_id"
-              v-on:change="loadCurrentNumber"
+              @change="loadCurrentNumber()"
             >
-              <option v-for="serie in series" :key="serie.id" :value="serie.id">
+              <option v-for="serie in voucherSeries" :key="serie.id" :value="serie.id">
                 {{ serie.serie }}
               </option>
             </select>
@@ -129,111 +129,8 @@
         :errors="errors"
       />
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
-      <div class="row">
-        <div class="col-md">
-          <div class="d-flex bd-highlight">
-            <div class="p-2 flex-grow-1">
-              <h4>
-                <i class="text-danger fas fa-box"></i>
-                Productos
-              </h4>
-            </div>
-            <div class="p-2">
-              <div class="custom-control custom-checkbox">
-                <input
-                  class="custom-control-input custom-control-input-danger"
-                  type="checkbox"
-                  id="searchAssemblies"
-                  v-model="searchAssemblies"
-                />
-                <label for="searchAssemblies" class="custom-control-label"
-                  >Configuracion de PC</label
-                >
-              </div>
-            </div>
-            <!-- <div class="p-2">Third flex item</div> -->
-          </div>
 
-          <div v-if="!searchAssemblies" class="">
-            <input
-              type="search"
-              v-model="productSearch"
-              @keyup="searchProducts()"
-              class="form-control rounded-pill form-control rounded-pill-lg"
-              placeholder="Escribe tu producto o código"
-            />
-            <div class="option__relative">
-              <div class="option__contenedor">
-                <div v-if="productSearch.length > 0">
-                  <table
-                    table
-                    class="
-                      table table-sm table-bordered table-hover
-                      bg-white
-                      shadow-lg
-                    "
-                  >
-                    <thead
-                      v-if="productSearchFilter.length > 0"
-                      class="thead-dark text-center"
-                    >
-                      <tr>
-                        <td>Nombre</td>
-                        <td>Marca</td>
-                        <td>Precio 1</td>
-                        <td>Precio 2</td>
-                        <td>Precio 3</td>
-                        <td>Stock</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="filSearch in productSearchFilter"
-                        :key="filSearch"
-                      >
-                        <td>{{ filSearch.product.name }}</td>
-                        <td class="col-2 text-center">{{ filSearch.product.brand_line.brand.description }}</td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-success w-50"
-                            type="button"
-                            :value="filSearch.sale_price"
-                            v-on:click="priceOne(filSearch)"
-                          />
-                        </td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-warning w-50"
-                            type="button"
-                            :value="filSearch.referential_sale_price_one"
-                            v-on:click="priceTwo(filSearch)"
-                          />
-                        </td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-info w-50"
-                            type="button"
-                            :value="filSearch.referential_sale_price_two"
-                            v-on:click="priceThree(filSearch)"
-                          />
-                        </td>
-                        <td class="col-1 text-center">{{ filSearch.stock }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div v-else class="">
-            <search-assemblies
-              :products="saleData.detail"
-              v-on:setAssemblie="setAssemblie"
-            ></search-assemblies>
-          </div>
-        </div>
-      </div>
+      <SearchProducts :currencyExchange="Number(currencyExchange.change)" v-on:setProduct="setProduct"/>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
@@ -771,48 +668,44 @@
 </template>
 
 <script>
-import BaseUrl from "../../../../api/BaseUrl";
-import SearchCustomers from "../../components/SearchCustomers.vue";
-import SearchAssemblies from "../../components/SearchAssemblies.vue";
-
+import BaseUrl from "../../../../api/BaseUrl"
+import SearchCustomers from "../../components/SearchCustomers.vue"
+import SearchAssemblies from "../../components/SearchAssemblies.vue"
+import SearchProducts from "../../components/SearchProducts.vue"
 export default {
-  components: { BaseUrl, SearchCustomers, SearchAssemblies },
+  components: { BaseUrl, SearchCustomers, SearchAssemblies, SearchProducts },
   async created() {
 
-    
+    await BaseUrl.get(`api/sales/create`).then((resp) => {
+      this.currencyExchange = resp.data.data.currencyExchange
+      this.identificationDocuments = resp.data.data.identificationDocuments
+      this.igvTypes = resp.data.data.igvTypes
+      this.series = resp.data.data.series
 
-    await BaseUrl.get(`api/sales/vouchertypes`).then((resp) => {
-      this.voucherTypes = resp.data.data;
-      this.saleData.voucher.document_type = this.voucherTypes[0].id;
-      this.loadSeries();
-    });
-
-    await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
-      this.identificationDocuments = resp.data.data;
-    });
-
-    await BaseUrl.get(`api/sales/series/8`).then((resp) => {
-      this.quotationSeries = resp.data.data;
-      this.quotationSerieSelect = this.quotationSeries[0].id;
-    });
-
-    await BaseUrl.get(`api/sales/series/9`).then((resp) => {
-      this.warrantySeries = resp.data.data;
-      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id;
-    });
-
-    await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
-      this.paymentTypes = resp.data.data;
+      this.paymentTypes = resp.data.data.paymentTypes
       this.saleData.voucher.payments[0].payment_type_id = this.paymentTypes[0].id
-    });
 
-    await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
-      this.igvTypes = resp.data.data;
-    });
+      //Serie Voucher
+      this.voucherTypes = resp.data.data.voucherTypes
+      this.saleData.voucher.document_type = this.voucherTypes[0].id
+      this.loadSeries()
 
-    await BaseUrl.get(`api/sales/currencyexchange`).then((resp) => {
-      this.currencyExchange = resp.data.data;
-    });
+      //Serie Quotation
+      let serieBackupQ = this.series;
+      let serieFilterQ = serieBackupQ.filter(
+        (series) => series.voucher_type_id == 8
+      );
+      this.quotationSeries = serieFilterQ
+      this.quotationSerieSelect = this.quotationSeries[0].id
+
+      //Serie Warranty
+      let serieBackupW = this.series;
+      let serieFilterW = serieBackupW.filter(
+        (series) => series.voucher_type_id == 9
+      );
+      this.warrantySeries = serieFilterW
+      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
+    })
 
     if(this.$route.query.serieQuotation && this.$route.query.numberQuotation){
       this.quotationSerieSelect = this.$route.query.serieQuotation
@@ -828,7 +721,6 @@ export default {
     return {
 
       loader: null,
-
       loadingVoucher: false,
 
       errors: [],
@@ -844,16 +736,15 @@ export default {
 
       currentNumber: "Selecciona una serie",
 
-      productSearch: "",
-      productSearchFilter: [],
       productSerieSearchFilter: [],
-      voucherTypes: {},
-      series: {},
+      voucherTypes: [],
+      series: [],
+      voucherSeries: [],
 
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
 
-      identificationDocuments: {},
+      identificationDocuments: [],
       paymentTypes: [],
       igvTypes: [],
       productSeries: [],
@@ -903,49 +794,25 @@ export default {
     this.loader = this.$loading.show({
       canCancel: true,
     });
-    const contain = document.querySelector(".card");
-    contain.addEventListener("click", (e) => {
-      if (e.target.className != "inputContent") {
-        this.productSearchFilter = "";
-      }
-    });
+
   },
   methods: {
     loadSeries() {
-      BaseUrl.get(
-        `api/sales/series/${this.saleData.voucher.document_type}`
-      ).then((resp) => {
-        this.series = resp.data.data;
-        this.saleData.voucher.serie_id = this.series[0].id;
-        this.loadCurrentNumber();
-      });
+      let serieBackup = this.series;
+      let serieFilter = serieBackup.filter(
+        (series) => series.voucher_type_id == this.saleData.voucher.document_type
+      );
+
+      this.voucherSeries = serieFilter
+      this.saleData.voucher.serie_id = serieFilter[0].id
+      this.loadCurrentNumber()
     },
     loadCurrentNumber() {
-      let serieBackup = this.series;
+      let serieBackup = this.voucherSeries;
       let serieFilter = serieBackup.filter(
         (series) => series.id == this.saleData.voucher.serie_id
       );
       this.currentNumber = serieFilter[0].current_number + 1;
-    },
-    async searchProducts() {
-      if (this.productSearch == "") {
-        this.productSearchFilter = [];
-      } else {
-
-        await BaseUrl.get(`api/sales/products/${this.productSearch}`).then((resp) => {
-
-          let products = resp.data.data;
-
-          products.forEach(product => {
-            product.sale_price = (product.sale_price * this.currencyExchange.change).toFixed(2)
-            product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange.change).toFixed(2)
-            product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange.change).toFixed(2)
-          });
-
-          this.productSearchFilter = products
-
-        });
-      }
     },
     searchProductSeries(i, j) {
       let produtSeriesBackup = this.productSeries[i];
@@ -973,7 +840,6 @@ export default {
             this.setProductAssembly(product, index)
         })
     },
-
     setProductAssembly(productAssembly, index) {
       this.productSerieSearchFilter.push([]);
 
@@ -1009,108 +875,38 @@ export default {
           // Alertas para las notificaciones y calcular totales
         //   this.getQuotationDiscount(0);
     },
+    setProduct(product, price){
+      
+      let index = this.saleData.detail.findIndex(
+        (element) => element.product_id == product.id
+      );
 
-    priceOne(filSearch) {
-      this.productSerieSearchFilter.push([]);
+      if (index == -1) {
 
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
+        this.productSerieSearchFilter.push([]);
 
-        product_id : filSearch.id,
-        cod : filSearch.product.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.product.name,
-        brand : filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.sale_price,
-        manager_series: Boolean(filSearch.product.manager_series),
-        quantity: 1,
-        series: [],
-      };
+        this.saleData.detail.push({
+          discount: 0,
+          subtotal: 0,
+          total: 0,
 
-      const series = {
-        id: "",
-        serie: "",
-      };
-      product.series.push(series);
+          product_id: product.id,
+          cod: product.cod,
+          affect_icbper: false,
+          igv_type_id: product.igv_type_id,
+          description: product.name,
+          brand: product.brand,
+          sale_price: price,
+          manager_series: Boolean(product.manager_series),
+          quantity: 1,
+          series: [{id: "", serie: ""}],
+        });
 
-      this.saleData.detail.push(product);
+        this.getTotals();
 
-      this.productSearch = "";
-
-      this.getTotals();
-
-      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
-    },
-    priceTwo(filSearch) {
-      this.productSerieSearchFilter.push([]);
-
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
-
-        product_id : filSearch.id,
-        cod : filSearch.product.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.product.name,
-        brand : filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.referential_sale_price_one,
-        manager_series: Boolean(filSearch.product.manager_series),
-        quantity: 1,
-        series: [],
-      };
-
-      const series = {
-        id: "",
-        serie: "",
-      };
-      product.series.push(series);
-
-      this.saleData.detail.push(product);
-
-      this.productSearch = "";
-
-      this.getTotals();
-
-      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
-    },
-    priceThree(filSearch) {
-      this.productSerieSearchFilter.push([]);
-
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
-
-        product_id : filSearch.id,
-        cod : filSearch.product.cod,
-        affect_icbper : false,
-        igv_type_id : filSearch.igv_type_id,
-        description : filSearch.product.name,
-        brand : filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.referential_sale_price_two,
-        manager_series: Boolean(filSearch.product.manager_series),
-        quantity: 1,
-        series: [],
-      };
-
-      const series = {
-        id: "",
-        serie: "",
-      };
-      product.series.push(series);
-
-      this.saleData.detail.push(product);
-
-      this.productSearch = "";
-
-      this.getTotals();
-
-      this.getSeries(filSearch.id, this.saleData.detail.length - 1);
+        this.getSeries(product.id, this.saleData.detail.length - 1);
+      }
+      
     },
     selectSerieSearch(filSerieSearch, i, j) {
       this.saleData.detail[i].series[j].id = filSerieSearch.id;
@@ -1157,159 +953,150 @@ export default {
       });
     },
     getTotals() {
-      this.saleData.voucher.subtotal = 0;
-      this.saleData.voucher.totalIgv = 0;
-      this.saleData.voucher.totalExonerated = 0;
-      this.saleData.voucher.totalUnaffected = 0;
-      this.saleData.voucher.totalFree = 0;
-      this.saleData.voucher.totalTaxed = 0;
-      this.saleData.voucher.total = 0;
-
-      this.saleData.voucher.discountItems = 0;
+      //!REDONDEAR AL FINAL
+      let subtotal = 0;
+      let totalIgv = 0;
+      let totalExonerated = 0;
+      let totalUnaffected = 0;
+      let totalFree = 0;
+      let totalTaxed = 0;
+      let discountItems = 0;
+      let total = 0;
+      //TODO cambiar el switch por un objeto
+      let totals = {
+        10: 0, //totalTaxed
+      };
 
       // igv constante
       const igv = 0.18;
 
-      // TODO: CORREGIR y redondear al final
       this.saleData.detail.forEach((e) => {
-        this.saleData.voucher.discountItems += e.discount;
+        discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
             // hallar el precio sin igv
-            let priceWithoutIgv = e.sale_price / (1 + igv);
+            let priceWithoutIgv = e.sale_price / (1 + igv)
 
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
-            e.subtotal = parseFloat(
-              (priceWithoutIgv * e.quantity - e.discount).toFixed(2)
-            );
+            e.subtotal = this.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2)
 
             // hallar el total = (subtotal * 1.18)
-            e.total = parseFloat((e.subtotal * (1 + igv)).toFixed(2));
+            e.total = this.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2)
 
             // Actualizar totales globales
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalIgv += parseFloat(
-              (e.total - e.subtotal).toFixed(2)
-            );
-            this.saleData.voucher.totalTaxed += e.subtotal;
-            this.saleData.voucher.total += e.total;
+            subtotal += Number(e.subtotal)
+            totalIgv += Number(e.total - e.subtotal)
+            totalTaxed += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalExonerated += e.subtotal;
-            this.saleData.voucher.total += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalExonerated += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalUnaffected += e.subtotal;
-            this.saleData.voucher.total += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalUnaffected += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 40: //Exportación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            this.saleData.voucher.subtotal += e.subtotal;
-            this.saleData.voucher.totalUnaffected += e.subtotal;
-            this.saleData.voucher.total += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalUnaffected += Number(e.subtotal)
+            total += Number(e.total)
+            break
         }
       });
 
-      this.saleData.voucher.total =
-        this.saleData.voucher.total - this.saleData.voucher.discount;
-
-      this.getChange();
+      this.saleData.voucher.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.saleData.voucher.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
+      this.saleData.voucher.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
+      this.saleData.voucher.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
+      this.saleData.voucher.totalFree = this.roundToTwo(totalFree).toFixed(2);
+      this.saleData.voucher.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
+      this.saleData.voucher.discountItems = this.roundToTwo(discountItems).toFixed(2);
+      this.saleData.voucher.total = this.roundToTwo(total - this.saleData.voucher.discount).toFixed(2);
+    },
+    roundToTwo(num) {
+      return +(Math.round(num + "e+2") + "e-2");
     },
     getChange(){
       if (this.saleData.voucher.payments[0].amount != 0) {

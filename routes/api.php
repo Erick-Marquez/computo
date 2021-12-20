@@ -58,6 +58,8 @@ Route::middleware([
     //Sales
     Route::post('/sales', [VoucherController::class, 'store'])->name('api.sales.store');
     Route::get('/sales', [VoucherController::class, 'index'])->name('api.sales.index');
+    Route::get('/sales/create', [VoucherController::class, 'create'])->name('api.sales.create');
+    
     Route::get('/sales/salenotes', [VoucherController::class, 'saleNotes'])->name('api.sales.saleNotes');
     Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
     Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes');
@@ -80,9 +82,8 @@ Route::middleware([
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
+    Route::get('/quotations/create', [QuotationController::class, 'create'])->name('api.quotations.create');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
-    Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
-    Route::get('/quotations/sellers', [QuotationController::class, 'sellers'])->name('api.quotations.sellers');
 
     //Warranties
     Route::get('/warranties', [WarrantyController::class, 'index'])->name('api.warranties.index');
@@ -137,7 +138,7 @@ Route::middleware([
 
     //------------------------Inventory----------------------
     Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
-    Route::get('branches/products/{id}/add', [BranchController::class, 'addProducts'])->name('api.branches.products');
+    Route::get('branches/products/{id}/add', [BranchController::class, 'addProducts'])->name('api.branches.add-products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
 
     Route::get('kardex/{id}', [KardexController::class, 'show']);

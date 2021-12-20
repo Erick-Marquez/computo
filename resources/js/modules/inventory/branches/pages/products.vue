@@ -2,7 +2,7 @@
     <div class="content-header">
         <div class="d-flex justify-content-between">
             <div>
-                <h1>Productos de la sucursal</h1>
+                <h1>Productos de la sucursal - {{ branch.description }}</h1>
             </div>
             <div>
                 <router-link class="btn btn-lg btn-block btn-dark" :to="{ name:'branch-list' }">
@@ -98,22 +98,29 @@
 <script>
 import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
-  components:{BaseUrl},
-  async created(){
-    this.showProducts()
-  },
-  data(){
-    return{
-      products: [],
+    components:{BaseUrl},
+    async created(){
+        this.showBranch()
+        this.showProducts()
+    },
+    data(){
+        return{
+            branch: {},
+            products: [],
+        }
+    },
+    methods:{
+        async showBranch(){
+            await BaseUrl.get(`api/branches/${this.$route.params.id}`).then( resp => {
+                this.branch = resp.data.data
+            })
+        },
+        async showProducts(){
+            await BaseUrl.get(`api/branches/products/${this.$route.params.id}`).then( resp => {
+                this.products = resp.data.data
+            })
+        }
     }
-  },
-  methods:{
-    async showProducts(){
-      await BaseUrl.get(`branches/products/${this.$route.params.id}`).then( resp => {
-        this.products=resp.data.data
-      })
-    }
-  }
 }
 </script>
 

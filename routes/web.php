@@ -78,7 +78,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Inventory
     Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
     Route::get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
-    Route::get('/sucursales/productos/{id}/añadir', [WebController::class, 'branches'])->name('web.branches.add-products');
+    Route::get('/sucursales/productos/{id}/agregar', [WebController::class, 'branches'])->name('web.branches.add-products');
 
     Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
     Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
@@ -124,13 +124,6 @@ Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
 
 //Modulo Catalago
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
-
-
-//Modulo Inventario
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
-    Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
-    Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']);
 
 
 Route::get('print/cashbox/report/{occId}', [CashboxController::class, 'reportCashboxOpenClosed'])->name('cashbox.reportOC');
