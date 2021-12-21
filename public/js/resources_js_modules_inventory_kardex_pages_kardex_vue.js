@@ -84,17 +84,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     onProductSearch: function onProductSearch(search, loading) {
       this.search = search;
-      this.loading = loading;
+      this.selectLoading = loading;
       clearTimeout(this.searching);
 
       if (search.length !== 0) {
-        this.loading(true);
-        console.log(this.searching);
+        this.selectLoading(true);
         this.searching = setTimeout(this.searchProduct, 500);
       } else {
         clearTimeout(this.searching);
         this.products = [];
-        this.loading(false);
+        this.selectLoading(false);
       }
     },
     searchProduct: function searchProduct() {
@@ -103,7 +102,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/kardex/search-products/".concat(this.branchSelected, "/").concat(this.search)).then(function (resp) {
         _this2.products = resp.data.data;
       })["finally"](function () {
-        _this2.loading(false);
+        _this2.selectLoading(false);
       });
     },
     generateKardex: function generateKardex() {

@@ -114,7 +114,6 @@ export default {
     components: { BaseUrl },
     props: {
         currencyExchange: Number,
-
     },
     emits: ["setProduct"],
     data() {

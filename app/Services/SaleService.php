@@ -182,9 +182,7 @@ class SaleService
 
             if ($branchProduct->product->manager_series) {
 
-                for ($j=0; $j < count($detail['series']) ; $j++) {
-                    array_push($productSeries, $detail['series'][$j]['serie']);
-                }
+                $productSeries = $detail['series'];
 
             }
             

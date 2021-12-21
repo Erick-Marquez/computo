@@ -266,7 +266,7 @@ class VoucherController extends Controller
         return PaymentTypeResource::collection($paymentTypes);
     }
 
-    public function products($search)
+    public function searchProducts($search)
     {
         $branchProducts = BranchProduct::from('branch_product AS bp')
             ->where('bp.branch_id', auth()->user()->branch_id)
@@ -282,6 +282,17 @@ class VoucherController extends Controller
             ->limit(10)
             ->get();
         return GlobalResource::collection($branchProducts);
+    }
+
+    public function searchSeries($branchProductId, $search)
+    {
+        $branchProductSeries = BranchProductSerie::select('serie')
+            ->where('branch_product_id', $branchProductId)
+            ->where('sold', 0)
+            ->where('serie', 'like', '%' . $search . '%')
+            ->limit(10)
+            ->get();
+        return GlobalResource::collection($branchProductSeries);
     }
 
     public function productSeries($id)

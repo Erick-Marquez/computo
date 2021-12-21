@@ -133,275 +133,9 @@
       <SearchProducts :currencyExchange="Number(currencyExchange.change)" v-on:setProduct="setProduct"/>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
-      <div class="row">
-        <div
-          class="col-12 table-responsive mt-4 mb-4 table-product border rounded"
-        >
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th style="width: 36%">Descripción</th>
-                <th style="width: 20%">Tipo IGV</th>
-                <th style="width: 3%">Cantidad</th>
-                <th style="width: 9%">Descuento</th>
-                <th style="width: 9%">Precio</th>
-                <th style="width: 9%">Sub Total</th>
-                <th style="width: 9%">Total</th>
-                <th style="width: 5%">Series</th>
-                <th style="width: 3%"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(detail, index) in saleData.detail" :key="detail">
-                <td>
-                  <input
-                    :class="
-                      'form-control rounded-pill' +
-                      (errors['detail.' + index + '.product_id'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    type="text"
-                    :value="
-                      detail.description +
-                      ' - ' +
-                      detail.brand +
-                      ' - ' +
-                      detail.cod
-                    "
-                    disabled
-                  />
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.product_id']"
-                  >
-                    {{ errors["detail." + index + ".product_id"][0] }}
-                  </div>
-                </td>
-
-                <td>
-                  <select
-                    v-model="detail.igv_type_id"
-                    :class="
-                      'form-control rounded-pill' +
-                      (errors['detail.' + index + '.igv_type_id'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    @change="getTotals()"
-                  >
-                    <option
-                      v-for="igvType in igvTypes"
-                      :key="igvType.id"
-                      :value="igvType.id"
-                    >
-                      {{ igvType.description }}
-                    </option>
-                  </select>
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.igv_type_id']"
-                  >
-                    {{ errors["detail." + index + ".igv_type_id"][0] }}
-                  </div>
-                </td>
-
-                <td>
-                  <input
-                    :class="
-                      'form-control rounded-pill' +
-                      (errors['detail.' + index + '.quantity'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    type="number"
-                    min="1"
-                    v-model="detail.quantity"
-                    @change="addSeries(index)"
-                    @input="getTotals()"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.quantity']"
-                  >
-                    {{ errors["detail." + index + ".quantity"][0] }}
-                  </div>
-                </td>
-
-                <td>
-                  <input
-                    :class="
-                      'form-control rounded-pill' +
-                      (errors['detail.' + index + '.discount'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    type="number"
-                    min="0"
-                    step="0.001"
-                    v-model="detail.discount"
-                    @change="activateOrDesactivateGlobalDiscount()"
-                    :disabled="activateDetailDiscount"
-                    @input="getTotals()"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.discount']"
-                  >
-                    {{ errors["detail." + index + ".discount"][0] }}
-                  </div>
-                </td>
-
-                <td>
-                  <input
-                    :class="
-                      'form-control rounded-pill' +
-                      (errors['detail.' + index + '.sale_price'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    type="text"
-                    v-model="detail.sale_price"
-                    disabled
-                  />
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.sale_price']"
-                  >
-                    {{ errors["detail." + index + ".sale_price"][0] }}
-                  </div>
-                </td>
-
-                <td>
-                  <input
-                    class="form-control rounded-pill"
-                    type="text"
-                    disabled
-                    :value="detail.subtotal"
-                  />
-                </td>
-
-                <td>
-                  <input
-                    class="form-control rounded-pill"
-                    type="text"
-                    disabled
-                    :value="detail.total"
-                  />
-                </td>
-
-                <td>
-                  <input
-                    :disabled="!detail.manager_series"
-                    type="button"
-                    class="btn btn-dark btn-sm"
-                    data-toggle="modal"
-                    :data-target="'#seriesModal' + index"
-                    value="Series"
-                  />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-flat bg-light"
-                    @click="deleteItem(index)"
-                  >
-                    <i class="text-danger fas fa-trash"></i>
-                  </button>
-                  <div
-                    class="invalid-feedback"
-                    v-if="errors['detail.' + index + '.series']"
-                  >
-                    {{ errors["detail." + index + ".series"][0] }}
-                  </div>
-                </td>
-
-                <!-- Modal Serie -->
-                <div
-                  v-if="detail.manager_series"
-                  class="modal fade"
-                  :id="'seriesModal' + index"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="seriesModalLabel"
-                  aria-hidden="true"
-                >
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="seriesModalLabel">
-                          Registrar series para {{ detail.description }} -
-                          {{ detail.brand }} - {{ detail.cod }}
-                        </h5>
-                        <button
-                          type="button"
-                          class="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div
-                          class="row m-3"
-                          v-for="(obj, j) in detail.series"
-                          :key="obj"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Serie"
-                            v-model="obj.serie"
-                            @keyup="searchProductSeries(index, j)"
-                          />
-                          <div class="">
-                            <div class="">
-                              <div>
-                                <p
-                                  v-for="filSerieSearch in productSerieSearchFilter[
-                                    index
-                                  ][j]"
-                                  :key="filSerieSearch"
-                                  @click="
-                                    selectSerieSearch(filSerieSearch, index, j)
-                                  "
-                                >
-                                  {{ filSerieSearch.serie }}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-dismiss="modal"
-                        >
-                          Cerrar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </tr>
-            </tbody>
-          </table>
-          <div
-            class="image-without-products"
-            v-if="saleData.detail.length == 0"
-          >
-            <img
-              src="../../../../../img/add_product.png"
-              alt=""
-              style="max-height: 120px"
-            >
-            <h1 class="display-4">Agregue productos</h1>
-          </div>
-        </div>
-      </div>
+      <SetProducts :igvTypes="igvTypes" :details="saleData.detail" :errors="errors" :activateDetailDiscount="activateDetailDiscount"
+      v-on:getTotals="getTotals" v-on:activateOrDesactivateGlobalDiscount="activateOrDesactivateGlobalDiscount"/>
+      
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
@@ -609,35 +343,43 @@
               <tbody>
                 <tr v-show="saleData.voucher.discount > 0">
                   <th>Descuento global:</th>
-                  <td>S/. {{ saleData.voucher.discount }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.discount }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.discountItems > 0">
                   <th>Descuento por item:</th>
-                  <td>S/. {{ saleData.voucher.discountItems }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.discountItems }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.totalTaxed > 0">
                   <th>Gravado:</th>
-                  <td>S/. {{ saleData.voucher.totalTaxed }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.totalTaxed }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.totalExonerated > 0">
                   <th>Exonerado:</th>
-                  <td>S/. {{ saleData.voucher.totalExonerated }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.totalExonerated }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.totalUnaffected > 0">
                   <th>Inafecto:</th>
-                  <td>S/. {{ saleData.voucher.totalUnaffected }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.totalUnaffected }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.totalFree > 0">
                   <th>Gratuita:</th>
-                  <td>S/. {{ saleData.voucher.totalFree }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.totalFree }}</span></td>
                 </tr>
                 <tr v-show="saleData.voucher.totalIgv > 0">
                   <th>Igv (18%):</th>
-                  <td>S/. {{ saleData.voucher.totalIgv }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.totalIgv }}</span></td>
                 </tr>
                 <tr>
                   <th>Total:</th>
-                  <td>S/. {{ saleData.voucher.total }}</td>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.total }}</span></td>
                 </tr>
               </tbody>
             </table>
@@ -672,8 +414,9 @@ import BaseUrl from "../../../../api/BaseUrl"
 import SearchCustomers from "../../components/SearchCustomers.vue"
 import SearchAssemblies from "../../components/SearchAssemblies.vue"
 import SearchProducts from "../../components/SearchProducts.vue"
+import SetProducts from "../components/SetProducts.vue"
 export default {
-  components: { BaseUrl, SearchCustomers, SearchAssemblies, SearchProducts },
+  components: { BaseUrl, SearchCustomers, SearchAssemblies, SearchProducts, SetProducts },
   async created() {
 
     await BaseUrl.get(`api/sales/create`).then((resp) => {
@@ -692,18 +435,12 @@ export default {
 
       //Serie Quotation
       let serieBackupQ = this.series;
-      let serieFilterQ = serieBackupQ.filter(
-        (series) => series.voucher_type_id == 8
-      );
-      this.quotationSeries = serieFilterQ
+      this.quotationSeries = serieBackupQ.filter((series) => series.voucher_type_id == 8)
       this.quotationSerieSelect = this.quotationSeries[0].id
 
       //Serie Warranty
       let serieBackupW = this.series;
-      let serieFilterW = serieBackupW.filter(
-        (series) => series.voucher_type_id == 9
-      );
-      this.warrantySeries = serieFilterW
+      this.warrantySeries = serieBackupW.filter((series) => series.voucher_type_id == 9)
       this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
     })
 
@@ -723,31 +460,28 @@ export default {
       loader: null,
       loadingVoucher: false,
 
+      currencyExchange: {},
+      identificationDocuments: [],
+      igvTypes: [],
+      series: [],
+      paymentTypes: [],
+      voucherTypes: [],
+      warrantySeries: [],
+
       errors: [],
       searchAssemblies: false,
-      warrantySeries: {},
-
-      currencyExchange: {},
 
       quotationSerieSelect: null,
-      quotationSeries: {},
+      quotationSeries: [],
       numberQuotation: null,
       contador: 0,
 
-      currentNumber: "Selecciona una serie",
-
-      productSerieSearchFilter: [],
-      voucherTypes: [],
-      series: [],
       voucherSeries: [],
+      currentNumber: "Selecciona una serie",
 
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
-
-      identificationDocuments: [],
-      paymentTypes: [],
-      igvTypes: [],
-      productSeries: [],
+      
       saleData: {
         customer: {
           id: null,
@@ -783,7 +517,6 @@ export default {
               payment_type_id: null,
               amount: 0
             },
-
           ],
         },
         detail: [],
@@ -793,8 +526,7 @@ export default {
   mounted() {
     this.loader = this.$loading.show({
       canCancel: true,
-    });
-
+    })
   },
   methods: {
     loadSeries() {
@@ -814,36 +546,16 @@ export default {
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
-    searchProductSeries(i, j) {
-      let produtSeriesBackup = this.productSeries[i];
-      let wordFilter = this.saleData.detail[i].series[j].serie.toLowerCase();
-
-      if (wordFilter === "") {
-        this.productSerieSearchFilter[i][j] = "";
-      } else {
-        this.productSerieSearchFilter[i][j] = produtSeriesBackup.filter(
-          (productSeries) =>
-            productSeries.serie.toLowerCase().indexOf(wordFilter) !== -1
-        );
-        if (this.productSerieSearchFilter[i][j].length === 0) {
-          this.productSerieSearchFilter[i][j] = [
-            { serie: "No hay resultados" },
-          ];
-        }
-      }
-    },
     setAssemblie(products) {
         this.saleData.detail = [];
 
-        this.productSeries = [];
         products.forEach((product, index) => {
             this.setProductAssembly(product, index)
         })
     },
     setProductAssembly(productAssembly, index) {
-      this.productSerieSearchFilter.push([]);
 
-      const product = {
+      let product = {
         discount: 0,
         subtotal: 0,
         total: 0,
@@ -859,21 +571,16 @@ export default {
         series: [],
       };
 
-      const series = {
-        id: "",
-        serie: "",
-      };
-      product.series.push(series);
+      //Añadir series
+      for (let j = 0; j < e.quantity; j++) {
+        product.series.push('');
+      }
 
       this.saleData.detail.push(product);
 
       this.getTotals();
-
-      this.addSeries(index);
-
-      this.getSeries(productAssembly.id, index);
-          // Alertas para las notificaciones y calcular totales
-        //   this.getQuotationDiscount(0);
+      // Alertas para las notificaciones y calcular totales
+      //   this.getQuotationDiscount(0);
     },
     setProduct(product, price){
       
@@ -882,8 +589,6 @@ export default {
       );
 
       if (index == -1) {
-
-        this.productSerieSearchFilter.push([]);
 
         this.saleData.detail.push({
           discount: 0,
@@ -899,25 +604,13 @@ export default {
           sale_price: price,
           manager_series: Boolean(product.manager_series),
           quantity: 1,
-          series: [{id: "", serie: ""}],
+          series: [""],
         });
 
         this.getTotals();
 
-        this.getSeries(product.id, this.saleData.detail.length - 1);
       }
       
-    },
-    selectSerieSearch(filSerieSearch, i, j) {
-      this.saleData.detail[i].series[j].id = filSerieSearch.id;
-      this.saleData.detail[i].series[j].serie = filSerieSearch.serie;
-      this.productSerieSearchFilter[i][j] = "";
-    },
-    deleteItem(index) {
-      this.saleData.detail.splice(index, 1);
-      this.productSeries.splice(index, 1);
-      this.productSerieSearchFilter.splice(index, 1);
-      this.getTotals()
     },
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
@@ -925,7 +618,6 @@ export default {
       this.saleData.detail.forEach((e) => {
         discount += e.discount * 1;
       });
-
       // Si descuento es mayor a cero entonces se desactiva el descuento global
       // de lo contrario se activa el descuento global
       this.activateGlobalDiscount = discount > 0 ? true : false;
@@ -935,22 +627,6 @@ export default {
       // de lo contrario se activa el descuento global
       this.activateDetailDiscount =
         this.saleData.voucher.discount > 0 ? true : false;
-    },
-    addSeries(index) {
-      const temp = [];
-      for (let i = 0; i < this.saleData.detail[index].quantity; i++) {
-        const series = {
-          id: "",
-          serie: "",
-        };
-        temp.push(series);
-      }
-      this.saleData.detail[index].series = temp;
-    },
-    async getSeries(id, index) {
-      await BaseUrl.get(`api/sales/products/series/${id}`).then((resp) => {
-        this.productSeries[index] = resp.data.data;
-      });
     },
     getTotals() {
       //!REDONDEAR AL FINAL
@@ -1145,11 +821,11 @@ export default {
     getErrorDetailSerie(i, j){
       if (i < this.saleData.detail.length) {
         if (j < this.saleData.detail[i].quantity) {
-          if (this.errors['detail.' + i + '.series.' + j + '.serie'] != null) {
+          if (this.errors[`detail.${i}.series.${j}`] != null) {
             Swal.fire({
               title: "Algo salio mal",
               html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
-              this.errors['detail.' + i + '.series.' + j + '.serie'][0],
+              this.errors[`detail.${i}.series.${j}`][0],
               icon: "warning"
             })
             .then((result) => {
@@ -1171,7 +847,6 @@ export default {
     getQuotation() {
       this.saleData.detail = [];
 
-      this.productSeries = [];
       BaseUrl.get(
         `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
       )
@@ -1194,7 +869,7 @@ export default {
 
             quotation.payment_types.forEach(e => {
 
-              const payment = {
+              let payment = {
                 payment_type_id: e.pivot.payment_type_id,
                 amount: e.pivot.amount
               }
@@ -1205,9 +880,8 @@ export default {
           }
 
           quotation.quotation_details.forEach((e, index) => {
-            this.productSerieSearchFilter.push([]);
 
-            const product = {
+            let product = {
               discount: Number(e.discount),
               subtotal: 0,
               total: 0,
@@ -1224,11 +898,12 @@ export default {
               series: [],
             };
 
-            this.saleData.detail.push(product);
+            //Añadir series
+            for (let j = 0; j < e.quantity; j++) {
+              product.series.push('');
+            }
 
-            //Obtener y Añadir series
-            this.getSeries(e.branch_product_id, index);
-            this.addSeries(index);
+            this.saleData.detail.push(product);
 
             //Activar descuento
             this.activateOrDesactivateGlobalDiscount();
@@ -1441,76 +1116,5 @@ export default {
 label {
   color: rgba(48, 48, 48, 0.774);
   font-weight: 300;
-}
-.option__relative {
-  position: relative;
-  z-index: 99;
-}
-.option__contenedor {
-  box-sizing: border-box;
-  border-radius: 5px;
-  width: 100%;
-  max-height: 200px;
-  box-shadow: 0 0 2px 0 rgb(128, 189, 255);
-  background-color: #fff;
-  box-sizing: border-box;
-  cursor: pointer;
-  overflow-y: scroll;
-  position: absolute;
-  z-index: 100;
-}
-.option__contenedor input,
-.search input {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  /*border-color: #93a8c3;*/
-  outline-color: rgb(255, 128, 128);
-  border-style: solid;
-  border-width: 1px;
-  /*color:rgb(172,173,182)*/
-}
-.option__contenedor table {
-  width: 100%;
-  padding: 8px 10px;
-  margin: 0;
-}
-.option__contenedor::-webkit-scrollbar {
-  width: 7px;
-  background-color: rgb(255, 128, 128);
-}
-.option__contenedor::-webkit-scrollbar-thumb {
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  border-right: 1px solid rgb(255, 128, 128);
-  border-left: 1px solid rgb(255, 128, 128);
-}
-.search .option__contenedor {
-  top: 0;
-}
-.search input {
-  width: 100%;
-  height: 40px;
-  border-radius: 5px;
-}
-.table-product {
-  min-height: 250px;
-}
-.table-product table {
-  min-width: 900px;
-}
-.image-without-products {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  opacity: 0.7;
-  height: 150px;
-  width: 100%;
-  min-width: 850px;
-}
-.image-without-products img {
-  margin-bottom: 0.5rem;
-  margin-right: 0.5rem;
 }
 </style>

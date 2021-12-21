@@ -122,7 +122,6 @@
         <!-- /.card-body -->
         </div>
     </div>
-  
 </template>
 
 <script>
@@ -167,19 +166,18 @@ export default {
         },
         onProductSearch(search, loading) {
             this.search = search
-            this.loading = loading
+            this.selectLoading = loading
 
             clearTimeout(this.searching);
 
             if(search.length !== 0) {
-                this.loading(true);
-                console.log(this.searching)
+                this.selectLoading(true);
                 this.searching = setTimeout(this.searchProduct, 500)
             }
             else{
                 clearTimeout(this.searching)
                 this.products  = []
-                this.loading(false)
+                this.selectLoading(false)
             }
         },
         searchProduct() {
@@ -190,7 +188,7 @@ export default {
 
             })
             .finally(() => {
-                this.loading(false)
+                this.selectLoading(false)
             });
 
         },

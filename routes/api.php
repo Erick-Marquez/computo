@@ -59,17 +59,17 @@ Route::middleware([
     Route::post('/sales', [VoucherController::class, 'store'])->name('api.sales.store');
     Route::get('/sales', [VoucherController::class, 'index'])->name('api.sales.index');
     Route::get('/sales/create', [VoucherController::class, 'create'])->name('api.sales.create');
-    
+    Route::get('/sales/products/{search}', [VoucherController::class, 'searchProducts'])->name('api.sales.products');
+    Route::get('/sales/products-series/{branchProductId}/{search}', [VoucherController::class, 'searchSeries'])->name('api.sales.searchSeries');
+
+
     Route::get('/sales/salenotes', [VoucherController::class, 'saleNotes'])->name('api.sales.saleNotes');
-    Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
-    Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes');
-    Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes');
-    Route::get('/sales/products/{search}', [VoucherController::class, 'products'])->name('api.sales.products');
+    Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes'); //Used new producto, change then
+    Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes'); //Used Advance Payment
+    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series'); //Used Advance Payment
+    
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
-    Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
-    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
-    Route::get('/sales/currencyexchange', [VoucherController::class, 'currencyExchange'])->name('api.sales.currencyExchange');
 
     //Advance Payments
     Route::get('/advance-payments', [AdvancePaymentController::class, 'index'])->name('api.advancePayments.index');
