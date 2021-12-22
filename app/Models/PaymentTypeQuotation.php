@@ -16,4 +16,14 @@ class PaymentTypeQuotation extends Pivot
         'amount'
         
     ];
+
+    public function quotation()
+    {   
+        return $this->belongsTo(Quotation::class);
+    }
+
+    public function paymentType()
+    {   
+        return $this->belongsTo(PaymentType::class);
+    }
 }

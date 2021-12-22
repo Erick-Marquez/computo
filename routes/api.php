@@ -126,10 +126,8 @@ Route::middleware([
     //Products
     Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
     Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
-    Route::get('products/branches', [ProductController::class, 'branches'])->name('api.products.branches');
-    Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
+    Route::get('products/create', [ProductController::class, 'create'])->name('api.products.create');
     Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
-    Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
 
     //Product-Series
     Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');

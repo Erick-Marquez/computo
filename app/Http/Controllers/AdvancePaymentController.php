@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdvancePaymentRequest;
 use App\Http\Resources\QuotationResource;
+use App\Models\Company;
 use App\Models\PaymentTypeQuotation;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
+
+use Barryvdh\DomPDF\Facade as PDF;
 
 class AdvancePaymentController extends Controller
 {
@@ -117,5 +120,20 @@ class AdvancePaymentController extends Controller
             ->firstOrFail();
 
         return QuotationResource::make($quotation);
+    }
+
+    public function print($type, $id)
+    {
+        
+        $advancePayment = PaymentTypeQuotation::with('quotation.quotationDetails.branchProduct.product', 'quotation.serie', 'quotation.customer.identificationDocument', 'paymentType')->findOrFail($id);
+        $company = Company::active();
+
+
+        $pdf = PDF::loadView('templates.pdf.advance-payments.advance-payments-ticket', compact('advancePayment', 'company'))->setPaper(array(0,0,220,500), 'portrait');
+
+        // TICKET
+        //setPaper(array(0,0,220,700)
+
+        return $pdf->stream();
     }
 }

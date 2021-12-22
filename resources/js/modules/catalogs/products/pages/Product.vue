@@ -77,10 +77,6 @@
                           <a
                             class="dropdown-item"
                             href="#"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
-                          ><a
-                            class="dropdown-item"
-                            href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
                           >
                         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvancePaymentController;
 use App\Http\Controllers\WebController;
 
 use App\Http\Controllers\FamilyController;
@@ -97,10 +98,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     //Rutas imprimir
     Route::get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
-    Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print');
+    Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print')
+        ->where('type', 'A4|TICKET|WARRANTY');
+
+    Route::get('print/advance-payments/{type}/{id}', [AdvancePaymentController::class, 'print'])->name('advance-payments.print')
+        ->where('type', 'A4|TICKET');
 
     //Rutas descarga
     Route::get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
+        
 
 
     // Rutas emsamblajes
