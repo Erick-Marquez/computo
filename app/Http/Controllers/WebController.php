@@ -9,6 +9,10 @@ use App\Models\PaymentTypeQuotation;
 use App\Models\Quotation;
 use App\Models\Voided;
 use App\Models\VoucherType;
+use App\Services\Facturacion\Exception\TicketSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\TicketSunatRejectedException;
+use App\Services\Facturacion\Exception\XmlSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\XmlSunatRejectedException;
 use App\Services\Facturacion\VoidedService;
 use App\Services\KardexService;
 use App\Services\SunatService;
@@ -235,7 +239,7 @@ class WebController extends Controller
                 ],
                 'voided' => [
                     'date_issue' => now()->format('Y-m-d'),
-                    'identifier' => 'RA-20211215-1',
+                    'identifier' => join('-', ['RA', now()->format('Ymd'), 1 ]),
                     'description' => 'Error'
                 ],
                 'sale' => [
@@ -254,12 +258,35 @@ class WebController extends Controller
             $service->sendTicketSunat();
             $service->getCdr();
 
-            return $service->getResponse();
+            return response()->json([
+                'service' => $service->getResponse()['response']['message'],
+            ]);
 
+        } catch (XmlSunatOutOfServiceException $e) {
+            return response()->json([
+                'service' => $service->getResponse(),
+                'e' => $e->getMessage()
+            ]);
+        } catch (XmlSunatRejectedException $e) {
+            return response()->json([
+                'service' => $service->getResponse(),
+                'e' => $e->getMessage()
+            ]);
+        } catch (TicketSunatOutOfServiceException $e) {
+            return response()->json([
+                'service' => $service->getResponse(),
+                'e' => $e->getMessage()
+            ]);
+        } catch (TicketSunatRejectedException $e) {
+            return response()->json([
+                'service' => $service->getResponse(),
+                'e' => $e->getMessage()
+            ]);
         } catch (\Exception $e) {
-
-            return $service->getResponse();
-            // return $e->getMessage();
+            return response()->json([
+                'service' => $service->getResponse(),
+                'e' => $e->getMessage()
+            ]);
         }
 
 

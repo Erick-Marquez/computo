@@ -2,6 +2,10 @@
 
 namespace App\Services\Facturacion;
 
+use App\Services\Facturacion\Exception\TicketSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\TicketSunatRejectedException;
+use App\Services\Facturacion\Exception\XmlSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\XmlSunatRejectedException;
 use DOMDocument;
 use Greenter\XMLSecLibs\Sunat\SignedXml;
 use Illuminate\Support\Facades\Storage;
@@ -180,7 +184,7 @@ class VoidedService
             $this->message['response']['state'] = $this::PENDIENTE;
             $this->message['response']['send'] = false;
 
-            throw new \Exception("Sunat Fuera de Servicio, vuelva a intentar en unos minutos.");
+            throw new XmlSunatOutOfServiceException("Sunat Fuera de Servicio, vuelva a intentar en unos minutos.");
         }
 
         $this->message['response']['send'] = true;
@@ -193,7 +197,7 @@ class VoidedService
             $this->message['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
             $this->message['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
 
-            throw new \Exception("El comprobante enviado tiene observaciones y ha sido rechazado por Sunat.");
+            throw new XmlSunatRejectedException("El comprobante enviado tiene observaciones y ha sido rechazado por Sunat.");
         }
 
         $this->ticket = $doc->getElementsByTagName('ticket')->item(0)->nodeValue; // Obtener el valor del ticket
@@ -252,9 +256,6 @@ class VoidedService
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Obtener el codigo de verificacion
 
         curl_close($ch);
-        
-
-        dd($httpCode);
 
         if ($httpCode !== 200) {
 
@@ -262,7 +263,7 @@ class VoidedService
             $this->message['ticket']['response_sunat'] = false;
             $this->message['ticket']['send'] = false;
 
-            throw new \Exception("Sunat Fuera de Servicio, la consulta de ticket no pudo realizarse, vuelva a intentar en unos minutos.");
+            throw new TicketSunatOutOfServiceException("Sunat Fuera de Servicio, la consulta de ticket no pudo realizarse, vuelva a intentar en unos minutos.");
         }
 
         $this->message['ticket']['send'] = true;
@@ -276,7 +277,7 @@ class VoidedService
             $this->message['ticket']['response']['cod'] = $doc->getElementsByTagName('faultcode')->item(0)->nodeValue; // Codigo de error
             $this->message['ticket']['response']['message'] = $doc->getElementsByTagName('faultstring')->item(0)->nodeValue; // Mensaje de error
 
-            throw new \Exception("El ticket enviado tiene observaciones y ha sido rechazado por Sunat.");
+            throw new TicketSunatRejectedException("El ticket enviado tiene observaciones y ha sido rechazado por Sunat.");
         }
 
 
@@ -311,11 +312,6 @@ class VoidedService
     public function getResponse(): Array
     {
         return $this->message;
-    }
-
-    public function getMessage(): String
-    {
-        return "";
     }
 
 }

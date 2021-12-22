@@ -237,19 +237,30 @@ export default {
     sendVoided(){
       this.loading = true
 
-      BaseUrl.post("/api/voideds", this.voided).then((response) => {
-        this.errors = []
-        console.log(response)
+      BaseUrl.post("/api/voideds", this.voided).then((resp) => {
+        console.log(resp)
         this.showVouchers()
         Swal.fire(
           "Comprobante Anulado",
-          response.data,
+          resp.data.message,
           "success"
         );
       })
       .catch((error) => {
-
-        console.log(error.response);
+        console.log(error.response.data);
+        if (!error.response.data.have_ticket) {
+          Swal.fire(
+            error.response.data.error,
+            error.response.data.message,
+            "error"
+          )
+        } else{
+          Swal.fire(
+            error.response.data.error,
+            error.response.data.message,
+            "warning"
+          )
+        }
 
       })
       .finally(() => {

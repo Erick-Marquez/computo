@@ -7,6 +7,10 @@ use App\Models\Company;
 use App\Models\Sale;
 use App\Models\Voided;
 use App\Services\Facturacion\Adapters\VoidedInputs;
+use App\Services\Facturacion\Exception\TicketSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\TicketSunatRejectedException;
+use App\Services\Facturacion\Exception\XmlSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\XmlSunatRejectedException;
 use App\Services\Facturacion\VoidedService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
@@ -48,105 +52,130 @@ class VoidedController extends Controller
 
         $identifier = join('-', ['RA', now()->format('Ymd'), $numeration ]);
 
-        $voided = Voided::create([
-            'date_issue' => now()->format('Y-m-d'),
-            'date_reference' => $sale->date_issue,
-            'identifier' => $identifier,
-            'description' => $request->description,
-            'user_id' => auth()->user()->id,
-            'sale_id' => $request->sale_id
-        ]);
+        $company = Company::active();
 
-        $sunat = SunatService::facturar($voided->id, 'voided');
+        try {
 
-        // $company = Company::active();
+            $inputs = VoidedInputs::getVoidedServiceInputs($sale, $company, $numeration, $request->description);
 
-        // try {
+            $service = new VoidedService;
+            $service->setDataVoided($inputs);
+            $service->createXml();
+            $service->singXml();
+            $service->zipXml();
+            $service->sendXmlSunat();
+            $service->sendTicketSunat();
+            $service->getCdr();
 
-        //     $inputs = VoidedInputs::getVoidedServiceInputs($voided, $company, $numeration, $request->description);
+            $response = $service->getResponse();
 
-        //     $sunat = new VoidedService();
-        //     $sunat->setDataVoided($inputs);
-        //     $sunat->createXml();
-        //     $sunat->singXml();
-        //     $sunat->zipXml();
-        //     $sunat->sendXmlSunat();
-        //     $sunat->sendTicketSunat();
-        //     $sunat->getCdr();
-        //     $respose = $sunat->getResponse();
-
-        //     $voided->update([
-
-        //     ]);
-
-        //     return $sunat->getMessage();
-            
-        // } catch (\Exception $e) {
-
-        //     return response()->json($sunat->getMessage(), 500);
-
-        // }
-
-
-        
-        if (!$sunat['response']['send']) { // Si no ha sido enviado
-            $voided->update([
-                'send_sunat' => $sunat['response']['send'],
-                'state' => $sunat['response']['state'],
-                'hash_cpe' => $sunat['response']['hash_cpe']
+            Voided::create([
+                'date_issue' => now()->format('Y-m-d'),
+                'date_reference' => $sale->date_issue,
+                'identifier' => $identifier,
+                'ticket_number' => $response['response']['cod_ticket'],
+                'description' => $request->description,
+                'state' => $response['ticket']['state'],
+                'send_sunat' => $response['ticket']['send'],
+                'description_sunat_cdr' => $response['response']['message'],
+                'hash_cdr' => $response['response']['hash_cdr'],
+                'hash_cpe' => $response['response']['hash_cpe'],
+                'sale_id' => $request->sale_id,
+                'user_id' => auth()->user()->id,
             ]);
-            return response()->json($sunat['response']['message']);
-        } 
 
-        if (!$sunat['response']['response_sunat']) { // Si no hay respuesta
-            $voided->update([
-
-                'send_sunat' => $sunat['response']['send'],
-                'state' => $sunat['response']['state'],
-                'hash_cpe' => $sunat['response']['hash_cpe']
+            $sale->update([
+                'state' => Sale::ANULADO,
+                'canceled' => true
             ]);
-            return response()->json($sunat['response']['message']);
+
+            return response()->json([
+                'message' => $response['response']['message']
+            ]);
+
+        } catch (XmlSunatOutOfServiceException $e) {
+
+            return response()->json([
+                'have_ticket' => false,
+                'error' => $e->getMessage(),
+                'message' => 'El comprobante no puede anularse.'
+            ], 400);
+
+        } catch (XmlSunatRejectedException $e) {
+
+            $response = $service->getResponse();
+            return response()->json([
+                'have_ticket' => false,
+                'error' => $e->getMessage(),
+                'message' => $response['response']['message']
+            ], 400);
+
+        } catch (TicketSunatOutOfServiceException $e) {
+
+            $response = $service->getResponse();
+
+            Voided::create([
+                'date_issue' => now()->format('Y-m-d'),
+                'date_reference' => $sale->date_issue,
+                'identifier' => $identifier,
+                'ticket_number' => $response['response']['cod_ticket'],
+                'description' => $request->description,
+                'state' => $response['ticket']['state'],
+                'send_sunat' => $response['ticket']['send'],
+                'hash_cpe' => $response['response']['hash_cpe'],
+                'sale_id' => $request->sale_id,
+                'user_id' => auth()->user()->id,
+            ]);
+
+            $sale->update([
+                'state' => Sale::ANULADO,
+                'canceled' => true
+            ]);
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => 'Consulte el estado del ticket en unos minutos.'
+            ], 400);
+
+        } catch (TicketSunatRejectedException $e) {
+
+            $response = $service->getResponse();
+
+            Voided::create([
+                'date_issue' => now()->format('Y-m-d'),
+                'date_reference' => $sale->date_issue,
+                'identifier' => $identifier,
+                'ticket_number' => $response['response']['cod_ticket'],
+                'description' => $request->description,
+                'state' => $response['ticket']['state'],
+                'send_sunat' => $response['ticket']['send'],
+                'hash_cpe' => $response['response']['hash_cpe'],
+                'description_sunat_cdr' => $response['ticket']['response']['message'],
+                'sale_id' => $request->sale_id,
+                'user_id' => auth()->user()->id,
+            ]);
+
+            $sale->update([
+                'state' => Sale::ANULADO,
+                'canceled' => true
+            ]);
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => $response['ticket']['response']['message']
+            ],  400);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'have_ticket' => false,
+                'error' => 'Algo esta pasando, ponganse en contacto con el administrador del sistema.',
+                'message' => $e->getMessage()
+            ], 400);
+
         }
-
-        $sale->update([
-            'state' => Sale::ANULADO,
-            'canceled' => true,
-        ]);
-
-        if (!$sunat['ticket']['send']) { // Si no ha sido enviado
-            $voided->update([
-                'ticket_number' => $sunat['response']['cod_ticket'],
-                'send_sunat' => $sunat['ticket']['send'],
-                'state' => $sunat['ticket']['state'],
-                'response_sunat' => $sunat['ticket']['response_sunat'],
-                'hash_cpe' => $sunat['response']['hash_cpe']
-            ]);
-            return response()->json($sunat['ticket']['message']);
-        }
-        
-        if (!$sunat['ticket']['response_sunat']) { // Si no hay respuesta
-            $voided->update([
-                'ticket_number' => $sunat['response']['cod_ticket'],
-                'send_sunat' => $sunat['response']['send'],
-                'state' => $sunat['response']['state'],
-                'response_sunat' => $sunat['ticket']['response_sunat'],
-                'hash_cpe' => $sunat['response']['hash_cpe']
-            ]);
-            return response()->json($sunat['response']['message']);
-        }
-
-        $voided->update([
-            'ticket_number' => $sunat['response']['cod_ticket'],
-            'state' => $sunat['ticket']['state'],
-
-            'send_sunat' => $sunat['response']['send'],
-            'response_sunat' => $sunat['response']['response_sunat'],
-            'description_sunat_cdr' => $sunat['response']['message'],
-            'hash_cdr' => $sunat['response']['hash_cdr'],
-            'hash_cpe' => $sunat['response']['hash_cpe']
-        ]);
-
-        return response()->json($sunat['response']['message']);
     }
 
     /**
