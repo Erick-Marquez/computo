@@ -6,6 +6,7 @@ use App\Http\Resources\SaleResource;
 use App\Models\Company;
 use App\Models\Sale;
 use App\Models\Voided;
+use App\Services\Facturacion\Adapters\CompanyInputs;
 use App\Services\Facturacion\Adapters\VoidedInputs;
 use App\Services\Facturacion\Exception\TicketSunatOutOfServiceException;
 use App\Services\Facturacion\Exception\TicketSunatRejectedException;
@@ -56,9 +57,9 @@ class VoidedController extends Controller
 
         try {
 
-            $inputs = VoidedInputs::getVoidedServiceInputs($sale, $company, $numeration, $request->description);
+            $inputs = VoidedInputs::getVoidedServiceInputs($sale, $numeration, $request->description);
 
-            $service = new VoidedService;
+            $service = new VoidedService(CompanyInputs::getCompanyInputs($company));
             $service->setDataVoided($inputs);
             $service->createXml();
             $service->singXml();
@@ -135,7 +136,7 @@ class VoidedController extends Controller
             return response()->json([
                 'have_ticket' => true,
                 'error' => $e->getMessage(),
-                'message' => 'Consulte el estado del ticket en unos minutos.'
+                'message' => 'Comprobante Anulado, consulte el estado del ticket en unos minutos.'
             ], 400);
 
         } catch (TicketSunatRejectedException $e) {
@@ -210,5 +211,67 @@ class VoidedController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function ticketStatus(Request $request)
+    {
+        $company = Company::active();
+        $voided = Voided::findOrFail($request->voided_id);
+
+        try {
+            $service = new VoidedService(CompanyInputs::getCompanyInputs($company));
+            $service->setTicket($voided->ticket_number, $voided->identifier);
+            $service->sendTicketSunat();
+            $service->getCdr();
+
+            $response = $service->getResponse();
+
+            $voided->update([
+                'state' => $response['ticket']['state'],
+                'send_sunat' => $response['ticket']['send'],
+                'description_sunat_cdr' => $response['response']['message'],
+                'hash_cdr' => $response['response']['hash_cdr'],
+            ]);
+
+            return response()->json([
+                'message' => $response['response']['message']
+            ]);
+            
+        } catch (TicketSunatOutOfServiceException $e) {
+
+            $response = $service->getResponse();
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => 'Consulte el estado del ticket en unos minutos.'
+            ], 400);
+
+        } catch (TicketSunatRejectedException $e) {
+
+            $response = $service->getResponse();
+
+            $voided->update([
+                'state' => $response['ticket']['state'],
+                'send_sunat' => $response['ticket']['send'],
+                'description_sunat_cdr' => $response['response']['message'],
+            ]);
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => $response['ticket']['response']['message']
+            ],  400);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'have_ticket' => false,
+                'error' => 'Algo esta pasando, ponganse en contacto con el administrador del sistema.',
+                'message' => $e->getMessage()
+            ], 400);
+
+        }
+        
     }
 }

@@ -79,6 +79,7 @@ Route::middleware([
     //Voideds
     Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
     Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');
+    Route::post('/voideds/ticket-status', [VoidedController::class, 'ticketStatus'])->name('api.voideds.ticketStatus');
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');

@@ -44,6 +44,6 @@
         <cbc:DocumentTypeCode>{{ $sale['voucher_type'] }}</cbc:DocumentTypeCode>
         <sac:DocumentSerialID>{{ $sale['serie'] }}</sac:DocumentSerialID>
         <sac:DocumentNumberID>{{ $sale['document_number'] }}</sac:DocumentNumberID>
-        <sac:VoidReasonDescription><![CDATA[ {{ $voided['description'] }} ]]></sac:VoidReasonDescription>
+        <sac:VoidReasonDescription><![CDATA[{{ $voided['description'] }}]]></sac:VoidReasonDescription>
     </sac:VoidedDocumentsLine>
 </VoidedDocuments>

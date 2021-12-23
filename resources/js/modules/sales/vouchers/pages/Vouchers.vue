@@ -238,8 +238,6 @@ export default {
       this.loading = true
 
       BaseUrl.post("/api/voideds", this.voided).then((resp) => {
-        console.log(resp)
-        this.showVouchers()
         Swal.fire(
           "Comprobante Anulado",
           resp.data.message,
@@ -247,7 +245,6 @@ export default {
         );
       })
       .catch((error) => {
-        console.log(error.response.data);
         if (!error.response.data.have_ticket) {
           Swal.fire(
             error.response.data.error,
@@ -261,10 +258,11 @@ export default {
             "warning"
           )
         }
-
       })
       .finally(() => {
         this.loading = false;
+        this.showVouchers()
+        $("#modal-voided").modal("hide");
       });
     }
 

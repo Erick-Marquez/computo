@@ -114,14 +114,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.loading = true;
       _api_BaseUrl_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/voideds", this.voided).then(function (resp) {
-        console.log(resp);
-
-        _this3.showVouchers();
-
         Swal.fire("Comprobante Anulado", resp.data.message, "success");
       })["catch"](function (error) {
-        console.log(error.response.data);
-
         if (!error.response.data.have_ticket) {
           Swal.fire(error.response.data.error, error.response.data.message, "error");
         } else {
@@ -129,6 +123,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       })["finally"](function () {
         _this3.loading = false;
+
+        _this3.showVouchers();
+
+        $("#modal-voided").modal("hide");
       });
     }
   }

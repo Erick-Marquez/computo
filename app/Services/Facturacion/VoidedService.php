@@ -24,11 +24,12 @@ class VoidedService
     private $directoryXml = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'Xml'.DIRECTORY_SEPARATOR;
     private $directoryZip = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
     private $directoryCdr = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
-    private $directoryCertificate = 'Facturacion'.DIRECTORY_SEPARATOR.'Baja'.DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
+    private $directoryCertificate;
     private $zipPath;
 
     private $webServiceSunat;
     private $ticket;
+    private $identifier;
 
     private $company;
     private $sale;
@@ -38,32 +39,41 @@ class VoidedService
 
     private $message;
 
-    public function setDataVoided(Array $data)
+    public function __construct(Array $company) 
     {
-        $this->company = $data['company'];
-        $this->sale = $data['sale'];
-        $this->voided = $data['voided'];
-
-        $this->nameXml = $this->company['ruc'] . '-' . $this->voided['identifier'] . '.xml';
-        $this->nameZip = $this->company['ruc'] . '-' . $this->voided['identifier'] . '.zip';
-
-        $this->zipPath  = storage_path('app'.DIRECTORY_SEPARATOR.$this->directoryZip.$this->nameZip);
-        
-
-        // Extrae el certificado en .pem
+        $this->company = $company;
         if ($this->company['is_demo']) { 
             $this->directoryCertificate = storage_path('app'.DIRECTORY_SEPARATOR.'Facturacion'.DIRECTORY_SEPARATOR.'Certificado'.DIRECTORY_SEPARATOR.'Demo'.DIRECTORY_SEPARATOR.'certificado.pem');
-            
             $this->company['user_sol'] = 'MODDATOS';
             $this->company['password_sol'] = 'moddatos';
-
             $this->webServiceSunat = 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService';
-
         }
         else{
-
+            $this->directoryCertificate = storage_path('app'.DIRECTORY_SEPARATOR.'Facturacion'.DIRECTORY_SEPARATOR.'Certificado'.DIRECTORY_SEPARATOR.'Produccion'.DIRECTORY_SEPARATOR.'certificado.pem');
+            $this->webServiceSunat = 'https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService';
         }
-        
+    }
+
+    public function setDataVoided(Array $data)
+    {
+        $this->sale = $data['sale'];
+        $this->voided = $data['voided'];
+        $this->identifier = $this->voided['identifier'];
+        $this->setDirectories();
+    }
+
+    public function setTicket(String $ticket, String $identifier)
+    {
+        $this->ticket = $ticket;
+        $this->identifier = $identifier;
+        $this->setDirectories();
+    }
+
+    private function setDirectories()
+    {
+        $this->nameXml = $this->company['ruc'] . '-' . $this->identifier . '.xml';
+        $this->nameZip = $this->company['ruc'] . '-' . $this->identifier . '.zip';
+        $this->zipPath  = storage_path('app'.DIRECTORY_SEPARATOR.$this->directoryZip.$this->nameZip);
     }
 
     public function createXml()
@@ -263,7 +273,7 @@ class VoidedService
             $this->message['ticket']['response_sunat'] = false;
             $this->message['ticket']['send'] = false;
 
-            throw new TicketSunatOutOfServiceException("Sunat Fuera de Servicio, la consulta de ticket no pudo realizarse, vuelva a intentar en unos minutos.");
+            throw new TicketSunatOutOfServiceException("Sunat Fuera de Servicio");
         }
 
         $this->message['ticket']['send'] = true;
