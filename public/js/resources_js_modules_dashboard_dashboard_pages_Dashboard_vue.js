@@ -66,6 +66,8 @@ __webpack_require__.r(__webpack_exports__);
 
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/dashboard/type-payments/".concat(this.days)).then(function (response) {
         _this.dataChart = response.data;
+        _this.testData.labels = [];
+        _this.dataArray = [];
 
         _this.dataChart.forEach(function (element) {
           _this.testData.labels.push(element.description);
@@ -130,6 +132,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           y: {
             beginAtZero: true,
             suggestedMin: 0,
+            suggestedMax: 10,
             grid: {
               display: false
             }

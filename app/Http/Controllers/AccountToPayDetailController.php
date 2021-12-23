@@ -97,6 +97,7 @@ class AccountToPayDetailController extends Controller
             $accountToPayDetail->update([
                 'payment_type_id' => $request->payment_type_id,
                 'payd' => true,
+                'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             ]);
 
             $account = $accountToPayDetail->accountToPay;

@@ -38,7 +38,7 @@ export default {
   props: { days: Number },
   watch: {
     days() {
-        this.getAmountTypePayment();
+      this.getAmountTypePayment();
     },
   },
   created() {
@@ -49,12 +49,14 @@ export default {
       BaseUrl.get(`/api/dashboard/type-payments/${this.days}`)
         .then((response) => {
           this.dataChart = response.data;
+          this.testData.labels = [];
+          this.dataArray = [];
           this.dataChart.forEach((element) => {
-              this.testData.labels.push(element.description)
-              this.dataArray.push(element.amount);
+            this.testData.labels.push(element.description);
+            this.dataArray.push(element.amount);
           });
-          this.testData.datasets[0].data = this.dataArray
-          console.log(this.testData.datasets[0].data)
+          this.testData.datasets[0].data = this.dataArray;
+          console.log(this.testData.datasets[0].data);
         })
         .catch((error) => {
           console.log(error.response);

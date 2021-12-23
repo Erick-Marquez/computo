@@ -140,12 +140,6 @@
                         <i class="far fa-money-bill-alt"></i>
                       </button>
                       <span v-else class="badge badge-success">Pagado</span>
-                      <!-- <button
-                        class="btn btn-sm btn-fat btn-outline-danger"
-                        @click.prevent="destroyNewPay(detail.id)"
-                      >
-                        <i class="fas fa-trash"></i>
-                      </button> -->
                     </td>
                   </tr>
 

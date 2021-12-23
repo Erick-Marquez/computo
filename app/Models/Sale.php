@@ -109,4 +109,5 @@ class Sale extends Model
         return Sale::whereDate('created_at', '>=', $date)->sum('total');
 
     }
+
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CashboxController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KardexController;
+use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\ProductSerieController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SerieController;
 use App\Http\Controllers\VoucherController;
+use App\Models\OpenClosedCashbox;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,13 +117,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reportes/utilidad', [WebController::class, 'reportUtility'])->name('web.reports.utility');
     Route::get('/reportes/series', [WebController::class, 'reportSeries'])->name('web.reports.series');
     Route::get('/reportes/egresos-ingresos', [WebController::class, 'reportExpensesIncomes'])->name('web.reports.expenses-incomes');
-
 });
 
 Route::get('/prueba', [WebController::class, 'prueba']);
 
 
-Route::get('assemblies/datos', [AssemblyController::class ,'datos' ]);
+Route::get('assemblies/datos', [AssemblyController::class, 'datos']);
 
 //Modulo Catalago
 Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', AssemblyController::class)->names('assemblies');
@@ -129,11 +130,13 @@ Route::middleware(['auth:sanctum', 'verified'])->resource('assemblies', Assembly
 
 //Modulo Inventario
 Route::middleware(['auth:sanctum', 'verified'])->resource('branches', BranchController::class)->names('branches');
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
-    Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
-    Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
-    Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']);
+Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}', [BranchController::class, 'products'])->name('branches.products');
+Route::middleware(['auth:sanctum', 'verified'])->get('branches/products/{branch}/add', [BranchController::class, 'productsAdd'])->name('branches.products.add');
+Route::middleware(['auth:sanctum', 'verified'])->delete('branches/products/{branchProduct}', [BranchController::class, 'productsDestroy'])->name('branches.products.destroy');
+Route::middleware(['auth:sanctum', 'verified'])->get('kardex/{id}', [KardexController::class, 'show']);
 
+
+Route::get('/occ/report/{occ}', [OpenClosedCashboxController::class, 'report'])->name('occ.report'); // PEPORTE DE APERTURAS Y CIERRES DE CAJA
 
 Route::get('print/cashbox/report/{occId}', [CashboxController::class, 'reportCashboxOpenClosed'])->name('cashbox.reportOC');
 Route::get('print/purchase/{purchase}', [PurchaseController::class, 'printPurchase'])->name('purchase.print');
@@ -143,4 +146,3 @@ Route::get('/reports/sales/print/{fromDate}/{untilDate}/{branch_id?}/{customer_i
 Route::get('/reports/products/print/{branch_id?}', [ReportController::class, 'printReportProducts'])->name('reports.products.print');
 Route::get('/reports/purchases/print/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'printReportPurchases'])->name('reports.purchases.print');
 Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{product_id?}', [ReportController::class, 'printReportSalesDetails'])->name('reports.details.print');
-

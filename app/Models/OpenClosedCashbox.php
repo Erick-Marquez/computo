@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class OpenClosedCashbox extends Model
 {
@@ -53,6 +54,11 @@ class OpenClosedCashbox extends Model
         return $this->hasMany(OpenClosedCashboxDetail::class);
     }
 
+    public function accountToPayDetail()
+    {
+        return $this->hasMany(AccountToPayDetail::class);
+    }
+
     // *TODO: DETALLES
 
     public function details($id)
@@ -63,4 +69,108 @@ class OpenClosedCashbox extends Model
         return $expenseIncomes;
     }
 
+    public function getMovementsArray()
+    {
+        $movements = $this->getSales()
+            ->mergeRecursive($this->getPurchases())
+            ->mergeRecursive($this->getExpenses())
+            ->mergeRecursive($this->getIncomes())
+            ->sortBy(['create_at', 'desc']);
+
+        return $movements;
+    }
+
+    public function getMovementsTotal()
+    {
+        // RETORNA SOLO MOVIMIENTOS EN EFECTIVO QUE HAY O HUBO EN CAJA
+        return [
+            "opening_amount" => $this->opening_amount,
+            "sales" => $this->sales()
+                ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
+                ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
+                ->whereNotIn('sales.state', ['ANULADO'])
+                ->where('payment_types.id', 1)->sum('payment_type_sale.amount'),
+
+            "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
+            "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
+            "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
+            "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount') # 1 = EFECTIVO
+        ];
+    }
+
+    public function salesPayment()
+    {
+        return $this->sales()
+            ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
+            ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
+            ->select('payment_types.description', DB::raw('SUM(payment_type_sale.amount) as amount'))
+            ->groupBy('payment_types.description')
+            ->get();
+    }
+
+    public function getSalesAmounts()
+    {
+        return [
+            "TOTAL" => $this->sales()->sum('total'),
+            "SUBTOTAL" => $this->sales()->sum('subtotal'),
+            "IGV" => $this->sales()->sum('igv'),
+        ];
+    }
+
+    public function getSales()
+    {
+        return $this->sales()
+            ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
+            ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
+            ->select('sales.created_at as date', 'sales.observation', 'payment_type_sale.amount as amount')
+            ->whereNotIn('sales.state', ['ANULADO'])
+            ->where('payment_types.id', 1)
+            ->get()
+
+            ->each(function ($item, $key) {
+                return $item['concept'] = 'VENTA';
+            });
+    }
+
+    public function getPurchases()
+    {
+        return $this->purchases()
+            ->select('created_at as date', 'observation', 'total as amount')
+            ->where('is_credit', false)
+            ->get()
+            ->each(function ($item, $key) {
+                return $item['concept'] = 'COMPRA';
+            });
+    }
+
+    public function getExpenses()
+    {
+        $expenses = $this->openClosedCashboxDetails()->select('created_at as date', 'observation', 'amount', 'type as concept')->where('type', 'EGRESO')->get();
+        $accounts = $this->accountToPayDetail()
+            ->select('created_at as date', 'amount')
+            ->where('payment_type_id', 1)
+            ->get()
+            ->each(function ($item, $key) {
+                $item['concept'] = 'EGRESO';
+                $item['observation'] = "Cuenta por pagar";
+            });
+
+        return $expenses->mergeRecursive($accounts);
+    }
+
+    public function getIncomes()
+    {
+        $incomes = $this->openClosedCashboxDetails()->select('created_at as date', 'observation', 'amount', 'type as concept')->where('type', 'INGRESO')->get();
+        return $incomes;
+    }
+
+    public function getSalesNull()
+    {
+        return $this->sales()
+            ->join('series', 'sales.serie_id', '=', 'series.id')
+            ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
+            ->select('sales.document_number', 'series.serie', 'voucher_types.description', 'sales.total')
+            ->where('sales.state', 'ANULADO')
+            ->get();
+    }
 }

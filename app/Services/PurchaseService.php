@@ -17,6 +17,7 @@ class PurchaseService
 
         try {
 
+
             $provider = Provider::updateOrCreate(
                 ['document' => $request->provider['document']],
                 [
@@ -39,6 +40,7 @@ class PurchaseService
                 'total_igv' => $request->voucherDetail['total_igv'],
                 'observation' => $request->voucherDetail['observation'],
                 'is_credit' => $request->voucherDetail['is_credit'],
+                'has_debt' => $request->voucherDetail['is_credit'] ? true : false,
                 'provider_id' => $provider->id,
                 'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
                 'branch_id' => auth()->user()->branch_id,

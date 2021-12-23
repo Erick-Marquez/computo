@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     async getPurchases() {
-      await BaseUrl.get(`/api/purchases?included=provider,accountToPay&perPage=10`)
+      await BaseUrl.get(`/api/purchases?included=provider,accountToPay`)
         .then((response) => {
           this.purchases = response.data.data;
           console.log(this.purchases)

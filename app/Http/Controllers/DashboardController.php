@@ -94,7 +94,7 @@ class DashboardController extends Controller
 
             ->groupBy('payment_types.description')
             ->where('sales.created_at', '>=', $fechasAtras)
-            ->get(); // OBJETO {X: , Y: }
+            ->get();
 
         return response()->json($query);
     }

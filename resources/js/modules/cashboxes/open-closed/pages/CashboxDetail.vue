@@ -40,7 +40,9 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Ventas</span>
-              <span class="info-box-number">{{ details.balance.sales }}</span>
+              <span class="info-box-number">{{
+                details.movementsTotal.sales
+              }}</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -55,7 +57,7 @@
             <div class="info-box-content">
               <span class="info-box-text">compras</span>
               <span class="info-box-number">{{
-                details.balance.purchases
+                details.movementsTotal.purchases
               }}</span>
             </div>
             <!-- /.info-box-content -->
@@ -72,7 +74,9 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Ingresos</span>
-              <span class="info-box-number">{{ details.balance.incomes }}</span>
+              <span class="info-box-number">{{
+                details.movementsTotal.incomes
+              }}</span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -87,7 +91,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Egresos</span>
               <span class="info-box-number">{{
-                details.balance.expenses
+                details.movementsTotal.expenses
               }}</span>
             </div>
             <!-- /.info-box-content -->
@@ -113,7 +117,7 @@
   </form>
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Detalle de balance de caja</h3>
+      <h3 class="card-title">Detalle de movementsTotal de caja</h3>
 
       <div class="card-tools">
         <div class="row">
@@ -168,14 +172,19 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="3" class="text-right"><strong>Balance:</strong></td>
+            <td colspan="3" class="text-right">
+              <strong>BALANCE TOTAL:</strong>
+            </td>
             <td>
               {{
-                parseFloat(details.opening_amount, 3) +
-                parseFloat(details.balance.sales, 3) +
-                parseFloat(details.balance.incomes, 3) -
-                parseFloat(details.balance.expenses, 3) -
-                parseFloat(details.balance.purchases, 3)
+                parseFloat(
+                  parseFloat(details.opening_amount, 3) +
+                    parseFloat(details.movementsTotal.sales, 3) +
+                    parseFloat(details.movementsTotal.incomes, 3) -
+                    parseFloat(details.movementsTotal.expenses, 3) -
+                    parseFloat(details.movementsTotal.purchases, 3) -
+                    parseFloat(details.movementsTotal.account_to_pay, 3)
+                ).toFixed(2)
               }}
             </td>
           </tr>
@@ -205,7 +214,7 @@ export default {
       },
       details: {
         opening_date: {},
-        balance: {
+        movementsTotal: {
           sales: 0,
           incomes: 0,
           expenses: 0,
@@ -319,6 +328,6 @@ export default {
 
 <style scoped>
 .info-box {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>

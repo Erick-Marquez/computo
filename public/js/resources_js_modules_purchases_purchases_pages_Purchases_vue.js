@@ -51,7 +51,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/purchases?included=provider,accountToPay&perPage=10").then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/purchases?included=provider,accountToPay").then(function (response) {
                   _this.purchases = response.data.data;
                   console.log(_this.purchases);
                 })["catch"](function (error) {

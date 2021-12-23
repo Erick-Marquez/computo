@@ -17,9 +17,8 @@ class AccountToPayDetail extends Model
         'date_issue',
         'account_to_pay_id',
         'payment_type_id',
+        'open_closed_cashbox_id',
     ];
-
-    public $timestamps = false;
 
     protected $allowIncluded = ['account_to_pay', 'paymentType'];
     protected $allowFilter = ['id'];
@@ -35,5 +34,10 @@ class AccountToPayDetail extends Model
     public function paymentType()
     {
         return $this->belongsTo(PaymentType::class);
+    }
+
+    public function openClosedCashbox()
+    {
+        return $this->belongsTo(OpenClosedCashbox::class);
     }
 }

@@ -110,4 +110,6 @@ class ReportController extends Controller
         return $pdf->stream();
     }
 
+
+
 }
