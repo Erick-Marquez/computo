@@ -200,6 +200,11 @@ const routes = [
                 component: () => import('../modules/inventory/branches/pages/Products.vue'),
             },
             {
+                path: 'productos/:id/agregar',
+                name: 'add-product',
+                component: () => import('../modules/inventory/branches/pages/AddProducts.vue'),
+            },
+            {
                 path: '',
                 redirect: { name: 'branch-list' }
             }

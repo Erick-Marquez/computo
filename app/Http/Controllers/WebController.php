@@ -9,6 +9,10 @@ use App\Models\PaymentTypeQuotation;
 use App\Models\Quotation;
 use App\Models\Voided;
 use App\Models\VoucherType;
+use App\Services\Facturacion\Exception\TicketSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\TicketSunatRejectedException;
+use App\Services\Facturacion\Exception\XmlSunatOutOfServiceException;
+use App\Services\Facturacion\Exception\XmlSunatRejectedException;
 use App\Services\Facturacion\VoidedService;
 use App\Services\KardexService;
 use App\Services\SunatService;
@@ -230,49 +234,54 @@ class WebController extends Controller
         // KardexService::purchase($data);
         // return SunatService::facturar(10, 'invoice');
 
-
         try {
-            $service = new VoidedService;
-            $service->setDataVoided([
-                'company' => [
-                    'is_demo' => 1,
-                    'user_sol' => 'asd',
-                    'password_sol' => 'asd',
+            $service = new VoidedService([
+                'is_demo' => 1,
+                'user_sol' => 'asd',
+                'password_sol' => 'asd',
 
-                    'ruc' => 20100066603,
-                    'comercial_name' => 'Hola',
-                    'name' => 'Hola S.A.C'
-                ],
-                'voided' => [
-                    'date_issue' => now()->format('Y-m-d'),
-                    'identifier' => 'RA-20211215-1',
-                    'description' => 'Error'
-                ],
-                'sale' => [
-                    'date_reference' => '2021-12-13',
-
-                    'voucher_type' => '01',
-                    'serie' => 'F001',
-                    'document_number' => 2
-                ]
+                'ruc' => 20100066603,
+                'comercial_name' => 'Hola',
+                'name' => 'Hola S.A.C'
             ]);
-
-            $service->createXml();
-            $service->singXml();
-            $service->zipXml();
-            $service->sendXmlSunat();
+            $service->setTicket('1640265713692', 'RA-20211223-5');
             $service->sendTicketSunat();
             $service->getCdr();
 
-            return $service->getResponse();
+            $response = $service->getResponse();
+
+            return response()->json([
+                'message' => $response['response']['message']
+            ]);
+            
+        } catch (TicketSunatOutOfServiceException $e) {
+
+            $response = $service->getResponse();
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => 'Consulte el estado del ticket en unos minutos.'
+            ], 400);
+
+        } catch (TicketSunatRejectedException $e) {
+
+            $response = $service->getResponse();
+
+            return response()->json([
+                'have_ticket' => true,
+                'error' => $e->getMessage(),
+                'message' => $response['ticket']['response']['message']
+            ],  400);
 
         } catch (\Exception $e) {
 
-            return $service->getResponse();
-            // return $e->getMessage();
+            return response()->json([
+                'have_ticket' => false,
+                'error' => 'Algo esta pasando, ponganse en contacto con el administrador del sistema.',
+                'message' => $e->getMessage()
+            ], 400);
+
         }
-
-
-
     }
 }

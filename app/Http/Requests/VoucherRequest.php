@@ -83,7 +83,7 @@ class VoucherRequest extends FormRequest
             $branchProduct = BranchProduct::where('id', $detail['product_id'])->with('product')->first();
 
             if ($branchProduct->product->manager_series) {
-                $rules['detail.' . $i . '.series.*.serie'] = [
+                $rules['detail.' . $i . '.series.*'] = [
                     'required',
                     Rule::exists('branch_product_series', 'serie')
                     ->where('branch_product_id', $detail['product_id']) // que pertenesca al producto
@@ -145,9 +145,9 @@ class VoucherRequest extends FormRequest
 
             // Serie de los productos
 
-            'detail.*.series.*.serie.required' => 'El campo serie es requerido.',
-            'detail.*.series.*.serie.exists' => 'Ingrese una serie válida.',
-            'detail.*.series.*.serie.distinct' => 'Las series ingresadas deben ser distintas.',
+            'detail.*.series.*.required' => 'El campo serie es requerido.',
+            'detail.*.series.*.exists' => 'Ingrese una serie válida.',
+            'detail.*.series.*.distinct' => 'Las series ingresadas deben ser distintas.',
 
         ];
     }

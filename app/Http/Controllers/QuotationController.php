@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QuotationRequest;
+use App\Http\Resources\GlobalResource;
 use App\Http\Resources\QuotationResource;
 use App\Http\Resources\SerieResource;
 use App\Http\Resources\UserResource;
 use App\Models\Company;
+use App\Models\CurrencyExchange;
 use App\Models\Customer;
+use App\Models\IdentificationDocument;
+use App\Models\IgvType;
 use App\Models\Quotation;
 use App\Models\QuotationDetail;
 use App\Models\Serie;
@@ -37,6 +41,30 @@ class QuotationController extends Controller
 
             'unavailableQuotations' => $unavailableQuotations
             
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $identificationDocuments = IdentificationDocument::all();
+        $currencyExchange = CurrencyExchange::latest()->first();
+        $igvTypes = IgvType::all();
+
+        $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', 8)->get(); //voucher type 8 = cotizacion
+        $sellers = User::where('branch_id', auth()->user()->branch_id)->role('Vendedor')->get(); //voucher type 8 = cotizacion
+
+        return GlobalResource::make([ 
+            'currencyExchange' => $currencyExchange,
+            'identificationDocuments' => $identificationDocuments,
+            'igvTypes' => $igvTypes,
+            
+            'series' => $series,
+            'sellers' => $sellers
         ]);
     }
 
@@ -254,7 +282,7 @@ class QuotationController extends Controller
 
     public function print(Quotation $quotation)
     {
-        $company = Company::find(1);
+        $company = Company::active();
         $head = Quotation::where('id', $quotation->id)->with('quotationDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType')->firstOrFail();
         
         $details = $head->quotationDetails;
@@ -280,17 +308,5 @@ class QuotationController extends Controller
         //setPaper(array(0,0,220,700)
 
         return $pdf->stream();
-    }
-
-    public function series()
-    {
-        $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', 8)->get(); //voucher type 8 = cotizacion
-        return SerieResource::collection($series);
-    }
-
-    public function sellers()
-    {
-        $sellers = User::where('branch_id', auth()->user()->branch_id)->role('Vendedor')->get(); //voucher type 8 = cotizacion
-        return UserResource::collection($sellers);
     }
 }

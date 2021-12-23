@@ -45,9 +45,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/products/branches").then(function (resp) {
-                _this.branches = resp.data.data;
-                resp.data.data.forEach(function (e) {
+              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/products/create").then(function (resp) {
+                _this.branches = resp.data.data.branches;
+
+                _this.branches.forEach(function (e) {
                   var tem = {
                     id: e.id,
                     description: e.description,
@@ -58,27 +59,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   _this.selectedBranches.push(tem);
                 });
+
+                _this.lines = resp.data.data.lines;
+                _this.currencyExchange = resp.data.data.currencyExchange.change;
+                _this.igvTypes = resp.data.data.igvTypes;
               });
 
             case 2:
-              _context.next = 4;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/products/lines").then(function (resp) {
-                _this.lines = resp.data.data;
-              });
-
-            case 4:
-              _context.next = 6;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/products/currencyexchange").then(function (resp) {
-                _this.currencyExchange = resp.data.change;
-              });
-
-            case 6:
-              _context.next = 8;
-              return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/igvtypes").then(function (resp) {
-                _this.igvTypes = resp.data.data;
-              });
-
-            case 8:
             case "end":
               return _context.stop();
           }
@@ -266,7 +253,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       product.branches = temp;
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("api/products", product).then(function (resp) {
-        _this3.$router.push({
+        _this3.$router.replace({
           name: "product-list"
         });
 
@@ -1304,7 +1291,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

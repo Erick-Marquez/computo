@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\CurrencyExchangeResource;
+use App\Http\Resources\GlobalResource;
 use App\Http\Resources\LineResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Branch;
@@ -11,6 +12,7 @@ use App\Models\BranchProduct;
 use App\Models\Brand;
 use App\Models\BrandLine;
 use App\Models\CurrencyExchange;
+use App\Models\IgvType;
 use App\Models\Line;
 use App\Models\Product;
 use App\Services\KardexService;
@@ -30,6 +32,26 @@ class ProductController extends Controller
                             ->sort()
                             ->getOrPaginate();
         return ProductResource::collection($products);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $branches = Branch::where('state', true)->get();
+        $lines = Line::where('active', true)->get();
+        $currencyExchange = CurrencyExchange::latest()->first();
+        $igvTypes = IgvType::all();
+
+        return GlobalResource::make([ 
+            'branches' => $branches,
+            'lines' => $lines,
+            'currencyExchange' => $currencyExchange,
+            'igvTypes' => $igvTypes
+        ]);
     }
 
     /**
@@ -176,28 +198,10 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function branches()
-    {
-        $branches = Branch::where('state', true)->get();
-        return BranchResource::collection($branches);
-    }
-
-    public function lines()
-    {
-        $lines = Line::where('active', true)->get();
-        return LineResource::collection($lines);
-    }
-
     public function brands($id)
     {
         $line = Line::findOrFail($id);
         $brands = $line->brands;
         return LineResource::collection($brands);
-    }
-
-    public function currencyExchanges()
-    {
-        $currencyExchange = CurrencyExchange::latest()->first();
-        return $currencyExchange;
     }
 }

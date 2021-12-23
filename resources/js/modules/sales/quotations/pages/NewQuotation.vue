@@ -86,87 +86,7 @@
       />
 
       <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
-      <div class="row">
-        <div class="col-md">
-          <h4>
-            <i class="text-danger fas fa-box"></i>
-            Productos
-          </h4>
-          <div class="">
-            <input
-              type="search"
-              v-model="productSearch"
-              @keyup="searchProducts"
-              class="form-control rounded-pill form-control rounded-pill-lg"
-              placeholder="Escribe tu producto o código"
-            />
-            <div class="option__relative">
-              <div class="option__contenedor">
-                <div>
-                  <table
-                    table
-                    class="
-                      table table-sm table-bordered table-hover
-                      bg-white
-                      shadow-lg
-                    "
-                  >
-                    <thead
-                      v-if="productSearchFilter.length > 0"
-                      class="thead-dark text-center"
-                    >
-                      <tr>
-                        <td>Nombre</td>
-                        <td>Marca</td>
-                        <td>Precio 1</td>
-                        <td>Precio 2</td>
-                        <td>Precio 3</td>
-                        <td>Stock</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="filSearch in productSearchFilter"
-                        :key="filSearch"
-                      >
-                        <td>{{ filSearch.product.name }}</td>
-                        <td class="col-2 text-center">
-                          {{ filSearch.product.brand_line.brand.description }}
-                        </td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-success w-50"
-                            type="button"
-                            :value="filSearch.sale_price"
-                            @click="priceOne(filSearch)"
-                          />
-                        </td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-warning w-50"
-                            type="button"
-                            :value="filSearch.referential_sale_price_one"
-                            @click="priceTwo(filSearch)"
-                          />
-                        </td>
-                        <td class="col-2 text-center">
-                          <input
-                            class="btn btn-sm btn-info w-50"
-                            type="button"
-                            :value="filSearch.referential_sale_price_two"
-                            @click="priceThree(filSearch)"
-                          />
-                        </td>
-                        <td class="col-1 text-center">{{ filSearch.stock }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SearchProducts :currencyExchange="Number(currencyExchange.change)" v-on:setProduct="setProduct"/>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
       <div class="row">
@@ -269,7 +189,7 @@
                     "
                     type="number"
                     min="0"
-                    step="0.001"
+                    step="0.01"
                     v-model="detail.discount"
                     @change="activateOrDesactivateGlobalDiscount"
                     :disabled="activateDetailDiscount"
@@ -395,7 +315,7 @@
                   "
                   type="number"
                   min="0"
-                  step="0.001"
+                  step="0.01"
                   v-model="quotationData.quotation.discount"
                   @change="activateOrDesactivateDetailDiscount"
                   :disabled="activateGlobalDiscount"
@@ -573,63 +493,42 @@
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
 import SearchCustomers from "../../components/SearchCustomers.vue";
+import SearchProducts from "../../components/SearchProducts.vue";
 export default {
-  components: { BaseUrl, SearchCustomers },
+  components: { BaseUrl, SearchCustomers, SearchProducts },
   async created() {
-    await BaseUrl.get(`api/sales/identificationdocuments`).then((resp) => {
-      this.identificationDocuments = resp.data.data;
+    await BaseUrl.get(`api/quotations/create`).then((resp) => {
+      this.currencyExchange = resp.data.data.currencyExchange
+      this.identificationDocuments = resp.data.data.identificationDocuments
+      this.igvTypes = resp.data.data.igvTypes
+
+      this.sellers = resp.data.data.sellers
+      this.series = resp.data.data.series
+      this.quotationData.quotation.serie_id = this.series[0].id
+      this.getCurrentNumber()
     });
 
-    await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
-      this.igvTypes = resp.data.data;
-    });
+    this.loader.hide()
 
-    await BaseUrl.get(`api/sales/currencyexchange`).then((resp) => {
-      this.currencyExchange = resp.data.data;
-    });
-
-    await BaseUrl.get(`api/sales/products`).then((resp) => {
-      this.products = resp.data.data;
-
-      this.products.forEach((product) => {
-        product.sale_price = (
-          product.sale_price * this.currencyExchange.change
-        ).toFixed(2);
-        product.referential_sale_price_one = (
-          product.referential_sale_price_one * this.currencyExchange.change
-        ).toFixed(2);
-        product.referential_sale_price_two = (
-          product.referential_sale_price_two * this.currencyExchange.change
-        ).toFixed(2);
-      });
-    });
-
-    await BaseUrl.get(`api/quotations/sellers`).then((resp) => {
-      this.sellers = resp.data.data;
-    });
-
-    this.getSeries();
   },
   data() {
     return {
+
+      loader: null,
       loadingQuotation: false,
 
       currencyExchange: {},
+      identificationDocuments: [],
+      igvTypes: [],
 
       sellers: [],
+      series: [],
 
-      series: {},
       currentNumber: "Selecciona una serie",
-
-      productSearch: "",
-      productSearchFilter: [],
 
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
 
-      identificationDocuments: [],
-      igvTypes: [],
-      products: [],
       quotationData: {
         customer: {
           id: null,
@@ -658,22 +557,12 @@ export default {
       errorsCreate: {},
     };
   },
-  mounted() {
-    const contain = document.querySelector(".card");
-    contain.addEventListener("click", (e) => {
-      if (e.target.className != "inputContent") {
-        this.productSearchFilter = "";
-      }
+  mounted(){
+    this.loader = this.$loading.show({
+      canCancel: true,
     });
   },
   methods: {
-    async getSeries() {
-      await BaseUrl.get(`api/quotations/series`).then((resp) => {
-        this.series = resp.data.data;
-        this.quotationData.quotation.serie_id = this.series[0].id;
-        this.getCurrentNumber();
-      });
-    },
     getCurrentNumber() {
       let serieBackup = this.series;
       let serieFilter = serieBackup.filter(
@@ -681,88 +570,35 @@ export default {
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
+    setProduct(product, price){
+      
+      let index = this.quotationData.detail.findIndex(
+        (element) => element.product_id == product.id
+      );
 
-    searchProducts() {
-      let produtsBackup = this.products;
-      let wordFilter = this.productSearch.toLowerCase();
+      if (index == -1) {
+        this.quotationData.detail.push({
+          discount: 0,
+          subtotal: 0,
+          total: 0,
 
-      if (wordFilter === "") {
-        this.productSearchFilter = "";
-      } else {
-        this.productSearchFilter = produtsBackup.filter(
-          (products) =>
-            products.product.name.toLowerCase().indexOf(wordFilter) !== -1
-        );
+          product_id: product.id,
+          cod: product.cod,
+          affect_icbper: false,
+          igv_type_id: product.igv_type_id,
+          description: product.name,
+          brand: product.brand,
+          sale_price: price,
+          quantity: 1,
+        });
+
+        this.getTotals();
       }
-    },
-    priceOne(filSearch) {
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
-
-        product_id: filSearch.id,
-        cod: filSearch.product.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.product.name,
-        brand: filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.sale_price,
-        quantity: 1,
-      };
-
-      this.quotationData.detail.push(product);
-
-      this.productSearch = "";
-
-      this.getTotals();
-    },
-    priceTwo(filSearch) {
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
-
-        product_id: filSearch.id,
-        cod: filSearch.product.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.product.name,
-        brand: filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.referential_sale_price_one,
-        quantity: 1,
-      };
-
-      this.quotationData.detail.push(product);
-
-      this.productSearch = "";
-
-      this.getTotals();
-    },
-    priceThree(filSearch) {
-      const product = {
-        discount: 0,
-        subtotal: 0,
-        total: 0,
-
-        product_id: filSearch.id,
-        cod: filSearch.product.cod,
-        affect_icbper: false,
-        igv_type_id: filSearch.igv_type_id,
-        description: filSearch.product.name,
-        brand: filSearch.product.brand_line.brand.description,
-        sale_price: filSearch.referential_sale_price_two,
-        quantity: 1,
-      };
-
-      this.quotationData.detail.push(product);
-
-      this.productSearch = "";
-
-      this.getTotals();
+      
     },
     deleteItem(index) {
-      this.quotationData.detail.splice(index, 1);
+      this.quotationData.detail.splice(index, 1)
+      this.getTotals()
     },
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
@@ -782,6 +618,7 @@ export default {
         this.quotationData.quotation.discount > 0 ? true : false;
     },
     getTotals() {
+      //!REDONDEAR AL FINAL
       let subtotal = 0;
       let totalIgv = 0;
       let totalExonerated = 0;
@@ -804,141 +641,124 @@ export default {
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
             // hallar el precio sin igv
-            let priceWithoutIgv = e.sale_price / (1 + igv);
+            let priceWithoutIgv = e.sale_price / (1 + igv)
 
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
-            e.subtotal =
-              parseFloat((priceWithoutIgv * e.quantity).toFixed(2)) -
-              e.discount;
+            e.subtotal = this.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2)
 
             // hallar el total = (subtotal * 1.18)
-            e.total = parseFloat((e.subtotal * (1 + igv)).toFixed(2));
+            e.total = this.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2)
 
             // Actualizar totales globales
-            subtotal += e.subtotal;
-            totalIgv += parseFloat((e.total - e.subtotal).toFixed(2));
-            totalTaxed += e.subtotal;
-            total += e.total;
+            subtotal += Number(e.subtotal)
+            totalIgv += Number(e.total - e.subtotal)
+            totalTaxed += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = e.sale_price * e.quantity - e.discount;
-            e.total = this.roundToTwo(e.subtotal);
-            subtotal += e.subtotal;
-            totalExonerated += e.subtotal;
-            total += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalExonerated += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalUnaffected += e.subtotal;
-            total += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalUnaffected += Number(e.subtotal)
+            total += Number(e.total)
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalFree += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalFree += Number(e.total)
+            break
           case 40: //Exportación
-            e.subtotal =
-              parseFloat((e.sale_price * e.quantity).toFixed(2)) - e.discount;
-            e.total = e.subtotal;
-            subtotal += e.subtotal;
-            totalUnaffected += e.subtotal;
-            total += e.total;
-            break;
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.total = this.roundToTwo(e.subtotal).toFixed(2)
+            subtotal += Number(e.subtotal)
+            totalUnaffected += Number(e.subtotal)
+            total += Number(e.total)
+            break
         }
       });
 
-      this.quotationData.quotation.subtotal = subtotal;
-      this.quotationData.quotation.totalIgv = totalIgv;
-      this.quotationData.quotation.totalExonerated = totalExonerated;
-      this.quotationData.quotation.totalUnaffected = totalUnaffected;
-      this.quotationData.quotation.totalFree = totalFree;
-      this.quotationData.quotation.totalTaxed = totalTaxed;
-      this.quotationData.quotation.discountItems = discountItems;
-      this.quotationData.quotation.total =
-        total - this.quotationData.quotation.discount;
+      this.quotationData.quotation.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.quotationData.quotation.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
+      this.quotationData.quotation.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
+      this.quotationData.quotation.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
+      this.quotationData.quotation.totalFree = this.roundToTwo(totalFree).toFixed(2);
+      this.quotationData.quotation.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
+      this.quotationData.quotation.discountItems = this.roundToTwo(discountItems).toFixed(2);
+      this.quotationData.quotation.total = this.roundToTwo(total - this.quotationData.quotation.discount).toFixed(2);
     },
     roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");

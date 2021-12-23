@@ -14,14 +14,6 @@ class KardexResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'date' => $this->date,
-            'quantity' => $this->quantity,
-            'movement_type' => $this->movement_type,
-            'description' => $this->description,
-            'document' => $this->document,
-            'series' => $this->series
-        ];
+        return parent::toArray($request);
     }
 }

@@ -1,380 +1,239 @@
 <template>
-<div class="pagina">
-    <form >
-        <div class=" form__element form__select">
-            <label class="label">LOCAL:</label>
-            <div class="option__relative">
-                <div class="option__contenedor" v-if=ocultar>
-                    <input type="text"  v-model="filtrado" @keyup="filtrar" class="inputSearch">
-                    <div v-if="filtrado.length<1" @click="seleccionar($event)">
-                        <p v-for="element in  select" :key="element">{{element.description}}</p>
+    <form action="" @submit.prevent="generateKardex()">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="lead">Sucursal</label>
+                            <v-select v-model="branchSelected" label="description" :reduce="branch => branch.id" :options="branches">
+                                <template v-slot:no-options="{ search, searching }">
+                                    <template v-if="searching">
+                                        No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                                    </template>
+                                </template>
+                            </v-select>
+                        </div>
                     </div>
-                    <div v-if="filtrado.length>=1" @click="seleccionar($event)">
-                        <p v-for="fil in elementoFiltrado" :key="fil">{{fil.description}}</p>
+                    <div class="col-md">
+                        <div class="form-group">
+                            <label for="" class="lead">Producto</label>
+                            <v-select v-model="productSelected" :filterable="false" label="name" :options="products" @search="onProductSearch">
+                                
+                                <template v-slot:option="option">
+                                    {{  `${option.name} - ${option.brand}${ option.cod ? ' - '+option.cod : ''}` }}
+                                </template>
+
+                                <template v-slot:selected-option="option">
+                                    {{  `${option.name} - ${option.brand}${ option.cod ? ' - '+option.cod : ''}` }}
+                                </template>
+                                
+                                <template v-slot:no-options="{ search, searching }">
+                                    <template v-if="searching">
+                                        No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                                    </template>
+                                    <em v-else-if="branchSelected == null" style="opacity: 0.5"><b>Seleccione una sucursal.</b></em>
+                                    <em v-else style="opacity: 0.5">Escribe el nombre de un producto.</em>
+                                </template>
+                            </v-select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="select" @click="ocultarOptions">
-                <p class="selectP">{{seleccionado}}</p>
-                <!-- <img src="../../../../img/abajo.svg" :class="{'rotate':ocultar}"> -->
-            </div>
-        </div>
-        <div class="search">
-            <label >PRODUCTOS</label>
-            <input type="text"  v-model="filtradoSearch" @keyup="filtrarSearch" 
-                     @click="ocultarSearch" class="inputContent">
-            <div class="option__relative">
-                <div class="option__contenedor" >
-                    <div>
-                        <p v-for="filSearch in  elementoFiltradoSearch" :key="filSearch"
-                        @click="seleccionarSearch(filSearch)">{{filSearch.name}} - {{filSearch.brand}}</p>
+            <div class="card-footer">
+                <button v-if="!kardexLoading" type="submit" class="btn btn-block btn-sm btn-dark">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+                <button v-else class="btn btn-block btn-sm btn-dark" :disabled="kardexLoading">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     </form>
-    <table>
-        <thead>
-            <tr>
-                <td>fecha.</td>
-                <td>Nro. Doc.</td>
-                <td>series</td>
-                <td>Description</td>
-                <td>Entrada</td>
-                <td>Salida</td>
-                <td>Saldo</td>
-            </tr>
-        </thead>
-        <tbody>
-            {{ saldo=0 }}
-            <tr v-for="tab in table" :key="tab.id">
-                <td>{{ tab.date }}</td>
-                <td>{{ tab.document===null ? "-" : tab.document }}</td>
-                <td class="tool">
-                    series
-                    <span class="tool-box">
-                        <span v-for="serie in tab.series" :key="serie">{{serie}}</span>
-                    </span>
-                </td>
-                <td>{{ tab.description }}</td>
-                <td>{{ tab.movement_type=='INGRESO' ? tab.quantity : "-"}}</td>
-                <td>{{ tab.movement_type=='SALIDA' ? tab.quantity : "-"}}</td>
-                <td>{{ tab.movement_type=='INGRESO' ? saldo+=tab.quantity : saldo-=tab.quantity}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-  
+
+    <div class="card">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Kardex de Productos</h3>
+                <div class="card-tools">
+                    <a
+                        href="`../../reports/products/print/${filters.branch_id}`"
+                        target="_blank"
+                        class="btn btn-flat btn-danger mr-2 rounded-pill"
+                    >
+                        <i class="fas fa-file-excel"></i> PDF
+                    </a>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-nowrap text-center">
+                        <thead>
+                            <tr>
+                                <th>FECHA</th>
+                                <th>DOCUMENTO</th>
+                                <th>SERIES</th>
+                                <th>DESCRIPCIÓN</th>
+                                <th>ENTRADA</th>
+                                <th>SALIDA</th>
+                                <th>STOCK</th>
+                            </tr>
+                        </thead>
+
+                        <tbody v-if="kardex.length >= 1">
+                            <tr v-for="kardexDetail in kardex" :key="kardexDetail.id">
+                                <td>{{ getTimestamp(kardexDetail.created_at) }}</td>
+                                <td>{{ kardexDetail.document ? kardexDetail.document : '-' }}</td>
+                                <td>
+                                    <Popper class="light" arrow>
+                                        <button class="btn btn-block btn-sm btn-dark" :disabled="kardexDetail.series.length == 0">Series</button>
+                                        
+                                        <template v-slot:content>
+
+                                            <b v-for="serie in kardexDetail.series" :key="serie">
+                                                {{ serie }}
+                                                <br>
+                                            </b>
+                                        </template>
+                                    </Popper>
+                                </td>
+                                <td>{{ kardexDetail.description }}</td>
+                                <td>{{ kardexDetail.movement_type == "INGRESO" ? kardexDetail.quantity : '-' }}</td>
+                                <td>{{ kardexDetail.movement_type == "SALIDA" ? kardexDetail.quantity : '-' }}</td>
+                                <td>{{ kardexDetail.stock }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr>
+                                <td colspan="7">
+                                <p class="lead">
+                                    <b>No existen Registros.</b>
+                                </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <!-- /.card-body -->
+        </div>
+    </div>
 </template>
 
 <script>
 import BaseUrl from '../../../../api/BaseUrl'
+import Popper from "vue3-popper"
 export default {
-    components:{BaseUrl},
+    components:{BaseUrl, Popper},
     async created(){
        
-        await BaseUrl.get(`/branches`).then( resp=>{
-            const datos=resp.data.data
-            this.select=resp.data.data
-            this.dates=datos
-       })
-        
+        await BaseUrl.get(`/api/branches`).then( resp=>{
+            this.branches = resp.data.data
+        })  
         
     },
-   data(){
-       return{
-           select:{},
-           selectSearch:{},
-           ocultar:false,
-           filtrado:'',
-           filtradoSearch:'',
-           seleccionado:'SELECT',
-           elementoFiltrado:[],
-           elementoFiltradoSearch:[],
-           dates: {},
-           products:{},
-           table:{},
-           saldo: 0,
-       }
-   },
-   mounted(){
-       document.addEventListener('click', (e)=> {
-            if (e.target.className != 'select' && e.target.className !='inputSearch' 
-            && e.target.className !='selectP') {
-                this.ocultar= false;
-            }
-        })
-        const contain = document.querySelector('.pagina')
-        contain.addEventListener('click', (e)=> {
-            if (e.target.className !='inputContent') {
-               this.elementoFiltradoSearch=''
-            }
-        })
-    },
-   methods:{
-       cod(a, b){
-        return typeof a === 'string' && typeof b === 'string'
-        ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
-        : a === b;
-        
-       },
-       filtrar(){
-            let palabraFiltrar = this.filtrado.toLowerCase();
-            let clientesRespaldo = this.select
-            let clientesFiltrados = clientesRespaldo.filter(clientes =>
-                (clientes.description.toLowerCase().indexOf(palabraFiltrar) !== -1) 
-            );
-            this.elementoFiltrado = clientesFiltrados
-        },
-        filtrarSearch(){
-            let clientesRespaldo = this.selectSearch
-            let palabraFiltrar = this.filtradoSearch.toLowerCase();
-                if(palabraFiltrar===''){
-                    this.elementoFiltradoSearch=''
-                }else{
-                    this.elementoFiltradoSearch = clientesRespaldo.filter(clientes =>
-                    (clientes.name.toLowerCase().indexOf(palabraFiltrar) !== -1) 
-                ).slice(0,10);
-            }
-        },
-        seleccionar(e){
-            this.filtradoSearch=''
-            this.seleccionado= e.target.textContent
-            this.dates.forEach( element=>{
-                if(this.cod(this.seleccionado,element.description)){    
-                          
-                   BaseUrl.get(`/branches/products/${element.id}`).then( resp=>{
-                       
-                        this.products=resp.data.data
-                        this.selectSearch= resp.data.data
-                        
-                    })
-                } 
-            })
-            this.ocultar=!this.ocultar
-        },
-       seleccionarSearch(e){
-            console.log(e.id)
-            this.table ={}
-            this.filtradoSearch= e.name + ' - ' + e.brand
-            BaseUrl.get(`/kardex/${e.id}`).then( resp=>{
-                this.table=resp.data.data
-                this.saldo = 0
-            })
-            this.elementoFiltradoSearch=''
-        },
-        ocultarOptions(){
-            this.ocultar=!this.ocultar
-        },
+    data(){
+        return{
 
-   }
+            branches: [],
+            products: [],
+
+            branchSelected: null,
+            productSelected: null,
+            stock: 0,
+
+            kardex: [],
+            kardexLoading: false,
+
+
+
+            //Vue select 
+            searching: null,
+            search: null,
+            selectLoading: null
+        }
+    },
+    mounted(){
+
+    },
+    methods:{
+        getTimestamp(date){
+            return new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
+        },
+        onProductSearch(search, loading) {
+            this.search = search
+            this.selectLoading = loading
+
+            clearTimeout(this.searching);
+
+            if(search.length !== 0) {
+                this.selectLoading(true);
+                this.searching = setTimeout(this.searchProduct, 500)
+            }
+            else{
+                clearTimeout(this.searching)
+                this.products  = []
+                this.selectLoading(false)
+            }
+        },
+        searchProduct() {
+
+            BaseUrl.get(`api/kardex/search-products/${this.branchSelected}/${this.search}`).then((resp) => {
+
+                this.products = resp.data.data
+
+            })
+            .finally(() => {
+                this.selectLoading(false)
+            });
+
+        },
+        generateKardex(){
+
+            this.kardexLoading = true
+
+            BaseUrl.get(`api/kardex/${this.productSelected.id}`).then((resp) => {
+
+                this.kardex = resp.data.data
+                let stock = 0
+
+                this.kardex.forEach((element, index) => {
+                    
+                    if (element.movement_type == 'SALIDA') {
+                        stock -= element.quantity
+                    }
+                    if (element.movement_type == 'INGRESO') {
+                        stock += element.quantity
+                    }
+
+                    this.kardex[index].stock = stock
+
+                });
+
+            })
+            .finally(() => {
+                this.kardexLoading = false
+            });
+
+        }
+    }
 }
 </script>
 
 <style scoped>
-    .pagina{
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 25px;
-        padding-bottom: 25px;
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 3px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 8px -3px;
-    }
-    form{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 95px;
-        width: 95%;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 40px;
-    }
-    label{
-        color: rgb(172,173,182);
-    }
-    /* .label{
-        color: rgb(128,189,255);
-    } */
-    .form__select{
-        width: 40%;
-    }
-    .form__select .select{
-        width: 100%;
-        height: 40px;
-        /* outline-color: rgb(128,189,255); */
-        border: 1px solid rgb(147,168,195);
-        padding-left: 10px;
-        border-radius: 5px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
-    .select p{
-        margin: 0;
-    }
-    .select img{
-        display: block;
-        width: 15px;
-        margin-right: 10px;
-        transition: all 300ms;
-    }
-    .rotate{
-        transform: rotate(-180deg);
-    }
-    .option__contenedor{
-        box-sizing: border-box;
-        border-radius: 5px;
-        width: 100%;
-        max-height: 200px;
-        box-shadow: 0 0 2px 0 rgb(222, 34, 69);
-        background-color: #fff;
-        box-sizing: border-box;
-        cursor: pointer;
-        overflow-y: scroll;
-        position: absolute;
-        z-index: 100;
-        top: 44px;
-    }
-    .option__contenedor input,.search input{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        border-color: #93a8c3;
-        outline-color: rgb(222, 34, 69);
-        border-style: solid;
-        border-width: 1px;
-        color:rgb(172,173,182)
-    }
-    .option__contenedor p{
-        padding:8px 10px ;
-        margin: 0;
-    }
-    .option__contenedor p:hover{
-        background-color: rgb(222, 34, 69);
-        color: #fff;
-    }
-    .form__select input{
-        width: 99%;
-        margin: 5px auto;
-        /* margin-left: auto;
-        margin-right: auto; */
-    }
-    .option__contenedor::-webkit-scrollbar{
-        width: 7px;
-        background-color: rgb(222, 34, 69)
-    }
-    .option__contenedor::-webkit-scrollbar-thumb{
-        background-color: rgb(255, 255, 255);
-        border-radius: 10px;
-        border-right: 1px solid rgb(222, 34, 69);
-        border-left: 1px solid rgb(222, 34, 69);
-    }
-    .option__relative{
-        position: relative;
-        z-index: 99;
-    }
-    .search{
-        width: 40%;
-        
-    }
-    .search .option__contenedor{
-        top: 0;
-    }
-    .search input{
-        width: 100%;
-        height: 40px;
-        border-radius: 5px;
-    }
-    table{
-        width: 95%;
-        border-collapse: separate;
-        border-spacing: 0px 10px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    thead tr{
-        color: rgb(172,173,182);  
-    }
-    thead td{
-        margin-bottom: 50px;
-    }
-    tbody tr{
-        background-color: rgb(255, 255, 255);
-        box-shadow: rgba(172, 173, 182, 0.4) 0px 7px 15px 0px;
-        transition: all 300ms;
-    }
-    /* tbody tr:hover{
-        transform: scale(1.05);
-        box-shadow: rgba(172,173,182, 0.25) 0px 24px 25px, 
-        rgba(172,173,182, 0.12) 0px -2px 10px, rgba(172,173,182, 0.12) 0px 4px 6px, 
-        rgba(172,173,182, 0.17) 0px 2px 13px, rgba(172,173,182, 0.09) 0px -3px 5px;
-    } */
-    td{
-         padding: 15px 10px;
-    }
-    tbody td:first-of-type{
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        color: rgb(60, 112, 255);
-        font-weight: bold;
-    }
-    tbody td:last-of-type{
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    td:nth-of-type(n+4){
-        color: rgb(172,173,182);
-    }
-    td.colorActive{
-        color: rgb(60, 112, 255);
-        font-weight: bold;
-    }
-    .tool{
-	font-weight: normal;
-	color: rgb(222, 34, 69);
-	text-decoration: none;
-	position: relative;
-    cursor: pointer;
-    }
-
-    .tool:hover {
-        text-decoration: underline;
-    }
-
-    .tool:hover .tool-box {
-        opacity: 1;
-    }
-
-    .tool-box {
-        opacity: 0;
-        position: absolute;
-        background: rgb(222, 34, 69);
-        line-height: 20px;
-        z-index: 500;
-        text-align: center;
-        color: rgb(255, 255, 255);
-        font-size: 14px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        left: 20px;
-        bottom: 40px;
-    }
-    .tool-box span{
-        display: block;
-    }
-    .tool-box::after {
-        content: "";
-        display: block;
-        border-top: 7px solid rgb(222, 34, 69);
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        position: absolute;
-        bottom: -7px;
-        left: calc(50% - 7px);
+    .light {
+        --popper-theme-background-color: #ffffff;
+        --popper-theme-background-color-hover: #ffffff;
+        --popper-theme-text-color: #333333;
+        --popper-theme-border-width: 1px;
+        --popper-theme-border-style: solid;
+        --popper-theme-border-color: #eeeeee;
+        --popper-theme-border-radius: 6px;
+        --popper-theme-padding: 20px;
+        --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
     }
 </style>

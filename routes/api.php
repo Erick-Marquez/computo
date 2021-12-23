@@ -23,6 +23,7 @@ use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\BranchProductSerieController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
@@ -57,16 +58,18 @@ Route::middleware([
     //Sales
     Route::post('/sales', [VoucherController::class, 'store'])->name('api.sales.store');
     Route::get('/sales', [VoucherController::class, 'index'])->name('api.sales.index');
+    Route::get('/sales/create', [VoucherController::class, 'create'])->name('api.sales.create');
+    Route::get('/sales/products/{search}', [VoucherController::class, 'searchProducts'])->name('api.sales.products');
+    Route::get('/sales/products-series/{branchProductId}/{search}', [VoucherController::class, 'searchSeries'])->name('api.sales.searchSeries');
+
+
     Route::get('/sales/salenotes', [VoucherController::class, 'saleNotes'])->name('api.sales.saleNotes');
-    Route::get('/sales/identificationdocuments', [VoucherController::class, 'identificationDocuments'])->name('api.sales.identificationDocuments');
-    Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes');
-    Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes');
-    Route::get('/sales/products/{search}', [VoucherController::class, 'products'])->name('api.sales.products');
+    Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes'); //Used new producto, change then
+    Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes'); //Used Advance Payment
+    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series'); //Used Advance Payment
+    
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
-    Route::get('/sales/vouchertypes', [VoucherController::class, 'voucherTypes'])->name('api.sales.voucherTypes');
-    Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series');
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
-    Route::get('/sales/currencyexchange', [VoucherController::class, 'currencyExchange'])->name('api.sales.currencyExchange');
 
     //Advance Payments
     Route::get('/advance-payments', [AdvancePaymentController::class, 'index'])->name('api.advancePayments.index');
@@ -76,12 +79,12 @@ Route::middleware([
     //Voideds
     Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
     Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');
+    Route::post('/voideds/ticket-status', [VoidedController::class, 'ticketStatus'])->name('api.voideds.ticketStatus');
 
     //Quotations
     Route::get('/quotations', [QuotationController::class, 'index'])->name('api.quotations.index');
+    Route::get('/quotations/create', [QuotationController::class, 'create'])->name('api.quotations.create');
     Route::post('/quotations', [QuotationController::class, 'store'])->name('api.quotations.store');
-    Route::get('/quotations/series', [QuotationController::class, 'series'])->name('api.quotations.series');
-    Route::get('/quotations/sellers', [QuotationController::class, 'sellers'])->name('api.quotations.sellers');
 
     //Warranties
     Route::get('/warranties', [WarrantyController::class, 'index'])->name('api.warranties.index');
@@ -124,10 +127,8 @@ Route::middleware([
     //Products
     Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
     Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
-    Route::get('products/branches', [ProductController::class, 'branches'])->name('api.products.branches');
-    Route::get('products/lines', [ProductController::class, 'lines'])->name('api.products.lines');
+    Route::get('products/create', [ProductController::class, 'create'])->name('api.products.create');
     Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
-    Route::get('products/currencyexchange', [ProductController::class, 'currencyExchanges'])->name('api.products.currencyExchanges');
 
     //Product-Series
     Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');
@@ -136,7 +137,11 @@ Route::middleware([
 
     //------------------------Inventory----------------------
     Route::get('branches/products/{id}', [BranchController::class, 'products'])->name('api.branches.products');
+    Route::get('branches/products/{id}/add', [BranchController::class, 'addProducts'])->name('api.branches.add-products');
     Route::apiResource('branches', BranchController::class)->names('api.branches');
+
+    Route::get('kardex/{id}', [KardexController::class, 'show']);
+    Route::get('kardex/search-products/{branchId}/{search}', [KardexController::class, 'searchProducts'])->name('api.branches.searchProducts');
 
     //------------------------Settings-----------------------
 

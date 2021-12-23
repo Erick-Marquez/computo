@@ -85,6 +85,9 @@
                         <a class="dropdown-item" href="#" @click="showModal('#modal-advance-update', advancePayment)">
                           <i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo
                         </a>
+                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-print', advancePayment)">
+                          <i class="col-1 mr-3 fas fa-print"></i>Imprimir
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -223,6 +226,65 @@
     </div>
   </div>
 
+  <!-- Modal Anticipo Print-->
+  <div class="modal fade" id="modal-advance-print" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Anticipos: {{ advancePaymentCreate.serie }} - {{ advancePaymentCreate.document_number }}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" style="min-width: 600px;">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th scope="col" class="col-2">Descripción</th>
+                  <th scope="col" class="col-3">Fecha</th>
+                  <th scope="col" class="col-4">Tipo de pago</th>
+                  <th scope="col" class="col-3">Monto S/.</th>
+                  <th scope="col" >Imprimir</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(payment, index) in advancePaymentCreate.payments" :key="index">
+                  <td class="text-center align-middle">Anticipo {{ index + 1 }}</td>
+                  <td class="align-middle">
+                    <span class="badge bg-maroon">Día:</span> {{ payment.date_updated_at }}
+                    <br>
+                    <span class="badge bg-maroon">Hora:</span> {{ payment.time_updated_at }}
+                  </td>
+                  <td class="align-middle">
+                    <select :value="payment.payment_type_id" class="form-control rounded-pill"  disabled>
+                      <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                        {{ paymentType.description }}
+                      </option>
+                    </select>
+                  </td>
+                  <td class="align-middle">
+                    <input class="form-control rounded-pill" type="number" min="0" step="0.01" :value="payment.amount" disabled>
+                  </td>
+                  <td class="text-center align-middle">
+                    <a title="Haz Click para Visualizar el Ticket" target="_blank" :href="`print/advance-payments/A4/${payment.id}`">
+                      <img src="../../../../../img/ticket_cpe.svg" style="width: 30px">
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -327,8 +389,11 @@ export default {
       quotation.payment_types.forEach(e => {
 
         let temp = {
+          id: e.pivot.id,
           payment_type_id: e.pivot.payment_type_id,
-          amount: e.pivot.amount
+          amount: e.pivot.amount,
+          date_updated_at: new Date(Date.parse(e.pivot.updated_at)).toLocaleDateString('en-US', { timeZone: 'America/Lima' }),
+          time_updated_at: new Date(Date.parse(e.pivot.updated_at)).toLocaleTimeString('en-US', { timeZone: 'America/Lima' })
         }
 
         advancePaymentTemp.payments.push(temp)

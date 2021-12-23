@@ -30,8 +30,12 @@ a{
     padding: 0;
 }
 .header .logo{
-    width: 25%;
+    width: 23%;
+    margin-left: 16px;
     display: inline-block;
+}
+.header .logo img{
+    height: 140px;
 }
 .header .titular{
     width: 41%;

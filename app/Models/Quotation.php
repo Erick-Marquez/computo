@@ -51,7 +51,7 @@ class Quotation extends Model
 
     public function paymentTypes()
     {
-        return $this->belongsToMany(PaymentType::class)->withPivot(["amount"])->withTimestamps();
+        return $this->belongsToMany(PaymentType::class)->withPivot(['id', 'amount'])->using(PaymentTypeQuotation::class)->withTimestamps();
     }
     
     public function customer()

@@ -1,20 +1,24 @@
 <template>
     <div class="content-header">
-        <div class="container-fluid">
-            <h1>Productos de la sucursal </h1>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1>Productos de la sucursal - {{ branch.description }}</h1>
+            </div>
+            <div>
+                <router-link class="btn btn-lg btn-block btn-dark" :to="{ name:'branch-list' }">
+                    <i class="mr-2 fas fa-arrow-left"></i>
+                    Atras
+                </router-link>
+            </div>
         </div>
     </div>
 
     <div class="container-fluid">
 
-        <button
-            class="btn btn-lg btn-block btn-dark my-2"
-            data-toggle="modal" 
-            data-target="#modal-create"
-        >
+        <router-link class="btn btn-lg btn-block btn-dark my-2" :to="{ name:'add-product', params:{ id:this.$route.params.id } }">
             <span><i class="fas fa-plus"></i></span>
             Añadir Productos
-        </button>
+        </router-link>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -45,38 +49,38 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Descripción</th>
-                                <th>Dirección</th>
-                                <th>Telefono</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Marca</th>
+                                <th>Maneja Series</th>
+                                <th>Stock</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="branch in branches" :key="branch.id">
-                                <td>{{ branch.id }}</td>
-                                <td>{{ branch.description }}</td>
-                                <td>{{ branch.direction }}</td>
-                                <td>{{ branch.phone }}</td>
+                            <tr v-for="(product, index) in products" :key="product.id">
+                                <td>{{ index+1 }}</td>
+                                <td>{{ product.cod }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.brand }}</td>
+                                <td>{{ product.manager_series ? 'SI' : 'NO' }}</td>
+                                <td>{{ product.stock }}</td>
                                 <td>
-                                <div class="dropdown">
-                                    <button
-                                    class="btn btn-danger dropdown-toggle"
-                                    type="button"
-                                    id="dropdownMenuButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >
-                                    Acciones
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
-                                    <a class="dropdown-item" href="#" @click="showModal('#modal-edit', branch)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
-                                    <router-link class="dropdown-item" :to="{ name:'show-product' ,params:{id:branch.id}}">
-                                        <i class="col-1 mr-3 fas fa-edit fas fa-plus"></i>
-                                        Productos
-                                    </router-link>
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-danger dropdown-toggle"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                        Acciones
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                            <a class="dropdown-item" href="#" @click="showModal('#modal-edit', product)"><i class="col-1 mr-3 fas fa-edit"></i>Editar</a>
+                                        </div>
                                     </div>
-                                </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -94,33 +98,29 @@
 <script>
 import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
-  components:{BaseUrl},
-  async created(){
-    this.showBranches()
-  },
-  data(){
-    return{
-      branches: [],
-      voucherTypes: [],
-      branch: {
-        codSunat: '0000',
-        description: '',
-        direction: '',
-        ubigeo: '',
-        phone: '',
-        series: []
-      },
-      branchEdit: {},
-      errorsCreate: {}
+    components:{BaseUrl},
+    async created(){
+        this.showBranch()
+        this.showProducts()
+    },
+    data(){
+        return{
+            branch: {},
+            products: [],
+        }
+    },
+    methods:{
+        async showBranch(){
+            await BaseUrl.get(`api/branches/${this.$route.params.id}`).then( resp => {
+                this.branch = resp.data.data
+            })
+        },
+        async showProducts(){
+            await BaseUrl.get(`api/branches/products/${this.$route.params.id}`).then( resp => {
+                this.products = resp.data.data
+            })
+        }
     }
-  },
-  methods:{
-    async showBranches(){
-      await BaseUrl.get(`api/branches`).then( resp => {
-        this.branches=resp.data.data
-      })
-    }
-  }
 }
 </script>
 

@@ -8,10 +8,11 @@ body{
 
 .logo{
     text-align: center;
+    margin-bottom: 2px;
 }
 .logo img{
     display: inline-block;
-    width: 120px;
+    height: 120px;
 }
 .header{
     width: 100%;

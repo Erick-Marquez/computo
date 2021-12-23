@@ -25,7 +25,7 @@ class PaymentType extends Model
 
     public function quotations()
     {
-        return $this->belongsToMany(Sale::class)->withPivot(["amount"])->withTimestamps();
+        return $this->belongsToMany(Sale::class)->withPivot(['id', 'amount'])->using(PaymentTypeQuotation::class)->withTimestamps();
     }
 
     public function accountToPayDetails()

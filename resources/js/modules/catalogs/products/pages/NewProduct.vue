@@ -330,9 +330,11 @@ import BaseUrl from "../../../../api/BaseUrl";
 export default {
   components: { BaseUrl },
   async created() {
-    await BaseUrl.get(`api/products/branches`).then((resp) => {
-      this.branches = resp.data.data;
-      resp.data.data.forEach(e => {
+
+    await BaseUrl.get(`api/products/create`).then((resp) => {
+
+      this.branches = resp.data.data.branches;
+      this.branches.forEach(e => {
         let tem = {
           id: e.id,
           description: e.description,
@@ -341,17 +343,13 @@ export default {
           isAvailable: false
         }
         this.selectedBranches.push(tem)
-      });
-    });
-    await BaseUrl.get(`api/products/lines`).then((resp) => {
-      this.lines = resp.data.data;
-    });
-    await BaseUrl.get(`api/products/currencyexchange`).then((resp) => {
-      this.currencyExchange = resp.data.change;
-    });
-    await BaseUrl.get(`api/sales/igvtypes`).then((resp) => {
-      this.igvTypes = resp.data.data;
-    });
+      })
+
+      this.lines = resp.data.data.lines
+      this.currencyExchange = resp.data.data.currencyExchange.change;
+      this.igvTypes = resp.data.data.igvTypes;
+
+    })
   },
   data() {
     return {
@@ -553,7 +551,7 @@ export default {
       BaseUrl.post(`api/products`, product)
       .then( resp => {
         
-        this.$router.push({ name: "product-list" });
+        this.$router.replace({ name: "product-list" });
         Swal.fire(
           "Producto Creado",
           "El producto ha sido creado satisfactoriamente",
