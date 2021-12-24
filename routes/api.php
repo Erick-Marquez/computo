@@ -67,7 +67,7 @@ Route::middleware([
     Route::get('/sales/igvtypes', [VoucherController::class, 'igvTypes'])->name('api.sales.igvTypes'); //Used new producto, change then
     Route::get('/sales/paymenttypes', [VoucherController::class, 'paymentTypes'])->name('api.sales.paymentTypes'); //Used Advance Payment
     Route::get('/sales/series/{id}', [VoucherController::class, 'series'])->name('api.sales.series'); //Used Advance Payment
-    
+
     Route::get('/sales/products/series/{id}', [VoucherController::class, 'productSeries'])->name('api.sales.productSeries');
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
 
@@ -154,6 +154,7 @@ Route::middleware([
 
     //Roles
     Route::apiResource('roles', RoleController::class)->names('api.roles');
+    Route::get('roles/{role}/users', [RoleController::class, 'roleUsers'])->name('api.role-user');
 
     //Series
     Route::get('/series', [SerieController::class, 'index'])->name('api.serie.index');

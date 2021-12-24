@@ -31,6 +31,6 @@ class AccountToPay extends Model
 
     public function accountToPayDetails()
     {
-        return $this->hasMany(accountToPayDetail::class);
+        return $this->hasMany(AccountToPayDetail::class);
     }
 }

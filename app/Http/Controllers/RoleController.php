@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RoleResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Contracts\Permission as ContractsPermission;
 use Spatie\Permission\Models\Permission;
@@ -17,7 +18,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
         $roles = Role::all();
         return RoleResource::collection($roles);
     }
@@ -75,12 +75,21 @@ class RoleController extends Controller
     {
         $role->syncPermissions($request->all())->forgetCachedPermissions();
         return response()->json(['message' => 'Permisos actualizados']);
-
     }
 
     public function destroy(Role $role)
     {
         $role->delete();
         return response()->json(['message' => 'Rol Eliminado']);
+    }
+
+    public function roleUsers($role)
+    {
+        try {
+            $users = User::role($role)->get();
+            return response()->json($users);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'ningun rol con ese nombre'], 405);
+        }
     }
 }

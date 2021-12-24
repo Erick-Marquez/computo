@@ -84,14 +84,14 @@
                     aria-labelledby="dropdownMenuButton"
                     style=""
                   >
-                    <a
+                    <!-- <a
                       class="dropdown-item"
                       target="_blank"
                       :href="'/print/cashbox/report/' + occ.id"
                     >
                       <i class="col-1 mr-3 fas fa-edit"></i>
                       General
-                    </a>
+                    </a> -->
                     <a
                       class="dropdown-item"
                       target="_blank"

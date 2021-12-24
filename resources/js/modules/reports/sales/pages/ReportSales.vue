@@ -18,19 +18,45 @@
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Cliente:</label>
-          <select
-            class="form-control rounded-pill"
+          <v-select
+            class="style-chooser"
             v-model="filters.customer_id"
+            label="name"
+            placeholder="TODOS"
+            :reduce="(customer) => customer.id"
+            :options="customers"
           >
-            <option :value="null">TODOS</option>
-            <option
-              v-for="customer in customers"
-              :key="customer.id"
-              :value="customer.id"
-            >
-              {{ customer.name }} - {{ customer.document }}
-            </option>
-          </select>
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-group">
+          <label class="lead" for="">Vendedor:</label>
+          <v-select
+            class="style-chooser"
+            v-model="filters.seller_id"
+            label="name"
+            placeholder="TODOS"
+            :reduce="(seller) => seller.id"
+            :options="sellers"
+          >
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
         </div>
       </div>
     </filters>
@@ -42,7 +68,12 @@
       <div class="card-header">
         <h3 class="card-title">Rerporte de Ventas</h3>
         <div class="card-tools">
-          <a :href="`../../reports/sales/print/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`" target="_blank" v-show="sales.length >= 1" class="btn btn-flat btn-danger mr-2 rounded-pill">
+          <a
+            :href="`../../reports/sales/print/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
+            target="_blank"
+            v-show="sales.length >= 1"
+            class="btn btn-flat btn-danger mr-2 rounded-pill"
+          >
             <i class="fas fa-file-excel"></i> PDF
           </a>
           <!-- <button class="btn btn-flat bg-olive rounded-pill">
@@ -70,7 +101,7 @@
 
                 <th>T. DOC</th>
                 <th>NUMERO</th>
-                <th>RAZON SOCIAL</th>
+                <th style="width: 20%">RAZON SOCIAL</th>
 
                 <th>OP. GRAVADA</th>
                 <th>DESC.</th>
@@ -93,7 +124,7 @@
                   {{ sale.customer_document_type }}
                 </td>
                 <td>{{ sale.customer_document }}</td>
-                <td>{{ sale.customer_name }}</td>
+                <td class="text-wrap">{{ sale.customer_name }}</td>
 
                 <td>{{ sale.subtotal }}</td>
                 <td>{{ sale.discount }}</td>
@@ -138,10 +169,13 @@ export default {
       },
       sales: [],
       customers: [],
+      sellers: [],
     };
   },
   mounted() {
     this.getCustomers();
+    this.getSellers();
+    console.log(this.customers);
   },
   methods: {
     async generateReportSales() {
@@ -158,14 +192,44 @@ export default {
       await BaseUrl.get(`/api/customers`)
         .then((response) => {
           this.customers = response.data.data;
+          this.customers.push({ name: "TODOS", id: null });
         })
         .catch((error) => {
           console.log(error.response.data);
         });
     },
+    async getSellers() {
+        await BaseUrl.get(`/api/roles/Vendedor/users`)
+        .then((response) => {
+          this.sellers = response.data;
+          this.sellers.push({ name: "TODOS", id: null });
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
   },
 };
 </script>
 
 <style>
+.style-chooser .vs__dropdown-toggle {
+  border-radius: 50px;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-color: #ced4da;
+  box-shadow: inset 0 0 0 transparent;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
+}
 </style>
