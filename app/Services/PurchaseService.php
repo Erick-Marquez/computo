@@ -24,6 +24,7 @@ class PurchaseService
                     'name' => $request->provider['name'],
                     'phone' => isset($request->provider['phone']) ? $request->provider['phone'] : null,
                     'address' => isset($request->provider['address']) ? $request->provider['address'] : null,
+                    'ubigee_id' => isset($request->provider['ubigee_id']) ? $request->provider['ubigee_id'] : null,
                     'identification_document_id' => $request->provider['identification_document_id'],
                 ]
             );

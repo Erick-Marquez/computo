@@ -12,52 +12,37 @@
             font-family: sans-serif;
         }
 
-        .cabecera {
-            margin-top: 1.5em;
+        .description p {
+            margin-top: 1px;
+            margin-bottom: 0
         }
 
-        .header {
-            display: inline-block;
-            width: 40%;
+        .description h3 {
+            margin-top: 0;
         }
 
-
-        .header.left {
-            margin-left: 1em;
-            padding-left: 6.5em
+        #content {
+            width: 100%;
         }
 
-        .header p {
-            font-size: 14px;
-            margin: 0;
-            margin-bottom: 2px;
+        #left,
+        #right {
+            width: 45%;
+            padding: .5em;
+            background: white;
         }
 
-        .text-right {
-            text-align: right;
+        #left {
+            float: left;
         }
 
-        .text-left {
-            text-align: left;
-
+        #right {
+            float: right;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
-        table {
-            font-size: 14px
-        }
-
-        table tfoot {
-            border-top: .5px solid gray
-        }
-
-        .cuerpo {}
-
-        h5 {
-            margin: 0;
+        tbody {
+            border-top: 1px solid gray;
+            border-bottom: 1px solid gray;
         }
 
     </style>
@@ -65,17 +50,146 @@
 
 <body>
 
-    <div class="cabecera">
-        <div class="header">
-            <h3>{{ $company->name }}</h3>
-            <p>Reporte de apertura y cierre de: <strong> {{ $occ->cashbox->description }} </strong></p>
-            <p>Fecha y Hora de apertura: <strong>{{ $occ->opening_date }}</strong> </p>
-            <p>Monto de apertura: <strong>{{ $occ->opening_amount }}</strong> </p>
-            <p>Fecha y Hora de cierre: <strong>{{ $occ->closing_date }}</strong> </p>
-            <p>Monto de cierre: <strong>{{ $occ->closing_amount }}</strong> </p>
-            <p>Cajero: <strong>{{ $occ->user->name }}</strong> </p>
+    <div id="content">
+        <div id="left">
+            <div class="description">
+                <h3>{{ $company->name }}</h3>
+                <p>Reporte de apertura y cierre de: <strong> {{ $occ->cashbox->description }} </strong></p>
+                <p>Fecha y Hora de apertura: <strong>{{ $occ->opening_date }}</strong> </p>
+                <p>Monto de apertura: <strong>{{ $occ->opening_amount }}</strong> </p>
+                <p>Fecha y Hora de cierre: <strong>{{ $occ->closing_date }}</strong> </p>
+                <p>Monto de cierre: <strong>{{ $occ->closing_amount }}</strong> </p>
+                <p>Cajero: <strong>{{ $occ->user->name }}</strong> </p>
+            </div>
+
+            <h5>Ingresos: </h5>
+            <table style="margin-bottom: 10px">
+                <thead>
+                    <tr>
+                        <th class="text-center">Descripcion</th>
+                        <th class="text-center">Importe</th>
+                        <th class="text-center">Tipo de pago</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (count($incomes))
+
+                        @foreach ($incomes as $i)
+
+                            <tr>
+                                <td>{{ $i->observation }}</td>
+                                <td>{{ $i->amount }}</td>
+                                <td>{{ $i->payment_type ? $i->payment_type : 'Efectivo' }}</td>
+                            </tr>
+
+                        @endforeach
+                    @else
+
+                        <tr>
+                            <td colspan="3" style="text-align:center">No hay Ingresos</td>
+                        </tr>
+                    @endif
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td>Total: </td>
+                        <td>{{ $total['incomes'] + $total['quotations'] }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <h5>Egresos: </h5>
+            <table style="margin-bottom: 10px">
+                <thead>
+                    <tr>
+                        <th class="text-center">Descripcion</th>
+                        <th class="text-center">Importe</th>
+                        <th class="text-center">Tipo de pago</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @if (count($expenses))
+                        @foreach ($expenses as $e)
+
+                            <tr>
+                                <td>{{ $e->observation }}</td>
+                                <td>{{ $e->amount }}</td>
+                                <td>{{ $e->payment_type ? $e->payment_type : 'Efectivo' }}</td>
+                            </tr>
+
+                        @endforeach
+                    @else
+
+                        <tr>
+                            <td colspan="3" style="text-align:center">No hay Egresos</td>
+                        </tr>
+                    @endif
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total: </td>
+                        <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <h5>Anulados: </h5>
+            <table style="margin-bottom: 10px">
+                <thead>
+                    <tr>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Serie</th>
+                        <th class="text-center">N° doc</th>
+                        <th class="text-center">Importe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (count($salesNull))
+                        @foreach ($salesNull as $sn)
+
+                            <tr>
+                                <td>{{ $sn->description }}</td>
+                                <td>{{ $sn->serie }}</td>
+                                <td>{{ $sn->document_number }}</td>
+                                <td>{{ $sn->total }}</td>
+                            </tr>
+
+                        @endforeach
+                    @else
+
+                        <tr>
+                            <td colspan="4" style="text-align:center">No hay anulaciones</td>
+                        </tr>
+                    @endif
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Total: </td>
+                        <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <h5>Totales: </h5>
+            <table style="margin-bottom: 10px">
+                <tfoot>
+                    <tr>
+                        <td>Total de ingresos:</td>
+                        <td>{{ $total['sales'] + $total['incomes'] + $total['quotations'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Egresos:</td>
+                        <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Efectivo:</td>
+                        <td>{{ $moneyCash['sales'] + $moneyCash['incomes'] + $moneyCash['quotations'] - $moneyCash['purchases'] - $moneyCash['expenses'] - $moneyCash['account_to_pay'] }}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        <div class="header left">
+
+        <div id="right" style="">
             <table>
                 <thead>
                     <tr>
@@ -109,110 +223,20 @@
                     </tr>
                 </tfoot>
             </table>
+            <table style="margin-top: 1em">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">Compras</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total:</td>
+                        <td>{{ $occ->purchases()->where('is_credit', false)->sum('total') }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-
-    <div class="cuerpo">
-        <h5>Ingresos: </h5>
-        <table style="margin-bottom: 10px">
-            <thead>
-                <tr>
-                    <th class="text-center">Descripcion</th>
-                    <th class="text-center">Importe</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($incomes as $i)
-
-                    <tr>
-                        <td>{{ $i->observation }}</td>
-                        <td>{{ $i->amount }}</td>
-                    </tr>
-
-                @endforeach
-            </tbody>
-
-            <tfoot>
-                <tr>
-                    <td>Total: </td>
-                    <td>{{ $total['incomes'] }}</td>
-                </tr>
-            </tfoot>
-        </table>
-        <h5>Egresos: </h5>
-        <table style="margin-bottom: 10px">
-            <thead>
-                <tr>
-                    <th class="text-center">Descripcion</th>
-                    <th class="text-center">Importe</th>
-                </tr>
-
-            </thead>
-            <tbody>
-                @foreach ($expenses as $e)
-
-                    <tr>
-                        <td>{{ $e->observation }}</td>
-                        <td>{{ $e->amount }}</td>
-                    </tr>
-
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>Total: </td>
-                    <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
-                </tr>
-            </tfoot>
-        </table>
-        <h5>Anulados: </h5>
-        <table style="margin-bottom: 10px">
-            <thead>
-                <tr>
-                    <th class="text-center">Tipo</th>
-                    <th class="text-center">Serie</th>
-                    <th class="text-center">N° doc</th>
-                    <th class="text-center">Importe</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($salesNull as $sn)
-
-                    <tr>
-                        <td>{{ $sn->description }}</td>
-                        <td>{{ $sn->serie }}</td>
-                        <td>{{ $sn->document_number }}</td>
-                        <td>{{ $sn->total }}</td>
-                    </tr>
-
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>Total: </td>
-                    <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <div class="totales">
-        <table style="margin-bottom: 10px">
-            <tbody>
-
-                    <tr>
-                        <td>Total de ingresos:</td>
-                        <td>{{ $total['sales'] + $total['incomes'] + $total['quotitation'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Egresos:</td>
-                        <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total de Efectivo:</td>
-                        <td>{{ $total['sales'] + $total['incomes'] + $total['quotitation'] - $total['purchases'] - $total['expenses'] - $total['account_to_pay'] }}</td>
-                    </tr>
-            </tbody>
-        </table>
     </div>
 </body>
 

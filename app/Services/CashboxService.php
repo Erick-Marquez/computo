@@ -129,7 +129,7 @@ class CashboxService
         $occ = CashboxService::recoverOpening($id);
         $movements = $occ->getMovementsTotal();
 
-        $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] - $movements['expenses'] - $movements['purchases'] - $movements['account_to_pay'];
+        $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] + $movements['quotations'] - $movements['expenses'] - $movements['purchases'] - $movements['account_to_pay'];
 
         return $balance;
     }

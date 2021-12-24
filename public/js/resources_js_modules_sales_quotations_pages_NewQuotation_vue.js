@@ -53,7 +53,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     voucherType: Number,
     errors: Object
   },
-  created: function created() {
+  mounted: function mounted() {
     this.getTypeDocuments();
     this.getUbigees();
     this.customer.identification_document_id = 6;
@@ -93,19 +93,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.loading = true;
                 _context2.next = 3;
                 return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/data-document/".concat(_this2.customer.identification_document_id, "/").concat(_this2.customer.document)).then(function (response) {
-                  console.log(response.data);
-                  _this2.customer.id = null;
+                  _this2.customer.phone = "";
+                  _this2.customer.address = "";
                   _this2.customer.name = response.data.name;
-                  _this2.customer.address = response.data.address ? response.data.address : null;
-                  _this2.customer.phone = response.data.phone ? response.data.phone : null;
-                  _this2.customer.ubigee_id = response.data.ubigee; //this.customer.ubigee_id = response.data.ubigee_id;
-
-                  //this.customer.ubigee_id = response.data.ubigee_id;
+                  _this2.customer.address = response.data.address;
+                  _this2.customer.phone = response.data.phone;
+                  _this2.customer.ubigee_id = response.data.ubigee != null ? _this2.getUbigeecustomer(response.data.ubigee) : null;
                   _this2.responseApi = "HABIDO";
-                  console.log(_this2.responseApi);
-                  _this2.selectUbigee;
                 })["catch"](function (error) {
-                  console.log(error.response);
                   _this2.responseApi = "NO HABIDO";
                 })["finally"](function () {
                   _this2.loading = false;
@@ -142,7 +137,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    getcustomers: function getcustomers() {
+    getUbigeecustomer: function getUbigeecustomer(cod) {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
@@ -151,10 +146,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/customers?included=ubigee&filter[document]=".concat(_this4.customer.document, "\n                            &filter[identification_document_id]=").concat(_this4.customer.identification_document_id, "\n                            &perPage=10")).then(function (response) {
-                  _this4.customers = response.data.data;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/ubigees?filter[cod]=".concat(cod)).then(function (response) {
+                  _this4.customer.ubigee_id = response.data.data[0].id;
                 })["catch"](function (error) {
-                  console.log(error.response.data);
+                  console.log(error.response);
                 });
 
               case 2:
@@ -165,18 +160,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
+    getcustomers: function getcustomers() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/customers?included=ubigee&filter[document]=".concat(_this5.customer.document, "\n                            &filter[identification_document_id]=").concat(_this5.customer.identification_document_id, "\n                            &perPage=10")).then(function (response) {
+                  _this5.customers = response.data.data;
+                })["catch"](function (error) {
+                  console.log(error.response.data);
+                });
+
+              case 2:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
     setData: function setData(customerFind) {
       this.customer.document = customerFind.document;
       this.customer.name = customerFind.name;
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
-      this.customer.ubigee_id = customerFind.ubigee != null ? customerFind.ubigee.cod : null;
+      this.customer.ubigee_id = customerFind.ubigee != null ? customerFind.ubigee.id : null;
       this.customers = null;
-      this.selectUbigee;
     },
     searchDocument: function searchDocument() {
       clearTimeout(this.searching);
       this.searching = setTimeout(this.getcustomers, 300);
+    },
+    selectUbigee: function selectUbigee(codUbigee) {
+      var ubigee = this.ubigees.filter(function (ubigee) {
+        ubigee.cod == codUbigee;
+      });
+      return ubigee.id;
     }
   },
   computed: {
@@ -847,7 +870,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, " | " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.responseApi), 3
   /* TEXT, CLASS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.responseApi]])]), $options.showSearchingData ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
+    type: "number",
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.$errorsClassSquare($props.errors['customer.document']), 'rounded-pill-left']),
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $props.customer.document = $event;
@@ -933,7 +956,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     label: "place_description",
     reduce: function reduce(ubigee) {
-      return ubigee.cod;
+      return ubigee.id;
     },
     options: $data.ubigees
   }, {
@@ -1989,7 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'https://pchuanuco.mdc-computo.com/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

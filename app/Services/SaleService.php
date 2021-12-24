@@ -18,22 +18,24 @@ class SaleService
     {
         if (is_null($request->customer['id'])) {
 
-            $customer = Customer::create([
-                'name' => $request->customer['name'],
-                'document' => $request->customer['document'],
-                'phone' => $request->customer['phone'],
-                'address' => $request->customer['address'],
-                'identification_document_id' => $request->customer['identification_document_id'],
-            ]);
+            $customer = Customer::updateOrCreate(
+                ['document' => $request->customer['document']],
+                [
+                    'name' => $request->customer['name'],
+                    'phone' => isset($request->customer['phone']) ? $request->customer['phone'] : null,
+                    'address' => isset($request->customer['address']) ? $request->customer['address'] : null,
+                    'ubigee_id' => isset($request->customer['ubigee_id']) ? $request->customer['ubigee_id'] : null,
+                    'identification_document_id' => $request->customer['identification_document_id'],
+                ]
+            );
 
             $dataCustomer = $request->customer;
             $dataCustomer['id'] = $customer->id;
 
             $request->merge(['customer' => $dataCustomer]);
-
         }
 
-        
+
         $serie = Serie::find($request->voucher['serie_id']);
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
@@ -45,9 +47,9 @@ class SaleService
 
             'observation' => $request->voucher['observation'],
             'discount' => $request->voucher['discount'],
-            
 
-            'have_warranty' => $request->voucher['warranty'], 
+
+            'have_warranty' => $request->voucher['warranty'],
 
             'serie_id' => $request->voucher['serie_id'],
             'customer_id' => $request->customer['id'],
@@ -62,15 +64,15 @@ class SaleService
         // Garantia
         if ($request->voucher['warranty']) {
             $serieWarranty = Serie::find($request->voucher['warranty_serie_id']);
-            $serieWarranty ->current_number = $serieWarranty->current_number + 1;
-            $serieWarranty ->save();
+            $serieWarranty->current_number = $serieWarranty->current_number + 1;
+            $serieWarranty->save();
 
             $warranty = Warranty::create([
                 'document_number' => $serieWarranty->current_number,
                 'date_issue' => Carbon::now(),
-    
+
                 'discount' => $request->voucher['discount'],
-    
+
                 'serie_id' => $request->voucher['warranty_serie_id'],
                 'sale_id' => $sale->id,
                 'customer_id' => $request->customer['id'],
@@ -105,16 +107,16 @@ class SaleService
                     $priceWithoutIgv = $detail['sale_price'] / (1 + $igv);
 
                     $detail['sale_price'] = $priceWithoutIgv;
-        
+
                     // hallar el subtotal = (precio sin igv * cantidad) - descuento
                     $subtotal = ($priceWithoutIgv * $detail['quantity']) - $detail['discount'];
-        
+
                     // hallar el total = (subtotal * 1.18)
                     $total = $subtotal * (1 + $igv);
-                    
+
                     // hallar el igv = (total - subtotal)
                     $totalIgv = $total - $subtotal;
-        
+
                     // Actualizar totales globales
                     $subtotalSale += $subtotal;
                     $totalIgvSale += $totalIgv;
@@ -183,9 +185,8 @@ class SaleService
             if ($branchProduct->product->manager_series) {
 
                 $productSeries = $detail['series'];
-
             }
-            
+
 
             SaleDetail::create([
 
@@ -232,23 +233,21 @@ class SaleService
                     'discount' => $detail['discount'],
                     'price' => $detail['sale_price'],
                     'quantity' => $detail['quantity'],
-    
+
                     'total' => $total,
-    
+
                     'series' => $productSeries,
-    
+
                     'warranty_id' => $warranty->id,
                     'branch_product_id' => $detail['product_id']
                 ]);
 
                 if ($dateDueWarranty < $dateDueWarrantyDetail) {
-                    
-                    $dateDueWarranty = $dateDueWarrantyDetail;
 
+                    $dateDueWarranty = $dateDueWarrantyDetail;
                 }
 
                 $totalWarranty += $total;
-
             }
 
             $data['branch_product_id'] = $detail['product_id'];
@@ -257,9 +256,8 @@ class SaleService
             $data['series'] = $productSeries;
             $data['user_id'] = $request->user_id;
 
-            
-            KardexService::sale($data);
 
+            KardexService::sale($data);
         }
 
 
@@ -268,18 +266,14 @@ class SaleService
             foreach ($request->voucher['payments'] as $payment) {
 
                 $sale->paymentTypes()->attach($payment['payment_type_id'], ['amount' => $payment['amount']]);
-
             }
-
-        }
-        else {
+        } else {
             $sale->paymentTypes()->attach($request->voucher['payments'][0]['payment_type_id'], ['amount' => $totalSale - $request->voucher['discount']]);
 
             $sale->update([
                 'received_money' => $request->voucher['received_money'],
                 'change' => $request->voucher['change'],
             ]);
-
         }
 
 
@@ -299,9 +293,8 @@ class SaleService
                 'total' => $totalWarranty,
                 'date_due' => $dateDueWarranty
             ]);
-
         }
-        
+
 
         // Enviar a Sunat
         if ($request->voucher['document_type'] == 1) { // Factura
@@ -316,9 +309,8 @@ class SaleService
                 'hash_cdr' => $sunat['response']['hash_cdr'],
                 'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
-        }
-        elseif ($request->voucher['document_type'] == 2) { // Boleta
-            
+        } elseif ($request->voucher['document_type'] == 2) { // Boleta
+
             $sunat = SunatService::facturar($sale->id, 'ticket');
 
             $sale->update([
@@ -329,11 +321,9 @@ class SaleService
                 'hash_cdr' => $sunat['response']['hash_cdr'],
                 'hash_cpe' => $sunat['response']['hash_cpe']
             ]);
-        }
-        else {
+        } else {
 
             return "Nota de Venta Guardada";
-
         }
 
         return $sale->description_sunat_cdr;

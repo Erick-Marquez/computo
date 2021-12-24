@@ -36,6 +36,7 @@ class PurchaseRequest extends FormRequest
 
             'provider.identification_document_id' => 'required|exists:identification_documents,id',
             'provider.document' => 'required|min:8|max:11',
+            'provider.ubigee_id' => 'exists:ubigees,id',
             'provider.name' => 'required|string',
             'provider.phone' => 'max:20',
             'provider.email' => 'max:100',
