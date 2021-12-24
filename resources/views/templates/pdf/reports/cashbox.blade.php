@@ -176,6 +176,16 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($salesNull as $sn)
+
+                    <tr>
+                        <td>{{ $sn->description }}</td>
+                        <td>{{ $sn->serie }}</td>
+                        <td>{{ $sn->document_number }}</td>
+                        <td>{{ $sn->total }}</td>
+                    </tr>
+
+                @endforeach
             </tbody>
             <tfoot>
                 <tr>
@@ -183,6 +193,25 @@
                     <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
                 </tr>
             </tfoot>
+        </table>
+    </div>
+    <div class="totales">
+        <table style="margin-bottom: 10px">
+            <tbody>
+
+                    <tr>
+                        <td>Total de ingresos:</td>
+                        <td>{{ $total['sales'] + $total['incomes'] + $total['quotitation'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Egresos:</td>
+                        <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total de Efectivo:</td>
+                        <td>{{ $total['sales'] + $total['incomes'] + $total['quotitation'] - $total['purchases'] - $total['expenses'] - $total['account_to_pay'] }}</td>
+                    </tr>
+            </tbody>
         </table>
     </div>
 </body>

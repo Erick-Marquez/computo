@@ -1,10 +1,6 @@
 <template>
     <div class="row">
         <div class="col-md">
-            <h4>
-                <i class="text-danger fas fa-box"></i>
-                Productos
-            </h4>
             <div class="">
                 <input
                     type="search"

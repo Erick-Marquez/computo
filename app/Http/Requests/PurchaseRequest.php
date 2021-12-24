@@ -30,6 +30,7 @@ class PurchaseRequest extends FormRequest
             'voucherDetail.handles_exchange_rate' => 'required|boolean',
             'voucherDetail.exchange_rate' => 'exclude_if:voucherDetail.handle_exchange_rate,false|required|numeric',
             'voucherDetail.date_issue' => 'required|date',
+            'voucherDetail.is_credit' => 'required|boolean',
             'voucherDetail.subtotal' => 'numeric',
             'voucherDetail.total' => 'numeric',
 
@@ -47,7 +48,8 @@ class PurchaseRequest extends FormRequest
             'products.*.series' => 'bail|exclude_if:products.*.manager_series,0|required|array',
             'products.*.series.*' => 'distinct|string|min:1|unique:branch_product_series,serie',
 
-
+            'installments.dates' => 'exclude_if:voucherDetail.is_credit,false|required|array',
+            'installments.dates.*' => 'exclude_if:voucherDetail.is_credit,false|required|date',
         ];
     }
 
@@ -94,6 +96,8 @@ class PurchaseRequest extends FormRequest
             'products.*.series.required' => 'Digite las series',
             'products.*.series.*.distinc' => 'La serie debe ser diferente, Asegurese de no poner series repetidas',
             'products.*.series.*.unique' => 'Esta serie ya existe',
+
+            'installments.dates.*' => 'Te falta agregar fechas'
         ];
     }
 }

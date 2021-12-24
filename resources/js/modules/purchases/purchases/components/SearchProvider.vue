@@ -168,7 +168,7 @@
         <v-select
           class="style-chooser"
           v-model="provider.ubigee_id"
-          label="cod"
+          label="description"
           :reduce="(ubigee) => ubigee.id"
           :options="ubigees"
         >

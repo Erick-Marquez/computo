@@ -15,18 +15,23 @@ class CreatePaymentTypeQuotationTable extends Migration
     {
         Schema::create('payment_type_quotation', function (Blueprint $table) {
             $table->id();
-            $table->unsignedDecimal('amount', 12,3)->nullable()->default(0);
+            $table->unsignedDecimal('amount', 12, 3)->nullable()->default(0);
 
-            $table->foreignId('payment_type_id') 
+            $table->foreignId('payment_type_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('quotation_id') 
+            $table->foreignId('quotation_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            
+
+            $table->foreignId('open_closed_cashbox_id')
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

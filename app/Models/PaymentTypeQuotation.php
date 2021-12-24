@@ -13,17 +13,23 @@ class PaymentTypeQuotation extends Pivot
 
         'quotation_id',
         'payment_type_id',
-        'amount'
-        
+        'amount',
+        'open_closed_cashbox_id'
+
     ];
 
     public function quotation()
-    {   
+    {
         return $this->belongsTo(Quotation::class);
     }
 
     public function paymentType()
-    {   
+    {
         return $this->belongsTo(PaymentType::class);
+    }
+
+    public function openClosedCashbox()
+    {
+        return $this->belongsTo(OpenClosedCashbox::class);
     }
 }

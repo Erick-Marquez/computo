@@ -59,6 +59,11 @@ class OpenClosedCashbox extends Model
         return $this->hasMany(AccountToPayDetail::class);
     }
 
+    public function paymentTypeQuotations()
+    {
+        return $this->hasMany(PaymentTypeQuotation::class);
+    }
+
     // *TODO: DETALLES
 
     public function details($id)
@@ -94,7 +99,8 @@ class OpenClosedCashbox extends Model
             "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
-            "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount') # 1 = EFECTIVO
+            "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount'), # 1 = EFECTIVO
+            "quotitation" => $this->paymentTypeQuotations()->where('payment_type_id', 1)->sum('amount')
         ];
     }
 
@@ -161,7 +167,16 @@ class OpenClosedCashbox extends Model
     public function getIncomes()
     {
         $incomes = $this->openClosedCashboxDetails()->select('created_at as date', 'observation', 'amount', 'type as concept')->where('type', 'INGRESO')->get();
-        return $incomes;
+        $quotations = $this->paymentTypeQuotations()
+            ->select('created_at as date', 'amount')
+            ->where('payment_type_id', 1)
+            ->get()
+            ->each(function ($item, $key) {
+                $item['concept'] = 'INGRESO';
+                $item['observation'] = "Anciticipo";
+            });
+
+        return $incomes->mergeRecursive($quotations);
     }
 
     public function getSalesNull()
