@@ -52,6 +52,8 @@ import indexReportDetails from './modules/reports/details/index.vue';
 import indexReportProducts from './modules/reports/products/index.vue';
 import indexReportInventory from './modules/reports/inventory/index.vue';
 import indexReportUtility from './modules/reports/utility/index.vue';
+import indexReportSeries from './modules/reports/series/index.vue';
+import indexReportExpensesIncomes from './modules/reports/expenses-incomes/index.vue';
 
 /* Settings */
 import indexCompany from './modules/settings/company/index.vue';
@@ -106,6 +108,8 @@ app.component('index-report-details', indexReportDetails);
 app.component('index-report-products', indexReportProducts);
 app.component('index-report-inventory', indexReportInventory);
 app.component('index-report-utility', indexReportUtility);
+app.component('index-report-series', indexReportSeries);
+app.component('index-report-expenses-incomes', indexReportExpensesIncomes);
 
 /* uy */
 app.component('image-upload', imageUpload)

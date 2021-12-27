@@ -28,7 +28,11 @@ class CreateAccountToPayDetailsTable extends Migration
                 ->constrained('payment_types')
                 ->onUpdate('cascade')
                 ->onDelete('SET NULL');
-            // $table->timestamps();
+            $table->foreignId('open_closed_cashbox_id')
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade');
+            $table->timestamps();
         });
     }
 

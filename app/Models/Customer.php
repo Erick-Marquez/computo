@@ -20,7 +20,7 @@ class Customer extends Model
         'identification_document_id'
     ];
 
-    protected $allowIncluded = ['ubigee'];
+    protected $allowIncluded = ['ubigee', 'identificationDocument'];
     protected $allowFilter = ['id', 'document', 'name', 'identification_document_id'];
     protected $allowSort = ['id'];
 

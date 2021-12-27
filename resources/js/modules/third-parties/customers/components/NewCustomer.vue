@@ -129,7 +129,7 @@
             <v-select
               v-model="customer.ubigee_id"
               label="place_description"
-              :reduce="(ubigee) => ubigee.cod"
+              :reduce="(ubigee) => ubigee.id"
               :options="ubigees"
             >
               <template v-slot:no-options="{ search, searching }">

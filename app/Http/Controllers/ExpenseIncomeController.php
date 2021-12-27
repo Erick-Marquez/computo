@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExpenseIncomeRequest;
 use App\Http\Resources\ExpenseIncomeResource;
 use App\Models\ExpenseIncome;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ExpenseIncomeController extends Controller
 {
@@ -26,22 +28,20 @@ class ExpenseIncomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ExpenseIncomeRequest $request)
     {
-        $request->request->add([
-            'user_id' => auth()->user()->id,
-            'branch_id' => auth()->user()->branch_id,
-        ]);
 
-        $request->validate([
-            'type' => ['required', Rule::in(['INGRESO', 'EGRESO'])],
-            'amount' => 'required|min:0|numeric',
-            'observation' => 'required|min:10|string',
-        ]);
+        $data = $request->all();
+        $data['user_id'] = auth()->user()->id;
+        $data['branch_id'] = auth()->user()->branch_id;
 
-        ExpenseIncome::create($request->all());
+        try {
+            ExpenseIncome::create($data);
+            return response()->json(['message' => 'Movimiento Registrado'], 200);
+        } catch (\Throwable $th) {
+            return abort(405, $th->getMessage());
+        }
 
-        return response()->json(['message' => 'Movimiento Registrado'], 200);
     }
 
     /**

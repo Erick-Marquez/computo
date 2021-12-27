@@ -84,13 +84,21 @@
                     aria-labelledby="dropdownMenuButton"
                     style=""
                   >
-                    <a
+                    <!-- <a
                       class="dropdown-item"
                       target="_blank"
                       :href="'/print/cashbox/report/' + occ.id"
                     >
                       <i class="col-1 mr-3 fas fa-edit"></i>
-                      PDF
+                      General
+                    </a> -->
+                    <a
+                      class="dropdown-item"
+                      target="_blank"
+                      :href="`/occ/report/${occ.id}`"
+                    >
+                      <i class="col-1 mr-3 fas fa-edit"></i>
+                      Movimientos
                     </a>
                     <!-- <a class="dropdown-item" href="#">
                           <i class="col-1 mr-3 fas fa-edit"></i>

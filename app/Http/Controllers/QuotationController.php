@@ -40,7 +40,7 @@ class QuotationController extends Controller
             'availableQuotations' => $availableQuotations,
 
             'unavailableQuotations' => $unavailableQuotations
-            
+
         ]);
     }
 
@@ -58,11 +58,11 @@ class QuotationController extends Controller
         $series = Serie::where('branch_id', auth()->user()->branch_id)->where('voucher_type_id', 8)->get(); //voucher type 8 = cotizacion
         $sellers = User::where('branch_id', auth()->user()->branch_id)->role('Vendedor')->get(); //voucher type 8 = cotizacion
 
-        return GlobalResource::make([ 
+        return GlobalResource::make([
             'currencyExchange' => $currencyExchange,
             'identificationDocuments' => $identificationDocuments,
             'igvTypes' => $igvTypes,
-            
+
             'series' => $series,
             'sellers' => $sellers
         ]);
@@ -78,14 +78,17 @@ class QuotationController extends Controller
     {
 
         if (is_null($request->customer['id'])) {
-            
-            $customer = Customer::create([
-                'name' => $request->customer['name'],
-                'document' => $request->customer['document'],
-                'phone' => $request->customer['phone'],
-                'address' => $request->customer['address'],
-                'identification_document_id' => $request->customer['identification_document_id'],
-            ]);
+
+            $customer = Customer::updateOrCreate(
+                ['document' => $request->customer['document']],
+                [
+                    'name' => $request->customer['name'],
+                    'phone' => isset($request->customer['phone']) ? $request->customer['phone'] : null,
+                    'address' => isset($request->customer['address']) ? $request->customer['address'] : null,
+                    'ubigee_id' => isset($request->customer['ubigee_id']) ? $request->customer['ubigee_id'] : null,
+                    'identification_document_id' => $request->customer['identification_document_id'],
+                ]
+            );
 
             $dataCustomer = $request->customer;
             $dataCustomer['id'] = $customer->id;
@@ -136,16 +139,16 @@ class QuotationController extends Controller
                 case 10:
                     // hallar el precio sin igv
                     $priceWithoutIgv = $detail['sale_price'] / (1 + $igv);
-        
+
                     // hallar el subtotal = (precio sin igv * cantidad) - descuento
                     $subtotal = round($priceWithoutIgv * $detail['quantity'], 2) - $detail['discount'];
-        
+
                     // hallar el total = (subtotal * 1.18)
                     $total = round($subtotal * (1 + $igv), 2);
-                    
+
                     // hallar el igv = (total - subtotal)
                     $totalIgv = $total - $subtotal;
-        
+
                     // Actualizar totales globales
                     $subtotalQuotation += $subtotal;
                     $totalIgvQuotation += $totalIgv;
@@ -221,7 +224,7 @@ class QuotationController extends Controller
 
             ]);
         }
-        
+
         $quotation->update([
             'subtotal' => $subtotalQuotation,
             'total_igv' => $totalIgvQuotation,
@@ -284,7 +287,7 @@ class QuotationController extends Controller
     {
         $company = Company::active();
         $head = Quotation::where('id', $quotation->id)->with('quotationDetails.branchProduct.product', 'customer.identificationDocument', 'serie.voucherType')->firstOrFail();
-        
+
         $details = $head->quotationDetails;
 
         $text = join('|', [
@@ -298,7 +301,7 @@ class QuotationController extends Controller
         ]);
 
         $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
-    
+
 
         $pdf = PDF::loadView('templates.pdf.quotation-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4','portrait');
 

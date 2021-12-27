@@ -386,6 +386,30 @@ const routes = [
                 ]
             },
             {
+                path: 'series',
+                name: 'report-series-index',
+                component: () => import('../modules/reports/series/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-series',
+                        component: () => import('../modules/reports/series/pages/ReportSeries.vue'),
+                    }
+                ]
+            },
+            {
+                path: 'egresos-ingresos',
+                name: 'report-expenses-incomes-index',
+                component: () => import('../modules/reports/expenses-incomes/index.vue'),
+                children: [
+                    {
+                        path: '',
+                        name: 'report-expenses-incomes',
+                        component: () => import('../modules/reports/expenses-incomes/pages/ReportExpensesIncomes.vue'),
+                    }
+                ]
+            },
+            {
                 path: '',
                 redirect: { name: 'assemblies-list' }
             }

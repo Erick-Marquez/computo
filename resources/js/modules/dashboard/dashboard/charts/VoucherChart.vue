@@ -26,6 +26,7 @@ export default {
           y: {
             beginAtZero: true,
             suggestedMin: 0,
+            suggestedMax: 10,
             grid: {
               display: false,
             },

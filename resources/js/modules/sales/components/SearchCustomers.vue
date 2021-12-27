@@ -45,7 +45,7 @@
         </label>
         <div v-if="showSearchingData" class="input-group">
           <input
-            type="text"
+            type="number"
             :class="[
               $errorsClassSquare(errors['customer.document']),
               'rounded-pill-left',
@@ -171,7 +171,7 @@
           class="style-chooser"
           v-model="customer.ubigee_id"
           label="place_description"
-          :reduce="(ubigee) => ubigee.cod"
+          :reduce="(ubigee) => ubigee.id"
           :options="ubigees"
         >
           <template v-slot:no-options="{ search, searching }">
@@ -225,7 +225,7 @@ export default {
     voucherType: Number,
     errors: Object,
   },
-  created() {
+  mounted() {
     this.getTypeDocuments();
     this.getUbigees();
     this.customer.identification_document_id = 6;
@@ -246,23 +246,19 @@ export default {
         `/api/data-document/${this.customer.identification_document_id}/${this.customer.document}`
       )
         .then((response) => {
-          console.log(response.data);
-          this.customer.id = null;
+          this.customer.phone = "";
+          this.customer.address = "";
           this.customer.name = response.data.name;
-          this.customer.address = response.data.address
-            ? response.data.address
-            : null;
-          this.customer.phone = response.data.phone
-            ? response.data.phone
-            : null;
-          this.customer.ubigee_id = response.data.ubigee;
-          //this.customer.ubigee_id = response.data.ubigee_id;
+          this.customer.address = response.data.address;
+          this.customer.phone = response.data.phone;
+          this.customer.ubigee_id =
+            response.data.ubigee != null
+              ? this.getUbigeecustomer(response.data.ubigee)
+              : null;
+
           this.responseApi = "HABIDO";
-          console.log(this.responseApi);
-          this.selectUbigee;
         })
         .catch((error) => {
-          console.log(error.response);
           this.responseApi = "NO HABIDO";
         })
         .finally(() => {
@@ -273,6 +269,15 @@ export default {
       await BaseUrl.get(`/api/ubigees`)
         .then((response) => {
           this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    async getUbigeecustomer(cod) {
+      await BaseUrl.get(`/api/ubigees?filter[cod]=${cod}`)
+        .then((response) => {
+          this.customer.ubigee_id = response.data.data[0].id;
         })
         .catch((error) => {
           console.log(error.response);
@@ -297,13 +302,19 @@ export default {
       this.customer.address = customerFind.address;
       this.customer.phone = customerFind.phone;
       this.customer.ubigee_id =
-        customerFind.ubigee != null ? customerFind.ubigee.cod : null;
+        customerFind.ubigee != null ? customerFind.ubigee.id : null;
       this.customers = null;
-      this.selectUbigee;
     },
     searchDocument() {
       clearTimeout(this.searching);
       this.searching = setTimeout(this.getcustomers, 300);
+    },
+
+    selectUbigee(codUbigee) {
+      const ubigee = this.ubigees.filter((ubigee) => {
+        ubigee.cod == codUbigee;
+      });
+      return ubigee.id;
     },
   },
   computed: {
@@ -327,7 +338,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 .autocomplete {

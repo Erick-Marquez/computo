@@ -17,12 +17,14 @@ class PurchaseService
 
         try {
 
+
             $provider = Provider::updateOrCreate(
                 ['document' => $request->provider['document']],
                 [
                     'name' => $request->provider['name'],
-                    'phone' => $request->provider['phone'],
-                    'address' => $request->provider['address'],
+                    'phone' => isset($request->provider['phone']) ? $request->provider['phone'] : null,
+                    'address' => isset($request->provider['address']) ? $request->provider['address'] : null,
+                    'ubigee_id' => isset($request->provider['ubigee_id']) ? $request->provider['ubigee_id'] : null,
                     'identification_document_id' => $request->provider['identification_document_id'],
                 ]
             );
@@ -39,6 +41,7 @@ class PurchaseService
                 'total_igv' => $request->voucherDetail['total_igv'],
                 'observation' => $request->voucherDetail['observation'],
                 'is_credit' => $request->voucherDetail['is_credit'],
+                'has_debt' => $request->voucherDetail['is_credit'] ? true : false,
                 'provider_id' => $provider->id,
                 'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
                 'branch_id' => auth()->user()->branch_id,

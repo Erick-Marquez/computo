@@ -17,6 +17,9 @@
       </button>
     </span>
   </div>
+  <span v-if="errors['installments.dates'] != undefined" class="text-danger">
+      {{ errors['installments.dates'][0] }}
+  </span>
 
   <!-- Modal -->
   <div
@@ -59,7 +62,7 @@
             <div class="col-md">
               <input
                 type="number"
-                :value="installments.amounts[index] = total_installment"
+                :value="(installments.amounts[index] = total_installment)"
                 class="form-control rounded-pill mb-3"
               />
             </div>
@@ -82,7 +85,7 @@
 
 <script>
 export default {
-  props: { installments: Object, total_installment: Number },
+  props: { installments: Object, total_installment: String, errors: Object },
   methods: {
     arrayDates() {
       this.installments.dates = this.installments.dates.slice(

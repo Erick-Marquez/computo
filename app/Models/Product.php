@@ -24,18 +24,25 @@ class Product extends Model
         'have_warranty',
         'type_of_time_for_warranty',
         'time_of_warranty',
-        
+
         'igv_type_id',
-        'brand_line_id'
+        'brand_line_id',
+        'brand_id',
+        'line_id'
     ];
 
-    protected $allowIncluded = [];
+    protected $allowIncluded = ['brand', 'line'];
     protected $allowFilter = ['id', 'name'];
     protected $allowSort = ['id'];
 
-    public function brandLine()
+    public function brand()
     {
-        return $this->belongsTo(BrandLine::class);
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function line()
+    {
+        return $this->belongsTo(Line::class);
     }
 
     public function igvType()

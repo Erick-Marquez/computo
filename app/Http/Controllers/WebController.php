@@ -180,6 +180,16 @@ class WebController extends Controller
     {
         return view('reports.utility.index');
     }
+
+    public function reportSeries()
+    {
+        return view('reports.series.index');
+    }
+
+    public function reportExpensesIncomes()
+    {
+        return view('reports.expenses-incomes.index');
+    }
     /*========Configuracion=========*/
 
     public function company()

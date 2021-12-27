@@ -17,20 +17,18 @@ class Line extends Model
         'active'
     ];
 
-    protected $allowIncluded = ['brands', 'family'];
+    protected $allowIncluded = ['family', 'products'];
     protected $allowFilter = ['id', 'cod', 'description'];
     protected $allowSort = ['id', 'cod', 'description', 'active'];
-
-
-    public function brands()
-    {
-        return $this->belongsToMany(Brand::class)->withPivot(["id"]);;
-    }
-    
 
     public function family()
     {
         return $this->belongsTo(Family::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
 }

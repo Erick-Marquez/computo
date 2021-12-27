@@ -97,7 +97,11 @@
               v-model="saleData.voucher.serie_id"
               @change="loadCurrentNumber()"
             >
-              <option v-for="serie in voucherSeries" :key="serie.id" :value="serie.id">
+              <option
+                v-for="serie in voucherSeries"
+                :key="serie.id"
+                :value="serie.id"
+              >
                 {{ serie.serie }}
               </option>
             </select>
@@ -128,14 +132,55 @@
         :customer="saleData.customer"
         :errors="errors"
       />
-      <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
 
-      <SearchProducts :currencyExchange="Number(currencyExchange.change)" v-on:setProduct="setProduct"/>
+      <div class="d-flex bd-highlight">
+        <div class="p-2 flex-grow-1">
+          <h4>
+            <i class="text-danger fas fa-box"></i>
+            Productos
+          </h4>
+        </div>
+        <div class="p-2">
+          <div class="custom-control custom-checkbox">
+            <input
+              class="custom-control-input custom-control-input-danger"
+              type="checkbox"
+              id="searchAssemblies"
+              v-model="searchAssemblies"
+            />
+            <label for="searchAssemblies" class="custom-control-label"
+              >Configuracion de PC</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div v-if="!searchAssemblies">
+        <!-- COMPONENTE PARA BUSCAR PRODUCTOS -->
+
+        <SearchProducts
+          :currencyExchange="Number(currencyExchange.change)"
+          v-on:setProduct="setProduct"
+        />
+      </div>
+
+      <search-assemblies
+        v-else
+        v-on:setAssemblie="setAssemblie"
+      ></search-assemblies>
 
       <!-- VER PRODUCTOS SELECCIONADOS -->
-      <SetProducts :igvTypes="igvTypes" :details="saleData.detail" :errors="errors" :activateDetailDiscount="activateDetailDiscount"
-      v-on:getTotals="getTotals" v-on:activateOrDesactivateGlobalDiscount="activateOrDesactivateGlobalDiscount"/>
-      
+      <SetProducts
+        :igvTypes="igvTypes"
+        :details="saleData.detail"
+        :errors="errors"
+        :activateDetailDiscount="activateDetailDiscount"
+        v-on:getTotals="getTotals"
+        v-on:activateOrDesactivateGlobalDiscount="
+          activateOrDesactivateGlobalDiscount
+        "
+      />
+
       <!-- Observación -->
       <div class="row">
         <div class="col-md-8">
@@ -184,13 +229,11 @@
                     id="customSwitchCreateIsMultiPayment"
                     v-model="saleData.voucher.isMultiPayment"
                     @change="clearMultipayment()"
-                  >
+                  />
                   <label
                     class="custom-control-label"
                     for="customSwitchCreateIsMultiPayment"
-                    >{{
-                      saleData.voucher.isMultiPayment ? "Si" : "No"
-                    }}</label
+                    >{{ saleData.voucher.isMultiPayment ? "Si" : "No" }}</label
                   >
                 </div>
               </div>
@@ -254,7 +297,12 @@
                     </th>
                     <th>Total Recibido S/.</th>
                     <th v-if="!saleData.voucher.isMultiPayment">Vuelto S/.</th>
-                    <th v-if="saleData.voucher.isMultiPayment" class="col-2 text-center">Acciones</th>
+                    <th
+                      v-if="saleData.voucher.isMultiPayment"
+                      class="col-2 text-center"
+                    >
+                      Acciones
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -316,7 +364,6 @@
                         </button>
                       </td>
                     </template>
-
                   </tr>
                 </tbody>
               </table>
@@ -344,42 +391,55 @@
                 <tr v-show="saleData.voucher.discount > 0">
                   <th>Descuento global:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.discount }}</span></td>
+                    <span>S/.</span><span>{{ saleData.voucher.discount }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.discountItems > 0">
                   <th>Descuento por item:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.discountItems }}</span></td>
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.discountItems }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.totalTaxed > 0">
                   <th>Gravado:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.totalTaxed }}</span></td>
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.totalTaxed }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.totalExonerated > 0">
                   <th>Exonerado:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.totalExonerated }}</span></td>
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.totalExonerated }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.totalUnaffected > 0">
                   <th>Inafecto:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.totalUnaffected }}</span></td>
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.totalUnaffected }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.totalFree > 0">
                   <th>Gratuita:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.totalFree }}</span></td>
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.totalFree }}</span>
+                  </td>
                 </tr>
                 <tr v-show="saleData.voucher.totalIgv > 0">
                   <th>Igv (18%):</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.totalIgv }}</span></td>
+                    <span>S/.</span><span>{{ saleData.voucher.totalIgv }}</span>
+                  </td>
                 </tr>
                 <tr>
                   <th>Total:</th>
                   <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.total }}</span></td>
+                    <span>S/.</span><span>{{ saleData.voucher.total }}</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -391,17 +451,23 @@
       <div class="row no-print">
         <div class="col-12">
           <form @submit.prevent="createSale()">
-
-            <button v-if="!loadingVoucher" type="submit" class="btn btn-dark float-right">
+            <button
+              v-if="!loadingVoucher"
+              type="submit"
+              class="btn btn-dark float-right"
+            >
               <i class="far fa-credit-card"></i> Guarda Documento Electronico
             </button>
 
-            <button v-else class="btn btn-dark float-right" :disabled="loadingVoucher">
+            <button
+              v-else
+              class="btn btn-dark float-right"
+              :disabled="loadingVoucher"
+            >
               <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
             </button>
-
           </form>
         </div>
       </div>
@@ -410,56 +476,56 @@
 </template>
 
 <script>
-import BaseUrl from "../../../../api/BaseUrl"
-import SearchCustomers from "../../components/SearchCustomers.vue"
-import SearchAssemblies from "../../components/SearchAssemblies.vue"
-import SearchProducts from "../../components/SearchProducts.vue"
-import SetProducts from "../components/SetProducts.vue"
+import BaseUrl from "../../../../api/BaseUrl";
+import SearchCustomers from "../../components/SearchCustomers.vue";
+import SearchAssemblies from "../../components/SearchAssemblies.vue";
+import SearchProducts from "../../components/SearchProducts.vue";
+import SetProducts from "../components/SetProducts.vue";
 export default {
-  components: { BaseUrl, SearchCustomers, SearchAssemblies, SearchProducts, SetProducts },
+  components: {
+    BaseUrl,
+    SearchCustomers,
+    SearchAssemblies,
+    SearchProducts,
+    SetProducts,
+  },
   async created() {
-
     await BaseUrl.get(`api/sales/create`).then((resp) => {
-      this.currencyExchange = resp.data.data.currencyExchange
-      this.identificationDocuments = resp.data.data.identificationDocuments
-      this.igvTypes = resp.data.data.igvTypes
-      this.series = resp.data.data.series
-
-      this.paymentTypes = resp.data.data.paymentTypes
-      this.saleData.voucher.payments[0].payment_type_id = this.paymentTypes[0].id
-
+      this.currencyExchange = resp.data.data.currencyExchange;
+      this.identificationDocuments = resp.data.data.identificationDocuments;
+      this.igvTypes = resp.data.data.igvTypes;
+      this.series = resp.data.data.series;
+      this.paymentTypes = resp.data.data.paymentTypes;
+      this.saleData.voucher.payments[0].payment_type_id =
+        this.paymentTypes[0].id;
       //Serie Voucher
-      this.voucherTypes = resp.data.data.voucherTypes
-      this.saleData.voucher.document_type = this.voucherTypes[0].id
-      this.loadSeries()
-
+      this.voucherTypes = resp.data.data.voucherTypes;
+      this.saleData.voucher.document_type = this.voucherTypes[0].id;
+      this.loadSeries();
       //Serie Quotation
       let serieBackupQ = this.series;
-      this.quotationSeries = serieBackupQ.filter((series) => series.voucher_type_id == 8)
-      this.quotationSerieSelect = this.quotationSeries[0].id
-
+      this.quotationSeries = serieBackupQ.filter(
+        (series) => series.voucher_type_id == 8
+      );
+      this.quotationSerieSelect = this.quotationSeries[0].id;
       //Serie Warranty
       let serieBackupW = this.series;
-      this.warrantySeries = serieBackupW.filter((series) => series.voucher_type_id == 9)
-      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id
-    })
-
-    if(this.$route.query.serieQuotation && this.$route.query.numberQuotation){
-      this.quotationSerieSelect = this.$route.query.serieQuotation
-      this.numberQuotation = this.$route.query.numberQuotation
-
-      this.getQuotation()
+      this.warrantySeries = serieBackupW.filter(
+        (series) => series.voucher_type_id == 9
+      );
+      this.saleData.voucher.warranty_serie_id = this.warrantySeries[0].id;
+    });
+    if (this.$route.query.serieQuotation && this.$route.query.numberQuotation) {
+      this.quotationSerieSelect = this.$route.query.serieQuotation;
+      this.numberQuotation = this.$route.query.numberQuotation;
+      this.getQuotation();
     }
-
-    this.loader.hide()
-
+    this.loader.hide();
   },
   data() {
     return {
-
       loader: null,
       loadingVoucher: false,
-
       currencyExchange: {},
       identificationDocuments: [],
       igvTypes: [],
@@ -467,21 +533,17 @@ export default {
       paymentTypes: [],
       voucherTypes: [],
       warrantySeries: [],
-
       errors: [],
       searchAssemblies: false,
-
       quotationSerieSelect: null,
       quotationSeries: [],
       numberQuotation: null,
       contador: 0,
-
       voucherSeries: [],
       currentNumber: "Selecciona una serie",
-
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
-      
+
       saleData: {
         customer: {
           id: null,
@@ -495,11 +557,8 @@ export default {
           totalFree: 0,
           totalTaxed: 0,
           total: 0,
-
           discountItems: 0,
-
           quotation_id: null,
-
           document_type: 2,
           serie_id: "",
           moneda: "PEN",
@@ -510,12 +569,11 @@ export default {
           change: 0,
           warranty_serie_id: null,
           warranty: false,
-
           isMultiPayment: false,
           payments: [
             {
               payment_type_id: null,
-              amount: 0
+              amount: 0,
             },
           ],
         },
@@ -526,18 +584,18 @@ export default {
   mounted() {
     this.loader = this.$loading.show({
       canCancel: true,
-    })
+    });
   },
   methods: {
     loadSeries() {
       let serieBackup = this.series;
       let serieFilter = serieBackup.filter(
-        (series) => series.voucher_type_id == this.saleData.voucher.document_type
+        (series) =>
+          series.voucher_type_id == this.saleData.voucher.document_type
       );
-
-      this.voucherSeries = serieFilter
-      this.saleData.voucher.serie_id = serieFilter[0].id
-      this.loadCurrentNumber()
+      this.voucherSeries = serieFilter;
+      this.saleData.voucher.serie_id = serieFilter[0].id;
+      this.loadCurrentNumber();
     },
     loadCurrentNumber() {
       let serieBackup = this.voucherSeries;
@@ -547,54 +605,48 @@ export default {
       this.currentNumber = serieFilter[0].current_number + 1;
     },
     setAssemblie(products) {
-        this.saleData.detail = [];
+      this.saleData.detail = [];
+      console.log(products);
 
-        products.forEach((product, index) => {
-            this.setProductAssembly(product, index)
-        })
+      products.forEach((product) => {
+        this.setProductAssembly(product);
+      });
     },
-    setProductAssembly(productAssembly, index) {
-
+    setProductAssembly(productAssembly) {
       let product = {
         discount: 0,
         subtotal: 0,
         total: 0,
-
         product_id: productAssembly.id,
         cod: productAssembly.cod,
         affect_icbper: false,
         igv_type_id: productAssembly.igv_type_id,
         description: productAssembly.name,
         brand: productAssembly.brand,
+        manager_series: Boolean(productAssembly.manager_series),
         sale_price: (productAssembly.sale_price * this.currencyExchange.change).toFixed(2),
         quantity: productAssembly.quantity,
         series: [],
       };
-
       //Añadir series
-      for (let j = 0; j < e.quantity; j++) {
-        product.series.push('');
+      for (let j = 0; j < product.quantity; j++) {
+        product.series.push("");
       }
-
       this.saleData.detail.push(product);
-
       this.getTotals();
+      console.log(productAssembly);
       // Alertas para las notificaciones y calcular totales
       //   this.getQuotationDiscount(0);
     },
-    setProduct(product, price){
-      
+    setProduct(product, price) {
       let index = this.saleData.detail.findIndex(
         (element) => element.product_id == product.id
       );
-
       if (index == -1) {
-
         this.saleData.detail.push({
           discount: 0,
           subtotal: 0,
           total: 0,
-
           product_id: product.id,
           cod: product.cod,
           affect_icbper: false,
@@ -606,11 +658,8 @@ export default {
           quantity: 1,
           series: [""],
         });
-
         this.getTotals();
-
       }
-      
     },
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
@@ -642,250 +691,268 @@ export default {
       let totals = {
         10: 0, //totalTaxed
       };
-
       // igv constante
       const igv = 0.18;
-
       this.saleData.detail.forEach((e) => {
         discountItems += e.discount;
-
         switch (parseInt(e.igv_type_id)) {
           case 10: //Gravado - Operación Onerosa
             // hallar el precio sin igv
-            let priceWithoutIgv = e.sale_price / (1 + igv)
-
+            let priceWithoutIgv = e.sale_price / (1 + igv);
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
-            e.subtotal = this.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2)
-
+            e.subtotal = this.roundToTwo(
+              priceWithoutIgv * e.quantity - e.discount
+            ).toFixed(2);
             // hallar el total = (subtotal * 1.18)
-            e.total = this.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2)
-
+            e.total = this.roundToTwo(
+              (priceWithoutIgv * e.quantity - e.discount) * (1 + igv)
+            ).toFixed(2);
             // Actualizar totales globales
-            subtotal += Number(e.subtotal)
-            totalIgv += Number(e.total - e.subtotal)
-            totalTaxed += Number(e.subtotal)
-            total += Number(e.total)
+            subtotal += Number(e.subtotal);
+            totalIgv += Number(e.total - e.subtotal);
+            totalTaxed += Number(e.subtotal);
+            total += Number(e.total);
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalExonerated += Number(e.subtotal)
-            total += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalExonerated += Number(e.subtotal);
+            total += Number(e.total);
             break;
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalUnaffected += Number(e.subtotal)
-            total += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalUnaffected += Number(e.subtotal);
+            total += Number(e.total);
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
-            break
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
+            break;
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
-            break
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
+            break;
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalFree += Number(e.total)
-            break
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalFree += Number(e.total);
+            break;
           case 40: //Exportación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
-            e.total = this.roundToTwo(e.subtotal).toFixed(2)
-            subtotal += Number(e.subtotal)
-            totalUnaffected += Number(e.subtotal)
-            total += Number(e.total)
-            break
+            e.subtotal = this.roundToTwo(
+              e.sale_price * e.quantity - e.discount
+            ).toFixed(2);
+            e.total = this.roundToTwo(e.subtotal).toFixed(2);
+            subtotal += Number(e.subtotal);
+            totalUnaffected += Number(e.subtotal);
+            total += Number(e.total);
+            break;
         }
       });
-
       this.saleData.voucher.subtotal = this.roundToTwo(subtotal).toFixed(2);
       this.saleData.voucher.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
-      this.saleData.voucher.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
-      this.saleData.voucher.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
+      this.saleData.voucher.totalExonerated =
+        this.roundToTwo(totalExonerated).toFixed(2);
+      this.saleData.voucher.totalUnaffected =
+        this.roundToTwo(totalUnaffected).toFixed(2);
       this.saleData.voucher.totalFree = this.roundToTwo(totalFree).toFixed(2);
       this.saleData.voucher.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
-      this.saleData.voucher.discountItems = this.roundToTwo(discountItems).toFixed(2);
-      this.saleData.voucher.total = this.roundToTwo(total - this.saleData.voucher.discount).toFixed(2);
+      this.saleData.voucher.discountItems =
+        this.roundToTwo(discountItems).toFixed(2);
+      this.saleData.voucher.total = this.roundToTwo(
+        total - this.saleData.voucher.discount
+      ).toFixed(2);
     },
     roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");
     },
-    getChange(){
+    getChange() {
       if (this.saleData.voucher.payments[0].amount != 0) {
-        this.saleData.voucher.change = this.saleData.voucher.payments[0].amount - this.saleData.voucher.total
+        this.saleData.voucher.change =
+          this.saleData.voucher.payments[0].amount -
+          this.saleData.voucher.total;
       }
       if (this.saleData.voucher.payments[0].amount == 0) {
-        this.saleData.voucher.change = 0
+        this.saleData.voucher.change = 0;
       }
     },
     createSale() {
-
-      this.loadingVoucher = true
-
-      this.saleData.voucher.received_money = 0
+      this.loadingVoucher = true;
+      this.saleData.voucher.received_money = 0;
       if (!this.saleData.voucher.isMultiPayment) {
-        this.saleData.voucher.received_money = this.saleData.voucher.payments[0].amount
+        this.saleData.voucher.received_money =
+          this.saleData.voucher.payments[0].amount;
       }
 
-      
-
-      BaseUrl.post("/api/sales", this.saleData).then((response) => {
-        this.errors = []
-        console.log(response)
-        this.$router.replace({ name: "voucher-list" });
-        Swal.fire(
-          "Comprobante Creado",
-          response.data,
-          "success"
-        );
-      })
-      .catch((error) => {
-        this.errors = error.response.data.errors
-        console.log(error.response.data.errors);
-        console.log(error.response);
-        this.errors = error.response.data.errors
-        if (this.errors['detail'] != null) {
-          Swal.fire("Algo salio mal", this.errors['detail'][0], "error")
-        }
-        this.getErrorDetailSerie(0, 0)
-      })
-      .finally(() => {
-        this.loadingVoucher = false;
-      });
+      BaseUrl.post("/api/sales", this.saleData)
+        .then((response) => {
+          this.errors = [];
+          console.log(response);
+          this.$router.replace({ name: "voucher-list" });
+          Swal.fire("Comprobante Creado", response.data, "success");
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          console.log(error.response.data.errors);
+          console.log(error.response);
+          this.errors = error.response.data.errors;
+          if (this.errors["detail"] != null) {
+            Swal.fire("Algo salio mal", this.errors["detail"][0], "error");
+          }
+          this.getErrorDetailSerie(0, 0);
+        })
+        .finally(() => {
+          this.loadingVoucher = false;
+        });
     },
     // i = index1(detail) , j = index2(series)
-    getErrorDetailSerie(i, j){
+    getErrorDetailSerie(i, j) {
       if (i < this.saleData.detail.length) {
         if (j < this.saleData.detail[i].quantity) {
           if (this.errors[`detail.${i}.series.${j}`] != null) {
             Swal.fire({
               title: "Algo salio mal",
-              html: 'Exite un error en el producto  <b>' + this.saleData.detail[i].description + ' - ' + this.saleData.detail[i].brand + ' - ' + this.saleData.detail[i].cod + '</b>: </br>' +
-              this.errors[`detail.${i}.series.${j}`][0],
-              icon: "warning"
-            })
-            .then((result) => {
-              i++
-              this.getErrorDetailSerie(i, 0)
-            })
+              html:
+                "Exite un error en el producto  <b>" +
+                this.saleData.detail[i].description +
+                " - " +
+                this.saleData.detail[i].brand +
+                " - " +
+                this.saleData.detail[i].cod +
+                "</b>: </br>" +
+                this.errors[`detail.${i}.series.${j}`][0],
+              icon: "warning",
+            }).then((result) => {
+              i++;
+              this.getErrorDetailSerie(i, 0);
+            });
+          } else {
+            j++;
+            this.getErrorDetailSerie(i, j);
           }
-          else{
-            j++
-            this.getErrorDetailSerie(i, j)
-          }
-        }
-        else{
-          i++
-          this.getErrorDetailSerie(i, 0)
+        } else {
+          i++;
+          this.getErrorDetailSerie(i, 0);
         }
       }
     },
     getQuotation() {
       this.saleData.detail = [];
-
       BaseUrl.get(
         `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
       )
         .then((resp) => {
-
-          
           let quotation = resp.data.data;
-
-          this.saleData.voucher.quotation_id = Number(quotation.id)
-
+          this.saleData.voucher.quotation_id = Number(quotation.id);
           this.saleData.voucher.discount = Number(quotation.discount);
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
-
-          this.saleData.voucher.isMultiPayment = quotation.payment_types.length > 0 ? true : false;
-
-          if(this.saleData.voucher.isMultiPayment){
-
-            this.saleData.voucher.payments = []
-
-            quotation.payment_types.forEach(e => {
-
+          this.saleData.voucher.isMultiPayment =
+            quotation.payment_types.length > 0 ? true : false;
+          if (this.saleData.voucher.isMultiPayment) {
+            this.saleData.voucher.payments = [];
+            quotation.payment_types.forEach((e) => {
               let payment = {
                 payment_type_id: e.pivot.payment_type_id,
-                amount: e.pivot.amount
-              }
-              this.saleData.voucher.payments.push(payment)
-
+                amount: e.pivot.amount,
+              };
+              this.saleData.voucher.payments.push(payment);
             });
-
           }
-
           quotation.quotation_details.forEach((e, index) => {
-
             let product = {
               discount: Number(e.discount),
               subtotal: 0,
               total: 0,
-
               product_id: e.branch_product_id,
               cod: e.branch_product.product.cod,
               affect_icbper: false,
@@ -897,19 +964,15 @@ export default {
               quantity: e.quantity,
               series: [],
             };
-
             //Añadir series
             for (let j = 0; j < e.quantity; j++) {
-              product.series.push('');
+              product.series.push("");
             }
-
             this.saleData.detail.push(product);
-
             //Activar descuento
             this.activateOrDesactivateGlobalDiscount();
             this.activateOrDesactivateDetailDiscount();
           });
-
           // Alertas para las notificaciones y calcular totales
           this.getQuotationDiscount(0);
         })
@@ -1035,7 +1098,6 @@ export default {
         //           this.getQuotationDiscount(index)
         //         }
         //       })
-
         //     } else if (result.dismiss === Swal.DismissReason.cancel || result.dismiss === Swal.DismissReason.backdrop) {
         //       let discount = this.saleData.detail[index].discount
         //       this.saleData.detail[index].discount = 0
@@ -1059,40 +1121,29 @@ export default {
         //   index++
         //   this.getQuotationDiscount(index)
         // }
-
         this.activateOrDesactivateGlobalDiscount();
         this.activateOrDesactivateDetailDiscount();
-
         //calcular totales
         this.getTotals();
       }
     },
-    addPayment(){
-
+    addPayment() {
       const payment = {
         payment_type_id: this.paymentTypes[0].id,
         amount: 0,
-      }
-
+      };
       this.saleData.voucher.payments.push(payment);
     },
-    deletePayment(index){
+    deletePayment(index) {
       this.saleData.voucher.payments.splice(index, 1);
     },
-    clearMultipayment(){
-
+    clearMultipayment() {
       if (!this.saleData.voucher.isMultiPayment) {
-
-        this.saleData.voucher.payments = []
-
+        this.saleData.voucher.payments = [];
       }
-
-      this.addPayment()
-
-    }
-
-
-  }
+      this.addPayment();
+    },
+  },
 };
 </script>
 
@@ -1112,7 +1163,6 @@ export default {
     #536976
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
 label {
   color: rgba(48, 48, 48, 0.774);
   font-weight: 300;

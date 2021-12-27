@@ -25,7 +25,7 @@ class AdvancePaymentController extends Controller
             ->withMax('paymentTypes as last_created_at_advance_payment', 'payment_type_quotation.created_at')
             ->withSum('paymentTypes as total_advance_payment', 'payment_type_quotation.amount')
             ->orderBy('last_created_at_advance_payment', 'DESC')->get();
-        
+
         return QuotationResource::collection($advancePayments);
     }
 
@@ -53,10 +53,11 @@ class AdvancePaymentController extends Controller
         $now = now();
 
         foreach ($request->payments as $payment) {
-            
+
             $advancePayment['quotation_id'] = $request->id_quotation;
             $advancePayment['payment_type_id'] = $payment['payment_type_id'];
             $advancePayment['amount'] = $payment['amount'];
+            $advancePayment['open_closed_cashbox_id'] = auth()->user()->open_closed_cashbox_id;
             $advancePayment['created_at'] = $now;
             $advancePayment['updated_at'] = $now;
 
@@ -124,7 +125,7 @@ class AdvancePaymentController extends Controller
 
     public function print($type, $id)
     {
-        
+
         $advancePayment = PaymentTypeQuotation::with('quotation.quotationDetails.branchProduct.product', 'quotation.serie', 'quotation.customer.identificationDocument', 'paymentType')->findOrFail($id);
         $company = Company::active();
 

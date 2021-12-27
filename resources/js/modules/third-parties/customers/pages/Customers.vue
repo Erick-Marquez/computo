@@ -44,10 +44,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="customer in customers" :key="customer.id">
+          <tr v-for="(customer, index) in customers" :key="customer.id">
             <td class="text-wrap" style="width: 40%">{{ customer.name }}</td>
             <td style="width: 10%">
-              <span class="badge bg-maroon">{{ customer.type_document }}</span>
+              <span class="badge bg-maroon">{{
+                customer.identification_document.description
+              }}</span>
               <br />
               {{ customer.document }}
             </td>
@@ -62,7 +64,11 @@
               </p>
               <p class="font-weight-light">
                 <strong>Ubigeo: </strong>
-                {{ customer.ubigee == null ? "ninguno" : customer.ubigee.place_description }}
+                {{
+                  customer.ubigee == null
+                    ? "ninguno"
+                    : customer.ubigee.place_description
+                }}
               </p>
               <p class="font-weight-light">
                 <strong>Dirección: </strong>
@@ -86,15 +92,11 @@
                   aria-labelledby="dropdownMenuButton"
                   style=""
                 >
-                  <a class="dropdown-item" href="#"
+                  <a class="dropdown-item" @click="editModal(index)"
                     ><i class="col-1 mr-3 fas fa-edit"></i>
                     Editar
                   </a>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    @click="deleteCustomer(customer.id)"
-                  >
+                  <a class="dropdown-item" href="#" @click="deleteCustomer(id)">
                     <i class="col-1 mr-3 fas fa-trash"></i>
                     Eliminar
                   </a>
@@ -110,20 +112,26 @@
       <Paginator :links="links" v-on:getDataPaginate="getCustomers" />
     </div>
   </div>
+
+  <form action="" @submit.prevent="editCustomer">
+      <EditCustomer :customer="editCustomer" :errors="errors" />
+  </form>
 </template>
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
 import NewCustomer from "../components/NewCustomer.vue";
 import Paginator from "../../../../compositions/Paginator.vue";
+import EditCustomer from "../components/EditCustomer.vue";
 
 export default {
-  components: { BaseUrl, NewCustomer, Paginator },
+  components: { BaseUrl, NewCustomer, Paginator, EditCustomer },
   data() {
     return {
       customer: {
         identification_document_id: 1,
       },
+      editCustomer: {},
       links: {},
       customers: {},
       errors: [],
@@ -136,7 +144,7 @@ export default {
   methods: {
     async getCustomers() {
       await BaseUrl.get(
-        `/api/customers?included=ubigee&sort=-id&perPage=10&page=${this.$route.query.page}`
+        `/api/customers?included=ubigee,identificationDocument&sort=-id&perPage=10&page=${this.$route.query.page}`
       )
         .then((response) => {
           this.customers = response.data.data;
@@ -150,8 +158,8 @@ export default {
     async createCustomer() {
       await BaseUrl.post("/api/customers", this.customer)
         .then((response) => {
-            $("#new-customer").modal("hide");
-          Swal.fire("Cliente Registrado", "", "success");
+          $("#new-customer").modal("hide");
+          Swal.fire("Cliente Registrado", "Exito!!", "success");
           console.log(response.data);
           this.customer = {};
           this.errors = [];
@@ -183,6 +191,35 @@ export default {
             });
         }
       });
+    },
+
+    async editCustomer() {
+      await BaseUrl.put(`/api/customers/${this.customer.id}`, this.customer)
+        .then((response) => {
+          $("#new-customer").modal("hide");
+          Swal.fire("Cliente Registrado", "Exito!!", "success");
+          this.getCustomers();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          this.errors = error.response.data.errors;
+        });
+    },
+
+    editModal(index) {
+      $("#edit-customer").modal("show");
+      this.editCustomer.id = this.customers[index].id;
+      this.editCustomer.document = this.customers[index].document;
+      this.editCustomer.identification_document_id =
+        this.customers[index].identification_document.id;
+      this.editCustomer.name = this.customers[index].name;
+      this.editCustomer.ubigee_id =
+        this.customers[index].ubigee != null
+          ? this.customers[index].ubigee.id
+          : null;
+      this.editCustomer.adress = this.customers[index].adress;
+      this.editCustomer.phone = this.customers[index].phone;
+      this.editCustomer.email = this.customers[index].email;
     },
   },
 };

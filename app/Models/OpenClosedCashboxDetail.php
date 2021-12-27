@@ -13,11 +13,22 @@ class OpenClosedCashboxDetail extends Model
         'amount',
         'observation',
         'type',
-        'open_closed_cashbox_id'
+        'open_closed_cashbox_id',
+        'payment_type_id',
     ];
 
     public function openClosedCashbox()
     {
         return $this->belongsTo(OpenClosedCashbox::class);
+    }
+
+    public function paymentDetail()
+    {
+        return $this->morphOne(PaymentDetail::class, 'payable');
+    }
+
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class);
     }
 }

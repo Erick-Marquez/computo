@@ -28,8 +28,7 @@ class DashboardController extends Controller
         $fechas = collect($fechas);
 
         try {
-            $facturas = DB::table('sales')
-                ->join('series', 'sales.serie_id', '=', 'series.id')
+            $facturas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
                 ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
                 ->where('series.branch_id', $branch_id,)
@@ -39,8 +38,7 @@ class DashboardController extends Controller
                 ->groupBy('sales.created_at')
                 ->get(); // OBJETO {X: , Y: }
 
-            $boletas = DB::table('sales')
-                ->join('series', 'sales.serie_id', '=', 'series.id')
+            $boletas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
                 ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
                 ->where('series.branch_id', $branch_id,)
@@ -96,7 +94,7 @@ class DashboardController extends Controller
 
             ->groupBy('payment_types.description')
             ->where('sales.created_at', '>=', $fechasAtras)
-            ->get(); // OBJETO {X: , Y: }
+            ->get();
 
         return response()->json($query);
     }

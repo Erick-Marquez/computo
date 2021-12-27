@@ -105,33 +105,8 @@ class CashboxService
     {
         try {
             $occ = $this->recoverOpening($id);
-
-            $balance = [
-                "sales" => $occ->sales()->sum('total'),
-                "purchases" => $occ->purchases()->sum('total'),
-                "incomes" => $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
-                "expenses" => $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount')
-            ];
-
-            $sales = $occ->sales()
-                ->select('created_at as date', 'observation', 'total as amount')
-                ->get()
-                ->each(function ($item, $key) {
-                    return $item['concept'] = 'VENTA';
-                });
-
-            $purchases = $occ->purchases()
-                ->select('created_at as date', 'observation', 'total as amount')
-                ->get()
-                ->each(function ($item, $key) {
-                    return $item['concept'] = 'COMPRA';
-                });
-
-            $occd = $occ->openClosedCashboxDetails()
-                ->select('created_at as date', 'observation', 'amount', 'type as concept')
-                ->get();
-
-            $movements = $sales->mergeRecursive($purchases)->mergeRecursive($occd)->sortBy(['create_at', 'desc']);
+            $movementsTotal = $occ->getMovementsTotal();
+            $movements = $occ->getMovementsArray();
 
             return response()->json([
                 'cashbox_description' => $occ->cashbox->description,
@@ -142,24 +117,19 @@ class CashboxService
                 'user_name' => $occ->user->name,
                 'user_id' => $occ->user->id,
                 'movements' => $movements,
-                'balance' => $balance,
+                'movementsTotal' => $movementsTotal,
             ]);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json($th->getMessage(), 405);
         }
     }
 
     public static function balance($id)
     {
         $occ = CashboxService::recoverOpening($id);
+        $movements = $occ->getMovementsTotal();
 
-        $openingAmount = $occ->opening_amount;
-        $sales = $occ->sales()->sum('total');
-        $purchases = $occ->purchases()->sum('total');
-        $incomes = $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount');
-        $expenses = $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount');
-
-        $balance = $openingAmount + $sales + $incomes - $expenses - $purchases;
+        $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] + $movements['quotations'] - $movements['expenses'] - $movements['purchases'] - $movements['account_to_pay'];
 
         return $balance;
     }
@@ -167,6 +137,7 @@ class CashboxService
     public function movement($id, $data)
     {
         $occ = $this->recoverOpening($id);
+        $data['payment_type_id'] = 1;
 
         try {
             $occ->openClosedCashboxDetails()->create($data);
@@ -182,12 +153,7 @@ class CashboxService
         $cashbox = $occ->cashbox;
         $company = Company::first();
 
-        $movements = [
-            'INGRESOS' => $occ->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
-            'EGRESOS' => $occ->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
-            'VENTAS' => $occ->sales()->sum('total'),
-            'COMPRAS' => $occ->purchases()->sum('total')
-        ];
+        $movements = $occ->getMovementsTotal();
 
 
         $salesDetails = DB::table('sales')
@@ -202,5 +168,10 @@ class CashboxService
         $cashboxMovements = $occ->openClosedCashboxDetails;
 
         return compact("occ", "cashbox", "company", "movements", 'salesDetails', 'purchasesDetails', 'cashboxMovements');
+    }
+
+    public function reportMovements(OpenClosedCashbox $occ)
+    {
+
     }
 }

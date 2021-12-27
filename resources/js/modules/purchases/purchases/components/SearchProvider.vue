@@ -43,7 +43,7 @@
         </label>
         <div v-if="showSearchingData" class="input-group">
           <input
-            type="text"
+            type="number"
             :class="[
               $errorsClassSquare(errors['provider.document']),
               'rounded-pill-left',
@@ -169,7 +169,7 @@
           class="style-chooser"
           v-model="provider.ubigee_id"
           label="place_description"
-          :reduce="(ubigee) => ubigee.cod"
+          :reduce="(ubigee) => ubigee.id"
           :options="ubigees"
         >
           <template v-slot:no-options="{ search, searching }">
@@ -244,20 +244,19 @@ export default {
         `/api/data-document/${this.provider.identification_document_id}/${this.provider.document}`
       )
         .then((response) => {
-          console.log(response.data);
           this.provider.phone = "";
           this.provider.address = "";
           this.provider.name = response.data.name;
           this.provider.address = response.data.address;
           this.provider.phone = response.data.phone;
-          this.provider.ubigee_id = response.data.ubigee;
-          //this.provider.ubigee_id = response.data.ubigee_id;
+          this.provider.ubigee_id =
+            response.data.ubigee != null
+              ? this.getUbigeeProvider(response.data.ubigee)
+              : null;
+
           this.responseApi = "HABIDO";
-          console.log(this.responseApi);
-          this.selectUbigee;
         })
         .catch((error) => {
-          console.log(error.response);
           this.responseApi = "NO HABIDO";
         })
         .finally(() => {
@@ -268,6 +267,15 @@ export default {
       await BaseUrl.get(`/api/ubigees`)
         .then((response) => {
           this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
+    async getUbigeeProvider(cod) {
+      await BaseUrl.get(`/api/ubigees?filter[cod]=${cod}`)
+        .then((response) => {
+          this.provider.ubigee_id = response.data.data[0].id;
         })
         .catch((error) => {
           console.log(error.response);
@@ -291,13 +299,20 @@ export default {
       this.provider.name = providerFind.name;
       this.provider.address = providerFind.address;
       this.provider.phone = providerFind.phone;
-      this.provider.ubigee_id = providerFind.ubigee.cod;
+      this.provider.ubigee_id =
+        providerFind.ubigee != null ? providerFind.ubigee.id : null;
       this.providers = null;
-      this.selectUbigee;
     },
     searchDocument() {
       clearTimeout(this.searching);
       this.searching = setTimeout(this.getproviders, 300);
+    },
+
+    selectUbigee(codUbigee) {
+      const ubigee = this.ubigees.filter((ubigee) => {
+        ubigee.cod == codUbigee;
+      });
+      return ubigee.id;
     },
   },
   computed: {
@@ -314,10 +329,6 @@ export default {
       return this.responseApi === "NO HABIDO"
         ? "text-sm font-weight-light text-danger"
         : "text-sm font-weight-light text-success";
-    },
-    selectUbigee() {
-      $("#select4").val(this.provider.ubigee_id); // Select the option with a value of '1'
-      $("#select4").trigger("change"); // Notify any JS components that the value changed
     },
     // enableSearchDocument() {
     //   return true
