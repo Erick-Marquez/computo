@@ -55,13 +55,22 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Sale::whereHas('serie', function($q) {
-            $q->where('voucher_type_id', '!=', 3)
-            ->where('branch_id', auth()->user()->branch_id); // 3 - id de nota de venta
-        })
-        ->with('serie.voucherType', 'customer')->latest()->get();
+        $vouchers = Sale::from('sales AS s')
+            ->where('sr.voucher_type_id', '!=', 3)
+            ->where('sr.branch_id', auth()->user()->branch_id)
+            ->join('customers AS c', 's.customer_id', '=', 'c.id')
+            ->join('identification_documents AS id', 'c.identification_document_id', '=', 'id.id')
+            ->join('series AS sr', 's.serie_id', '=', 'sr.id')
+            ->join('voucher_types AS vt', 'sr.voucher_type_id', '=', 'vt.id')
+            ->select(
+                's.id', 's.created_at', 'vt.description AS voucher_type', 'sr.serie', 's.document_number',
+                'id.description AS customer_identification_document', 'c.document AS customer_document', 
+                'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod'
+                )
+            ->orderBy('s.created_at', 'DESC')
+            ->getOrPaginate();
         
-        return SaleResource::collection($vouchers);
+        return GlobalResource::collection($vouchers);
     }
 
     public function saleNotes()
