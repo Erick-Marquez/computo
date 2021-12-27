@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="new-customer" aria-hidden="true">
+  <div class="modal fade" id="edit-customer" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Registrar Cliente</h4>
+          <h4 class="modal-title">Editar Cliente</h4>
           <button
             type="button"
             class="close"
@@ -117,7 +117,6 @@
           </div>
 
           <!-- UBIGEO -->
-          {{ customer.ubigee_id }}
           <div class="form-group">
             <label for="">
               <span class="text-danger">
@@ -125,7 +124,6 @@
               </span>
               Ubigeo
             </label>
-
             <v-select
               v-model="customer.ubigee_id"
               label="place_description"
@@ -141,7 +139,6 @@
                 </template>
               </template>
             </v-select>
-
           </div>
 
           <!-- DIRECCION -->
@@ -227,7 +224,6 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
-
 export default {
   data() {
     return {
@@ -243,25 +239,16 @@ export default {
   },
   created() {
     this.getTypeDocuments();
+    this.getUbigees();
   },
   mounted() {
-    this.getUbigees();
+    console.log(this.customer);
   },
   methods: {
     async getTypeDocuments() {
       await BaseUrl.get(`/api/tipos-documentos`)
         .then((response) => {
           this.type_documents = response.data;
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-    },
-
-    async getUbigees() {
-      await BaseUrl.get(`/api/ubigees`)
-        .then((response) => {
-          this.ubigees = response.data.data;
         })
         .catch((error) => {
           console.log(error.response);
@@ -286,7 +273,18 @@ export default {
           this.loading = false;
         });
     },
+
+    async getUbigees() {
+      await BaseUrl.get(`/api/ubigees`)
+        .then((response) => {
+          this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
   },
+
   computed: {
     maxLenghDocument() {
       return this.customer.identification_document_id == 1 ? 8 : 11;

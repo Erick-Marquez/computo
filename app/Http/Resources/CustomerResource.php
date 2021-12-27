@@ -17,13 +17,12 @@ class CustomerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'type_document' => $this->identificationDocument->description,
-            'identification_document_id' => $this->identification_document_id,
             'document' => $this->document,
             'phone' => $this->phone,
             'email' => $this->email,
             'address' => $this->address,
             'ubigee' => UbigeeResource::make($this->whenLoaded('ubigee')),
+            'identification_document' => IdentificationDocumentResource::make($this->whenLoaded('identificationDocument'))
         ];
     }
 }

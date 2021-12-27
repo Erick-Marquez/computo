@@ -18,10 +18,10 @@ class CreateProductsTable extends Migration
             $table->string('cod')->nullable();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->unsignedDecimal('referential_purchase_price', 9,3)->nullable();
-            $table->unsignedDecimal('referential_sale_price', 9,3)->nullable();
-            $table->unsignedDecimal('referential_sale_price_one', 9,3)->nullable();
-            $table->unsignedDecimal('referential_sale_price_two', 9,3)->nullable();
+            $table->unsignedDecimal('referential_purchase_price', 9, 3)->nullable();
+            $table->unsignedDecimal('referential_sale_price', 9, 3)->nullable();
+            $table->unsignedDecimal('referential_sale_price_one', 9, 3)->nullable();
+            $table->unsignedDecimal('referential_sale_price_two', 9, 3)->nullable();
             $table->boolean('manager_series')->default(false);
             $table->boolean('active')->default(true);
 
@@ -32,14 +32,20 @@ class CreateProductsTable extends Migration
             $table->string('igv_type_id');
             $table->foreign('igv_type_id')
                 ->references('id')
-                ->on('igv_types') 
+                ->on('igv_types')
                 ->onUpdate('cascade');
-                // ->onDelete('cascade');
+            // ->onDelete('cascade');
 
-            $table->foreignId('brand_line_id') 
-                ->constrained('brand_line')
+            $table->foreignId('line_id')
+                ->constrained()
                 ->onUpdate('cascade');
-                // ->onDelete('cascade');
+            // ->onDelete('cascade');
+
+            $table->foreignId('brand_id')
+                ->constrained()
+                ->onUpdate('cascade');
+            // ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

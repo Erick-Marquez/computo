@@ -16,12 +16,12 @@ class Brand extends Model
         'active'
     ];
 
-    protected $allowIncluded = ['lines'];
+    protected $allowIncluded = ['products'];
     protected $allowFilter = ['id', 'cod', 'description'];
     protected $allowSort = ['id', 'cod', 'description', 'active'];
 
-    public function lines()
+    public function products()
     {
-        return $this->belongsToMany(Line::class);
+        return $this->hasMany(Product::class);
     }
 }
