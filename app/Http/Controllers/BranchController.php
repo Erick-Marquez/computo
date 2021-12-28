@@ -116,8 +116,7 @@ class BranchController extends Controller
         $branchProducts = BranchProduct::select('branch_product.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'branch_product.stock')
             ->where('branch_id', $branch)
             ->join('products as p', 'branch_product.product_id', '=', 'p.id')
-            ->join('brand_line as bl', 'p.brand_line_id', '=', 'bl.id')
-            ->join('brands as b', 'bl.brand_id', '=', 'b.id')
+            ->join('brands as b', 'p.brand_id', '=', 'b.id')
             ->get();
         return GlobalResource::collection($branchProducts);
     }
@@ -125,8 +124,7 @@ class BranchController extends Controller
     public function addProducts($branch)  
     {
         $products = Product::select('products.id', 'products.cod', 'products.name', 'b.description as brand', 'products.manager_series' )
-            ->join('brand_line as bl', 'products.brand_line_id', '=', 'bl.id')
-            ->join('brands as b', 'bl.brand_id', '=', 'b.id')
+            ->join('brands as b', 'products.brand_id', '=', 'b.id')
             ->whereNotIn('products.id', BranchProduct::where('branch_id', $branch)->pluck('product_id')->toArray())
             ->get();
             

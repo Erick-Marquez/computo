@@ -15,9 +15,9 @@ class Product extends Model
         'name',
         'description',
         'referential_purchase_price',
-        'referential_sale_price',
-        'referential_sale_price_one',
-        'referential_sale_price_two',
+        'sale_gain_one',
+        'sale_gain_two',
+        'sale_gain_three',
         'manager_series',
         'active',
 
@@ -26,7 +26,6 @@ class Product extends Model
         'time_of_warranty',
 
         'igv_type_id',
-        'brand_line_id',
         'brand_id',
         'line_id'
     ];

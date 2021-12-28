@@ -18,7 +18,7 @@ class CurrencyExchangeController extends Controller
      */
     public function index()
     {
-        $currencyExchanges = CurrencyExchange::latest()->get();
+        $currencyExchanges = CurrencyExchange::latest()->getOrPaginate();
         return CurrencyExchangeResource::collection($currencyExchanges);
     }
 

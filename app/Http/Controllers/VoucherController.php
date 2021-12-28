@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VoucherRequest;
-use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\CurrencyExchangeResource;
 use App\Http\Resources\GlobalResource;
@@ -18,26 +17,18 @@ use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
 use App\Models\Company;
 use App\Models\CurrencyExchange;
-use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\IgvType;
 use App\Models\PaymentType;
-use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\Sale;
-use App\Models\SaleDetail;
 use App\Models\Serie;
 use App\Models\VoucherType;
 use App\Models\Warranty;
-use App\Models\WarrantyDetail;
-use App\Services\KardexService;
-use App\Services\NumberLetterService;
 use App\Services\SaleService;
-use App\Services\SunatService;
 use Illuminate\Http\Request;
 
-use Carbon\Carbon;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VoucherController extends Controller
@@ -65,7 +56,7 @@ class VoucherController extends Controller
             ->select(
                 's.id', 's.created_at', 'vt.description AS voucher_type', 'sr.serie', 's.document_number',
                 'id.description AS customer_identification_document', 'c.document AS customer_document', 
-                'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod'
+                'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod', 's.have_warranty'
                 )
             ->orderBy('s.created_at', 'DESC')
             ->getOrPaginate();
@@ -282,11 +273,10 @@ class VoucherController extends Controller
             ->where('p.name', 'like', '%' . $search . '%')
             ->orWhere('p.cod', 'like', '%' . $search . '%')
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
-            ->join('brand_line AS bl', 'p.brand_line_id', '=', 'bl.id')
-            ->join('brands AS b', 'bl.brand_id', '=', 'b.id')
+            ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(
                 'bp.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'bp.stock', 'bp.igv_type_id',
-                'bp.sale_price', 'bp.referential_sale_price_one', 'bp.referential_sale_price_two'
+                'bp.referential_purchase_price', 'bp.sale_gain_one', 'bp.sale_gain_two', 'bp.sale_gain_three'
                 )
             ->limit(10)
             ->get();
@@ -312,7 +302,7 @@ class VoucherController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand', 'paymentTypes')->firstOrFail();
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brand', 'paymentTypes')->firstOrFail();
         return QuotationResource::make($quotation);
     }
 

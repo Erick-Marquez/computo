@@ -82,8 +82,8 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        if ($brand->lines()->count()) {
-            return response()->json(['error' => 'Esta marca esta siendo usada por una linea.'], 405);
+        if ($brand->products()->count()) {
+            return response()->json(['error' => 'Esta marca esta siendo usada por un producto.'], 405);
         }
 
         $brand->delete();

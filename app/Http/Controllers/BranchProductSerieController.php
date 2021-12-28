@@ -32,7 +32,7 @@ class BranchProductSerieController extends Controller
                                     $query->withCount('branchProductSeries');
                                 },
                                 'branchProducts.branch',
-                                'brandLine.brand'
+                                'brand'
                             ])
                             ->get();
         return BranchProductSerieResource::collection($products);

@@ -132,9 +132,15 @@ export default {
 
                 if (products.length > 0) {
                     products.forEach(product => {
+
+                        product.sale_price = (product.referential_purchase_price * (1 + (product.sale_gain_one/100))).toFixed(2)
+                        product.referential_sale_price_one = (product.referential_purchase_price * (1 + (product.sale_gain_two/100))).toFixed(2)
+                        product.referential_sale_price_two = (product.referential_purchase_price * (1 + (product.sale_gain_three/100))).toFixed(2)
+
                         product.sale_price = (product.sale_price * this.currencyExchange).toFixed(2)
                         product.referential_sale_price_one = (product.referential_sale_price_one * this.currencyExchange).toFixed(2)
                         product.referential_sale_price_two = (product.referential_sale_price_two * this.currencyExchange).toFixed(2)
+
                     })
                     this.products = products
                 } else {
@@ -166,7 +172,6 @@ export default {
             this.products = []
             this.search = ''
             this.$emit("setProduct", product, price);
-
         }
     }
 }

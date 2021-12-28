@@ -958,7 +958,7 @@ export default {
               affect_icbper: false,
               igv_type_id: e.igv_type_id,
               description: e.branch_product.product.name,
-              brand: e.branch_product.product.brand_line.brand.description,
+              brand: e.branch_product.product.brand.description,
               sale_price: e.price,
               manager_series: Boolean(e.branch_product.product.manager_series),
               quantity: e.quantity,

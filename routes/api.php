@@ -120,7 +120,6 @@ Route::middleware([
     //------------------------Catalogs-----------------------
     //Families-Lines-Brands
     Route::apiResource('families', FamilyController::class)->names('api.families');
-    Route::put('lines/add-brands/{line}', [LineController::class, 'addBrands'])->name('api.lines.addBrands');
     Route::apiResource('lines', LineController::class)->names('api.lines');
     Route::apiResource('brands', BrandController::class)->names('api.brands');
 
@@ -128,7 +127,8 @@ Route::middleware([
     Route::get('products', [ProductController::class, 'index'])->name('api.products.index');
     Route::post('products', [ProductController::class, 'store'])->name('api.products.store');
     Route::get('products/create', [ProductController::class, 'create'])->name('api.products.create');
-    Route::get('products/brands/{id}', [ProductController::class, 'brands'])->name('api.products.brands');
+    Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('api.products.edit');
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('api.products.update');
 
     //Product-Series
     Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');

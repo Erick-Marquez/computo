@@ -61,6 +61,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
                 _this.lines = resp.data.data.lines;
+                _this.brands = resp.data.data.brands;
                 _this.currencyExchange = resp.data.data.currencyExchange.change;
                 _this.igvTypes = resp.data.data.igvTypes;
               });
@@ -75,13 +76,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      cod: '',
-      productName: '',
-      description: '',
       branches: [],
       lines: [],
       brands: [],
       igvTypes: [],
+      cod: '',
+      productName: '',
+      description: '',
       line: null,
       brand: '',
 
@@ -108,13 +109,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    getBrands: function getBrands() {
-      var _this2 = this;
-
-      _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/products/brands/".concat(this.line)).then(function (resp) {
-        _this2.brands = resp.data.data;
-      });
-    },
     //Precio compra
     changePricesSoles: function changePricesSoles() {
       this.purchasePriceSoles = this.changePriceSoles(this.purchasePriceDollar);
@@ -214,22 +208,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       item.series = temp;
     },
     createProduct: function createProduct() {
-      var _this3 = this;
+      var _this2 = this;
 
       var product = {
         cod: this.cod,
         name: this.productName,
         description: this.description,
         referential_purchase_price: this.purchasePriceDollar,
-        referential_sale_price: this.salePriceOneDollar,
-        referential_sale_price_one: this.salePriceTwoDollar,
-        referential_sale_price_two: this.salePriceThreeDollar,
+        sale_gain_one: this.saleGainOne,
+        sale_gain_two: this.saleGainTwo,
+        sale_gain_three: this.saleGainThree,
         manager_series: this.managerSeries,
         line_id: this.line,
         brand_id: this.brand,
         have_warranty: this.haveWarranty,
-        type_of_time_for_warranty: this.typeOfTimeForWarranty,
-        time_of_warranty: this.timeOfWarranty,
+        type_of_time_for_warranty: this.haveWarranty ? this.typeOfTimeForWarranty : null,
+        time_of_warranty: this.haveWarranty ? this.timeOfWarranty : null,
         igv_type_id: this.igvTypeId,
         branches: []
       };
@@ -243,7 +237,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           };
           temp.push(series); //Validar si maneja serie debe ingresar las series para continuar
 
-          if (_this3.managerSeries) {
+          if (_this2.managerSeries) {
             e.series.forEach(function (elem) {
               //Verificar si el campo esta vacio
               if (elem.serie === '') {}
@@ -253,7 +247,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       product.branches = temp;
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].post("api/products", product).then(function (resp) {
-        _this3.$router.replace({
+        _this2.$router.replace({
           name: "product-list"
         });
 
@@ -286,7 +280,7 @@ var _withScopeId = function _withScopeId(n) {
 };
 
 var _hoisted_1 = {
-  "class": "row"
+  "class": "row pt-3"
 };
 var _hoisted_2 = {
   "class": "col-md-7"
@@ -923,7 +917,7 @@ var _hoisted_138 = /*#__PURE__*/_withScopeId(function () {
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
-    onSubmit: _cache[36] || (_cache[36] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[35] || (_cache[35] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.createProduct();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -977,9 +971,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "form-control",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.line = $event;
-    }),
-    onChange: _cache[5] || (_cache[5] = function ($event) {
-      return $options.getBrands();
     })
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.lines, function (line) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
@@ -990,11 +981,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_34);
   }), 128
   /* KEYED_FRAGMENT */
-  ))], 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
+  ))], 512
+  /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.line]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.brand = $event;
     })
   }, [$data.line == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_38, "Seleccione una linea")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.brands, function (brand) {
@@ -1014,7 +1005,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     cols: "30",
     rows: "5",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
       return $data.description = $event;
     })
   }, null, 512
@@ -1023,10 +1014,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.currencyExchange = $event;
     }),
-    onKeyup: _cache[9] || (_cache[9] = function ($event) {
+    onKeyup: _cache[8] || (_cache[8] = function ($event) {
       return $options.changePricesSoles();
     })
   }, null, 544
@@ -1035,10 +1026,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
       return $data.purchasePriceSoles = $event;
     }),
-    onKeyup: _cache[11] || (_cache[11] = function ($event) {
+    onKeyup: _cache[10] || (_cache[10] = function ($event) {
       return $options.changePurchasePriceDollar();
     })
   }, null, 544
@@ -1047,10 +1038,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
       return $data.purchasePriceDollar = $event;
     }),
-    onKeyup: _cache[13] || (_cache[13] = function ($event) {
+    onKeyup: _cache[12] || (_cache[12] = function ($event) {
       return $options.changePurchasePriceSoles();
     })
   }, null, 544
@@ -1059,10 +1050,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
       return $data.saleGainOne = $event;
     }),
-    onKeyup: _cache[15] || (_cache[15] = function ($event) {
+    onKeyup: _cache[14] || (_cache[14] = function ($event) {
       return $options.changeSalePriceSolesAndDollarOne();
     })
   }, null, 544
@@ -1071,10 +1062,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
       return $data.salePriceOneSoles = $event;
     }),
-    onKeyup: _cache[17] || (_cache[17] = function ($event) {
+    onKeyup: _cache[16] || (_cache[16] = function ($event) {
       return $options.changeSalePriceDollarAndGainOne();
     })
   }, null, 544
@@ -1083,10 +1074,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
       return $data.salePriceOneDollar = $event;
     }),
-    onKeyup: _cache[19] || (_cache[19] = function ($event) {
+    onKeyup: _cache[18] || (_cache[18] = function ($event) {
       return $options.changeSalePriceSolesAndGainOne();
     })
   }, null, 544
@@ -1095,10 +1086,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
+    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
       return $data.saleGainTwo = $event;
     }),
-    onKeyup: _cache[21] || (_cache[21] = function ($event) {
+    onKeyup: _cache[20] || (_cache[20] = function ($event) {
       return $options.changeSalePriceSolesAndDollarTwo();
     })
   }, null, 544
@@ -1107,10 +1098,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
       return $data.salePriceTwoSoles = $event;
     }),
-    onKeyup: _cache[23] || (_cache[23] = function ($event) {
+    onKeyup: _cache[22] || (_cache[22] = function ($event) {
       return $options.changeSalePriceDollarAndGainTwo();
     })
   }, null, 544
@@ -1119,10 +1110,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
+    "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
       return $data.salePriceTwoDollar = $event;
     }),
-    onKeyup: _cache[25] || (_cache[25] = function ($event) {
+    onKeyup: _cache[24] || (_cache[24] = function ($event) {
       return $options.changeSalePriceSolesAndGainTwo();
     })
   }, null, 544
@@ -1131,10 +1122,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
+    "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
       return $data.saleGainThree = $event;
     }),
-    onKeyup: _cache[27] || (_cache[27] = function ($event) {
+    onKeyup: _cache[26] || (_cache[26] = function ($event) {
       return $options.changeSalePriceSolesAndDollarThree();
     })
   }, null, 544
@@ -1143,10 +1134,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
+    "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
       return $data.salePriceThreeSoles = $event;
     }),
-    onKeyup: _cache[29] || (_cache[29] = function ($event) {
+    onKeyup: _cache[28] || (_cache[28] = function ($event) {
       return $options.changeSalePriceDollarAndGainThree();
     })
   }, null, 544
@@ -1155,10 +1146,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     step: "0.001",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[30] || (_cache[30] = function ($event) {
+    "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
       return $data.salePriceThreeDollar = $event;
     }),
-    onKeyup: _cache[31] || (_cache[31] = function ($event) {
+    onKeyup: _cache[30] || (_cache[30] = function ($event) {
       return $options.changeSalePriceSolesAndGainThree();
     })
   }, null, 544
@@ -1166,7 +1157,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.salePriceThreeDollar]])])])])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_77, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_78, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_79, [_hoisted_80, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_81, [_hoisted_82, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_85, [_hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[32] || (_cache[32] = function ($event) {
+    "onUpdate:modelValue": _cache[31] || (_cache[31] = function ($event) {
       return $data.cod = $event;
     })
   }, null, 512
@@ -1182,7 +1173,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $data.selectedBranches[index].isAvailable = $event;
       },
-      onChange: _cache[33] || (_cache[33] = function ($event) {
+      onChange: _cache[32] || (_cache[32] = function ($event) {
         return $options.activeOrDesactiveInventory();
       })
     }, null, 40
@@ -1254,7 +1245,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))])])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.haveWarranty ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_121, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_122, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_123, [_hoisted_124, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_125, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_126, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_127, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_128, [_hoisted_129, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[34] || (_cache[34] = function ($event) {
+    "onUpdate:modelValue": _cache[33] || (_cache[33] = function ($event) {
       return $data.typeOfTimeForWarranty = $event;
     })
   }, _hoisted_134, 512
@@ -1263,7 +1254,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "number",
     min: "1",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[35] || (_cache[35] = function ($event) {
+    "onUpdate:modelValue": _cache[34] || (_cache[34] = function ($event) {
       return $data.timeOfWarranty = $event;
     }),
     required: ""
@@ -1291,7 +1282,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

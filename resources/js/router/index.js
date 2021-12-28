@@ -153,6 +153,11 @@ const routes = [
                 component: () => import('../modules/catalogs/products/pages/NewProduct.vue'),
             },
             {
+                path: '/editar-producto/:id',
+                name: 'edit-product',
+                component: () => import('../modules/catalogs/products/pages/EditProduct.vue'),
+            },
+            {
                 path: '',
                 redirect: { name: 'product-list' }
             }

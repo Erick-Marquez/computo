@@ -93,6 +93,21 @@
             </div>
           </div>
           <!-- /.card-body -->
+
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in meta.links" :key="link.index" 
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click ="(link.url == null || link.active) ? null : showPaginateCurrencyExchanges(link.url)" 
+                >
+                  {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
         </div>
         <!-- /.card -->
       </div>
@@ -209,6 +224,9 @@ export default {
   },
   data(){
     return{
+      meta: {},
+      perPage: 10,
+
       currentCurrencyExchange : '',
       currencyExchanges: {},
 
@@ -223,8 +241,16 @@ export default {
   },
   methods:{
     async showCurrencyExchanges(){
-      await BaseUrl.get(`api/currencyexchanges`).then( resp=>{
-        this.currencyExchanges=resp.data.data
+      await BaseUrl.get(`api/currencyexchanges/?page=1&perPage=${this.perPage}`).then( resp=>{
+        this.currencyExchanges = resp.data.data
+        this.meta = resp.data.meta
+      })
+    },
+    async showPaginateCurrencyExchanges(url){
+      await axios.get(`${url}&perPage=${this.perPage}`)
+      .then( resp => {
+        this.currencyExchanges = resp.data.data
+        this.meta = resp.data.meta
       })
     },
     async getCurrentCurrencyExchange(){

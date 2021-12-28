@@ -147,16 +147,5 @@ class VoucherTypeSeeder extends Seeder
             ['active' => true, 'description' => 'Gigabyte'],
             ['active' => true, 'description' => 'Western Digital']
         ]);
-
-        DB::table('brand_line')->insert([
-            ['line_id' => 1, 'brand_id' => 1],
-            ['line_id' => 1, 'brand_id' => 2],
-            ['line_id' => 2, 'brand_id' => 3],
-            ['line_id' => 3, 'brand_id' => 2],
-            ['line_id' => 3, 'brand_id' => 4],
-            ['line_id' => 4, 'brand_id' => 6],
-            ['line_id' => 5, 'brand_id' => 7],
-            ['line_id' => 6, 'brand_id' => 5]
-        ]);
     }
 }

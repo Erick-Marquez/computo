@@ -367,7 +367,7 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.products',
                     'can'    => 'products.index',
-                    'active' => ['productos', 'nuevo-producto']
+                    'active' => ['productos', 'nuevo-producto', 'editar-producto/*']
                 ],
                 [
                     'text' => 'Series',

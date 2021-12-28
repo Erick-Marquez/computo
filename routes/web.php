@@ -65,6 +65,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+    Route::get('/editar-producto/{id}', [WebController::class, 'products'])->name('web.edit-products');
     Route::get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
 
     //Rutas egresos-ingresos

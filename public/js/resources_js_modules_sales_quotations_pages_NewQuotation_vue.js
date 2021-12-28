@@ -260,6 +260,9 @@ __webpack_require__.r(__webpack_exports__);
 
         if (products.length > 0) {
           products.forEach(function (product) {
+            product.sale_price = (product.referential_purchase_price * (1 + product.sale_gain_one / 100)).toFixed(2);
+            product.referential_sale_price_one = (product.referential_purchase_price * (1 + product.sale_gain_two / 100)).toFixed(2);
+            product.referential_sale_price_two = (product.referential_purchase_price * (1 + product.sale_gain_three / 100)).toFixed(2);
             product.sale_price = (product.sale_price * _this.currencyExchange).toFixed(2);
             product.referential_sale_price_one = (product.referential_sale_price_one * _this.currencyExchange).toFixed(2);
             product.referential_sale_price_two = (product.referential_sale_price_two * _this.currencyExchange).toFixed(2);
@@ -2012,7 +2015,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -2035,7 +2038,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\n  position: relative;\n  cursor: pointer;\n}\n.list {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\n  border-radius: 50px;\n  width: 100%;\n  height: calc(2.25rem + 2px);\n  font-size: 1rem;\n  font-weight: 400;\n  line-height: 1.5;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border-color: #ced4da;\n  box-shadow: inset 0 0 0 transparent;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\n.style-chooser .vs__open-indicator {\n  fill: #394066;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\r\n  border-radius: 50px;\r\n  width: 100%;\r\n  height: calc(2.25rem + 2px);\r\n  font-size: 1rem;\r\n  font-weight: 400;\r\n  line-height: 1.5;\r\n  color: #495057;\r\n  background-color: #fff;\r\n  background-clip: padding-box;\r\n  border-color: #ced4da;\r\n  box-shadow: inset 0 0 0 transparent;\r\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\r\n.style-chooser .vs__open-indicator {\r\n  fill: #394066;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2059,7 +2062,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.option__relative[data-v-86724ae8] {\n  position: relative;\n  z-index: 99;\n}\n.option__contenedor[data-v-86724ae8] {\n  box-sizing: border-box;\n  border-radius: 5px;\n  width: 100%;\n  max-height: 200px;\n  box-shadow: 0 0 2px 0 rgb(255, 128, 128);\n  background-color: #fff;\n  box-sizing: border-box;\n  cursor: pointer;\n  overflow-y: scroll;\n  position: absolute;\n  z-index: 100;\n}\n.option__contenedor input[data-v-86724ae8],\n.search input[data-v-86724ae8] {\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n  /*border-color: #93a8c3;*/\n  outline-color: rgb(255, 128, 128);\n  border-style: solid;\n  border-width: 1px;\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-86724ae8] {\n  width: 100%;\n  padding: 8px 10px;\n  margin: 0;\n}\n.option__contenedor[data-v-86724ae8]::-webkit-scrollbar {\n  width: 7px;\n  background-color: rgb(255, 128, 128);\n}\n.option__contenedor[data-v-86724ae8]::-webkit-scrollbar-thumb {\n  background-color: rgb(255, 255, 255);\n  border-radius: 10px;\n  border-right: 1px solid rgb(255, 128, 128);\n  border-left: 1px solid rgb(255, 128, 128);\n}\n.search .option__contenedor[data-v-86724ae8] {\n  top: 0;\n}\n.search input[data-v-86724ae8] {\n  width: 100%;\n  height: 40px;\n  border-radius: 5px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.option__relative[data-v-86724ae8] {\r\n  position: relative;\r\n  z-index: 99;\n}\n.option__contenedor[data-v-86724ae8] {\r\n  box-sizing: border-box;\r\n  border-radius: 5px;\r\n  width: 100%;\r\n  max-height: 200px;\r\n  box-shadow: 0 0 2px 0 rgb(255, 128, 128);\r\n  background-color: #fff;\r\n  box-sizing: border-box;\r\n  cursor: pointer;\r\n  overflow-y: scroll;\r\n  position: absolute;\r\n  z-index: 100;\n}\n.option__contenedor input[data-v-86724ae8],\r\n.search input[data-v-86724ae8] {\r\n  display: block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  /*border-color: #93a8c3;*/\r\n  outline-color: rgb(255, 128, 128);\r\n  border-style: solid;\r\n  border-width: 1px;\r\n  /*color:rgb(172,173,182)*/\n}\n.option__contenedor table[data-v-86724ae8] {\r\n  width: 100%;\r\n  padding: 8px 10px;\r\n  margin: 0;\n}\n.option__contenedor[data-v-86724ae8]::-webkit-scrollbar {\r\n  width: 7px;\r\n  background-color: rgb(255, 128, 128);\n}\n.option__contenedor[data-v-86724ae8]::-webkit-scrollbar-thumb {\r\n  background-color: rgb(255, 255, 255);\r\n  border-radius: 10px;\r\n  border-right: 1px solid rgb(255, 128, 128);\r\n  border-left: 1px solid rgb(255, 128, 128);\n}\n.search .option__contenedor[data-v-86724ae8] {\r\n  top: 0;\n}\n.search input[data-v-86724ae8] {\r\n  width: 100%;\r\n  height: 40px;\r\n  border-radius: 5px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
