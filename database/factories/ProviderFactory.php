@@ -26,7 +26,7 @@ class ProviderFactory extends Factory
         return [
             'name' => $this->faker->unique()->company,
             'document' => $this->faker->unique()->numerify('##########'),
-            'comercial_name' => $this->faker->unique()->catchPhrase,
+            'tradename' => $this->faker->unique()->catchPhrase,
             'phone' => $this->faker->e164PhoneNumber,
             'email' => $this->faker->unique()->freeEmail,
             'address' => $this->faker->address,

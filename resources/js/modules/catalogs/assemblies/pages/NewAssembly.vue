@@ -180,7 +180,7 @@
                     v-for="(product, index) in newAssembly.products"
                     :key="product.id"
                   >
-                    <td>{{ product.name }} - {{ product.brand }}</td>
+                    <td>{{ product.cod }} - {{ product.name }}</td>
                     <td>
                       <input
                         class="form-control form-control-border p-0 text-center"

@@ -43,8 +43,8 @@
               tabindex="0"
             >
               <td>{{ product.name }}</td>
-              <td>{{ product.brand }}</td>
-              <td>{{ product.line }}</td>
+              <td>{{ product.brand.description }}</td>
+              <td>{{ product.line.description }}</td>
             </tr>
           </tbody>
         </table>
@@ -73,7 +73,7 @@ export default {
   methods: {
     async getProducts() {
       await BaseUrl.get(
-        `/api/products?filter[name]=${this.productName}&perPage=10`
+        `/api/products?included=brand,line&filter[name]=${this.productName}&perPage=10`
       )
         .then((response) => {
           this.productsFound = response.data.data;

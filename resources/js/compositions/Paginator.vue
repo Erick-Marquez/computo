@@ -3,7 +3,7 @@
     <li :class="['page-item', link.active ?  'active' : '']" v-for="(link) in links" :key="link.index">
       <router-link v-if="link.url == null ? false : true"
         class="page-link"
-        :to="{ path: '/clientes', query: { page: getPage(link.url) } }"
+        :to="{ query: { page: getPage(link.url) } }"
       >
         {{ link.label }}
       </router-link>

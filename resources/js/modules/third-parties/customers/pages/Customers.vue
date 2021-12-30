@@ -7,7 +7,7 @@
     Nuevo Cliente
   </button>
 
-  <form @submit.prevent="createCustomer">
+  <form @submit.prevent="storeCustomer">
     <NewCustomer :customer="customer" :errors="errors" />
   </form>
 
@@ -96,7 +96,7 @@
                     ><i class="col-1 mr-3 fas fa-edit"></i>
                     Editar
                   </a>
-                  <a class="dropdown-item" href="#" @click="deleteCustomer(id)">
+                  <a class="dropdown-item" href="#" @click="deleteCustomer(customer.id)">
                     <i class="col-1 mr-3 fas fa-trash"></i>
                     Eliminar
                   </a>
@@ -113,7 +113,7 @@
     </div>
   </div>
 
-  <form action="" @submit.prevent="editCustomer">
+  <form @submit.prevent="updateCustomer">
       <EditCustomer :customer="editCustomer" :errors="errors" />
   </form>
 </template>
@@ -155,7 +155,7 @@ export default {
         });
     },
 
-    async createCustomer() {
+    async storeCustomer() {
       await BaseUrl.post("/api/customers", this.customer)
         .then((response) => {
           $("#new-customer").modal("hide");
@@ -170,34 +170,35 @@ export default {
           this.errors = error.response.data.errors;
         });
     },
+
     deleteCustomer(id) {
       Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Esta seguro?",
+        text: "Usted no puede revertir esto!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Si, Borralo!",
       }).then((result) => {
         if (result.isConfirmed) {
           BaseUrl.delete(`/api/customers/${id}`)
             .then((response) => {
-              Swal.fire("Deleted!", response.data.message, "success");
+              Swal.fire("Eliminado!", response.data.message, "success");
               this.getCustomers();
             })
             .catch((error) => {
-              console.log(error.response);
+              console.log(error.response.data);
             });
         }
       });
     },
 
-    async editCustomer() {
-      await BaseUrl.put(`/api/customers/${this.customer.id}`, this.customer)
+    async updateCustomer() {
+      await BaseUrl.put(`/api/customers/${this.editCustomer.id}`, this.editCustomer)
         .then((response) => {
-          $("#new-customer").modal("hide");
-          Swal.fire("Cliente Registrado", "Exito!!", "success");
+          $("#edit-customer").modal("hide");
+          Swal.fire("Cliente Editado", "Exito!!", "success");
           this.getCustomers();
         })
         .catch((error) => {

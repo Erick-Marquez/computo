@@ -17,7 +17,7 @@ class CreateProvidersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('document')->unique()->index();
-            $table->string('comercial_name')->nullable();
+            $table->string('tradename')->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();

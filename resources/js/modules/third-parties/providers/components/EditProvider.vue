@@ -1,9 +1,9 @@
 <template>
-  <div class="modal fade" id="new-provider" aria-hidden="true">
+  <div class="modal fade" id="edit-provider" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Registrar Proveedor</h4>
+          <h4 class="modal-title">Editar Proveedor</h4>
           <button
             type="button"
             class="close"
@@ -16,10 +16,14 @@
 
         <div class="modal-body">
           <div class="form-group">
-            <label for="">Tipo de documento</label>
+            <label for="">
+              <span class="text-danger">
+                <i class="far fa-address-card"></i>
+              </span>
+              Tipo de documento</label
+            >
             <select
               :class="$errorsClassSquare(errors['identification_document_id'])"
-              class="form-control"
               v-model="provider.identification_document_id"
             >
               <option
@@ -34,12 +38,18 @@
               v-if="$errorsExists(errors['identification_document_id'])"
               class="invalid-feedback"
             >
-              {{ $errorsPrint(errors['identification_document_id']) }}
+              {{ $errorsPrint(errors["identification_document_id"]) }}
             </div>
           </div>
 
+          <!-- NUMERO DE DOCUMENTO -->
           <div class="form-group">
-            <label for="">N° documento</label>
+            <label for="">
+              <span class="text-danger">
+                <i class="fab fa-slack-hash"></i>
+              </span>
+              N° documento
+            </label>
 
             <div
               v-if="
@@ -67,8 +77,14 @@
                   </div>
                 </button>
               </div>
-            </div>
 
+              <div
+                v-if="$errorsExists(errors['document'])"
+                class="invalid-feedback"
+              >
+                {{ $errorsPrint(errors["document"]) }}
+              </div>
+            </div>
             <input
               v-else
               type="text"
@@ -82,8 +98,14 @@
             </div>
           </div>
 
+          <!-- NOMBRE -->
           <div class="form-group">
-            <label for="">Nombre</label>
+            <label for="">
+              <span class="text-danger">
+                <i class="fas fa-signature"></i>
+              </span>
+              Nombre
+            </label>
             <input
               type="text"
               :class="$errorsClassSquare(errors['name'])"
@@ -106,45 +128,14 @@
             </div>
           </div>
 
-          <!-- TELEFONO -->
+          <!-- UBIGEO -->
           <div class="form-group">
             <label for="">
               <span class="text-danger">
-                <i class="fas fa-phone"></i>
+                <i class="fas fa-map-marker-alt"></i>
               </span>
-              Telefono
+              Ubigeo
             </label>
-            <input
-              type="text"
-              :class="$errorsClassSquare(errors['phone'])"
-              v-model.trim="provider.phone"
-              autocomplete="nop"
-            />
-            <div v-if="$errorsExists(errors['phone'])" class="invalid-feedback">
-              {{ $errorsPrint(errors["phone"]) }}
-            </div>
-          </div>
-
-          <!-- EMAIL -->
-          <div class="form-group">
-            <label for="">
-              <span class="text-danger">
-                <i class="fas fa-at"></i>
-              </span>
-              Email
-            </label>
-            <input
-              type="email"
-              :class="$errorsClassSquare(errors['email'])"
-              v-model.trim="provider.email"
-            />
-            <div v-if="$errorsExists(errors['email'])" class="invalid-feedback">
-              {{ $errorsPrint(errors["email"]) }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="">Ubigeo</label>
             <v-select
               v-model="provider.ubigee_id"
               label="place_description"
@@ -186,6 +177,47 @@
             </div>
           </div>
 
+          <!-- TELEFONO -->
+          <div class="form-group">
+            <label for="">
+              <span class="text-danger">
+                <i class="fas fa-phone"></i>
+              </span>
+              Telefono
+            </label>
+            <input
+              type="text"
+              name=""
+              id=""
+              :class="$errorsClassSquare(errors['phone'])"
+              v-model.trim="provider.phone"
+              autocomplete="nop"
+            />
+            <div v-if="$errorsExists(errors['phone'])" class="invalid-feedback">
+              {{ $errorsPrint(errors["phone"]) }}
+            </div>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="form-group">
+            <label for="">
+              <span class="text-danger">
+                <i class="fas fa-at"></i>
+              </span>
+              Email
+            </label>
+            <input
+              type="email"
+              name=""
+              id=""
+              :class="$errorsClassSquare(errors['email'])"
+              v-model.trim="provider.email"
+            />
+            <div v-if="$errorsExists(errors['email'])" class="invalid-feedback">
+              {{ $errorsPrint(errors["email"]) }}
+            </div>
+          </div>
+
           <div class="modal-footer justify-content-between">
             <button
               type="button"
@@ -204,7 +236,6 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
-
 export default {
   data() {
     return {
@@ -220,9 +251,10 @@ export default {
   },
   created() {
     this.getTypeDocuments();
+    this.getUbigees();
   },
   mounted() {
-    this.getUbigees();
+    console.log(this.provider);
   },
   methods: {
     async getTypeDocuments() {
@@ -234,15 +266,7 @@ export default {
           console.log(error.response);
         });
     },
-    async getUbigees() {
-      await BaseUrl.get(`/api/ubigees`)
-        .then((response) => {
-          this.ubigees = response.data.data;
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
-    },
+
     async getDataApi() {
       this.loading = true;
       await BaseUrl.get(
@@ -252,6 +276,7 @@ export default {
           console.log(response.data);
           this.provider.address = response.data.address;
           this.provider.name = response.data.name;
+          this.provider.ubigee_id = response.data.ubigee;
         })
         .catch((error) => {
           console.log(error.response);
@@ -260,7 +285,18 @@ export default {
           this.loading = false;
         });
     },
+
+    async getUbigees() {
+      await BaseUrl.get(`/api/ubigees`)
+        .then((response) => {
+          this.ubigees = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    },
   },
+
   computed: {
     maxLenghDocument() {
       return this.provider.identification_document_id == 1 ? 8 : 11;

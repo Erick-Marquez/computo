@@ -7,8 +7,8 @@
     Nuevo Proveedor
   </button>
 
-  <form @submit.prevent="createProvider">
-    <NewProvider :provider="provider" />
+  <form @submit.prevent="storeProvider">
+    <NewProvider :provider="provider" :errors="errors" />
   </form>
 
   <div class="card">
@@ -45,13 +45,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="provider in providers" :key="provider.id">
+          <tr v-for="provider, index in providers" :key="provider.id">
             <td class="text-wrap" style="width: 20%">{{ provider.name }}</td>
             <td class="text-wrap" style="width: 20%">
-              {{ provider.comercial_name }}
+              {{ provider.tradename }}
             </td>
             <td class="text-wrap" style="width: 10%">
-              <span class="badge bg-maroon">{{ provider.type_document }}</span>
+              <span class="badge bg-maroon">{{  provider.identification_document != null ? provider.identification_document.description : 'Otro' }}</span>
               <br />
               {{ provider.document }}
             </td>
@@ -86,15 +86,11 @@
                   aria-labelledby="dropdownMenuButton"
                   style=""
                 >
-                  <a class="dropdown-item" href="#"
+                  <a class="dropdown-item" @click="editModalProvider(index)"
                     ><i class="col-1 mr-3 fas fa-edit"></i>
                     Editar
                   </a>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    @click="deleteProvider(provider.id)"
-                  >
+                  <a class="dropdown-item" href="#" @click="deleteProvider(provider.id)">
                     <i class="col-1 mr-3 fas fa-trash"></i>
                     Eliminar
                   </a>
@@ -105,15 +101,14 @@
         </tbody>
       </table>
     </div>
+
+    <form @submit.prevent="updateProvider">
+      <EditProvider :provider="editProvider" :errors="errors" />
+    </form>
+
     <!-- /.card-body -->
     <div class="card-footer">
-      <ul class="pagination pagination-sm m-0 float-right">
-        <li class="page-item" v-for="link in links" :key="link.index">
-          <a class="page-link" href="#" @click="showProviders(link.label)">{{
-            link.label
-          }}</a>
-        </li>
-      </ul>
+      <Paginator :links="links" v-on:getDataPaginate="getProviders" />
     </div>
   </div>
 </template>
@@ -121,65 +116,107 @@
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
 import NewProvider from "../components/NewProvider.vue";
+import Paginator from "../../../../compositions/Paginator.vue";
+import EditProvider from "../components/EditProvider.vue";
 
 export default {
-  components: { BaseUrl, NewProvider },
+  components: { BaseUrl, NewProvider, EditProvider, Paginator },
   data() {
     return {
       provider: {
         identification_document_id: 1,
       },
+      editProvider: {
+
+      },
       links: {},
       providers: {},
+      errors: [],
     };
   },
   created() {
-    this.showProviders();
+    this.getProviders();
   },
   methods: {
-    async showProviders(page = 1) {
-      await BaseUrl.get(`/api/providers?sort=-id&page=${page}&perPage=10`)
+    async getProviders() {
+      await BaseUrl.get(
+        `/api/providers?included=ubigee,identificationDocument&sort=-id&perPage=10&page=${this.$route.query.page}`
+      )
         .then((response) => {
           this.providers = response.data.data;
           this.links = response.data.meta.links;
         })
         .catch((error) => {
-          console.log(error.response);
+          console.log(error.response.data);
         });
     },
-    async createProvider() {
+    async storeProvider() {
       await BaseUrl.post("/api/providers", this.provider)
         .then((response) => {
           console.log(response.data);
           $("#new-provider").modal("hide");
           this.provider = { identification_document_id: 1 };
-          this.showProviders();
+          this.errors = [];
+          this.getProviders();
         })
         .catch((error) => {
           console.log(error.response);
+          this.errors = error.response.data.errors;
         });
     },
+
+    async updateProvider() {
+      await BaseUrl.put(`/api/providers/${this.editProvider.id}`, this.editProvider)
+        .then((response) => {
+          $("#edit-provider").modal("hide");
+          Swal.fire("Proveedor Editado", "Exito!!", "success");
+          this.getProviders();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          this.errors = error.response.data.errors;
+        });
+    },
+
+
     deleteProvider(id) {
       Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Esta seguro?",
+        text: "Usted no puede revertir esto!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Si, Borralo!",
       }).then((result) => {
         if (result.isConfirmed) {
           BaseUrl.delete(`/api/providers/${id}`)
             .then((response) => {
-              Swal.fire("Deleted!", response.data.message, "success");
-              this.showProviders();
+              Swal.fire("Eliminado!", response.data.message, "success");
+              this.getProviders();
             })
             .catch((error) => {
               console.log(error.response);
             });
         }
       });
+    },
+
+    editModalProvider(index) {
+      $("#edit-provider").modal("show");
+      this.editProvider.id = this.providers[index].id;
+      this.editProvider.document = this.providers[index].document;
+      this.editProvider.identification_document_id =
+        this.providers[index].identification_document.id;
+      this.editProvider.name = this.providers[index].name;
+      this.editProvider.tradename = this.providers[index].tradename;
+      this.editProvider.ubigee_id =
+        this.providers[index].ubigee != null
+          ? this.providers[index].ubigee.id
+          : null;
+      this.editProvider.address = this.providers[index].address;
+      this.editProvider.phone = this.providers[index].phone;
+      this.editProvider.email = this.providers[index].email;
     },
   },
 };

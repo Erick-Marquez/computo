@@ -135,7 +135,9 @@ class VoucherTypeSeeder extends Seeder
             ['active' => true, 'family_id' => 1, 'description' => 'Procesador'],
             ['active' => true, 'family_id' => 1, 'description' => 'Placa Base'],
             ['active' => true, 'family_id' => 1, 'description' => 'Disco Duro'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Memoria RAM']
+            ['active' => true, 'family_id' => 1, 'description' => 'Memoria RAM'],
+            ['active' => true, 'family_id' => 1, 'description' => 'Tarjeta de red'],
+            ['active' => true, 'family_id' => 1, 'description' => 'Fuente de poder']
         ]);
 
         DB::table('brands')->insert([
@@ -146,17 +148,6 @@ class VoucherTypeSeeder extends Seeder
             ['active' => true, 'description' => 'Kingston'],
             ['active' => true, 'description' => 'Gigabyte'],
             ['active' => true, 'description' => 'Western Digital']
-        ]);
-
-        DB::table('brand_line')->insert([
-            ['line_id' => 1, 'brand_id' => 1],
-            ['line_id' => 1, 'brand_id' => 2],
-            ['line_id' => 2, 'brand_id' => 3],
-            ['line_id' => 3, 'brand_id' => 2],
-            ['line_id' => 3, 'brand_id' => 4],
-            ['line_id' => 4, 'brand_id' => 6],
-            ['line_id' => 5, 'brand_id' => 7],
-            ['line_id' => 6, 'brand_id' => 5]
         ]);
     }
 }

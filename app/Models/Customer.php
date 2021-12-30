@@ -33,17 +33,4 @@ class Customer extends Model
     {
         return $this->belongsTo(Ubigee::class);
     }
-
-    // METODOS DE INSERCION A LA BD
-
-    public static function createCustomer($request)
-    {
-        if (isset($request['ubigee_id'])) {
-            $ubigee_id = Ubigee::findId($request['ubigee_id']);
-            $request['ubigee_id'] = $ubigee_id;
-        }
-
-        $customer = Customer::create($request);
-        return $customer;
-    }
 }

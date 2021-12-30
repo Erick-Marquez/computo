@@ -14,7 +14,7 @@ class Provider extends Model
     protected $fillable = [
         'name',
         'document',
-        'comercial_name',
+        'tradename',
         'phone',
         'email',
         'address',
@@ -23,7 +23,7 @@ class Provider extends Model
     ];
 
     protected $allowIncluded = ['identificationDocument', 'ubigee'];
-    protected $allowFilter = ['id', 'document', 'comercial_name', 'identification_document_id'];
+    protected $allowFilter = ['id', 'document', 'tradename', 'identification_document_id'];
     protected $allowSort = ['id'];
 
     public function identificationDocument()

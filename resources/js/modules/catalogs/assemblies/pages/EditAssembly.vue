@@ -1,12 +1,12 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Editar Configuracion</h1>
+      <h1>Crear una Nueva Configuración</h1>
     </div>
   </div>
 
   <div class="container-fluid">
-    <form @submit.prevent="storeAssembly()">
+    <form @submit.prevent="updateAssembly()">
       <div class="row">
         <div class="col-md-8">
           <div class="card">
@@ -18,7 +18,7 @@
                   name=""
                   id=""
                   :class="$errorsClass(errors['name'])"
-                  v-model="editAssembly.name"
+                  v-model="assembly.name"
                 />
                 <div
                   class="invalid-feedback ml-3"
@@ -36,7 +36,7 @@
                       name=""
                       id=""
                       :class="$errorsClass(errors['cod'])"
-                      v-model="editAssembly.cod"
+                      v-model="assembly.cod"
                     />
                     <div
                       class="invalid-feedback ml-3"
@@ -55,7 +55,7 @@
                       id=""
                       :class="$errorsClass(errors['price'])"
                       :value="
-                        (editAssembly.price = editAssembly.products
+                        (assembly.price = assembly.products
                           .reduce((previousValue, currentValue) => {
                             return (
                               parseFloat(previousValue) +
@@ -83,7 +83,7 @@
                   name=""
                   id=""
                   rows="5"
-                  v-model="editAssembly.description"
+                  v-model="assembly.description"
                 ></textarea>
               </div>
             </div>
@@ -95,16 +95,21 @@
               <div class="row">
                 <div class="col-md">
                   <img
-                    v-if="hasImage"
-                    class="rounded mx-auto d-block mb-4"
-                    :src="imageUpload.imgDataUrl"
-                    style="width: 100%"
+                    v-if="assembly.image == null"
+                    src="/images/imageUpload.png"
+                    class="img-fluid"
+                  />
+                  <img
+                    v-else-if="assembly.image.url != undefined"
+                    class="img-fluid"
+                    :src="`/storage/${assembly.image.url}`"
+                    alt=""
                   />
                   <img
                     v-else
-                    class="img-fluid"
-                    src="/images/imageUpload.png"
-                    alt=""
+                    class="rounded mx-auto d-block mb-4"
+                    :src="imageUpload.imgDataUrl"
+                    style="width: 100%"
                   />
 
                   <a class="btn btn-block btn-outline-dark" @click="toggleShow">
@@ -144,7 +149,7 @@
               /> -->
 
               <search-products
-                :products="editAssembly.products"
+                :products="assembly.products"
                 :errors="errors"
               ></search-products>
             </div>
@@ -161,11 +166,26 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td colspan="4">
+                      <div
+                        class="image-without-products"
+                        v-if="!assembly.products.length"
+                      >
+                        <img
+                          src="/images/add_product.png"
+                          alt=""
+                          style="max-height: 120px"
+                        />
+                        <h1 class="display-4">Agregue productos</h1>
+                      </div>
+                    </td>
+                  </tr>
                   <tr
-                    v-for="(product, index) in editAssembly.products"
+                    v-for="(product, index) in assembly.products"
                     :key="product.id"
                   >
-                    <td>{{ product.name }} - {{ product.brand }}</td>
+                    <td>{{ product.cod }} - {{ product.name }}</td>
                     <td>
                       <input
                         class="form-control form-control-border p-0 text-center"
@@ -216,12 +236,12 @@ export default {
   components: { BaseUrl, SearchProducts, myUpload },
   data() {
     return {
-      editAssembly: {
+      assembly: {
         name: null,
         cod: null,
         description: null,
         price: 0,
-        image: "",
+        image: null,
         products: [],
       },
       imageUpload: {
@@ -253,32 +273,39 @@ export default {
     };
   },
   created() {
-      this.getAssembly()
+    this.getAssembly();
   },
   methods: {
     async getAssembly() {
-      await BaseUrl.get(`/api/assemblies/${this.$route.params.id}?included=image&included=products`)
+      await BaseUrl.get(
+        `/api/assemblies/${this.$route.params.id}?included=products,image`
+      )
         .then((response) => {
-          console.log(response.data.data);
+          this.assembly = response.data.data;
+          console.log(response.data);
         })
         .catch((error) => {
+          console.log(error.response);
+        });
+    },
+
+    async updateAssembly() {
+      this.disabled = true;
+      await BaseUrl.put(
+        `/api/assemblies/${this.$route.params.id}`,
+        this.assembly
+      )
+        .then((response) => {
+          this.disabled = false;
+          this.$router.push({ name: "assemblies-list" });
+          Swal.fire("Ensamblaje Registrado", ":)", "success");
+        })
+        .catch((error) => {
+          this.disabled = false;
           this.errors = error.response.data.errors;
           console.log(error.response);
         });
     },
-    // async storeAssembly() {
-    //   this.disabled = true;
-    //   await BaseUrl.post(`/api/assemblies`, this.editAssembly)
-    //     .then((response) => {
-    //       this.disabled = false;
-    //       this.$router.push({ name: "assemblies-list" });
-    //       Swal.fire("Ensamblaje Registrado", ":)", "success");
-    //     })
-    //     .catch((error) => {
-    //       this.errors = error.response.data.errors;
-    //       console.log(error.response);
-    //     });
-    // },
 
     //* * METODOS PARA IMAGENES
     toggleShow() {
@@ -287,10 +314,13 @@ export default {
     cropSuccess(imgDataUrl, field) {
       console.log("-------- crop success --------");
       this.imageUpload.imgDataUrl = imgDataUrl;
-      this.editAssembly.image = imgDataUrl;
+      this.assembly.image = imgDataUrl;
     },
     srcFileSet(fileName, fileType, fileSize) {
       console.log(fileSize);
+    },
+    removeProduct(index) {
+      this.assembly.products.splice(index, 1);
     },
   },
   computed: {
@@ -302,4 +332,18 @@ export default {
 </script>
 
 <style>
+.image-without-products {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  opacity: 0.7;
+  height: 150px;
+  width: 100%;
+  min-width: 850px;
+}
+.image-without-products img {
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
 </style>

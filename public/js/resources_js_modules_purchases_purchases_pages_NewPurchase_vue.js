@@ -88,7 +88,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products?filter[name]=".concat(_this.productName, "&perPage=10")).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products?included=brand,line&filter[name]=".concat(_this.productName, "&perPage=10")).then(function (response) {
                   _this.productsFound = response.data.data;
                 })["catch"](function (error) {
                   console.log(error.response);
@@ -767,9 +767,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       tabindex: "0"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand.description), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.line), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.line.description), 1
     /* TEXT */
     )], 40
     /* PROPS, HYDRATE_EVENTS */
@@ -1867,7 +1867,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

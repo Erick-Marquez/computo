@@ -71,9 +71,44 @@ class AssemblyController extends Controller
         return AssemblyResource::make($assembly);
     }
 
-    public function update(Request $request, Assembly $assembly)
+    public function update(AssemblyRequest $request, Assembly $assembly)
     {
-        //
+        try {
+            $assembly->update([
+                'cod' => $request->cod,
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description
+            ]);
+
+            if (!is_null($request->image)) {
+                if (!is_object($request->image)) {
+                    $imageName = explode(' ', $assembly->name);
+                    $imageName = implode('-', $imageName);
+
+                    Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
+
+                    $assembly->image()->create([
+                        'url' => "assemblies/$imageName.png",
+                    ]);
+                }
+            }
+
+            AssemblyProduct::where('assembly_id', $assembly->id)->delete();
+
+            foreach ($request->products as $product) {
+                AssemblyProduct::create([
+                    'product_id' => $product['id'],
+                    'assembly_id' => $assembly['id'],
+                    'sale_price' => $product['sale_price'],
+                    'quantity' => $product['quantity']
+                ]);
+            }
+
+            return response()->json(['message' => 'Ensamblaje Editado'], 201);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 405);
+        }
     }
 
     public function destroy(Assembly $assembly)

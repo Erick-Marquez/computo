@@ -85,6 +85,7 @@
                 {{ $errorsPrint(errors["document"]) }}
               </div>
             </div>
+
             <input
               v-else
               type="text"
@@ -117,7 +118,6 @@
           </div>
 
           <!-- UBIGEO -->
-          {{ customer.ubigee_id }}
           <div class="form-group">
             <label for="">
               <span class="text-danger">

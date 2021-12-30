@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\BrandLine;
+use App\Models\Brand;
+use App\Models\Line;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,7 +31,8 @@ class ProductFactory extends Factory
             'referential_sale_price' => $this->faker->randomFloat(3, 20, 500),
             'referential_sale_price_one' => $this->faker->randomFloat(3, 20, 500),
             'referential_sale_price_two' => $this->faker->randomFloat(3, 20, 500),
-            'brand_line_id' => BrandLine::all()->random()->id,
+            'brand_id' => Brand::all()->random()->id,
+            'line_id' => Line::all()->random()->id,
         ];
     }
 }

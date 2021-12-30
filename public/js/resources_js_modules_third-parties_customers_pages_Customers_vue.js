@@ -378,7 +378,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    createCustomer: function createCustomer() {
+    storeCustomer: function storeCustomer() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -412,26 +412,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this3 = this;
 
       Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Esta seguro?",
+        text: "Usted no puede revertir esto!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: "Si, Borralo!"
       }).then(function (result) {
         if (result.isConfirmed) {
           _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("/api/customers/".concat(id)).then(function (response) {
-            Swal.fire("Deleted!", response.data.message, "success");
+            Swal.fire("Eliminado!", response.data.message, "success");
 
             _this3.getCustomers();
           })["catch"](function (error) {
-            console.log(error.response);
+            console.log(error.response.data);
           });
         }
       });
     },
-    editCustomer: function editCustomer() {
+    updateCustomer: function updateCustomer() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -440,9 +440,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].put("/api/customers/".concat(_this4.customer.id), _this4.customer).then(function (response) {
-                  $("#new-customer").modal("hide");
-                  Swal.fire("Cliente Registrado", "Exito!!", "success");
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].put("/api/customers/".concat(_this4.editCustomer.id), _this4.editCustomer).then(function (response) {
+                  $("#edit-customer").modal("hide");
+                  Swal.fire("Cliente Editado", "Exito!!", "success");
 
                   _this4.getCustomers();
                 })["catch"](function (error) {
@@ -506,7 +506,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: 0,
       "class": "page-link",
       to: {
-        path: '/clientes',
         query: {
           page: $options.getPage(link.url)
         }
@@ -1160,9 +1159,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* CLASS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.customer.name]]), _ctx.$errorsExists($props.errors['name']) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$errorsPrint($props.errors["name"])), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" UBIGEO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.customer.ubigee_id) + " ", 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" UBIGEO "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $props.customer.ubigee_id,
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $props.customer.ubigee_id = $event;
@@ -1368,17 +1365,18 @@ var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Editar ");
 
 var _hoisted_27 = [_hoisted_25, _hoisted_26];
+var _hoisted_28 = ["onClick"];
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "col-1 mr-3 fas fa-trash"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Eliminar ");
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Eliminar ");
 
-var _hoisted_30 = [_hoisted_28, _hoisted_29];
-var _hoisted_31 = {
+var _hoisted_31 = [_hoisted_29, _hoisted_30];
+var _hoisted_32 = {
   "class": "card-footer"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1390,7 +1388,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.createCustomer && $options.createCustomer.apply($options, arguments);
+      return $options.storeCustomer && $options.storeCustomer.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NewCustomer, {
     customer: $data.customer,
@@ -1426,24 +1424,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , _hoisted_24), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       "class": "dropdown-item",
       href: "#",
-      onClick: _cache[1] || (_cache[1] = function ($event) {
-        return $options.deleteCustomer(_ctx.id);
-      })
-    }, _hoisted_30)])])])]);
+      onClick: function onClick($event) {
+        return $options.deleteCustomer(customer.id);
+      }
+    }, _hoisted_31, 8
+    /* PROPS */
+    , _hoisted_28)])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Paginator, {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Paginator, {
     links: $data.links,
     onGetDataPaginate: $options.getCustomers
   }, null, 8
   /* PROPS */
   , ["links", "onGetDataPaginate"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    action: "",
-    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.editCustomer && $options.editCustomer.apply($options, arguments);
+    onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.updateCustomer && $options.updateCustomer.apply($options, arguments);
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_EditCustomer, {
-    customer: $options.editCustomer,
+    customer: $data.editCustomer,
     errors: $data.errors
   }, null, 8
   /* PROPS */
@@ -1494,7 +1493,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\r\n    color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\r\n    background-color: #23272b;\r\n    border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\r\n    color: #23272b;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\n    color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\n    background-color: #23272b;\n    border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\n    color: #23272b;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

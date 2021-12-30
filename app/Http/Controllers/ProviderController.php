@@ -57,18 +57,6 @@ class ProviderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Provider $provider)
-    {
-        $identification_documents = IdentificationDocument::all();
-        return view('third-parties.providers.edit', compact('provider', 'identification_documents'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -83,9 +71,13 @@ class ProviderController extends Controller
             'identification_document_id' => 'required',
         ]);
 
-        $provider->update($request->all());
+        try {
+            $provider->update($request->all());
+            return response()->json(["message" => "Proveedor actualizado"], 201);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 405);
+        }
 
-        return redirect()->route('providers.index');
     }
 
     /**

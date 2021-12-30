@@ -25,7 +25,7 @@ class AssemblyRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'cod' => 'required|unique:assemblies,cod',
+            'cod' => 'required',
             'price' => 'required|numeric|min:0',
 
             'products' => 'array|required',

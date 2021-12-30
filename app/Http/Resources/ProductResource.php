@@ -27,8 +27,8 @@ class ProductResource extends JsonResource
             'active' => $this->active,
             'igv_type_id' => $this->igv_type_id,
 
-            'brand' => $this->BrandResource::make($this->whenLoaded('brand')),
-            'line' => $this->LineResource::make($this->whenLoaded('line')),
+            'brand' => BrandResource::make($this->whenLoaded('brand')),
+            'line' => LineResource::make($this->whenLoaded('line')),
 
             'sale_price' => $this->whenPivotLoaded('assembly_product', function () {
                 return $this->pivot->sale_price;

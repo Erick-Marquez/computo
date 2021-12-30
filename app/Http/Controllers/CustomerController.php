@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
-use App\Models\IdentificationDocument;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -68,9 +67,12 @@ class CustomerController extends Controller
             'identification_document_id' => 'required',
         ]);
 
-        $customer->update($request->all());
-
-        return redirect()->route('customers.index');
+        try {
+            $customer->update($request->all());
+            return response()->json(['message' => 'Cliente editado']);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 405);
+        }
     }
 
     /**
@@ -81,9 +83,13 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        $customer->delete();
-        return response()->json([
-            'message' => 'cliente eliminado'
-        ], 200);
+        try {
+            $customer->delete();
+            return response()->json([
+                'message' => 'cliente eliminado'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 405);
+        }
     }
 }
