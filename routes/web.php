@@ -53,6 +53,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
 
+    Route::get('/notas-de-credito', [WebController::class, 'creditNotes'])->name('web.credit-notes');
+    Route::get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
+
     Route::get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
 
     Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
@@ -65,6 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
     Route::get('/productos', [WebController::class, 'products'])->name('web.products');
     Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+    Route::get('/editar-producto/{id}', [WebController::class, 'products'])->name('web.edit-products');
     Route::get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
 
     //Rutas egresos-ingresos

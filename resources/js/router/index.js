@@ -50,6 +50,23 @@ const routes = [
         ]
     },
     {
+        path: '/notas-de-credito',
+        name: 'credit-notes-index',
+        component: () => import('../modules/sales/credit-notes/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'credit-notes-list',
+                component: () => import('../modules/sales/credit-notes/pages/CreditNotes.vue'),
+            },
+            {
+                path: '/nueva-nota-de-credito',
+                name: 'new-credit-note',
+                component: () => import('../modules/sales/credit-notes/pages/NewCreditNote.vue'),
+            },
+        ]
+    },
+    {
         path: '/comunicaciones-de-baja',
         name: 'voideds-index',
         component: () => import('../modules/sales/voideds/index.vue'),
@@ -151,6 +168,11 @@ const routes = [
                 path: '/nuevo-producto',
                 name: 'new-product',
                 component: () => import('../modules/catalogs/products/pages/NewProduct.vue'),
+            },
+            {
+                path: '/editar-producto/:id',
+                name: 'edit-product',
+                component: () => import('../modules/catalogs/products/pages/EditProduct.vue'),
             },
             {
                 path: '',

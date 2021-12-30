@@ -1,6 +1,6 @@
 <template>
 <form @submit.prevent="createProduct()">
-  <div class="row">
+  <div class="row pt-3">
     <div class="col-md-7">
       <div class="row">
         <div class="col-md">
@@ -61,7 +61,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="">Linea</label>
-                    <select class="form-control" v-model="line" @change="getBrands()">
+                    <select class="form-control" v-model="line">
                       <option v-for="line in lines" :key="line.id" :value="line.id">{{ line.description }}</option>
                     </select>
                   </div>
@@ -346,6 +346,7 @@ export default {
       })
 
       this.lines = resp.data.data.lines
+      this.brands = resp.data.data.brands
       this.currencyExchange = resp.data.data.currencyExchange.change;
       this.igvTypes = resp.data.data.igvTypes;
 
@@ -353,14 +354,14 @@ export default {
   },
   data() {
     return {
-      cod: '',
-      productName: '',
-      description: '',
       branches : [],
       lines : [],
       brands : [],
       igvTypes : [],
 
+      cod: '',
+      productName: '',
+      description: '',
       line : null,
       brand : '',
 
@@ -395,11 +396,6 @@ export default {
     };
   },
   methods:{
-    getBrands(){
-      BaseUrl.get(`api/products/brands/${this.line}`).then( resp=>{
-        this.brands = resp.data.data;
-      })
-    },
     //Precio compra
     changePricesSoles(){
       this.purchasePriceSoles = this.changePriceSoles(this.purchasePriceDollar)
@@ -504,16 +500,16 @@ export default {
         name : this.productName,
         description : this.description,
         referential_purchase_price : this.purchasePriceDollar,
-        referential_sale_price : this.salePriceOneDollar,
-        referential_sale_price_one : this.salePriceTwoDollar,
-        referential_sale_price_two : this.salePriceThreeDollar,
+        sale_gain_one : this.saleGainOne,
+        sale_gain_two : this.saleGainTwo,
+        sale_gain_three : this.saleGainThree,
         manager_series : this.managerSeries,
         line_id : this.line,
         brand_id : this.brand,
 
         have_warranty: this.haveWarranty,
-        type_of_time_for_warranty: this.typeOfTimeForWarranty,
-        time_of_warranty: this.timeOfWarranty,
+        type_of_time_for_warranty: this.haveWarranty ? this.typeOfTimeForWarranty : null,
+        time_of_warranty: this.haveWarranty ? this.timeOfWarranty : null,
 
         igv_type_id: this.igvTypeId,
 

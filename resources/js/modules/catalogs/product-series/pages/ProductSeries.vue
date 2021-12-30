@@ -46,7 +46,7 @@
                   <tr v-for="product in products" :key="product.id">
                     <td>{{ product.cod }}</td>
                     <td>{{ product.name }}</td>
-                    <td>{{ product.brand_line.brand.description }}</td>
+                    <td>{{ product.brand.description }}</td>
                     <td>
                         Disponible en {{ product.branch_products_count }} sucursales
                         <br>

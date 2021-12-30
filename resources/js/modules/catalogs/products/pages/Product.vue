@@ -56,7 +56,7 @@
                     <td>{{ product.cod }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.description }}</td>
-                    <td>{{ product.referential_sale_price }}</td>
+                    <td>{{ product.referential_purchase_price }}</td>
                     <td>
                       <div class="dropdown">
                         <button
@@ -74,11 +74,13 @@
                           aria-labelledby="dropdownMenuButton"
                           style=""
                         >
-                          <a
+                          <router-link
                             class="dropdown-item"
-                            href="#"
-                            ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                            :to="{ name: 'edit-product', params: { id: product.id } }"
                           >
+                            <i class="col-1 mr-3 fas fa-edit"></i>
+                            Editar
+                          </router-link>
                         </div>
                       </div>
                     </td>
@@ -88,6 +90,21 @@
             </div>
           </div>
           <!-- /.card-body -->
+
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in meta.links" :key="link.index" 
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click ="(link.url == null || link.active) ? null : showPaginateProducts(link.url)" 
+                >
+                  {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
         </div>
         <!-- /.card -->
       </div>
@@ -98,20 +115,32 @@
 <script>
 import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
-  components:{BaseUrl},
+  components: { BaseUrl },
   async created(){
-    await BaseUrl.get(`api/products`).then( resp=>{
-      console.log(resp.data)
-      this.products=resp.data.data
-    })
+    this.showProducts()
   },
   data(){
     return{
-      products:{}
+      meta: {},
+      perPage: 10,
+
+      products: [],
     }
   },
   methods:{
-    
+    async showProducts(){
+      await BaseUrl.get(`api/products?page=1&perPage=${this.perPage}`).then( resp=>{
+        this.products = resp.data.data
+        this.meta = resp.data.meta
+      })
+    },
+    async showPaginateProducts(url){
+      await axios.get(`${url}&perPage=${this.perPage}`)
+      .then( resp => {
+        this.products = resp.data.data
+        this.meta = resp.data.meta
+      })
+    },
   }
 }
 </script>

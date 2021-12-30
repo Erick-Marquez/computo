@@ -302,6 +302,12 @@ return [
                     'route'  => 'web.advance-payments',
                 ],
                 [
+                    'text' => 'Notas de crédito',
+                    'icon' => 'fas fa-fw',
+                    'route'  => 'web.credit-notes',
+                    'active' => ['notas-de-credito', 'nueva-nota-de-credito']
+                ],
+                [
                     'text' => 'Comunicaciones de Baja',
                     'icon' => 'fas fa-fw',
                     'route'  => 'web.voideds',
@@ -340,11 +346,6 @@ return [
                     'route'  => 'web.egresos-ingresos',
                 ],
                 [
-                    'text' => 'Por Cobrar',
-                    'icon' => 'fas fa-fw ',
-                    'url'  => '#',
-                ],
-                [
                     'text' => 'Por Pagar',
                     'icon' => 'fas fa-fw ',
                     'route' => 'web.accounts-to-pay'
@@ -367,7 +368,7 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.products',
                     'can'    => 'products.index',
-                    'active' => ['productos', 'nuevo-producto']
+                    'active' => ['productos', 'nuevo-producto', 'editar-producto/*']
                 ],
                 [
                     'text' => 'Series',
@@ -410,26 +411,26 @@ return [
                     'can'    => 'branches.index',
                     'active' => ['sucursales', 'regex:@^sucursales/productos/[0-9]+$@']
                 ],
-                [
-                    'text'   => 'Movimiento de Sucursal',
-                    'icon'   => 'fas fa-fw ',
-                    'route'  => 'web.branch-movements',
-                ],
+                // [
+                //     'text'   => 'Movimiento de Sucursal',
+                //     'icon'   => 'fas fa-fw ',
+                //     'route'  => 'web.branch-movements',
+                // ],
                 [
                     'text'   => 'Kardex',
                     'icon'   => 'fas fa-fw ',
                     'route'  => 'web.kardex',
                 ],
-                [
-                    'text'   => 'Modificación de Stock',
-                    'icon'   => 'fas fa-fw ',
-                    'route'  => 'web.stock-modifications',
-                ],
-                [
-                    'text'   => 'Devoluciones',
-                    'icon'   => 'fas fa-fw ',
-                    'route'  => 'web.devolutions',
-                ],
+                // [
+                //     'text'   => 'Modificación de Stock',
+                //     'icon'   => 'fas fa-fw ',
+                //     'route'  => 'web.stock-modifications',
+                // ],
+                // [
+                //     'text'   => 'Devoluciones',
+                //     'icon'   => 'fas fa-fw ',
+                //     'route'  => 'web.devolutions',
+                // ],
             ],
         ],
 
@@ -453,11 +454,11 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.reports.products',
                 ],
-                [
-                    'text' => 'Reporte de Series',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'web.reports.series',
-                ],
+                // [
+                //     'text' => 'Reporte de Series',
+                //     'icon' => 'fas fa-fw ',
+                //     'route'  => 'web.reports.series',
+                // ],
                 [
                     'text' => 'Reporte de Compras',
                     'icon' => 'fas fa-fw ',
@@ -468,11 +469,11 @@ return [
                     'icon' => 'fas fa-fw ',
                     'route'  => 'web.reports.cashboxes',
                 ],
-                [
-                    'text' => 'Reporte de Movimientos',
-                    'icon' => 'fas fa-fw ',
-                    'route'  => 'web.reports.expenses-incomes',
-                ],
+                // [
+                //     'text' => 'Reporte de Movimientos',
+                //     'icon' => 'fas fa-fw ',
+                //     'route'  => 'web.reports.expenses-incomes',
+                // ],
                 [
                     'text' => 'Reporte Detallado',
                     'icon' => 'fas fa-fw ',

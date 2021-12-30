@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BranchResource;
-use App\Http\Resources\CurrencyExchangeResource;
 use App\Http\Resources\GlobalResource;
-use App\Http\Resources\LineResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Branch;
 use App\Models\BranchProduct;
 use App\Models\Brand;
-use App\Models\BrandLine;
 use App\Models\CurrencyExchange;
 use App\Models\IgvType;
 use App\Models\Line;
@@ -29,9 +25,10 @@ class ProductController extends Controller
     {
         $products = Product::included()
                             ->filter()
+                            ->search()
                             ->sort()
                             ->getOrPaginate();
-        return ProductResource::collection($products);
+        return GlobalResource::collection($products);
     }
 
     /**
@@ -43,12 +40,14 @@ class ProductController extends Controller
     {
         $branches = Branch::where('state', true)->get();
         $lines = Line::where('active', true)->get();
+        $brands = Brand::where('active', true)->get();
         $currencyExchange = CurrencyExchange::latest()->first();
         $igvTypes = IgvType::all();
 
-        return GlobalResource::make([ 
+        return GlobalResource::make([
             'branches' => $branches,
             'lines' => $lines,
+            'brands' => $brands,
             'currencyExchange' => $currencyExchange,
             'igvTypes' => $igvTypes
         ]);
@@ -69,16 +68,14 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
-        $brandLine = BrandLine::select('id')->where('line_id', $request->line_id)->where('brand_id', $request->brand_id)->first();
-
         $product = Product::create([
             'cod' => $request->cod,
             'name' => $request->name,
             'description' => $request->description,
             'referential_purchase_price' => $request->referential_purchase_price,
-            'referential_sale_price' => $request->referential_sale_price,
-            'referential_sale_price_one' => $request->referential_sale_price_one,
-            'referential_sale_price_two' => $request->referential_sale_price_two,
+            'sale_gain_one' => $request->sale_gain_one,
+            'sale_gain_two' => $request->sale_gain_two,
+            'sale_gain_three' => $request->sale_gain_three,
             'manager_series' => $request->manager_series,
 
             'have_warranty' => $request->have_warranty,
@@ -86,7 +83,8 @@ class ProductController extends Controller
             'time_of_warranty' => $request->time_of_warranty,
 
             'igv_type_id' => $request->igv_type_id, // obtener del tipo de IGV de la sucursal
-            'brand_line_id' => $brandLine->id
+            'brand_id' => $request->brand_id,
+            'line_id' => $request->line_id
         ]);
 
         // Inventario Inicial
@@ -96,9 +94,9 @@ class ProductController extends Controller
             $branchProduct = BranchProduct::create([
                 'stock' => 0,
                 'referential_purchase_price' => $request->referential_purchase_price,
-                'sale_price' => $request->referential_sale_price,
-                'referential_sale_price_one' => $request->referential_sale_price_one,
-                'referential_sale_price_two' => $request->referential_sale_price_two,
+                'sale_gain_one' => $request->sale_gain_one,
+                'sale_gain_two' => $request->sale_gain_two,
+                'sale_gain_three' => $request->sale_gain_three,
                 'manager_series' => $request->manager_series,
 
                 'have_warranty' => $request->have_warranty,
@@ -148,12 +146,23 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        $branches = Branch::all();
-        $lines = Line::all();
-        $brands = Brand::all();
-        return view('catalogs.products.edit', compact('product', 'lines', 'brands', 'branches'));
+        $lines = Line::where('active', true)->get();
+        $brands = Brand::where('active', true)->get();
+        $currencyExchange = CurrencyExchange::latest()->first();
+        $igvTypes = IgvType::all();
+
+        $product = Product::findOrFail($id);
+
+        return GlobalResource::make([
+            'lines' => $lines,
+            'brands' => $brands,
+            'currencyExchange' => $currencyExchange,
+            'igvTypes' => $igvTypes,
+
+            'product' => $product
+        ]);
     }
 
     /**
@@ -171,19 +180,27 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
-        $brandLine = BrandLine::select('id')->where('line_id', $request->line_id)->where('brand_id', $request->brand_id)->first();
-
         $product->update([
+
             'cod' => $request->cod,
             'name' => $request->name,
             'description' => $request->description,
-            'price' => $request->price,
-            //'active' => $request->active,
-            'brand_line_id' => $brandLine->id,
+            'referential_purchase_price' => $request->referential_purchase_price,
+            'sale_gain_one' => $request->sale_gain_one,
+            'sale_gain_two' => $request->sale_gain_two,
+            'sale_gain_three' => $request->sale_gain_three,
+
+            'have_warranty' => $request->have_warranty,
+            'type_of_time_for_warranty' => $request->type_of_time_for_warranty,
+            'time_of_warranty' => $request->time_of_warranty,
+
+            'igv_type_id' => $request->igv_type_id, // obtener del tipo de IGV de la sucursal
+            'brand_id' => $request->brand_id,
+            'line_id' => $request->line_id
         ]);
 
 
-        return redirect()->route('products.index');
+        return GlobalResource::make($product);
     }
 
     /**
@@ -196,12 +213,5 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('products.index');
-    }
-
-    public function brands($id)
-    {
-        $line = Line::findOrFail($id);
-        $brands = $line->brands;
-        return LineResource::collection($brands);
     }
 }

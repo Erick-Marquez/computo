@@ -13,9 +13,9 @@ class BranchProduct extends Model
         //'cod',
         'stock',
         'referential_purchase_price',
-        'sale_price',
-        'referential_sale_price_one',
-        'referential_sale_price_two',
+        'sale_gain_one',
+        'sale_gain_two',
+        'sale_gain_three',
         'manager_series',
         'active',
 

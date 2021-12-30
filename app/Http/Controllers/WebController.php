@@ -40,6 +40,16 @@ class WebController extends Controller
         return view('sales.advance-payments.index');
     }
 
+    public function creditNotes()
+    {
+        return view('sales.credit-notes.index');
+    }
+
+    public function newCreditNote()
+    {
+        return view('sales.credit-notes.create');
+    }
+
     public function voideds()
     {
         return view('sales.voideds.index');
@@ -253,7 +263,7 @@ class WebController extends Controller
             return response()->json([
                 'message' => $response['response']['message']
             ]);
-            
+
         } catch (TicketSunatOutOfServiceException $e) {
 
             $response = $service->getResponse();

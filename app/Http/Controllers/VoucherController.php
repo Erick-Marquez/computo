@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VoucherRequest;
-use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
 use App\Http\Resources\CurrencyExchangeResource;
 use App\Http\Resources\GlobalResource;
@@ -18,33 +17,25 @@ use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
 use App\Models\Company;
 use App\Models\CurrencyExchange;
-use App\Models\Customer;
 use App\Models\IdentificationDocument;
 use App\Models\IgvType;
 use App\Models\PaymentType;
-use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\Sale;
-use App\Models\SaleDetail;
 use App\Models\Serie;
 use App\Models\VoucherType;
 use App\Models\Warranty;
-use App\Models\WarrantyDetail;
-use App\Services\KardexService;
-use App\Services\NumberLetterService;
 use App\Services\SaleService;
-use App\Services\SunatService;
 use Illuminate\Http\Request;
 
-use Carbon\Carbon;
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VoucherController extends Controller
 {
 
     public function __construct()
-    {   
+    {
         $this->saleService = new SaleService();
     }
 
@@ -55,13 +46,22 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $vouchers = Sale::whereHas('serie', function($q) {
-            $q->where('voucher_type_id', '!=', 3)
-            ->where('branch_id', auth()->user()->branch_id); // 3 - id de nota de venta
-        })
-        ->with('serie.voucherType', 'customer')->latest()->get();
-        
-        return SaleResource::collection($vouchers);
+        $vouchers = Sale::from('sales AS s')
+            ->where('sr.voucher_type_id', '!=', 3)
+            ->where('sr.branch_id', auth()->user()->branch_id)
+            ->join('customers AS c', 's.customer_id', '=', 'c.id')
+            ->join('identification_documents AS id', 'c.identification_document_id', '=', 'id.id')
+            ->join('series AS sr', 's.serie_id', '=', 'sr.id')
+            ->join('voucher_types AS vt', 'sr.voucher_type_id', '=', 'vt.id')
+            ->select(
+                's.id', 's.created_at', 'vt.description AS voucher_type', 'sr.serie', 's.document_number',
+                'id.description AS customer_identification_document', 'c.document AS customer_document',
+                'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod', 's.have_warranty'
+                )
+            ->orderBy('s.created_at', 'DESC')
+            ->getOrPaginate();
+
+        return GlobalResource::collection($vouchers);
     }
 
     public function saleNotes()
@@ -70,7 +70,7 @@ class VoucherController extends Controller
             $q->where('voucher_type_id', '=', 3)
             ->where('branch_id', auth()->user()->branch_id);
         })->with('serie.voucherType', 'customer')->latest()->get();
-        
+
         return SaleResource::collection($vouchers);
     }
 
@@ -89,13 +89,13 @@ class VoucherController extends Controller
 
         $series = Serie::where('branch_id', auth()->user()->branch_id)->whereNotIn('voucher_type_id', [4, 5, 6, 7])->get(); //Filtrar en el fronted
 
-        return GlobalResource::make([ 
+        return GlobalResource::make([
             'currencyExchange' => $currencyExchange,
             'identificationDocuments' => $identificationDocuments,
             'igvTypes' => $igvTypes,
             'paymentTypes' => $paymentTypes,
             'voucherTypes' => $voucherTypes,
-            
+
             'series' => $series,
         ]);
     }
@@ -107,11 +107,11 @@ class VoucherController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(VoucherRequest $request)
-    {    
+    {
         //Datos adicionales para el guardar la venta en el servicio
         $request->offsetSet('open_closed_cashbox_id', auth()->user()->open_closed_cashbox_id);
         $request->offsetSet('user_id', auth()->user()->id);
-        
+
         return $this->saleService->storeSale($request);
 
     }
@@ -222,14 +222,14 @@ class VoucherController extends Controller
             $pathToFile .= DIRECTORY_SEPARATOR.'ZipXml'.DIRECTORY_SEPARATOR;
             //nombre del zip del xml del comprabante solicitado
             $nameZip = $company->ruc . '-' . $sale->serie->voucherType->cod . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
-           
+
             $pathToFile .= $nameZip;
         }
         else if ($type == 'cdr') {
             $pathToFile .= DIRECTORY_SEPARATOR.'Cdr'.DIRECTORY_SEPARATOR;
             //nombre del zip del cdr del comprabante solicitado
             $nameZip = 'R-' . $company->ruc . '-' . $sale->serie->voucherType->cod . '-' . $sale->serie->serie . '-' . $sale->document_number . '.zip';
-            
+
             $pathToFile .= $nameZip;
         }
 
@@ -273,11 +273,10 @@ class VoucherController extends Controller
             ->where('p.name', 'like', '%' . $search . '%')
             ->orWhere('p.cod', 'like', '%' . $search . '%')
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
-            ->join('brand_line AS bl', 'p.brand_line_id', '=', 'bl.id')
-            ->join('brands AS b', 'bl.brand_id', '=', 'b.id')
+            ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(
                 'bp.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'bp.stock', 'bp.igv_type_id',
-                'bp.sale_price', 'bp.referential_sale_price_one', 'bp.referential_sale_price_two'
+                'p.referential_purchase_price', 'bp.sale_gain_one', 'bp.sale_gain_two', 'bp.sale_gain_three'
                 )
             ->limit(10)
             ->get();
@@ -303,7 +302,7 @@ class VoucherController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brandLine.brand', 'paymentTypes')->firstOrFail();
+        $quotation = Quotation::where('document_number', $number)->where('serie_id', $serie)->with('quotationDetails.branchProduct.product.brand', 'paymentTypes')->firstOrFail();
         return QuotationResource::make($quotation);
     }
 

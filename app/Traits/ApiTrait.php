@@ -46,6 +46,25 @@ trait ApiTrait
                 $query->where($filter, 'LIKE', '%' . $valor . '%');
             }
         }
+
+    }
+
+    public function scopeSearch(Builder $query)
+    {
+        if (empty($this->allowFilter) || empty(request('search'))) {
+            return;
+        }
+
+        $searchs = request('search');
+        $allowSearch = collect($this->allowSearch);
+
+        foreach ($searchs as $search => $valor) {
+            if ($allowSearch->contains($search)) {
+                $query->orWhere($search, 'LIKE', '%' . $valor . '%');
+            }
+        }
+
+        $query->limit(10);
     }
 
     // funcion para ordenar que obtiene como parametro la consulta

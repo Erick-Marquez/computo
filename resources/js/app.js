@@ -28,6 +28,7 @@ import indexSaleNotes from './modules/sales/sale-notes/index.vue';
 import advancePayments from './modules/sales/advance-payments/index.vue';
 import voided from './modules/sales/voideds/index.vue';
 import indexQuotation from './modules/sales/quotations/index.vue';
+import indexCreditNotes from './modules/sales/credit-notes/index.vue';
 import indexWarranty from './modules/sales/warranties/index.vue';
 
 /* Catalogs */
@@ -73,6 +74,7 @@ app.component('index-sale-notes', indexSaleNotes);
 app.component('index-advance-payments', advancePayments);
 app.component('index-voideds', voided);
 app.component('index-quotations', indexQuotation);
+app.component('index-credit-notes', indexCreditNotes);
 app.component('index-warranties', indexWarranty);
 
 /* Catalogs */

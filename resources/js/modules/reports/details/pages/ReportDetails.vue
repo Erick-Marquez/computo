@@ -18,37 +18,45 @@
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Producto: </label>
-          <select
-            class="form-control rounded-pill"
+          <v-select
+            class="style-chooser"
             v-model="filters.product_id"
+            label="name"
+            placeholder="TODOS"
+            :reduce="(product) => product.id"
+            :options="products"
           >
-            <option :value="null">TODOS</option>
-            <option
-              v-for="product in products"
-              :key="product.id"
-              :value="product.id"
-            >
-              {{ product.name }}
-            </option>
-          </select>
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
         </div>
       </div>
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Cliente:</label>
-          <select
-            class="form-control rounded-pill"
+          <v-select
+            class="style-chooser"
             v-model="filters.customer_id"
+            label="name"
+            placeholder="TODOS"
+            :reduce="(customer) => customer.id"
+            :options="customers"
           >
-            <option :value="null">TODOS</option>
-            <option
-              v-for="customer in customers"
-              :key="customer.id"
-              :value="customer.id"
-            >
-              {{ customer.name }} - {{ customer.document }}
-            </option>
-          </select>
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
         </div>
       </div>
     </filters>

@@ -93,8 +93,7 @@ class KardexController extends Controller
         $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'b.description as brand')
             ->where('branch_id', $branchId)
             ->join('products as p', 'branch_product.product_id', '=', 'p.id')
-            ->join('brand_line as bl', 'p.brand_line_id', '=', 'bl.id')
-            ->join('brands as b', 'bl.brand_id', '=', 'b.id')
+            ->join('brands as b', 'p.brand_id', '=', 'b.id')
             ->where('p.name', 'like', '%'. $search .'%')
             ->limit(10)->get();
         return BranchProductResource::collection($branchProducts);

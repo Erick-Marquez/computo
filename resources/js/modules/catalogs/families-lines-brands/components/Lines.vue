@@ -61,9 +61,6 @@
                             aria-labelledby="dropdownMenuButton"
                             style=""
                         >
-                            <a class="dropdown-item" href="#" @click="showModal('#modal-add-brands', line)">
-                                <i class="col-1 mr-3 fas fa-plus-circle"></i>Añadir Marcas
-                            </a>
                             <a class="dropdown-item" href="#" @click="showModal('#modal-line-edit', line)">
                                 <i class="col-1 mr-3 fas fa-edit"></i>Editar
                             </a>
@@ -186,51 +183,6 @@
         </div>
         </div>
     </div>
-
-    <!-- Modal Añadir Marca -->
-    <div class="modal fade" id="modal-add-brands" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h4 class="modal-title">Añadir Marcas para {{ lineAddBrands.description }}</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-            </div>
-            <form @submit.prevent="addBrands()">
-            <div class="modal-body">
-
-                <div v-if="errorBrands.length" class="alert alert-danger" role="alert" style="color: #721c24; background-color: #f8d7da; border-color: #f5c6cb;">
-                    No se puede quitar las marcas: <b v-for="(errorBrand, index) in errorBrands" :key="errorBrand.id">{{ index == 0 ? errorBrand.description : ', ' + errorBrand.description }}</b> porque estan en uso
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Marcas</label>
-                    <v-select multiple v-model="lineAddBrands.brands" label="description" :reduce="brand => brand.id" :options="brands">
-                        <template v-slot:no-options="{ search, searching }">
-                            <template v-if="searching">
-                                No se encontraron resultados para <b><em>{{ search }}</em></b>.
-                            </template>
-                        </template>
-                    </v-select>
-                </div>
-
-            </div>
-
-            <div class="modal-footer justify-content-between">
-                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cerrar">
-
-                <button v-if="!loading" type="submit" class="btn btn-primary">Guardar</button>
-                <button v-else class="btn btn-primary" :disabled="loading">
-                <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                </button>
-            </div>
-            </form>
-        </div>
-        </div>
-    </div>
 </template>
 
 <script>
@@ -254,15 +206,6 @@ export default {
                 description: '',
                 family_id: '',
             },
-
-            lineAddBrands:{
-                id: '',
-                description: '',
-                brands: []
-            },
-
-            errorAddBrands: "",
-            errorBrands: [],
 
         };
     },
@@ -288,17 +231,6 @@ export default {
                 this.lineEdit.cod = data.cod
                 this.lineEdit.description = data.description
                 this.lineEdit.family_id = data.family_id
-
-                this.lineAddBrands.id = data.id
-                this.lineAddBrands.description = data.description
-                this.lineAddBrands.brands = [] 
-
-                data.brands.forEach(element => {
-                    this.lineAddBrands.brands.push(element.id)
-                })
-
-                this.errorAddBrands = ""
-                this.errorBrands = []
             
             }
             $(modal).modal("show");
@@ -368,30 +300,7 @@ export default {
                 },
             });
 
-        },
-        addBrands(){
-            this.loading = true
-            BaseUrl.put(`api/lines/add-brands/${this.lineAddBrands.id}`, this.lineAddBrands).then( resp => {
-                
-                console.log(resp);
-                $("#modal-add-brands").modal("hide")
-                this.showLines()
-                this.lineAddBrands = {}
-
-                Swal.fire("Actualizado", "La marcas han sido agregadas", "success");
-            })
-            .catch((error) => {
-                console.log(error.response);
-                if (error.response.status == 422) {
-                    this.errorAddBrands = error.response.data.error
-                    this.errorBrands = error.response.data.brands
-                }
-            })
-            .finally(() => {
-                this.loading = false;
-            });
         }
-
     },
 };
 </script>

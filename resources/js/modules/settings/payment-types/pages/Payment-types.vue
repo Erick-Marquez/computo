@@ -45,8 +45,8 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>Fecha</th>
-                    <th>Tipo de cambio</th>
+                    <th>N°</th>
+                    <th>Descripción</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>

@@ -19,9 +19,9 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->unsignedDecimal('referential_purchase_price', 9, 3)->nullable();
-            $table->unsignedDecimal('referential_sale_price', 9, 3)->nullable();
-            $table->unsignedDecimal('referential_sale_price_one', 9, 3)->nullable();
-            $table->unsignedDecimal('referential_sale_price_two', 9, 3)->nullable();
+            $table->unsignedDecimal('sale_gain_one', 9, 3)->nullable();
+            $table->unsignedDecimal('sale_gain_two', 9, 3)->nullable();
+            $table->unsignedDecimal('sale_gain_three', 9, 3)->nullable();
             $table->boolean('manager_series')->default(false);
             $table->boolean('active')->default(true);
 

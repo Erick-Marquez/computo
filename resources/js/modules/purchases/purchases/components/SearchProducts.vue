@@ -73,7 +73,7 @@ export default {
   methods: {
     async getProducts() {
       await BaseUrl.get(
-        `/api/products?included=brand,line&filter[name]=${this.productName}&perPage=10`
+        `/api/products?included=brand,line&search[name]=${this.productName}&search[cod]=${this.productName}`
       )
         .then((response) => {
           this.productsFound = response.data.data;

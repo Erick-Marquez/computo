@@ -54,12 +54,12 @@
                   <tr v-for="sale in sales" :key="sale.id">
                     <td class="align-middle">{{ getTimestamp(sale.created_at) }}</td>
                     <td :class="['align-middle', sale.state == 'ANULADO' ? 'voided' : null]">
-                      <span class="text-muted">{{ sale.serie.voucher_type.description }}: </span>{{ sale.serie.serie }}-{{ sale.document_number }}
+                      <span class="text-muted">{{ sale.voucher_type }}: </span>{{ sale.serie }}-{{ sale.document_number }}
                     </td>
                     <td class="align-middle">
-                      <span class="badge bg-maroon">{{ sale.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ sale.customer.document }}
+                      <span class="badge bg-maroon">{{ sale.customer_identification_document }}</span> {{ sale.customer_document }}
                       <br>
-                      <span class="badge bg-maroon">Nombre:</span> {{ sale.customer.name }}
+                      <span class="badge bg-maroon">Nombre:</span> {{ sale.customer_name }}
                     </td>
                     <td class="align-middle">S/. {{ sale.total }}</td>
                     <td class="align-middle text-center">
@@ -74,10 +74,10 @@
                       </a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/xml/' + sale.id"><img src="../../../../../img/xml_cpe.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el XML" target="_blank" :href="'download/vouchers/' + sale.voucher_type_cod + '/xml/' + sale.id"><img src="../../../../../img/xml_cpe.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
-                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.serie.voucher_type.cod + '/cdr/' + sale.id"><img src="../../../../../img/xml_cdr.svg" style="width: 30px"></a>
+                      <a title="Haz Click para Descargar el CDR" target="_blank" :href="'download/vouchers/' + sale.voucher_type_cod + '/cdr/' + sale.id"><img src="../../../../../img/xml_cdr.svg" style="width: 30px"></a>
                     </td>
                     <td class="align-middle text-center">
                       <i v-if="sale.state == 'ACEPTADO'" class="text-success fas fa-check"></i>
@@ -129,6 +129,20 @@
             </div>
           </div>
           <!-- /.card-body -->
+
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in meta.links" :key="link.index"
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click="(link.url == null || link.active) ? null : showPaginateVouchers(link.url)"
+                >
+                  {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
         <!-- /.card -->
       </div>
@@ -185,13 +199,16 @@
 <script>
 import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
-  components:{BaseUrl},
+  components:{ BaseUrl },
   async created(){
     this.showVouchers()
   },
   data(){
     return{
       loading: false,
+
+      meta: {},
+      perPage: 10,
 
       sales: [],
       voided: {
@@ -206,8 +223,16 @@ export default {
   },
   methods:{
     async showVouchers(){
-      await BaseUrl.get(`api/sales`).then( resp=>{
-        this.sales=resp.data.data
+      await BaseUrl.get(`api/sales?page=1&perPage=${this.perPage}`).then( resp=>{
+        this.sales = resp.data.data
+        this.meta = resp.data.meta
+      })
+    },
+    async showPaginateVouchers(url){
+      await axios.get(`${url}&perPage=${this.perPage}`)
+      .then( resp => {
+        this.sales = resp.data.data
+        this.meta = resp.data.meta
       })
     },
     getTimestamp(date){
@@ -222,15 +247,15 @@ export default {
       this.voided.sale_id = sale.id
       this.voided.description = null
 
-      this.voided.voucher_type = sale.serie.voucher_type.description
-      this.voided.serie = sale.serie.serie
+      this.voided.voucher_type = sale.voucher_type
+      this.voided.serie = sale.serie
       this.voided.document_number = sale.document_number
 
-      if (sale.serie.voucher_type.cod == "01") {
+      if (sale.voucher_type_cod == "01") {
         this.showModal("#modal-voided")
       }
-      else if (sale.serie.voucher_type.cod == "03") {
-        
+      else if (sale.voucher_type_cod == "03") {
+
       }
 
     },

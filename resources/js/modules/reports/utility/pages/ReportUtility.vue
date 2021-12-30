@@ -18,19 +18,23 @@
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Cliente:</label>
-          <select
-            class="form-control rounded-pill"
+          <v-select
+            class="style-chooser"
             v-model="filters.customer_id"
+            label="name"
+            placeholder="TODOS"
+            :reduce="(customer) => customer.id"
+            :options="customers"
           >
-            <option :value="null">TODOS</option>
-            <option
-              v-for="customer in customers"
-              :key="customer.id"
-              :value="customer.id"
-            >
-              {{ customer.name }} - {{ customer.document }}
-            </option>
-          </select>
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
         </div>
       </div>
     </filters>
@@ -77,8 +81,18 @@
                     </td>
                     <td>{{ sale.name }}</td>
                     <td>{{ sale.created_at }}</td>
-                    <td>{{ sale.state === 'ANULADO' ? 0 : sale.total }}</td>
-                    <td>{{ sale.utility2 = sale.state === 'ANULADO' ? 0 : sale.discount === 0 ? parseFloat(sale.utility).toFixed(2) : parseFloat(sale.utility).toFixed(2) - sale.discount }}</td>
+                    <td>{{ sale.state === "ANULADO" ? 0 : sale.total }}</td>
+                    <td>
+                      {{
+                        (sale.utility2 =
+                          sale.state === "ANULADO"
+                            ? 0
+                            : sale.discount === 0
+                            ? parseFloat(sale.utility).toFixed(2)
+                            : parseFloat(sale.utility).toFixed(2) -
+                              sale.discount)
+                      }}
+                    </td>
                   </tr>
                 </tbody>
                 <tfoot v-if="utility.length >= 1">
@@ -122,7 +136,7 @@
           <h3 class="card-title">Productos mas vendidos</h3>
         </div>
         <div class="card-body">
-            <most-selled-products :msp="msp"></most-selled-products>
+          <most-selled-products :msp="msp"></most-selled-products>
         </div>
       </div>
     </div>
@@ -130,7 +144,6 @@
 </template>
 
 <script>
-
 import Filters from "../../../../compositions/Filters.vue";
 import MostSelledProducts from "../components/MostSelledProducts.vue";
 import BaseUrl from "../../../../api/BaseUrl";
