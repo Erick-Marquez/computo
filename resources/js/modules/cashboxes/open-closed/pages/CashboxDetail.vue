@@ -293,7 +293,7 @@ export default {
                 icon: "sucess",
                 title: "Caja Cerrada!",
                 text: "Su caja se cerro satisfactoriamente.",
-                footer: `<a class="btn btn-sm btn-outline-info" target="_blank" href="/print/cashbox/report/${response.data}"><i class="fas fa-file-invoice-dollar"></i> Ver reporte</a>`,
+                footer: `<a class="btn btn-sm btn-outline-info" target="_blank" href="/occ/report/${response.data}"><i class="fas fa-file-invoice-dollar"></i> Ver reporte</a>`,
               });
             })
             .catch((error) => {

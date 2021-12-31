@@ -81,17 +81,15 @@ class AssemblyController extends Controller
                 'description' => $request->description
             ]);
 
-            if (!is_null($request->image)) {
-                if (!is_object($request->image)) {
-                    $imageName = explode(' ', $assembly->name);
-                    $imageName = implode('-', $imageName);
+            if (!is_null($request->image) && !is_object($request->image)) {
+                $imageName = explode(' ', $assembly->name);
+                $imageName = implode('-', $imageName);
 
-                    Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
+                Image::make($request->image)->save(public_path('storage') . "/assemblies/$imageName.png");
 
-                    $assembly->image()->create([
-                        'url' => "assemblies/$imageName.png",
-                    ]);
-                }
+                $assembly->image()->create([
+                    'url' => "assemblies/$imageName.png",
+                ]);
             }
 
             AssemblyProduct::where('assembly_id', $assembly->id)->delete();

@@ -42,13 +42,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
     //Sale
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-    Route::get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
+    Route::middleware(['opening.cashbox'])->get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
 
     Route::middleware(['opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
 
-    Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+    Route::middleware(['opening.cashbox'])->get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
 
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');

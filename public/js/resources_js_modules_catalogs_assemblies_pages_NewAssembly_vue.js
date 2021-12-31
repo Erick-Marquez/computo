@@ -187,6 +187,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 2;
                 return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products?included=brand,line&search[name]=".concat(_this.productName, "&search[cod]=").concat(_this.productName)).then(function (response) {
                   _this.productsFound = response.data.data;
+                  console.log(_this.productsFound);
                 })["catch"](function (error) {
                   console.log(error.response);
                 });
@@ -215,7 +216,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       product.igv = true;
       this.productsFound = [];
       this.productName = null;
-      product.sale_price = product.referential_sale_price;
+      product.sale_price = parseFloat(parseFloat(100 + parseFloat(product.sale_gain_one)) * product.referential_purchase_price / 100).toFixed(2);
       product.discount = 0;
       var index = this.products.findIndex(function (element) {
         return element.id == product.id;

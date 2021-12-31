@@ -137,7 +137,6 @@ class CashboxService
     public function movement($id, $data)
     {
         $occ = $this->recoverOpening($id);
-        $data['payment_type_id'] = 1;
 
         try {
             $occ->openClosedCashboxDetails()->create($data);

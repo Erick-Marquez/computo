@@ -47,7 +47,19 @@
             {{ $errorsPrint(errors["type"]) }}
           </div>
 
-          <slot> </slot>
+          <div class="form-group">
+            <label for="">Tipo de pago</label>
+            <select
+              name=""
+              id=""
+              class="form-control rounded-pill"
+              v-model="movement.payment_type_id"
+            >
+              <option v-for="pt in paymentTypes" :key="pt.id" :value="pt.id">
+                {{ pt.description }}
+              </option>
+            </select>
+          </div>
 
           <div class="form-group">
             <label for="">Monto</label>
@@ -103,14 +115,31 @@
 </template>
 
 <script>
+import BaseUrl from "../../../api/BaseUrl";
 export default {
   data() {
-    return {};
+    return {
+      paymentTypes: [],
+    };
   },
   props: {
     movement: Object,
     errors: Object,
     disabled: Boolean,
+  },
+  created() {
+      this.getPaymentTypes()
+  },
+  methods: {
+    async getPaymentTypes() {
+      await BaseUrl.get(`/api/payment-types`)
+        .then((response) => {
+          this.paymentTypes = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    },
   },
 };
 </script>

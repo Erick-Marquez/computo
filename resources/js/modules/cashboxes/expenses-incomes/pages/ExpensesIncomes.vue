@@ -10,19 +10,6 @@
 
   <form @submit.prevent="createMovement()">
     <new-movement-vue :movement="movement" :errors="errors">
-      <div class="form-group">
-        <label for="">Tipo de pago</label>
-        <select
-          name=""
-          id=""
-          class="form-control rounded-pill"
-          v-model="movement.payment_type_id"
-        >
-          <option v-for="pt in paymentTypes" :key="pt.id" :value="pt.id">
-            {{ pt.description }}
-          </option>
-        </select>
-      </div>
     </new-movement-vue>
   </form>
 
@@ -121,13 +108,11 @@ export default {
         payment_type_id: 1,
       },
       movements: [],
-      paymentTypes: [],
       errors: [],
     };
   },
   created() {
     this.showMovements();
-    this.getPaymentTypes();
   },
   methods: {
     async showMovements() {
@@ -179,16 +164,6 @@ export default {
             });
         }
       });
-    },
-
-    async getPaymentTypes() {
-      await BaseUrl.get(`/api/payment-types`)
-        .then((response) => {
-          this.paymentTypes = response.data.data;
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
     },
   },
 };

@@ -129,6 +129,7 @@ class OpenClosedCashbox extends Model
             ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
             ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
             ->select('payment_types.description', DB::raw('SUM(payment_type_sale.amount) as amount'))
+            ->whereNotIn('sales.state', ['ANULADO'])
             ->groupBy('payment_types.description')
             ->get();
     }
@@ -136,9 +137,9 @@ class OpenClosedCashbox extends Model
     public function getSalesAmounts()
     {
         return [
-            "TOTAL" => $this->sales()->sum('total'),
-            "SUBTOTAL" => $this->sales()->sum('subtotal'),
-            "IGV" => $this->sales()->sum('igv'),
+            "TOTAL" => $this->sales()->where('canceled', false)->sum('total'),
+            "SUBTOTAL" => $this->sales()->where('canceled', false)->sum('subtotal'),
+            "IGV" => $this->sales()->where('canceled', false)->sum('igv'),
         ];
     }
 
@@ -147,20 +148,21 @@ class OpenClosedCashbox extends Model
         return $this->sales()
             ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
             ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
-            ->select('sales.created_at as date', 'sales.observation', 'payment_type_sale.amount as amount')
-            ->whereNotIn('sales.state', ['ANULADO'])
+            ->join('series', 'sales.serie_id', '=', 'series.id')
+            ->select('sales.created_at as date', DB::raw("CONCAT(series.serie, '-',sales.document_number) as observation"), 'payment_type_sale.amount as amount')
+            ->where('sales.canceled', false)
             ->where('payment_types.id', 1)
             ->get()
 
             ->each(function ($item, $key) {
-                return $item['concept'] = 'VENTA';
+                $item['concept'] = 'VENTA';
             });
     }
 
     public function getPurchases()
     {
         return $this->purchases()
-            ->select('created_at as date', 'observation', 'total as amount')
+            ->select('created_at as date', DB::raw("CONCAT(serie, '-',document_number) as observation"), 'total as amount')
             ->where('is_credit', false)
             ->get()
             ->each(function ($item, $key) {

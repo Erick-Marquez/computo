@@ -63,9 +63,7 @@
                         style="width: 150px"
                       />
                     </td>
-                    <td v-else>
-                        No tiene imagen
-                    </td>
+                    <td v-else>No tiene imagen</td>
                     <td>{{ assembly.cod }}</td>
                     <td>{{ assembly.name }}</td>
                     <td>{{ assembly.description }}</td>
@@ -87,7 +85,13 @@
                           aria-labelledby="dropdownMenuButton"
                           style=""
                         >
-                          <router-link class="dropdown-item" :to="{name: 'edit-assembly', params: {id : assembly.id}}">
+                          <router-link
+                            class="dropdown-item"
+                            :to="{
+                              name: 'edit-assembly',
+                              params: { id: assembly.id },
+                            }"
+                          >
                             <i class="col-1 mr-3 fas fa-eye"></i>
                             Editar
                           </router-link>
@@ -103,6 +107,9 @@
               </table>
             </div>
           </div>
+          <div class="card-footer">
+            <Paginator :links="links" v-on:getDataPaginate="getAssemblies" />
+          </div>
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
@@ -113,11 +120,14 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import Paginator from "../../../../compositions/Paginator.vue";
+
 export default {
-  components: { BaseUrl },
+  components: { BaseUrl, Paginator },
   data() {
     return {
       assemblies: [],
+      links: {},
     };
   },
   created() {
@@ -125,13 +135,13 @@ export default {
   },
   methods: {
     async getAssemblies() {
-      await BaseUrl.get(`/api/assemblies?included=products,image`)
+      await BaseUrl.get(`/api/assemblies?included=products,image&perPage=10`)
         .then((response) => {
           this.assemblies = response.data.data;
-          console.log(response.data);
+          this.links = response.data.meta.links;
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error.response);
         });
     },
   },

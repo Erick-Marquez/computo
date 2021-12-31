@@ -31,21 +31,21 @@ class DashboardController extends Controller
             $facturas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
                 ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
+                ->where('sales.canceled', false)
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.cod', '01')
                 ->where('sales.created_at', '>', $fechasAtras)
-                ->groupBy('voucher_types.description')
-                ->groupBy('sales.created_at')
+                ->groupBy('voucher_types.description', 'x')
                 ->get(); // OBJETO {X: , Y: }
 
             $boletas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
                 ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
+                ->where('sales.canceled', false)
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.cod', '03')
                 ->where('sales.created_at', '>', $fechasAtras)
-                ->groupBy('voucher_types.description')
-                ->groupBy('sales.created_at')
+                ->groupBy('voucher_types.description', 'x')
                 ->get(); // OBJETO {X: , Y: }
 
             $notas_venta = DB::table('sales')
@@ -55,8 +55,7 @@ class DashboardController extends Controller
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.id', 3)
                 ->where('sales.created_at', '>', $fechasAtras)
-                ->groupBy('voucher_types.description')
-                ->groupBy('sales.created_at')
+                ->groupBy('voucher_types.description', 'x')
                 ->get(); // OBJETO {X: , Y: }
 
             return response()->json(['facturas' => $facturas, 'boletas' => $boletas, 'notas_venta' => $notas_venta, 'fechas' => $fechas]);
@@ -93,6 +92,7 @@ class DashboardController extends Controller
             ->select('payment_types.description', DB::raw('SUM(payment_type_sale.amount) as amount'))
 
             ->groupBy('payment_types.description')
+            ->where('sales.canceled', false)
             ->where('sales.created_at', '>=', $fechasAtras)
             ->get();
 

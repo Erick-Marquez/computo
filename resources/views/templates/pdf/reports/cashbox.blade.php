@@ -211,15 +211,15 @@
                 <tfoot>
                     <tr>
                         <td class="text-right"> TOTAL: </td>
-                        <td class="text-center"> {{ $occ->sales()->sum('total') }} </td>
+                        <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('total') }} </td>
                     </tr>
                     <tr>
                         <td class="text-right"> SUBTOTAL: </td>
-                        <td class="text-center"> {{ $occ->sales()->sum('subtotal') }} </td>
+                        <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('subtotal') }} </td>
                     </tr>
                     <tr>
                         <td class="text-right"> IGV: </td>
-                        <td class="text-center"> {{ $occ->sales()->sum('total_igv') }} </td>
+                        <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('total_igv') }} </td>
                     </tr>
                 </tfoot>
             </table>

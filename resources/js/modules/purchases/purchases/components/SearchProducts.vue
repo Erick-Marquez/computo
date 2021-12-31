@@ -77,6 +77,7 @@ export default {
       )
         .then((response) => {
           this.productsFound = response.data.data;
+          console.log(this.productsFound);
         })
         .catch((error) => {
           console.log(error.response);
@@ -104,7 +105,7 @@ export default {
       this.productsFound = [];
       this.productName = null;
 
-      product.sale_price = product.referential_sale_price;
+      product.sale_price = parseFloat((parseFloat(100 + parseFloat(product.sale_gain_one)) * product.referential_purchase_price)/100).toFixed(2);
       product.discount = 0;
 
       let index = this.products.findIndex(
