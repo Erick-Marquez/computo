@@ -4,6 +4,74 @@
   </div>
   <div class="card">
     <div class="card-body">
+
+      <h4>Comprobante a modificar:</h4>
+      <div class="row">
+        <!-- TIPO DE COMPROBANTE -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-calendar-times"></i>
+              Tipo de documento
+            </label>
+            <select class="form-control rounded-pill" v-model="voucherToModify.voucherType" @change="getSeries()">
+              <option 
+                v-for="voucherType in voucherTypes" 
+                :key="voucherType.id"
+                :value="voucherType.id"
+              >
+                {{ voucherType.description }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- SERIE -->
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-barcode"></i>
+              Serie
+            </label>
+            <select
+              v-model="voucherToModify.serie"
+              class="form-control rounded-pill"
+            >
+              <option v-for="serie in voucherToModifySeries" :key="serie.id" :value="serie.id">
+                {{ serie.serie }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- N° COMPROBANTE -->
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="">
+              <i class="text-danger fas fa-hashtag"></i>
+              N° de Documento
+            </label>
+            <input
+              v-model="voucherToModify.documentNumber"
+              type="text"
+              class="form-control rounded-pill"
+            />
+          </div>
+        </div>
+
+        <!-- Button Search -->
+        <div class="col-md-2 d-flex align-items-center justify-content-center">
+          <button v-if="!loadingSearchVoucher" type="button" class="btn btn-md btn-block btn-dark" @click="getVoucherToModify()">
+            <i class="fas fa-search"></i>
+            Buscar
+          </button>
+          <button v-else class="btn btn-md btn-block btn-dark" :disabled="loadingSearchVoucher">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
       <h4>Comprobante</h4>
       <div class="row">
         <!-- SERIE -->
@@ -14,25 +82,14 @@
               Serie
             </label>
             <select
-              v-model="quotationData.quotation.serie_id"
-              :class="
-                'form-control rounded-pill' +
-                (errorsCreate['quotation.serie_id'] == null
-                  ? ''
-                  : ' is-invalid')
-              "
+              v-model="creditNote.serie_id"
+              class="form-control rounded-pill"
               @change="getCurrentNumber()"
             >
-              <option v-for="serie in series" :key="serie.id" :value="serie.id">
+              <option v-for="serie in creditNoteSeries" :key="serie.id" :value="serie.id">
                 {{ serie.serie }}
               </option>
             </select>
-            <div
-              class="invalid-feedback"
-              v-if="errorsCreate['quotation.serie_id']"
-            >
-              {{ errorsCreate["quotation.serie_id"][0] }}
-            </div>
           </div>
         </div>
 
@@ -41,7 +98,7 @@
           <div class="form-group">
             <label for="">
               <i class="text-danger fas fa-hashtag"></i>
-              N° de Cotización
+              N° de Nota de Crédito
             </label>
             <input
               v-model="currentNumber"
@@ -59,74 +116,11 @@
               <i class="text-danger fas fa-hashtag"></i>
               Motivo
             </label>
-            <select class="form-control rounded-pill" name="" id="">
-
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <h4>Comprobante a modificar:</h4>
-      <div class="row">
-        <!-- TIPO DE COMPROBANTE -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-calendar-times"></i>
-              Tipo de documento
-            </label>
-            <select class="form-control rounded-pill" name="" id=""></select>
-            <div
-              class="invalid-feedback"
-              v-if="errorsCreate['quotation.date_due']"
-            >
-              {{ errorsCreate["quotation.date_due"][0] }}
-            </div>
-          </div>
-        </div>
-        <!-- SERIE -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-barcode"></i>
-              Serie
-            </label>
-            <select
-              v-model="quotationData.quotation.serie_id"
-              :class="
-                'form-control rounded-pill' +
-                (errorsCreate['quotation.serie_id'] == null
-                  ? ''
-                  : ' is-invalid')
-              "
-              @change="getCurrentNumber()"
-            >
-              <option v-for="serie in series" :key="serie.id" :value="serie.id">
-                {{ serie.serie }}
+            <select class="form-control rounded-pill" v-model="creditNote.credit_note_type_id">
+              <option v-for="creditNoteType in creditNoteTypes" :key="creditNoteType.id" :value="creditNoteType.id">
+                {{ creditNoteType.description }}
               </option>
             </select>
-            <div
-              class="invalid-feedback"
-              v-if="errorsCreate['quotation.serie_id']"
-            >
-              {{ errorsCreate["quotation.serie_id"][0] }}
-            </div>
-          </div>
-        </div>
-
-        <!-- N° COMPROBANTE -->
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="">
-              <i class="text-danger fas fa-hashtag"></i>
-              N° de Cotización
-            </label>
-            <input
-              v-model="currentNumber"
-              type="text"
-              class="form-control rounded-pill"
-              disabled
-            />
           </div>
         </div>
       </div>
@@ -140,7 +134,7 @@
               <i class="text-danger fas fas fa-address-card"></i>
               Tipo documento
             </label>
-            <input type="text" class="form-control rounded-pill" disabled />
+            <input type="text" class="form-control rounded-pill" :value="customer.documentType" disabled />
           </div>
         </div>
 
@@ -151,7 +145,7 @@
               <i class="text-danger fas fas fa-pen"></i>
               N° Documento
             </label>
-            <input type="text" class="form-control rounded-pill" disabled />
+            <input type="text" class="form-control rounded-pill" :value="customer.document" disabled />
           </div>
         </div>
 
@@ -162,7 +156,7 @@
               <i class="text-danger fas fa-id-badge"></i>
               Nombre/Razón Social:
             </label>
-            <input type="text" class="form-control rounded-pill" disabled />
+            <input type="text" class="form-control rounded-pill" :value="customer.name" disabled />
           </div>
         </div>
       </div>
@@ -190,7 +184,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(detail, index) in quotationData.detail" :key="detail">
+              <tr v-for="(detail, index) in creditNote.detail" :key="detail">
                 <td>
                   <input
                     :class="
@@ -333,7 +327,7 @@
           </table>
           <div
             class="image-without-products"
-            v-if="quotationData.detail.length == 0"
+            v-if="creditNote.detail.length == 0"
           >
             <img
               src="../../../../../img/add_product.png"
@@ -367,7 +361,7 @@
                   type="number"
                   min="0"
                   step="0.01"
-                  v-model="quotationData.quotation.discount"
+                  v-model="creditNote.discount"
                   @change="activateOrDesactivateDetailDiscount"
                   :disabled="activateGlobalDiscount"
                   @input="getTotals()"
@@ -393,7 +387,7 @@
                   cols="30"
                   rows="4"
                   class="form-control rounded-pill px-5"
-                  v-model="quotationData.quotation.observation"
+                  v-model="creditNote.observation"
                 ></textarea>
               </div>
             </div>
@@ -406,72 +400,72 @@
           <div class="table-responsive">
             <table class="table">
               <tbody>
-                <tr v-show="quotationData.quotation.totalTaxed > 0">
+                <tr v-show="creditNote.totalTaxed > 0">
                   <th>Gravado:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.totalTaxed }}</span>
+                    ><span>{{ creditNote.totalTaxed }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.totalExonerated > 0">
+                <tr v-show="creditNote.totalExonerated > 0">
                   <th>Exonerado:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.totalExonerated }}</span>
+                    ><span>{{ creditNote.totalExonerated }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.totalUnaffected > 0">
+                <tr v-show="creditNote.totalUnaffected > 0">
                   <th>Inafecto:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.totalUnaffected }}</span>
+                    ><span>{{ creditNote.totalUnaffected }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.totalFree > 0">
+                <tr v-show="creditNote.totalFree > 0">
                   <th>Gratuita:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.totalFree }}</span>
+                    ><span>{{ creditNote.totalFree }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.totalIgv > 0">
+                <tr v-show="creditNote.totalIgv > 0">
                   <th>Igv (18%):</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.totalIgv }}</span>
+                    ><span>{{ creditNote.totalIgv }}</span>
                   </td>
                 </tr>
                 <tr
                   v-show="
-                    quotationData.quotation.discount ||
-                    quotationData.quotation.discountItems > 0
+                    creditNote.discount ||
+                    creditNote.discountItems > 0
                   "
                 >
                   <th>Subtotal:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.subtotal }}</span>
+                    ><span>{{ creditNote.subtotal }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.discount > 0">
+                <tr v-show="creditNote.discount > 0">
                   <th>Descuento global:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.discount }}</span>
+                    ><span>{{ creditNote.discount }}</span>
                   </td>
                 </tr>
-                <tr v-show="quotationData.quotation.discountItems > 0">
+                <tr v-show="creditNote.discountItems > 0">
                   <th>Descuento por item:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.discountItems }}</span>
+                    ><span>{{ creditNote.discountItems }}</span>
                   </td>
                 </tr>
                 <tr>
                   <th>Total:</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span
-                    ><span>{{ quotationData.quotation.total }}</span>
+                    ><span>{{ creditNote.total }}</span>
                   </td>
                 </tr>
               </tbody>
@@ -483,9 +477,9 @@
       <!-- Resumen de ventas -->
       <div class="row no-print">
         <div class="col-12">
-          <form @submit.prevent="createQuotation()">
+          <form @submit.prevent="createCreditNote()">
             <button
-              v-if="!loadingQuotation"
+              v-if="!loadingCreditNote"
               type="submit"
               class="btn btn-dark float-right"
             >
@@ -495,7 +489,7 @@
             <button
               v-else
               class="btn btn-dark float-right"
-              :disabled="loadingQuotation"
+              :disabled="loadingCreditNote"
             >
               <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
@@ -510,20 +504,18 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
-import SearchCustomers from "../../components/SearchCustomers.vue";
-import SearchProducts from "../../components/SearchProducts.vue";
 export default {
-  components: { BaseUrl, SearchCustomers, SearchProducts },
+  components: { BaseUrl },
   async created() {
-    await BaseUrl.get(`api/quotations/create`).then((resp) => {
-      this.currencyExchange = resp.data.data.currencyExchange;
-      this.identificationDocuments = resp.data.data.identificationDocuments;
-      this.igvTypes = resp.data.data.igvTypes;
+    await BaseUrl.get(`api/credit-notes/create`).then((resp) => {
+      this.voucherTypes = resp.data.data.voucherTypes
+      this.voucherToModify.voucherType = this.voucherTypes[0].id
 
-      this.sellers = resp.data.data.sellers;
-      this.series = resp.data.data.series;
-      this.quotationData.quotation.serie_id = this.series[0].id;
-      this.getCurrentNumber();
+      this.series = resp.data.data.series
+      this.getSeries()
+
+      this.creditNoteTypes = resp.data.data.creditNotesTypes
+      this.igvTypes = resp.data.data.igvTypes
     });
 
     this.loader.hide();
@@ -531,44 +523,56 @@ export default {
   data() {
     return {
       loader: null,
-      loadingQuotation: false,
+      loadingCreditNote: false,
+      loadingSearchVoucher: false,
 
-      currencyExchange: {},
-      identificationDocuments: [],
+      voucherTypes: [],
+      series: [],
+      creditNoteTypes: [],
       igvTypes: [],
 
-      sellers: [],
-      series: [],
+      voucherToModifySeries: [],
+      creditNoteSeries: [],
 
-      currentNumber: "Selecciona una serie",
+      currentNumber: null,
+
+      voucherToModify: {
+        voucherType: null,
+        serie: null,
+        documentNumber: null
+      },
+
+      creditNote: {
+        sale_id: null,
+        serie_id: null,
+        credit_note_type_id: null,
+
+        subtotal: 0,
+        discount: 0,
+        totalIgv: 0,
+        totalExonerated: 0,
+        totalUnaffected: 0,
+        totalFree: 0,
+        totalTaxed: 0,
+        total: 0,
+
+        discountItems: 0,
+
+        observation: "",
+
+        detail: []
+
+      },
+
+      customer: {
+        documentType: null,
+        document: null,
+        name: null
+      },
 
       activateGlobalDiscount: false,
       activateDetailDiscount: false,
 
-      quotationData: {
-        customer: {
-          id: null,
-        },
-        quotation: {
-          seller_id: null,
-          subtotal: 0,
-          discount: 0,
-          totalIgv: 0,
-          totalExonerated: 0,
-          totalUnaffected: 0,
-          totalFree: 0,
-          totalTaxed: 0,
-          total: 0,
-
-          discountItems: 0,
-
-          observation: "",
-          warranty: false,
-          date_due: null,
-          serie_id: "",
-        },
-        detail: [],
-      },
       errors: [],
       errorsCreate: {},
     };
@@ -579,45 +583,86 @@ export default {
     });
   },
   methods: {
+    getSeries() {
+      let serieBackup = this.series
+      this.voucherToModifySeries = serieBackup.filter(
+        (serie) => serie.voucher_type_id == this.voucherToModify.voucherType
+      )
+      this.voucherToModify.serie = this.voucherToModifySeries[0].id
+
+      let serieBackup2 = this.series
+      let type = this.voucherToModify.voucherType == 1 ? 4 : this.voucherToModify.voucherType == 2 ? 5 : null
+      this.creditNoteSeries = serieBackup2.filter(
+        (serie) => serie.voucher_type_id == type
+      )
+      this.creditNote.serie_id = this.creditNoteSeries[0].id
+      this.getCurrentNumber()
+    },
     getCurrentNumber() {
       let serieBackup = this.series;
       let serieFilter = serieBackup.filter(
-        (series) => series.id == this.quotationData.quotation.serie_id
+        (series) => series.id == this.creditNote.serie_id
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
-    setProduct(product, price) {
-      let index = this.quotationData.detail.findIndex(
-        (element) => element.product_id == product.id
-      );
+    getVoucherToModify() {
 
-      if (index == -1) {
-        this.quotationData.detail.push({
-          discount: 0,
-          subtotal: 0,
-          total: 0,
+      this.loadingSearchVoucher = true
 
-          product_id: product.id,
-          cod: product.cod,
-          affect_icbper: false,
-          igv_type_id: product.igv_type_id,
-          description: product.name,
-          brand: product.brand,
-          sale_price: price,
-          quantity: 1,
-        });
-
-        this.getTotals();
+      this.creditNote.detail = []
+      this.creditNote.sale_id = null,
+      this.creditNote.discount = null,
+      this.customer = {
+        documentType: null,
+        document: null,
+        name: null
       }
+
+      BaseUrl.get(`api/credit-notes/voucher/${this.voucherToModify.serie}/${this.voucherToModify.documentNumber}`).then((resp) => {
+        this.customer.documentType = resp.data.data.customer.identification_document.description
+        this.customer.document = resp.data.data.customer.document
+        this.customer.name = resp.data.data.customer.name
+
+        this.creditNote.sale_id = resp.data.data.id
+
+        this.creditNote.discount = Number(resp.data.data.discount)
+
+        resp.data.data.sale_details.forEach(e => {
+          this.creditNote.detail.push({
+            discount: Number(e.discount),
+            subtotal: 0,
+            total: 0,
+
+            product_id: e.branch_product.id,
+            cod: e.branch_product.product.cod,
+            affect_icbper: false,
+            igv_type_id: e.branch_product.product.igv_type_id,
+            description: e.branch_product.product.name,
+            brand: e.branch_product.product.brand.description,
+            sale_price: Number(e.price),
+            quantity: 1,
+          })
+        })
+        console.log(resp.data.data)
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+      .finally(() => {
+        this.loadingSearchVoucher = false;
+        this.getTotals()
+        this.activateOrDesactivateGlobalDiscount()
+        this.activateOrDesactivateDetailDiscount()
+      })
     },
     deleteItem(index) {
-      this.quotationData.detail.splice(index, 1);
+      this.creditNote.detail.splice(index, 1);
       this.getTotals();
     },
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
       let discount = 0;
-      this.quotationData.detail.forEach((e) => {
+      this.creditNote.detail.forEach((e) => {
         discount += e.discount * 1;
       });
 
@@ -629,7 +674,7 @@ export default {
       // Si descuento es mayor a cero entonces se desactiva el descuento global
       // de lo contrario se activa el descuento global
       this.activateDetailDiscount =
-        this.quotationData.quotation.discount > 0 ? true : false;
+        this.creditNote.discount > 0 ? true : false;
     },
     getTotals() {
       //!REDONDEAR AL FINAL
@@ -649,7 +694,7 @@ export default {
       // igv constante
       const igv = 0.18;
 
-      this.quotationData.detail.forEach((e) => {
+      this.creditNote.detail.forEach((e) => {
         discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {
@@ -799,58 +844,49 @@ export default {
         }
       });
 
-      this.quotationData.quotation.subtotal =
+      this.creditNote.subtotal =
         this.roundToTwo(subtotal).toFixed(2);
-      this.quotationData.quotation.totalIgv =
+      this.creditNote.totalIgv =
         this.roundToTwo(totalIgv).toFixed(2);
-      this.quotationData.quotation.totalExonerated =
+      this.creditNote.totalExonerated =
         this.roundToTwo(totalExonerated).toFixed(2);
-      this.quotationData.quotation.totalUnaffected =
+      this.creditNote.totalUnaffected =
         this.roundToTwo(totalUnaffected).toFixed(2);
-      this.quotationData.quotation.totalFree =
+      this.creditNote.totalFree =
         this.roundToTwo(totalFree).toFixed(2);
-      this.quotationData.quotation.totalTaxed =
+      this.creditNote.totalTaxed =
         this.roundToTwo(totalTaxed).toFixed(2);
-      this.quotationData.quotation.discountItems =
+      this.creditNote.discountItems =
         this.roundToTwo(discountItems).toFixed(2);
-      this.quotationData.quotation.total = this.roundToTwo(
-        total - this.quotationData.quotation.discount
+      this.creditNote.total = this.roundToTwo(
+        total - this.creditNote.discount
       ).toFixed(2);
     },
     roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");
     },
 
-    createQuotation() {
-      this.loadingQuotation = true;
+    createCreditNote() {
+      this.loadingCreditNote = true;
 
-      BaseUrl.post("/api/quotations", this.quotationData)
+      BaseUrl.post("/api/credit-notes", this.creditNote)
         .then((response) => {
           console.log(response);
 
           this.errorsCreate = {};
 
-          this.$router.replace({ name: "quotation-list" });
-          Swal.fire(
-            "Cotización Creada",
-            "Se ha creado la Cotización " + response.data,
-            "success"
-          );
+          // this.$router.replace({ name: "quotation-list" });
+          // Swal.fire(
+          //   "Cotización Creada",
+          //   "Se ha creado la Cotización " + response.data,
+          //   "success"
+          // );
         })
         .catch((error) => {
           console.log(error.response);
-          this.errorsCreate = error.response.data.errors;
-
-          if (this.errorsCreate["detail"] != null) {
-            Swal.fire(
-              "Algo salio mal",
-              this.errorsCreate["detail"][0],
-              "error"
-            );
-          }
         })
         .finally(() => {
-          this.loadingQuotation = false;
+          this.loadingCreditNote = false;
         });
     },
   },

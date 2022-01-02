@@ -10,9 +10,12 @@ class DebitNoteType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'cod',
+        'id',
         'description'
     ];
+
+    protected $keyType = 'String';
+    public $incrementing = false;
 
     public function debitNotes()
     {

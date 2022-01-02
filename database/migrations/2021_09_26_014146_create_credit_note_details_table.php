@@ -22,7 +22,7 @@ class CreateCreditNoteDetailsTable extends Migration
             $table->decimal('total_igv', 12, 3)->default(0);
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
             $table->unsignedDecimal('total', 12, 3)->nullable();;
-            //$table->unsignedDecimal('discount', 12, 3)->nullable();
+            $table->unsignedDecimal('discount', 12, 3)->nullable();
             $table->string('igv_type_id');
 
 

@@ -761,7 +761,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'https://pchuanuco.mdc-computo.com/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -784,7 +784,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n  opacity: 0.7;\n  height: 150px;\n  width: 100%;\n  min-width: 850px;\n}\n.image-without-products img {\n  margin-bottom: 0.5rem;\n  margin-right: 0.5rem;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  align-content: center;\r\n  opacity: 0.7;\r\n  height: 150px;\r\n  width: 100%;\r\n  min-width: 850px;\n}\n.image-without-products img {\r\n  margin-bottom: 0.5rem;\r\n  margin-right: 0.5rem;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -808,7 +808,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n/* Input group */\n.et-input-left-group {\n  display: grid;\n  align-items: center;\n  grid-template-columns: auto -webkit-max-content;\n  grid-template-columns: auto max-content;\n}\n.et-input-left-group .et-input {\n  /* width: 100%; */\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n.et-input {\n  width: 100%;\n  border: 1px solid #ced4da;\n  border-radius: 4px;\n  outline: none;\n  padding: 0 0.5rem;\n  height: 2.4rem;\n  color: #4f4f4f;\n}\n.et-input:focus {\n  border: 1px solid #cccccc;\n}\n.et-group-text {\n  padding: 0 0.5rem;\n  height: 2.4rem;\n  display: inline;\n  margin-left: -1px;\n  background-color: #e9ecef;\n  border: 1px solid #ced4da !important;\n  border-top-right-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n/* Boton */\n.et-button {\n  color: #4f4f4f;\n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  opacity: 0.8;\n}\n.et-button:hover {\n  opacity: 1;\n}\n.et-button:disabled {\n  opacity: 0.7;\n}\n.file__electronic-certificate {\n  display: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\r\n/* Input group */\n.et-input-left-group {\r\n  display: grid;\r\n  align-items: center;\r\n  grid-template-columns: auto -webkit-max-content;\r\n  grid-template-columns: auto max-content;\n}\n.et-input-left-group .et-input {\r\n  /* width: 100%; */\r\n  border-top-right-radius: 0;\r\n  border-bottom-right-radius: 0;\n}\n.et-input {\r\n  width: 100%;\r\n  border: 1px solid #ced4da;\r\n  border-radius: 4px;\r\n  outline: none;\r\n  padding: 0 0.5rem;\r\n  height: 2.4rem;\r\n  color: #4f4f4f;\n}\n.et-input:focus {\r\n  border: 1px solid #cccccc;\n}\n.et-group-text {\r\n  padding: 0 0.5rem;\r\n  height: 2.4rem;\r\n  display: inline;\r\n  margin-left: -1px;\r\n  background-color: #e9ecef;\r\n  border: 1px solid #ced4da !important;\r\n  border-top-right-radius: 4px;\r\n  border-bottom-right-radius: 4px;\n}\r\n/* Boton */\n.et-button {\r\n  color: #4f4f4f;\r\n  border: 1px solid transparent;\r\n  border-radius: 0.25rem;\r\n  opacity: 0.8;\n}\n.et-button:hover {\r\n  opacity: 1;\n}\n.et-button:disabled {\r\n  opacity: 0.7;\n}\n.file__electronic-certificate {\r\n  display: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -23,6 +23,7 @@ use App\Http\Controllers\IdentificationDocumentController;
 use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\BranchProductSerieController;
+use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
@@ -76,6 +77,12 @@ Route::middleware([
     Route::post('/advance-payments', [AdvancePaymentController::class, 'store'])->name('api.advancePayments.store');
     Route::get('/advance-payments/quotation/{serie}/{number}', [AdvancePaymentController::class, 'quotation'])->name('api.advancePayments.quotation');
 
+    //Credit Notes
+    Route::get('/credit-notes', [CreditNoteController::class, 'index'])->name('api.creditNotes.index');
+    Route::get('/credit-notes/create', [CreditNoteController::class, 'create'])->name('api.creditNotes.create');
+    Route::get('/credit-notes/voucher/{serieId}/{documentNumber}', [CreditNoteController::class, 'voucher'])->name('api.creditNotes.voucher');
+    Route::post('/credit-notes', [CreditNoteController::class, 'store'])->name('api.creditNotes.store');
+    
     //Voideds
     Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
     Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');

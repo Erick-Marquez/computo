@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="container-fluid">
-      <h1>Comunicaciones de Baja</h1>
+      <h1>Notas de crédito</h1>
     </div>
   </div>
 
@@ -14,7 +14,7 @@
         </a>
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Lista de comunicaciones de bajas</h3>
+            <h3 class="card-title">Lista de notas de crédito</h3>
 
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
@@ -156,19 +156,17 @@ import BaseUrl from "../../../../api/BaseUrl.js";
 export default {
   components: { BaseUrl },
   async created() {
-    this.showVoideds();
+    this.getCreditNotes();
   },
   data() {
     return {
-      loading: false,
-
-      voideds: [],
+      creditNotes: [],
     };
   },
   methods: {
-    async showVoideds() {
+    async getCreditNotes() {
       await BaseUrl.get(`api/voideds`).then((resp) => {
-        this.voideds = resp.data.data;
+        this.creditNotes = resp.data.data;
       });
     },
     getTimestamp(date) {
@@ -176,49 +174,7 @@ export default {
         timeZone: "America/Lima",
       });
       return dateString;
-    },
-    getTicketStatus(voided) {
-      let dataTicket = {
-        voided_id: voided.id,
-      };
-      Swal.fire({
-        title: "¿Desea consultar el ticket?",
-        html: `Comunicación de baja: <b> ${voided.identifier}</b><br>
-          Nro. de ticket: <b>${voided.ticket_number}</b>`,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, adelante",
-        cancelButtonText: "Cancelar",
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          try {
-            const resp = await BaseUrl.post(
-              `api/voideds/ticket-status`,
-              dataTicket
-            );
-            Swal.fire("Correcto", resp.data.message, "success");
-          } catch (error) {
-            if (error.response.data.have_ticket) {
-              Swal.fire(
-                error.response.data.error,
-                error.response.data.message,
-                "warning"
-              );
-            } else {
-              Swal.fire(
-                error.response.data.error,
-                error.response.data.message,
-                "error"
-              );
-            }
-          } finally {
-            this.showVoideds();
-          }
-        },
-      });
-    },
+    }
   },
 };
 </script>
