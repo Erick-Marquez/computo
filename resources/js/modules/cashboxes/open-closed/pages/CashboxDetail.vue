@@ -110,6 +110,7 @@
 
   <form @submit.prevent="newMovement">
     <NewMovementVue
+      v-if="$can('cashboxes.movements')"
       :movement="movement"
       :errors="errors"
       :disabled="disabled"
@@ -196,6 +197,7 @@
   <button
     class="btn-outline-danger btn-lg btn-block mb-4"
     @click="closeCashbox"
+    v-if="$can('cashboxes.close')"
   >
     <i class="fas fa-door-closed"></i>
     Cerrar Caja

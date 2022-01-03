@@ -34,7 +34,7 @@ class PurchaseService
                 'document_number' => $request->voucherDetail['document_number'],
                 'serie' => $request->voucherDetail['serie'],
                 'handles_exchange_rate' => $request->voucherDetail['handles_exchange_rate'],
-                'exchange_rate' => $request->voucherDetail['exchange_rate'], // ? Deberia de haber un IF
+                'exchange_rate' => $request->voucherDetail['handles_exchange_rate'] ? $request->voucherDetail['exchange_rate'] : 0, // ? Deberia de haber un IF
                 'date_issue' => $request->voucherDetail['date_issue'],
                 'subtotal' => $request->voucherDetail['subtotal'],
                 'total' => $request->voucherDetail['total'],

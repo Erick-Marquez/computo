@@ -43,9 +43,22 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
 
         //Cash Register Permissions
-        Permission::create(['name' => 'cashboxes', 'description' => 'Ver Cajas'])->syncRoles([$role1]);
-        Permission::create(['name' => 'cashbox.create', 'description' => 'Crear Caja'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashboxes', 'description' => 'Modulo de Caja'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'cashboxes.index', 'description' => 'Ver Cajas'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'cashboxes.create', 'description' => 'Crear Caja'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashboxes.edit', 'description' => 'Editar Caja'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashboxes.destroy', 'description' => 'Eliminar Caja'])->syncRoles([$role1]);
+        Permission::create(['name' => 'cashboxes.open', 'description' => 'Aperturar Caja'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'cashboxes.close', 'description' => 'Cerrar Caja'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'cashboxes.movements', 'description' => 'Crear movimiento de Caja'])->syncRoles([$role1, $role4]);
 
+        Permission::create(['name' => 'movements.index', 'description' => 'Movimientos'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'movements.create', 'description' => 'Crear movimiento'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'movements.edit', 'description' => 'Crear movimiento'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'movements.destroy', 'description' => 'Egresos e ingresos'])->syncRoles([$role1, $role4]);
+
+        Permission::create(['name' => 'accounts.index', 'description' => 'Cuentas por pagar'])->syncRoles([$role1, $role4]);
+        Permission::create(['name' => 'accounts.pay', 'description' => 'Pagar cuenta'])->syncRoles([$role1, $role4]);
         //Catalogs Permissions
         Permission::create(['name' => 'catalogs', 'description' => 'Ver Catalagos'])->syncRoles([$role1]);
 
@@ -86,7 +99,9 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'assemblies.destroy', 'description' => 'Eliminar Configuracion de PC'])->syncRoles([$role1]);
 
         //Purchases Permissions
-        Permission::create(['name' => 'purchases', 'description' => 'Ver Compras'])->syncRoles([$role1]);
+        Permission::create(['name' => 'purchases', 'description' => 'Modulo de Compras'])->syncRoles([$role1]);
+        Permission::create(['name' => 'purchases.index', 'description' => 'Ver Compras'])->syncRoles([$role1]);
+        Permission::create(['name' => 'purchases.create', 'description' => 'Crear Compra'])->syncRoles([$role1]);
 
         //Inventory Permissions
         Permission::create(['name' => 'inventory', 'description' => 'Ver Inventario'])->syncRoles([$role1]);
@@ -106,6 +121,13 @@ class RoleSeeder extends Seeder
 
         //Reports Permissions
         Permission::create(['name' => 'reports', 'description' => 'Ver Reportes'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.inventory', 'description' => 'Ver reporte de inventario'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.sales', 'description' => 'Ver reporte de venta'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.products', 'description' => 'Ver reporte de productos'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.purchases', 'description' => 'Ver reporte de compras'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.cashboxes', 'description' => 'Ver reporte de cajas'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.details', 'description' => 'Ver reporte detallado'])->syncRoles([$role1]);
+        Permission::create(['name' => 'report.utility', 'description' => 'Ver reporte de utilidad'])->syncRoles([$role1]);
 
         //Third Parties Permissions
         Permission::create(['name' => 'third-parties', 'description' => 'Ver Terceros'])->syncRoles([$role1]);

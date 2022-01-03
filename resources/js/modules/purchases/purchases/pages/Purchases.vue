@@ -63,13 +63,15 @@
                     {{ purchase.document_type }}
                   </td>
                   <td>
+                    <span class="badge badge-success">{{ purchase.handles_exchange_rate ? 'USD' : 'PEN' }}</span>
+                    <br>
                     {{ purchase.exchange_rate }}
                   </td>
                   <td>
                     {{ purchase.provider.name }}
                   </td>
                   <td>
-                    {{ purchase.total }}
+                    {{ purchase.handles_exchange_rate ? '$' : 'S/.' }} {{ purchase.total }}
                   </td>
                   <td v-if="purchase.account_to_pay != null">
                     <span v-if="purchase.account_to_pay.debt == 0" class="badge badge-success">Cancelado</span>

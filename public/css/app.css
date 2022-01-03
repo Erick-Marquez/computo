@@ -1288,6 +1288,9 @@ select {
 .h-20 {
 	height: 5rem;
 }
+.h-11 {
+	height: 2.75rem;
+}
 .h-auto {
 	height: auto;
 }

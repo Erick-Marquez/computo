@@ -516,7 +516,7 @@ var _hoisted_47 = /*#__PURE__*/_withScopeId(function () {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BOTON PARA CREAR CAJA "), _ctx.$can('cashbox.create') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BOTON PARA CREAR CAJA "), _ctx.$can('cashboxes.create') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": "btn btn-lg btn-block btn-dark my-2",
     onClick: _cache[0] || (_cache[0] = function ($event) {
@@ -536,7 +536,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "aria-expanded": "false"
     }, _hoisted_8, 2
     /* CLASS */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_ctx.$can('cashboxes.edit') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+      key: 0,
       href: "#",
       "data-toggle": "modal",
       "data-target": "#modal-edit",
@@ -546,7 +547,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "dropdown-item"
     }, "Editar", 8
     /* PROPS */
-    , _hoisted_10), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    , _hoisted_10)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_11, _ctx.$can('cashboxes.destroy') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+      key: 1,
       onClick: function onClick($event) {
         return $options.deleteCashbox(cashbox.id);
       },
@@ -554,7 +556,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "dropdown-item"
     }, "Eliminar", 8
     /* PROPS */
-    , _hoisted_12)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(cashbox.description), 1
+    , _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(cashbox.description), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [cashbox.state ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_15, "Estado: Aperturado")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_16, "Estado: Sin Aperturar")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "Balance: S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(cashbox.balance), 1
     /* TEXT */
@@ -576,7 +578,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["to"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+    , ["to"])) : _ctx.$can('cashboxes.open') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
       key: 1,
       href: "#",
       "class": "bg-danger small-box-footer",
@@ -585,7 +587,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, _hoisted_21, 8
     /* PROPS */
-    , _hoisted_19))], 2
+    , _hoisted_19)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
     /* CLASS */
     )]);
   }), 128
@@ -686,7 +688,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\r\n  margin-top: 1em;\r\n  line-height: 0.5;\r\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\r\n  color: #f2f2f2;\r\n  border: 1px solid #17a2b8;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.info-contenido[data-v-5c28ca8e] {\n  margin-top: 1em;\n  line-height: 0.5;\n  font-weight: 300;\n}\n.bg-info.small-box-footer[data-v-5c28ca8e] {\n  color: #f2f2f2;\n  border: 1px solid #17a2b8;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
