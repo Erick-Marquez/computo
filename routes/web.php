@@ -40,15 +40,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
-    //Sale
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-    Route::middleware(['opening.cashbox'])->get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
+    //Sale
+    Route::middleware(['is.opening.cashbox'])->group(function () {
+        Route::get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
+        Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+        Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+        Route::get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
+    });
 
-    Route::middleware(['opening.cashbox'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
 
-    Route::middleware(['opening.cashbox'])->get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
 
     Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
@@ -76,7 +79,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Rutas compras
     Route::get('/compras', [WebController::class, 'purchases'])->name('web.compras');
-    Route::middleware(['opening.cashbox'])->get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
 
     // Rutas Terceros
     Route::get('/proveedores', [WebController::class, 'providers'])->name('web.proveedores');

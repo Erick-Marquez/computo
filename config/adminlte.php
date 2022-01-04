@@ -262,8 +262,6 @@ return [
             'route'       => 'web.dashboard',
             'icon'        => 'fas fa-fw fa-chart-line',
             'can'         => 'dashboard',
-            'label'       => 4,
-            'label_color' => 'success',
         ],
 
         [
@@ -280,48 +278,48 @@ return [
             'submenu' => [
                 [
                     'text' => 'Nuevo Comprobante',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.new-sale',
                     'can'    => 'sales',
                 ],
                 [
                     'text' => 'Comprobantes',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.ventas',
                     'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Notas de Venta',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.sale-notes',
                     // 'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Anticipo de Venta',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.advance-payments',
                 ],
                 [
                     'text' => 'Notas de crédito',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.credit-notes',
                     'active' => ['notas-de-credito', 'nueva-nota-de-credito']
                 ],
                 [
                     'text' => 'Comunicaciones de Baja',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.voideds',
                 ],
                 [
                     'text' => 'Cotización',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.quotations',
                     'can'    => 'quotations.index',
                     'active' => ['cotizaciones', 'nueva-cotizacion']
                 ],
                 [
                     'text' => 'Garantías',
-                    'icon' => 'fas fa-fw',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.warranties',
                     //'can'    => 'quotations.index',
                 ],
@@ -336,19 +334,22 @@ return [
             'submenu' => [
                 [
                     'text' => 'Aperturas y Cierres',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.cajas',
-                    'active' => ['cajas/detalle/*']
+                    'active' => ['cajas/detalle/*'],
+                    'can' => 'cashboxes.index',
                 ],
                 [
                     'text' => 'Egresos e Ingresos',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.egresos-ingresos',
+                    'can' => 'movements.index',
                 ],
                 [
                     'text' => 'Por Pagar',
-                    'icon' => 'fas fa-fw ',
-                    'route' => 'web.accounts-to-pay'
+                    'icon' => 'far fa-fw fa-circle',
+                    'route' => 'web.accounts-to-pay',
+                    'can' => 'accounts.index',
                 ]
             ],
         ],
@@ -360,27 +361,27 @@ return [
             'submenu' => [
                 [
                     'text' => 'Familias, Lineas y Marcas',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.families-lines-brands',
                 ],
                 [
                     'text' => 'Productos',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.products',
                     'can'    => 'products.index',
                     'active' => ['productos', 'nuevo-producto', 'editar-producto/*']
                 ],
                 [
                     'text' => 'Series',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.product-series',
                     'can'    => 'product-series.index',
                 ],
                 [
                     'text' => 'Configuraciones de PC',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.assemblies',
-                    // 'can'    => 'assemblies.index',
+                    'can'    => 'assemblies.index',
                 ],
             ],
         ],
@@ -392,9 +393,10 @@ return [
             'submenu' => [
                 [
                     'text' => 'Registros de Compras',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route' => 'web.compras',
-                    'active' => ['nueva-compra']
+                    'active' => ['nueva-compra'],
+                    'can' => 'purchase.index'
                 ],
             ],
         ],
@@ -406,29 +408,29 @@ return [
             'submenu' => [
                 [
                     'text'   => 'Sucursales',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.branches',
                     'can'    => 'branches.index',
                     'active' => ['sucursales', 'regex:@^sucursales/productos/[0-9]+$@']
                 ],
                 // [
                 //     'text'   => 'Movimiento de Sucursal',
-                //     'icon'   => 'fas fa-fw ',
+                //     'icon'   => 'far fa-fw fa-circle',
                 //     'route'  => 'web.branch-movements',
                 // ],
                 [
                     'text'   => 'Kardex',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.kardex',
                 ],
                 // [
                 //     'text'   => 'Modificación de Stock',
-                //     'icon'   => 'fas fa-fw ',
+                //     'icon'   => 'far fa-fw fa-circle',
                 //     'route'  => 'web.stock-modifications',
                 // ],
                 // [
                 //     'text'   => 'Devoluciones',
-                //     'icon'   => 'fas fa-fw ',
+                //     'icon'   => 'far fa-fw fa-circle',
                 //     'route'  => 'web.devolutions',
                 // ],
             ],
@@ -441,48 +443,55 @@ return [
             'submenu' => [
                 [
                     'text' => 'Reporte de Inventario',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.inventory',
+                    'can'     => 'report.inventory',
                 ],
                 [
                     'text' => 'Reporte de Ventas',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.sales',
+                    'can'     => 'report.sales',
                 ],
                 [
                     'text' => 'Reporte de Productos',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.products',
+                    'can'     => 'report.products',
                 ],
                 // [
                 //     'text' => 'Reporte de Series',
-                //     'icon' => 'fas fa-fw ',
+                //     'icon' => 'far fa-fw fa-circle',
                 //     'route'  => 'web.reports.series',
                 // ],
                 [
                     'text' => 'Reporte de Compras',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.purchases',
+                    'can'     => 'report.purchases',
                 ],
                 [
                     'text' => 'Reporte de Caja',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.cashboxes',
+                    'can'     => 'report.cashboxes',
                 ],
                 // [
                 //     'text' => 'Reporte de Movimientos',
-                //     'icon' => 'fas fa-fw ',
+                //     'icon' => 'far fa-fw fa-circle',
                 //     'route'  => 'web.reports.expenses-incomes',
                 // ],
                 [
                     'text' => 'Reporte Detallado',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.details',
+                    'can'     => 'report.details',
                 ],
                 [
                     'text' => 'Reporte de Utilidad',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.reports.utility',
+                    'can'     => 'report.utility',
                 ],
             ],
         ],
@@ -494,12 +503,12 @@ return [
             'submenu' => [
                 [
                     'text' => 'Clientes',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.clientes',
                 ],
                 [
                     'text' => 'Proveedores',
-                    'icon' => 'fas fa-fw ',
+                    'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.proveedores',
                 ],
             ],
@@ -512,37 +521,37 @@ return [
             'submenu' => [
                 [
                     'text'   => 'Empresa',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.company',
                     // 'can'    => 'users.index',
                 ],
                 [
                     'text'   => 'Usuarios',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.users',
                     // 'can'    => 'users.index',
                 ],
                 [
                     'text'   => 'Roles',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.roles',
-                    // 'can'    => 'roles.index',
+                    'can'    => 'roles.index',
                 ],
                 [
                     'text'   => 'Series',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.series',
                     // 'can'    => 'series.index',
                 ],
                 [
                     'text'   => 'Cambio de Divisas',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.currency-exchanges',
                     // 'can'    => 'currency-exchanges.index',
                 ],
                 [
                     'text'   => 'Tipo de Pagos',
-                    'icon'   => 'fas fa-fw ',
+                    'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.payment-types',
                     // 'can'    => 'currency-exchanges.index',
                 ],

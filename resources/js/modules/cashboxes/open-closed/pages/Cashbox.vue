@@ -4,7 +4,7 @@
     <button
       class="btn btn-lg btn-block btn-dark my-2"
       @click="showModal('#modal-create')"
-      v-if="$can('cashbox.create')"
+      v-if="$can('cashboxes.create')"
     >
       <span><i class="fas fa-plus"></i></span>
       Agregar Nueva caja
@@ -39,6 +39,7 @@
             </button>
             <div class="dropdown-menu" role="menu" style="">
               <a
+                v-if="$can('cashboxes.edit')"
                 href="#"
                 data-toggle="modal"
                 data-target="#modal-edit"
@@ -48,6 +49,7 @@
               >
               <div class="dropdown-divider"></div>
               <a
+                v-if="$can('cashboxes.destroy')"
                 @click="deleteCashbox(cashbox.id)"
                 href="#"
                 class="dropdown-item"
@@ -77,7 +79,7 @@
             </span>
           </router-link>
           <a
-            v-else
+            v-else-if="$can('cashboxes.open')"
             href="#"
             class="bg-danger small-box-footer"
             @click="showModal('#open-cashbox', cashbox)"
