@@ -105,7 +105,7 @@
                           <a
                             v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
-                            href="#"
+                            :href="`nueva-nota-de-credito?voucherType=${sale.voucher_type_id}&serie=${sale.serie_id}&documentNumber=${sale.document_number}`"
                             ><i class="col-1 mr-3 fas fa-eye"></i>Crear Nota de Crédito</a
                           ><a
                             v-if="sale.state == 'ACEPTADO'"

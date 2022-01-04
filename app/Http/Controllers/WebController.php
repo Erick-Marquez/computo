@@ -242,56 +242,56 @@ class WebController extends Controller
         // $data['user_id'] = auth()->user()->id;
 
         // KardexService::purchase($data);
-        // return SunatService::facturar(10, 'invoice');
+        return SunatService::facturar(10, 'credit');
 
-        try {
-            $service = new VoidedService([
-                'is_demo' => 1,
-                'user_sol' => 'asd',
-                'password_sol' => 'asd',
+        // try {
+        //     $service = new VoidedService([
+        //         'is_demo' => 1,
+        //         'user_sol' => 'asd',
+        //         'password_sol' => 'asd',
 
-                'ruc' => 20100066603,
-                'comercial_name' => 'Hola',
-                'name' => 'Hola S.A.C'
-            ]);
-            $service->setTicket('1640265713692', 'RA-20211223-5');
-            $service->sendTicketSunat();
-            $service->getCdr();
+        //         'ruc' => 20100066603,
+        //         'comercial_name' => 'Hola',
+        //         'name' => 'Hola S.A.C'
+        //     ]);
+        //     $service->setTicket('1640265713692', 'RA-20211223-5');
+        //     $service->sendTicketSunat();
+        //     $service->getCdr();
 
-            $response = $service->getResponse();
+        //     $response = $service->getResponse();
 
-            return response()->json([
-                'message' => $response['response']['message']
-            ]);
+        //     return response()->json([
+        //         'message' => $response['response']['message']
+        //     ]);
 
-        } catch (TicketSunatOutOfServiceException $e) {
+        // } catch (TicketSunatOutOfServiceException $e) {
 
-            $response = $service->getResponse();
+        //     $response = $service->getResponse();
 
-            return response()->json([
-                'have_ticket' => true,
-                'error' => $e->getMessage(),
-                'message' => 'Consulte el estado del ticket en unos minutos.'
-            ], 400);
+        //     return response()->json([
+        //         'have_ticket' => true,
+        //         'error' => $e->getMessage(),
+        //         'message' => 'Consulte el estado del ticket en unos minutos.'
+        //     ], 400);
 
-        } catch (TicketSunatRejectedException $e) {
+        // } catch (TicketSunatRejectedException $e) {
 
-            $response = $service->getResponse();
+        //     $response = $service->getResponse();
 
-            return response()->json([
-                'have_ticket' => true,
-                'error' => $e->getMessage(),
-                'message' => $response['ticket']['response']['message']
-            ],  400);
+        //     return response()->json([
+        //         'have_ticket' => true,
+        //         'error' => $e->getMessage(),
+        //         'message' => $response['ticket']['response']['message']
+        //     ],  400);
 
-        } catch (\Exception $e) {
+        // } catch (\Exception $e) {
 
-            return response()->json([
-                'have_ticket' => false,
-                'error' => 'Algo esta pasando, ponganse en contacto con el administrador del sistema.',
-                'message' => $e->getMessage()
-            ], 400);
+        //     return response()->json([
+        //         'have_ticket' => false,
+        //         'error' => 'Algo esta pasando, ponganse en contacto con el administrador del sistema.',
+        //         'message' => $e->getMessage()
+        //     ], 400);
 
-        }
+        // }
     }
 }

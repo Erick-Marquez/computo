@@ -14,11 +14,11 @@
     <cbc:ID>{{ $creditNote->serie->serie }}-{{ $creditNote->document_number }}</cbc:ID>
     <cbc:IssueDate>{{ $creditNote->date_issue }}</cbc:IssueDate>
     <cbc:IssueTime>00:00:00</cbc:IssueTime>
-    <cbc:Note languageLocaleID="1000">TREINTA Y UN MIL OCHOCIENTOS CON 00/100 SOLES</cbc:Note>
+    <cbc:Note languageLocaleID="1000">{{ \App\Services\NumberLetterService::convert(round($creditNote->total, 2), 'SOLES') }}</cbc:Note>
     <cbc:DocumentCurrencyCode listID="ISO 4217 Alpha" listAgencyName="United Nations Economic Commission for Europe" listName="Currency">PEN</cbc:DocumentCurrencyCode>
     <cac:DiscrepancyResponse>
-        <cbc:ReferenceID>{{ $creditNote->sale->serie->serie }}-{{ $creditNote->sale->document_number }}</cbc:ReferenceID>
-        <cbc:ResponseCode>{{ $creditNote->creditNoteType->id }}</cbc:ResponseCode>
+        <cbc:ReferenceID>{{ $creditNote->sale->serie->serie.'-'.$creditNote->sale->document_number }}</cbc:ReferenceID>
+        <cbc:ResponseCode>{{ $creditNote->credit_note_type_id }}</cbc:ResponseCode>
         <cbc:Description>{{ $creditNote->observation }}</cbc:Description>
     </cac:DiscrepancyResponse>
     <cac:BillingReference>
@@ -160,16 +160,13 @@
     <cac:LegalMonetaryTotal>
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($creditNote->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cbc:TaxInclusiveAmount currencyID="PEN">{{ round($creditNote->total, 2) }}</cbc:TaxInclusiveAmount>
-        @if($creditNote->discount > 0)
-        <cbc:AllowanceTotalAmount currencyID="PEN">{{ round($creditNote->discount, 2) }}</cbc:AllowanceTotalAmount>
-        @endif
         <cbc:ChargeTotalAmount currencyID="PEN">0.00</cbc:ChargeTotalAmount>
         <cbc:PrepaidAmount currencyID="PEN">0.00</cbc:PrepaidAmount>
         <cbc:PayableAmount currencyID="PEN">{{ round($creditNote->total, 2) }}</cbc:PayableAmount>
     </cac:LegalMonetaryTotal>
-    @foreach ($creditNote->creditNoteDetails as $i => $creditNoteDetail)
+    @foreach ($creditNote->creditNoteDetails as $creditNoteDetail)
     <cac:CreditNoteLine>
-        <cbc:ID>{{ $i+1 }}</cbc:ID>
+        <cbc:ID>{{ $loop->iteration }}</cbc:ID>
         <cbc:CreditedQuantity unitCode="NIU" unitCodeListID="UN/ECE rec 20" unitCodeListAgencyName="United Nations Economic Commission for Europe">{{ number_format($creditNoteDetail->quantity, 10, '.', '') }}</cbc:CreditedQuantity>
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($creditNoteDetail->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cac:PricingReference>

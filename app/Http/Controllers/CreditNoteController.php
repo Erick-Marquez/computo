@@ -22,7 +22,7 @@ class CreditNoteController extends Controller
      */
     public function index()
     {
-        $creditNotes = CreditNote::all();
+        $creditNotes = CreditNote::with('serie.voucherType', 'sale.serie', 'sale.customer')->latest()->get();
         return GlobalResource::collection($creditNotes);
     }
 
@@ -56,7 +56,6 @@ class CreditNoteController extends Controller
      */
     public function store(Request $request)
     {
-
         $serie = Serie::find($request->serie_id);
         $serie->current_number = $serie->current_number + 1;
         $serie->save();
@@ -65,7 +64,7 @@ class CreditNoteController extends Controller
             'document_number' => $serie->current_number,
             'date_issue' => now(),
 
-            'observation' => $request->observation,
+            'observation' => CreditNoteType::find($request->credit_note_type_id)->description,
             'discount' => $request->discount,
 
             'credit_note_type_id' => $request->credit_note_type_id,
@@ -199,7 +198,16 @@ class CreditNoteController extends Controller
 
         $sunat = SunatService::facturar($creditNote->id, 'credit');
 
-        return $sunat;
+        $creditNote->update([
+            'send_sunat' => $sunat['response']['send'],
+            'state' => $sunat['response']['state'],
+            'response_sunat' => $sunat['response']['response_sunat'],
+            'description_sunat_cdr' => $sunat['response']['message'],
+            'hash_cdr' => $sunat['response']['hash_cdr'],
+            'hash_cpe' => $sunat['response']['hash_cpe']
+        ]);
+
+        return $creditNote->description_sunat_cdr;
     }
 
     /**

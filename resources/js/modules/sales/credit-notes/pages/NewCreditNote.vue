@@ -116,7 +116,7 @@
               <i class="text-danger fas fa-hashtag"></i>
               Motivo
             </label>
-            <select class="form-control rounded-pill" v-model="creditNote.credit_note_type_id">
+            <select class="form-control rounded-pill" v-model="creditNote.credit_note_type_id" required>
               <option v-for="creditNoteType in creditNoteTypes" :key="creditNoteType.id" :value="creditNoteType.id">
                 {{ creditNoteType.description }}
               </option>
@@ -173,18 +173,36 @@
           <table class="table table-striped">
             <thead>
               <tr>
+                <th style="width: 2%"></th>
                 <th style="width: 40%">Descripción</th>
                 <th style="width: 20%">Tipo IGV</th>
                 <th style="width: 3%">Cantidad</th>
-                <th style="width: 8%">Descuento</th>
-                <th style="width: 8%">Precio</th>
-                <th style="width: 8%">Sub Total</th>
-                <th style="width: 8%">Total</th>
+                <th style="width: 10%">Precio</th>
+                <th style="width: 10%">Sub Total</th>
+                <th style="width: 10%">Total</th>
                 <th style="width: 3%"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(detail, index) in creditNote.detail" :key="detail">
+                <td>
+                  <Popper class="light" arrow>
+                    <button type="button" class="btn btn-flat bg-light">
+                      <i class="text-primary fas fa-eye"></i>
+                    </button>
+                    
+                    <template v-slot:content>
+                      <b>Precio: </b>{{ detail.oldTotals.price }}
+                      <br>
+                      <b>Descuento: </b>{{ detail.oldTotals.discount }}
+                      <br>
+                      <b>SubTotal: </b>{{ detail.oldTotals.subtotal }}
+                      <br>
+                      <b>Total: </b>{{ detail.oldTotals.total }}
+                      <br>
+                    </template>
+                  </Popper>
+                </td>
                 <td>
                   <input
                     :class="
@@ -212,14 +230,9 @@
                 </td>
                 <td>
                   <select
-                    v-model="detail.igv_type_id"
-                    :class="
-                      'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.igv_type_id'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    @change="getTotals()"
+                    :value="detail.igv_type_id"
+                    class="form-control rounded-pill"
+                    disabled
                   >
                     <option
                       v-for="igvType in igvTypes"
@@ -260,36 +273,15 @@
                   <input
                     :class="
                       'form-control rounded-pill' +
-                      (errorsCreate['detail.' + index + '.discount'] == null
-                        ? ''
-                        : ' is-invalid')
-                    "
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    v-model="detail.discount"
-                    @change="activateOrDesactivateGlobalDiscount"
-                    :disabled="activateDetailDiscount"
-                    @input="getTotals()"
-                  />
-                  <div
-                    class="invalid-feedback"
-                    v-if="errorsCreate['detail.' + index + '.discount']"
-                  >
-                    {{ errorsCreate["detail." + index + ".discount"][0] }}
-                  </div>
-                </td>
-                <td>
-                  <input
-                    :class="
-                      'form-control rounded-pill' +
                       (errorsCreate['detail.' + index + '.sale_price'] == null
                         ? ''
                         : ' is-invalid')
                     "
-                    type="text"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
                     v-model="detail.sale_price"
-                    disabled
+                    @input="getTotals()"
                   />
                   <div
                     class="invalid-feedback"
@@ -387,7 +379,8 @@
                   cols="30"
                   rows="4"
                   class="form-control rounded-pill px-5"
-                  v-model="creditNote.observation"
+                  :value="creditNote.observation"
+                  disabled
                 ></textarea>
               </div>
             </div>
@@ -483,7 +476,7 @@
               type="submit"
               class="btn btn-dark float-right"
             >
-              <i class="far fa-credit-card"></i> Guardar Cotización
+              <i class="far fa-credit-card"></i> Guardar Nota de Crédito
             </button>
 
             <button
@@ -504,8 +497,9 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import Popper from "vue3-popper"
 export default {
-  components: { BaseUrl },
+  components: { BaseUrl, Popper},
   async created() {
     await BaseUrl.get(`api/credit-notes/create`).then((resp) => {
       this.voucherTypes = resp.data.data.voucherTypes
@@ -516,7 +510,17 @@ export default {
 
       this.creditNoteTypes = resp.data.data.creditNotesTypes
       this.igvTypes = resp.data.data.igvTypes
-    });
+    })
+
+    if (this.$route.query.voucherType && this.$route.query.serie && this.$route.query.documentNumber) {
+      
+      this.voucherToModify.voucherType = this.$route.query.voucherType
+      this.voucherToModify.serie = this.$route.query.serie
+      this.voucherToModify.documentNumber = this.$route.query.documentNumber
+      this.getVoucherToModifySeries()
+      this.getCreditNoteSeries()
+      this.getVoucherToModify()
+    }
 
     this.loader.hide();
   },
@@ -584,15 +588,20 @@ export default {
   },
   methods: {
     getSeries() {
+      this.getVoucherToModifySeries()
+      this.voucherToModify.serie = this.voucherToModifySeries[0].id
+      this.getCreditNoteSeries()
+    },
+    getVoucherToModifySeries(){
       let serieBackup = this.series
       this.voucherToModifySeries = serieBackup.filter(
         (serie) => serie.voucher_type_id == this.voucherToModify.voucherType
       )
-      this.voucherToModify.serie = this.voucherToModifySeries[0].id
-
-      let serieBackup2 = this.series
+    },
+    getCreditNoteSeries(){
+      let serieBackup = this.series
       let type = this.voucherToModify.voucherType == 1 ? 4 : this.voucherToModify.voucherType == 2 ? 5 : null
-      this.creditNoteSeries = serieBackup2.filter(
+      this.creditNoteSeries = serieBackup.filter(
         (serie) => serie.voucher_type_id == type
       )
       this.creditNote.serie_id = this.creditNoteSeries[0].id
@@ -610,8 +619,9 @@ export default {
       this.loadingSearchVoucher = true
 
       this.creditNote.detail = []
-      this.creditNote.sale_id = null,
-      this.creditNote.discount = null,
+      this.creditNote.sale_id = null
+      this.creditNote.discount = null
+      this.creditNote.observation = null
       this.customer = {
         documentType: null,
         document: null,
@@ -626,21 +636,29 @@ export default {
         this.creditNote.sale_id = resp.data.data.id
 
         this.creditNote.discount = Number(resp.data.data.discount)
+        this.creditNote.observation = resp.data.data.observation
 
         resp.data.data.sale_details.forEach(e => {
           this.creditNote.detail.push({
-            discount: Number(e.discount),
             subtotal: 0,
             total: 0,
-
+            discount: 0,
             product_id: e.branch_product.id,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
             igv_type_id: e.branch_product.product.igv_type_id,
             description: e.branch_product.product.name,
             brand: e.branch_product.product.brand.description,
-            sale_price: Number(e.price),
-            quantity: 1,
+            sale_price: Number(e.price) - Number(e.discount/e.quantity),
+            quantity: e.quantity,
+
+            oldTotals: {
+              price: Number(e.price).toFixed(2),
+              discount: Number(e.discount).toFixed(2),
+              subtotal: Number(e.subtotal).toFixed(2),
+              total: Number(e.total).toFixed(2),
+              totalIgv: Number(e.total_igv).toFixed(2)
+            }
           })
         })
         console.log(resp.data.data)
@@ -875,12 +893,8 @@ export default {
 
           this.errorsCreate = {};
 
-          // this.$router.replace({ name: "quotation-list" });
-          // Swal.fire(
-          //   "Cotización Creada",
-          //   "Se ha creado la Cotización " + response.data,
-          //   "success"
-          // );
+          this.$router.replace({ name: "credit-notes-list" });
+          Swal.fire("Comprobante Creado", response.data, "success");
         })
         .catch((error) => {
           console.log(error.response);
@@ -985,5 +999,16 @@ label {
 .image-without-products img {
   margin-bottom: 0.5rem;
   margin-right: 0.5rem;
+}
+.light {
+  --popper-theme-background-color: #ffffff;
+  --popper-theme-background-color-hover: #ffffff;
+  --popper-theme-text-color: #333333;
+  --popper-theme-border-width: 1px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-color: #eeeeee;
+  --popper-theme-border-radius: 6px;
+  --popper-theme-padding: 20px;
+  --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
 }
 </style>

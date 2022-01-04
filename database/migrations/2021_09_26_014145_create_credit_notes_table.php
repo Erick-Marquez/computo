@@ -30,9 +30,11 @@ class CreateCreditNotesTable extends Migration
             $table->string('observation')->nullable();
 
             $table->boolean('send_sunat')->default(false);
+            $table->string('state')->nullable();
             $table->string('response_sunat')->default(false);
             $table->string('description_sunat_cdr')->nullable();
             $table->string('hash_cdr')->nullable();
+            $table->string('hash_cpe')->nullable();
             $table->boolean('canceled')->default(false);
             
             $table->string('credit_note_type_id');

@@ -206,6 +206,7 @@ class SunatService
 
         curl_close($ch);
 
+
         if ($httpCode == 200) {
             self::$message['response']['send'] = true;
             $doc = new DOMDocument();

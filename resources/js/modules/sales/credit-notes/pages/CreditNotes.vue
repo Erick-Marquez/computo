@@ -50,30 +50,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="voided in voideds" :key="voided.id">
+                  <tr v-for="creditNote in creditNotes" :key="creditNote.id">
                     <td class="align-middle">
-                      {{ getTimestamp(voided.created_at) }}
+                      {{ getTimestamp(creditNote.created_at) }}
                     </td>
                     <td class="align-middle">
-                      <span class="text-muted">BAJA: </span
-                      >{{ voided.identifier }}
+                      <span class="text-muted">NOTA CREDITO: </span>
+                      {{ creditNote.serie.serie }}-{{ creditNote.document_number }}
                       <br />
                       <span class="badge bg-maroon">Afecta:</span>
-                      {{ voided.sale.serie.serie }} -
-                      {{ voided.sale.document_number }}
+                      {{ creditNote.sale.serie.serie }} -
+                      {{ creditNote.sale.document_number }}
                     </td>
                     <td class="align-middle">
                       <span class="badge bg-maroon">{{
-                        (voided.sale.customer.identification_document_id = 6
+                        (creditNote.sale.customer.identification_document_id = 6
                           ? "RUC:"
                           : "DNI:")
                       }}</span>
-                      {{ voided.sale.customer.document }}
+                      {{ creditNote.sale.customer.document }}
                       <br />
                       <span class="badge bg-maroon">Nombre:</span>
-                      {{ voided.sale.customer.name }}
+                      {{ creditNote.sale.customer.name }}
                     </td>
-                    <td class="align-middle">S/. {{ voided.sale.total }}</td>
+                    <td class="align-middle">S/. {{ creditNote.total }}</td>
                     <td class="align-middle text-center">
                       <a
                         title="Haz Click para Descargar el XML"
@@ -96,19 +96,19 @@
                     </td>
                     <td class="align-middle text-center">
                       <i
-                        v-if="voided.state == 'ACEPTADO'"
+                        v-if="creditNote.state == 'ACEPTADO'"
                         class="text-success fas fa-check"
                       ></i>
                       <i
-                        v-else-if="voided.state == 'RECHAZADO'"
+                        v-else-if="creditNote.state == 'RECHAZADO'"
                         class="text-danger fas fa-ban"
                       ></i>
                       <i
-                        v-else-if="voided.state == 'PENDIENTE'"
+                        v-else-if="creditNote.state == 'PENDIENTE'"
                         class="text-success fas fa-sync-alt"
                       ></i>
                       <i
-                        v-else-if="voided.state == 'ANULADO'"
+                        v-else-if="creditNote.state == 'ANULADO'"
                         class="text-danger fas fa-window-close"
                       ></i>
                     </td>
@@ -132,7 +132,7 @@
                           <a
                             class="dropdown-item"
                             href="#"
-                            @click="getTicketStatus(voided)"
+                            @click="getTicketStatus(creditNote)"
                             ><i class="col-1 mr-3 fas fa-eye"></i>Consultar estado de ticket</a
                           >
                         </div>
@@ -165,7 +165,7 @@ export default {
   },
   methods: {
     async getCreditNotes() {
-      await BaseUrl.get(`api/voideds`).then((resp) => {
+      await BaseUrl.get(`api/credit-notes`).then((resp) => {
         this.creditNotes = resp.data.data;
       });
     },

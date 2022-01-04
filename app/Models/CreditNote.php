@@ -23,9 +23,11 @@ class CreditNote extends Model
         'observation',
 
         'send_sunat',
+        'state',
         'response_sunat',
         'description_sunat_cdr',
         'hash_cdr',
+        'hash_cpe',
         'canceled',
 
         'serie_id',
