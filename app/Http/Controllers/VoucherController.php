@@ -29,6 +29,7 @@ use App\Services\SaleService;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VoucherController extends Controller
@@ -271,9 +272,11 @@ class VoucherController extends Controller
     {
         $branchProducts = BranchProduct::from('branch_product AS bp')
             ->where('bp.branch_id', auth()->user()->branch_id)
-            ->where('p.name', 'like', '%' . $search . '%')
-            ->orWhere('p.cod', 'like', '%' . $search . '%')
-            ->orWhere('p.slug', 'like', '%' . $search . '%')
+            ->where(function($query) use ($search){
+                $query->where('p.name', 'like', '%' . $search . '%')
+                ->orWhere('p.cod', 'like', '%' . $search . '%')
+                ->orWhere('p.slug', 'like', '%' . $search . '%');
+            })
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
             ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(

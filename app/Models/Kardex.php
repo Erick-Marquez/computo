@@ -18,6 +18,7 @@ class Kardex extends Model
     const INVENTARIO_INICIAL = 'INVENTARIO INICIAL';
     const DEVOLUCION = 'DEVOLUCION';
     const BAJA = 'BAJA';
+    const ANULACION = 'DEVOLUCION POR ANULACION';
 
     protected $table = "kardex";
 
