@@ -646,7 +646,7 @@ export default {
             product_id: e.branch_product.id,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
-            igv_type_id: e.branch_product.product.igv_type_id,
+            igv_type_id: e.igv_type_id,
             description: e.branch_product.product.name,
             brand: e.branch_product.product.brand.description,
             sale_price: Number(e.price) - Number(e.discount/e.quantity),

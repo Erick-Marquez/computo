@@ -73,8 +73,11 @@ Route::middleware([
     Route::get('/sales/quotation/{serie}/{number}', [VoucherController::class, 'quotation'])->name('api.sales.quotation');
 
     //Advance Payments
+
     Route::get('/advance-payments', [AdvancePaymentController::class, 'index'])->name('api.advancePayments.index');
     Route::post('/advance-payments', [AdvancePaymentController::class, 'store'])->name('api.advancePayments.store');
+    Route::put('advance-payments/{advancePayment}', [AdvancePaymentController::class, 'update'])->name('api.advancePayments.update');
+    Route::delete('/advance-payments/{advancePayment}', [AdvancePaymentController::class, 'destroy'])->name('api.advancePayments.destroy');
     Route::get('/advance-payments/quotation/{serie}/{number}', [AdvancePaymentController::class, 'quotation'])->name('api.advancePayments.quotation');
 
     //Credit Notes

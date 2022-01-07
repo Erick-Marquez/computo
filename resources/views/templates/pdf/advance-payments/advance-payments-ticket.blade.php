@@ -131,11 +131,31 @@
 
     <table class="price">
         <tbody>
+            @php
+               $totalAdvance = 0; 
+            @endphp
+            @foreach ($advancePayments as $payment)
+                @php
+                    $totalAdvance += $payment->amount;
+                @endphp
+                <tr>
+                    <td>
+                        <span class="bold">Adelanto {{ $loop->iteration }}: </span> S/. {{ round($payment->amount, 2) }}
+                    </td>
+                </tr>
+                @if ($payment->id == $advancePayment->id)
+                    @break
+                @endif
+            @endforeach
             <tr>
-                <td><span class="bold">Adelanto: </span> S/. {{ round($advancePayment->amount, 2) }}</td>
+                <td>
+                    <span class="bold">Total: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->discount, 2) }}
+                </td>
             </tr>
             <tr>
-                <td><span class="bold">Total: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->discount, 2) }}</td>
+                <td>
+                    <span class="bold">Deuda: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->discount, 2) - round($totalAdvance, 2) }}
+                </td>
             </tr>
         </tbody>
     </table>

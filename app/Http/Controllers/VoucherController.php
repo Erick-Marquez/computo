@@ -273,6 +273,7 @@ class VoucherController extends Controller
             ->where('bp.branch_id', auth()->user()->branch_id)
             ->where('p.name', 'like', '%' . $search . '%')
             ->orWhere('p.cod', 'like', '%' . $search . '%')
+            ->orWhere('p.slug', 'like', '%' . $search . '%')
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
             ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(

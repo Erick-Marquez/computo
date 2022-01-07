@@ -642,7 +642,8 @@ export default {
       let index = this.saleData.detail.findIndex(
         (element) => element.product_id == product.id
       );
-      if (index == -1) {
+      console.log(product.stock != 0)
+      if (index == -1 && product.stock != 0) {
         this.saleData.detail.push({
           discount: 0,
           subtotal: 0,
