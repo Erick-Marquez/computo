@@ -396,7 +396,7 @@ return [
                     'icon' => 'far fa-fw fa-circle',
                     'route' => 'web.compras',
                     'active' => ['nueva-compra'],
-                    'can' => 'purchase.index'
+                    'can' => 'purchases.index'
                 ],
             ],
         ],

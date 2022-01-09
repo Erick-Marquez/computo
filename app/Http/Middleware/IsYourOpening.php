@@ -15,15 +15,15 @@ class IsYourOpening
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $occId)
+    public function handle(Request $request, Closure $next, $id)
     {
-        $occ = OpenClosedCashbox::findOrFail($occId);
+        $occ = OpenClosedCashbox::findOrFail($id);
         $userId = auth()->user()->id;
 
         if ($occ->user_id == $userId) {
             return $next($request);
         } else {
-            return back();
+            return redirect()->back()->with('status', 'Esta no es su apertura');
         }
 
     }

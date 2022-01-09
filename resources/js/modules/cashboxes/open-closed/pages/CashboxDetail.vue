@@ -154,6 +154,7 @@
           <tr>
             <th>Fecha y Hora</th>
             <th>Concepto</th>
+            <th>Tipo de Pago</th>
             <th>Observación</th>
             <th>Monto</th>
           </tr>
@@ -167,13 +168,14 @@
           <tr v-else v-for="movement in movements" :key="movement.id">
             <td>{{ movement.date }}</td>
             <td>{{ movement.concept }}</td>
+            <td>{{ movement.payment_type }}</td>
             <td>{{ movement.observation }}</td>
             <td>{{ movement.amount }}</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="3" class="text-right">
+            <td colspan="4" class="text-right">
               <strong>BALANCE TOTAL:</strong>
             </td>
             <td>
@@ -183,6 +185,7 @@
                     parseFloat(details.movementsTotal.sales, 3) +
                     parseFloat(details.movementsTotal.incomes, 3) -
                     parseFloat(details.movementsTotal.expenses, 3) -
+                    parseFloat(details.movementsTotal.remunerations, 3) -
                     parseFloat(details.movementsTotal.purchases, 3) -
                     parseFloat(details.movementsTotal.account_to_pay, 3)
                 ).toFixed(2)

@@ -159,3 +159,10 @@ Route::get('/reports/sales/print/{fromDate}/{untilDate}/{branch_id?}/{customer_i
 Route::get('/reports/products/print/{branch_id?}', [ReportController::class, 'printReportProducts'])->name('reports.products.print');
 Route::get('/reports/purchases/print/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'printReportPurchases'])->name('reports.purchases.print');
 Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{product_id?}', [ReportController::class, 'printReportSalesDetails'])->name('reports.details.print');
+
+
+Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{product_id?}', [ReportController::class, 'printReportSalesDetails'])->name('reports.details.print');
+
+Route::get('reports/products/{type}/{branch_id?}', [ReportController::class, 'reportProducts']);
+Route::get('reports/sales/{type}/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{voucher_type_id?}', [ReportController::class, 'reportSales']);
+Route::get('reports/purchases/{type}/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'reportPurchases']);

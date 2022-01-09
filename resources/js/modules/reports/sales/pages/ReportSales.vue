@@ -67,18 +67,20 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Rerporte de Ventas</h3>
-        <div class="card-tools">
+        <div class="card-tools" v-show="sales.length >= 1">
           <a
-            :href="`../../reports/sales/print/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
+            :href="`/reports/sales/pdf/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
             target="_blank"
-            v-show="sales.length >= 1"
             class="btn btn-flat btn-danger mr-2 rounded-pill"
           >
-            <i class="fas fa-file-excel"></i> PDF
+            <i class="fas fa-file-pdf"></i> PDF
           </a>
-          <!-- <button class="btn btn-flat bg-olive rounded-pill">
-            <i class="fas fa-file-pdf"></i> Excel
-          </button> -->
+          <a
+            class="btn btn-flat bg-olive rounded-pill"
+            :href="`/reports/sales/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
+          >
+            <i class="fas fa-file-excel"></i> Excel
+          </a>
         </div>
       </div>
       <!-- /.card-header -->
@@ -199,7 +201,7 @@ export default {
         });
     },
     async getSellers() {
-        await BaseUrl.get(`/api/roles/Vendedor/users`)
+      await BaseUrl.get(`/api/roles/Vendedor/users`)
         .then((response) => {
           this.sellers = response.data;
           this.sellers.push({ name: "TODOS", id: null });
@@ -207,7 +209,7 @@ export default {
         .catch((error) => {
           console.log(error.response.data);
         });
-    }
+    },
   },
 };
 </script>

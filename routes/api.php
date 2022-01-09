@@ -82,7 +82,7 @@ Route::middleware([
     Route::get('/credit-notes/create', [CreditNoteController::class, 'create'])->name('api.creditNotes.create');
     Route::get('/credit-notes/voucher/{serieId}/{documentNumber}', [CreditNoteController::class, 'voucher'])->name('api.creditNotes.voucher');
     Route::post('/credit-notes', [CreditNoteController::class, 'store'])->name('api.creditNotes.store');
-    
+
     //Voideds
     Route::get('/voideds', [VoidedController::class, 'index'])->name('api.voideds.index');
     Route::post('/voideds', [VoidedController::class, 'store'])->name('api.voideds.store');

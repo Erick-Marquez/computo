@@ -20,7 +20,7 @@ class IsCashboxOpening
 
         if ( is_null($open_closed_cashbox_id) ) {
 
-            return redirect()->route('web.cajas')->with('status', 'Tiene que aperturar una caja primero');           ;
+            return redirect()->route('web.cajas')->with('status', 'Tiene que aperturar una caja primero');
 
         }
 

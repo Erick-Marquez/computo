@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportService
 {
-    public function purchases($request)
+    public static function purchases($request)
     {
         $purchases = DB::table('purchases')
             ->join('open_closed_cashboxes', 'purchases.open_closed_cashbox_id', '=', 'open_closed_cashboxes.id')
@@ -43,7 +43,7 @@ class ReportService
         return $cashboxes;
     }
 
-    public function sales($request)
+    public static function sales($request)
     {
         $sales = DB::table('sales as s')
             ->join('open_closed_cashboxes as occ', 's.open_closed_cashbox_id', '=', 'occ.id')
@@ -65,7 +65,7 @@ class ReportService
         return $sales;
     }
 
-    public function products($request)
+    public static function products($request)
     {
         $products = DB::table('branch_product as bp')
             ->join('products as p', 'bp.product_id', '=', 'p.id')

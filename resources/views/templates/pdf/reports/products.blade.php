@@ -95,9 +95,9 @@ $establishment = $cash->user->establishment;
                                 <td class="celda">{{ $product->brand }}</td>
                                 <td class="celda">{{ $product->stock }}</td>
                                 <td class="celda">{{ $product->referential_purchase_price }}</td>
-                                <td class="celda">{{ $product->sale_price }}</td>
-                                <td class="celda">{{ $product->referential_sale_price_one }}</td>
-                                <td class="celda">{{ $product->referential_sale_price_two }}</td>
+                                <td class="celda">{{ round((($product->sale_gain_one + 100) * $product->referential_purchase_price ) / 100, 2) }}</td>
+                                <td class="celda">{{ round((($product->sale_gain_two + 100) * $product->referential_purchase_price ) / 100, 2) }}</td>
+                                <td class="celda">{{ round((($product->sale_gain_three + 100) * $product->referential_purchase_price ) / 100, 2) }}</td>
                                 <td class="celda">{{ $product->active ? 'SI' : 'NO' }}</td>
                             </tr>
                         @endforeach

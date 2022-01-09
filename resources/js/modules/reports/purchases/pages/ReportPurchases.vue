@@ -41,18 +41,20 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Rerporte de Compras</h3>
-        <div class="card-tools">
+        <div class="card-tools" v-show="purchases.length >= 1">
           <a
-            :href="`../../reports/purchases/print/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.provider_id}/${filters.document_type}`"
+            :href="`/reports/purchases/pdf/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.provider_id}/${filters.document_type}`"
             target="_blank"
-            v-show="purchases.length >= 1"
             class="btn btn-flat btn-danger mr-2 rounded-pill"
           >
-          <i class="fas fa-file-pdf">PDF</i>
+            <i class="fas fa-file-pdf">PDF</i>
           </a>
-          <!-- <button class="btn btn-flat bg-olive rounded-pill">
-            <i class="fas fa-file-pdf"></i> Excel
-          </button> -->
+          <a
+            :href="`/reports/purchases/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.provider_id}/${filters.document_type}`"
+            class="btn btn-flat bg-olive rounded-pill"
+          >
+            <i class="fas fa-file-excel"></i> Excel
+          </a>
         </div>
       </div>
       <!-- /.card-header -->

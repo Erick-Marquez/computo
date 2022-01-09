@@ -15,6 +15,7 @@
           </button>
         </div>
         <div class="modal-body">
+          {{ movement }}
           <div class="d-flex justify-content-around mb-2">
             <div class="custom-control custom-radio">
               <input
@@ -39,6 +40,19 @@
               />
               <label for="incomes" class="custom-control-label">Ingreso</label>
             </div>
+            <div class="custom-control custom-radio">
+              <input
+                class="custom-control-input custom-control-input-danger"
+                type="radio"
+                id="remuneration"
+                name="movements"
+                value="REMUNERACION"
+                v-model="movement.type"
+              />
+              <label for="remuneration" class="custom-control-label"
+                >Remuneración</label
+              >
+            </div>
           </div>
           <div
             class="invalid-feedback ml-3"
@@ -59,6 +73,26 @@
                 {{ pt.description }}
               </option>
             </select>
+          </div>
+
+          <div v-if="movement.type == 'REMUNERACION'" class="form-group">
+            <label for="">Vendedor:</label>
+            <v-select
+              class="style-chooser"
+              v-model="movement.seller"
+              label="name"
+              :reduce="(seller) => seller.name"
+              :options="sellers"
+            >
+              <template v-slot:no-options="{ search, searching }">
+                <template v-if="searching">
+                  No se encontraron resultados para
+                  <b
+                    ><em>{{ search }}</em></b
+                  >.
+                </template>
+              </template>
+            </v-select>
           </div>
 
           <div class="form-group">
@@ -120,6 +154,7 @@ export default {
   data() {
     return {
       paymentTypes: [],
+      sellers: [],
     };
   },
   props: {
@@ -128,7 +163,8 @@ export default {
     disabled: Boolean,
   },
   created() {
-      this.getPaymentTypes()
+    this.getPaymentTypes();
+    this.getSellers();
   },
   methods: {
     async getPaymentTypes() {
@@ -140,9 +176,37 @@ export default {
           console.log(error.response.data);
         });
     },
+    async getSellers() {
+      await BaseUrl.get(`/api/roles/Vendedor/users`)
+        .then((response) => {
+          this.sellers = response.data;
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    },
   },
 };
 </script>
 
 <style>
+.style-chooser .vs__dropdown-toggle {
+  border-radius: 50px;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-color: #ced4da;
+  box-shadow: inset 0 0 0 transparent;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
+}
 </style>

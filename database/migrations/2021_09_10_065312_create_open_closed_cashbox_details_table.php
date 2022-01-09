@@ -16,7 +16,7 @@ class CreateOpenClosedCashboxDetailsTable extends Migration
         Schema::create('open_closed_cashbox_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedDecimal('amount', 9, 3);
-            $table->enum('type', ['INGRESO', 'EGRESO']); // EGRESO
+            $table->enum('type', ['INGRESO', 'EGRESO', 'REMUNERACION']); // EGRESO
             $table->string('observation')->nullable();
 
             $table->foreignId('open_closed_cashbox_id')

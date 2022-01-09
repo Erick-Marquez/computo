@@ -62,7 +62,7 @@ $establishment = $cash->user->establishment;
 
 <body>
     <div>
-        <p align="center" class="title"><strong>Reporte de Ventas</strong></p>
+        <p align="center" class="title"><strong>Reporte de Compras</strong></p>
     </div>
     <div style="margin-top:20px; margin-bottom:20px;">
         <table style="padding-left:9em; border: 0">

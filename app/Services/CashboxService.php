@@ -105,7 +105,7 @@ class CashboxService
     {
         try {
             $occ = $this->recoverOpening($id);
-            $movementsTotal = $occ->getMovementsTotal();
+            $movementsTotal = $occ->getMoneyCash();
             $movements = $occ->getMovementsArray();
 
             return response()->json([
@@ -127,9 +127,10 @@ class CashboxService
     public static function balance($id)
     {
         $occ = CashboxService::recoverOpening($id);
-        $movements = $occ->getMovementsTotal();
+        $movements = $occ->getMoneyCash();
 
-        $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] + $movements['quotations'] - $movements['expenses'] - $movements['purchases'] - $movements['account_to_pay'];
+        $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] + $movements['quotations']
+                    - $movements['expenses'] - $movements['remunerations'] - $movements['purchases'] - $movements['account_to_pay'];
 
         return $balance;
     }
@@ -137,12 +138,11 @@ class CashboxService
     public function movement($id, $data)
     {
         $occ = $this->recoverOpening($id);
-
         try {
             $occ->openClosedCashboxDetails()->create($data);
             return response()->json($data);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json(['error' => $th->getMessage()], 405);
         }
     }
 
@@ -167,10 +167,5 @@ class CashboxService
         $cashboxMovements = $occ->openClosedCashboxDetails;
 
         return compact("occ", "cashbox", "company", "movements", 'salesDetails', 'purchasesDetails', 'cashboxMovements');
-    }
-
-    public function reportMovements(OpenClosedCashbox $occ)
-    {
-
     }
 }

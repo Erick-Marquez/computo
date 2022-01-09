@@ -40,18 +40,20 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Rerporte de Productos</h3>
-        <div class="card-tools">
+        <div class="card-tools" v-show="products.length >= 1">
           <a
-            :href="`../../reports/products/print/${filters.branch_id}`"
+            :href="`/reports/products/pdf/${filters.branch_id}`"
             target="_blank"
-            v-show="products.length >= 1"
             class="btn btn-flat btn-danger mr-2 rounded-pill"
           >
-            <i class="fas fa-file-excel"></i> PDF
+            <i class="fas fa-file-pdf"></i> PDF
           </a>
-          <!-- <button class="btn btn-flat bg-olive rounded-pill">
-            <i class="fas fa-file-pdf"></i> Excel
-          </button> -->
+          <a
+            class="btn btn-flat bg-olive rounded-pill"
+            :href="`/reports/products/excel/${filters.branch_id}`"
+          >
+            <i class="fas fa-file-excel"></i> Excel
+          </a>
         </div>
       </div>
       <!-- /.card-header -->

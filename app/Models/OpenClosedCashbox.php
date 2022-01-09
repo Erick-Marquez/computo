@@ -98,6 +98,7 @@ class OpenClosedCashbox extends Model
             "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
+            "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->sum('amount'),
             "account_to_pay" => $this->accountToPayDetail()->sum('amount'), # 1 = EFECTIVO
             "quotations" => $this->paymentTypeQuotations()->sum('amount')
         ];
@@ -114,8 +115,9 @@ class OpenClosedCashbox extends Model
                 ->where('payment_types.id', 1)->sum('payment_type_sale.amount'),
 
             "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
-            "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
-            "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
+            "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->where('payment_type_id', 1)->sum('amount'),
+            "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->where('payment_type_id', 1)->sum('amount'),
+            "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->where('payment_type_id', 1)->sum('amount'),
             "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount'), # 1 = EFECTIVO
             "quotations" => $this->paymentTypeQuotations()->where('payment_type_id', 1)->sum('amount')
         ];
@@ -149,7 +151,7 @@ class OpenClosedCashbox extends Model
             ->join('payment_type_sale', 'sales.id', '=', 'payment_type_sale.sale_id')
             ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
             ->join('series', 'sales.serie_id', '=', 'series.id')
-            ->select('sales.created_at as date', DB::raw("CONCAT(series.serie, '-',sales.document_number) as observation"), 'payment_type_sale.amount as amount')
+            ->select('sales.created_at as date', DB::raw("CONCAT(series.serie, '-',sales.document_number) as observation"), 'payment_type_sale.amount as amount', 'payment_types.description as payment_type')
             ->where('sales.canceled', false)
             ->where('payment_types.id', 1)
             ->get()
@@ -166,13 +168,29 @@ class OpenClosedCashbox extends Model
             ->where('is_credit', false)
             ->get()
             ->each(function ($item, $key) {
-                return $item['concept'] = 'COMPRA';
+                $item['concept'] = 'COMPRA';
+                $item['payment_type'] = 'EFECTIVO';
             });
     }
 
     public function getExpenses()
     {
-        $expenses = $this->openClosedCashboxDetails()->select('created_at as date', 'observation', 'amount', 'type as concept')->where('type', 'EGRESO')->get();
+        $expenses = $this->openClosedCashboxDetails()
+            ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
+            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
+            ->where('type', 'EGRESO')
+            ->get();
+
+        $remunerations = $this->openClosedCashboxDetails()
+            ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
+            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'payment_types.description as payment_type')
+            ->where('type', 'REMUNERACION')
+            ->get()
+            ->each(function ($item, $key) {
+                $item['concept'] = 'EGRESO';
+                $item['observation'] = "REMUNERACION - " . $item['observation'];
+            });
+
         $accounts = $this->accountToPayDetail()->join('payment_types as pt', 'account_to_pay_details.payment_type_id', '=', 'pt.id')
             ->select('account_to_pay_details.created_at as date', 'account_to_pay_details.amount', 'pt.description as payment_type')
             ->get()
@@ -181,12 +199,17 @@ class OpenClosedCashbox extends Model
                 $item['observation'] = "Cuenta por pagar";
             });
 
-        return $expenses->mergeRecursive($accounts);
+        return $expenses->mergeRecursive($accounts)->mergeRecursive($remunerations);
     }
 
     public function getIncomes()
     {
-        $incomes = $this->openClosedCashboxDetails()->select('created_at as date', 'observation', 'amount', 'type as concept')->where('type', 'INGRESO')->get();
+        $incomes = $this->openClosedCashboxDetails()
+            ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
+            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
+            ->where('type', 'INGRESO')
+            ->get();
+
         $quotations = $this->paymentTypeQuotations()->join('payment_types as pt', 'payment_type_quotation.payment_type_id', '=', 'pt.id')
             ->select('payment_type_quotation.created_at as date', 'payment_type_quotation.amount', 'pt.description as payment_type')
             ->get()

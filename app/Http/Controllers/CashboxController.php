@@ -8,6 +8,7 @@ use App\Models\Cashbox;
 use App\Models\Company;
 use App\Models\OpenClosedCashbox;
 use App\Models\Purchase;
+use App\Models\User;
 use App\Services\CashboxService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,10 +31,10 @@ class CashboxController extends Controller
         $branch_id = auth()->user()->branch_id;
 
         $cashboxes = Cashbox::included()
-                            ->filter()
-                            ->sort()
-                            ->getOrPaginate()
-                            ->where('branch_id', $branch_id);
+            ->filter()
+            ->sort()
+            ->getOrPaginate()
+            ->where('branch_id', $branch_id);
 
         return CashboxResource::collection($cashboxes);
     }
@@ -146,12 +147,23 @@ class CashboxController extends Controller
     public function movement($id, Request $request)
     {
         $request->validate([
-            'type' => ['required', Rule::in(['INGRESO', 'EGRESO'])],
+            'type' => ['required', Rule::in(['INGRESO', 'EGRESO', 'REMUNERACION'])],
             'amount' => 'required|min:0|numeric',
             'observation' => 'required|string',
+            'payment_type_id' => 'required'
         ]);
 
-        return $this->cashboxService->movement($id, $request->all());
+        $data['type'] = $request->type;
+        $data['amount'] = $request->amount;
+        $data['payment_type_id'] = $request->payment_type_id;
+
+        if ($data['type'] == 'REMUNERACION') {
+            $data['observation'] = $request->seller . ' - ' . $request->observation;
+        } else {
+            $data['observation'] = $request->observation;
+        }
+
+        return $this->cashboxService->movement($id, $data);
     }
 
     public function reportCashboxOpenClosed($occId)

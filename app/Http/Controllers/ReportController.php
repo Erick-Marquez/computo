@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductExport;
+use App\Exports\PurchaseExport;
 use App\Http\Requests\ReportRequest;
 use App\Models\Purchase;
 use Facade\FlareClient\Report;
@@ -9,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use Barryvdh\DomPDF\PDF;
 use App\Services\ReportService;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SalesExport;
 
 class ReportController extends Controller
 {
@@ -21,7 +25,7 @@ class ReportController extends Controller
 
     public function purchases(ReportRequest $request)
     {
-        $purchases = $this->reportService->purchases($request->all());
+        $purchases = ReportService::purchases($request->all());
         return response()->json($purchases, 200);
     }
 
@@ -33,13 +37,13 @@ class ReportController extends Controller
 
     public function sales(ReportRequest $request)
     {
-        $sales = $this->reportService->sales($request->all());
+        $sales = ReportService::sales($request->all());
         return response()->json($sales, 200);
     }
 
     public function products(ReportRequest $request)
     {
-        $products = $this->reportService->products($request->all());
+        $products = ReportService::products($request->all());
         return response()->json($products, 200);
     }
 
@@ -62,41 +66,6 @@ class ReportController extends Controller
         return response()->json(['utility' => $utility, 'msp' => $products], 200);
     }
 
-    public function printReportSales($fromDate, $untilDate, $branch_id = null, $customer_id = null, $voucher_type_id = null)
-    {
-        $filters['fromDate'] = $fromDate;
-        $filters['untilDate'] = $untilDate;
-        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
-        $filters['customer_id'] = $customer_id == 'null' ? null : $customer_id;
-        $filters['voucher_type_id'] = $voucher_type_id == 'null' ? null : $voucher_type_id;
-
-        $sales = $this->reportService->sales($filters);
-        $pdf = \PDF::loadView('templates.pdf.reports.sales', compact('filters', 'sales'))->setPaper('A4','landscape');
-        return $pdf->stream();
-    }
-
-    public function printReportProducts($branch_id = null)
-    {
-        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
-
-        $products = $this->reportService->products($filters);
-        $pdf = \PDF::loadView('templates.pdf.reports.products', compact('filters', 'products'))->setPaper('A4','landscape');
-        return $pdf->stream();
-    }
-
-    public function printReportPurchases($fromDate, $untilDate, $branch_id = null, $provider_id = null, $document_type = null)
-    {
-        $filters['fromDate'] = $fromDate;
-        $filters['untilDate'] = $untilDate;
-        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
-        $filters['provider_id'] = $provider_id == 'null' ? null : $provider_id;
-        $filters['document_type'] = $document_type == 'null' ? null : $document_type;
-
-        $purchases = $this->reportService->purchases($filters);
-        $pdf = \PDF::loadView('templates.pdf.reports.purchases', compact('filters', 'purchases'))->setPaper('A4','landscape');
-        return $pdf->stream();
-    }
-
     public function printReportSalesDetails($fromDate, $untilDate, $branch_id = null, $customer_id = null, $product_id = null)
     {
         $filters['fromDate'] = $fromDate;
@@ -106,10 +75,57 @@ class ReportController extends Controller
         $filters['product_id'] = $product_id == 'null' ? null : $product_id;
 
         $sales = $this->reportService->details($filters);
-        $pdf = \PDF::loadView('templates.pdf.reports.details', compact('filters', 'sales'))->setPaper('A4','landscape');
+        $pdf = \PDF::loadView('templates.pdf.reports.details', compact('filters', 'sales'))->setPaper('A4', 'landscape');
         return $pdf->stream();
     }
 
+    public function ReportSales($type, $fromDate, $untilDate, $branch_id = null, $customer_id = null, $voucher_type_id = null)
+    {
+
+        $filters['fromDate'] = $fromDate;
+        $filters['untilDate'] = $untilDate;
+        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
+        $filters['customer_id'] = $customer_id == 'null' ? null : $customer_id;
+        $filters['voucher_type_id'] = $voucher_type_id == 'null' ? null : $voucher_type_id;
 
 
+        if ($type == 'excel') {
+            return Excel::download(new SalesExport($filters), 'sales.xlsx');
+        } else {
+            $sales = ReportService::sales($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.sales', compact('filters', 'sales'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
+
+    public function reportProducts($type, $branch_id = null)
+    {
+        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
+
+        if ($type == 'excel') {
+            return Excel::download(new ProductExport($filters), 'product.xlsx');
+        } else {
+            $products = ReportService::products($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.products', compact('filters', 'products'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
+
+
+    public function reportPurchases($type, $fromDate, $untilDate, $branch_id = null, $provider_id = null, $document_type = null)
+    {
+        $filters['fromDate'] = $fromDate;
+        $filters['untilDate'] = $untilDate;
+        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
+        $filters['provider_id'] = $provider_id == 'null' ? null : $provider_id;
+        $filters['document_type'] = $document_type == 'null' ? null : $document_type;
+
+        if ($type == 'excel') {
+            return Excel::download(new PurchaseExport($filters), 'purchases.xlsx');
+        } else {
+            $purchases = ReportService::purchases($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.purchases', compact('filters', 'purchases'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
 }

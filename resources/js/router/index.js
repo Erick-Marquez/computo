@@ -277,6 +277,10 @@ const routes = [
             {
                 path: 'detalle/:id',
                 name: 'show-cashbox',
+                beforeEnter: (to, from, next) => {
+                    console.log(to.params.id);
+                    next()
+                },
                 component: () => import('../modules/cashboxes/open-closed/pages/CashboxDetail.vue'),
             },
         ]
