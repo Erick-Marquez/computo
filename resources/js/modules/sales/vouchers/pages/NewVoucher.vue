@@ -388,19 +388,6 @@
           <div class="table-responsive">
             <table class="table mt-5">
               <tbody>
-                <tr v-show="saleData.voucher.discount > 0">
-                  <th>Descuento global:</th>
-                  <td class="d-flex justify-content-between">
-                    <span>S/.</span><span>{{ saleData.voucher.discount }}</span>
-                  </td>
-                </tr>
-                <tr v-show="saleData.voucher.discountItems > 0">
-                  <th>Descuento por item:</th>
-                  <td class="d-flex justify-content-between">
-                    <span>S/.</span
-                    ><span>{{ saleData.voucher.discountItems }}</span>
-                  </td>
-                </tr>
                 <tr v-show="saleData.voucher.totalTaxed > 0">
                   <th>Gravado:</th>
                   <td class="d-flex justify-content-between">
@@ -433,6 +420,31 @@
                   <th>Igv (18%):</th>
                   <td class="d-flex justify-content-between">
                     <span>S/.</span><span>{{ saleData.voucher.totalIgv }}</span>
+                  </td>
+                </tr>
+                <tr
+                  v-show="
+                    saleData.voucher.discount ||
+                    saleData.voucher.discountItems > 0
+                  "
+                >
+                  <th>Subtotal:</th>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.subtotal }}</span>
+                  </td>
+                </tr>
+                <tr v-show="saleData.voucher.discount > 0">
+                  <th>Descuento global:</th>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span><span>{{ saleData.voucher.discount }}</span>
+                  </td>
+                </tr>
+                <tr v-show="saleData.voucher.discountItems > 0">
+                  <th>Descuento por item:</th>
+                  <td class="d-flex justify-content-between">
+                    <span>S/.</span
+                    ><span>{{ saleData.voucher.discountItems }}</span>
                   </td>
                 </tr>
                 <tr>
@@ -702,11 +714,11 @@ export default {
             let priceWithoutIgv = e.sale_price / (1 + igv);
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
             e.subtotal = this.roundToTwo(
-              priceWithoutIgv * e.quantity - e.discount
+              priceWithoutIgv * e.quantity
             ).toFixed(2);
             // hallar el total = (subtotal * 1.18)
             e.total = this.roundToTwo(
-              (priceWithoutIgv * e.quantity - e.discount) * (1 + igv)
+              (priceWithoutIgv * e.quantity) * (1 + igv)
             ).toFixed(2);
             // Actualizar totales globales
             subtotal += Number(e.subtotal);
@@ -716,7 +728,7 @@ export default {
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -724,7 +736,7 @@ export default {
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -732,7 +744,7 @@ export default {
             break;
           case 13: //[Gratuita] Gravado – Retiro
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -740,7 +752,7 @@ export default {
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -748,7 +760,7 @@ export default {
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -756,7 +768,7 @@ export default {
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -764,7 +776,7 @@ export default {
             break;
           case 20: //Exonerado - Operación Onerosa
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -773,7 +785,7 @@ export default {
             break;
           case 30: //Inafecto - Operación Onerosa
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -782,7 +794,7 @@ export default {
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -790,7 +802,7 @@ export default {
             break;
           case 32: //[Gratuita] Inafecto – Retiro
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -798,7 +810,7 @@ export default {
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -806,7 +818,7 @@ export default {
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -814,7 +826,7 @@ export default {
             break;
           case 35: //[Gratuita] Inafecto – Retiro por premio
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -822,7 +834,7 @@ export default {
             break;
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -830,7 +842,7 @@ export default {
             break;
           case 40: //Exportación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -839,18 +851,15 @@ export default {
             break;
         }
       });
-      this.saleData.voucher.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.saleData.voucher.subtotal = this.roundToTwo(subtotal + totalIgv).toFixed(2);
       this.saleData.voucher.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
-      this.saleData.voucher.totalExonerated =
-        this.roundToTwo(totalExonerated).toFixed(2);
-      this.saleData.voucher.totalUnaffected =
-        this.roundToTwo(totalUnaffected).toFixed(2);
+      this.saleData.voucher.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
+      this.saleData.voucher.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
       this.saleData.voucher.totalFree = this.roundToTwo(totalFree).toFixed(2);
       this.saleData.voucher.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
-      this.saleData.voucher.discountItems =
-        this.roundToTwo(discountItems).toFixed(2);
+      this.saleData.voucher.discountItems = this.roundToTwo(discountItems).toFixed(2);
       this.saleData.voucher.total = this.roundToTwo(
-        total - this.saleData.voucher.discount
+        total - this.saleData.voucher.discount - this.saleData.voucher.discountItems
       ).toFixed(2);
     },
     roundToTwo(num) {
@@ -934,7 +943,7 @@ export default {
         .then((resp) => {
           let quotation = resp.data.data;
           this.saleData.voucher.quotation_id = Number(quotation.id);
-          this.saleData.voucher.discount = Number(quotation.discount);
+          this.saleData.voucher.discount = Number(quotation.global_discount);
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
           this.saleData.voucher.isMultiPayment =

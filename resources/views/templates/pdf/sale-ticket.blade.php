@@ -108,10 +108,6 @@
     </thead>
     <tbody>
 
-        @php
-            $discount = 0;
-        @endphp
-
         @foreach ($details as $detail)
 
             @if ($detail->discount > 0)
@@ -144,10 +140,6 @@
 
             @endif
 
-            @php
-                $discount += $detail->discount;
-            @endphp
-
         @endforeach
 
     </tbody>
@@ -155,16 +147,6 @@
     <div class="hr"></div>
     <table class="price">
         <tbody>
-            @if ($head->discount > 0)
-                <tr>
-                    <td><span class="bold">Descuento Global: </span> S/. {{ round($head->discount, 2) }}</td>
-                </tr>
-            @endif
-            @if ($discount > 0)
-                <tr>
-                    <td><span class="bold">Descuento por Item: </span> S/. {{ round($discount, 2) }}</td>
-                </tr>
-            @endif
             @if ($head->total_taxed > 0)
                 <tr>
                     <td><span class="bold">Gravado: </span> S/. {{ round($head->total_taxed, 2) }}</td>
@@ -190,13 +172,23 @@
                     <td><span class="bold">Igv (18%): </span> S/. {{ round($head->total_igv, 2) }}</td>
                 </tr>
             @endif
+            @if ($head->global_discount > 0)
+                <tr>
+                    <td><span class="bold">Descuento Global: </span> S/. {{ round($head->global_discount, 2) }}</td>
+                </tr>
+            @endif
+            @if ($head->item_discount > 0)
+                <tr>
+                    <td><span class="bold">Descuento por Item: </span> S/. {{ round($head->item_discount, 2) }}</td>
+                </tr>
+            @endif
             <tr>
-                <td><span class="bold">Total: </span> S/. {{ round($head->total - $head->discount, 2) }}</td>
+                <td><span class="bold">Total: </span> S/. {{ round($head->total - $head->total_discount, 2) }}</td>
             </tr>
         </tbody>
     </table>
     <div class="hr"></div>
-    <p><span class="bold">IMPORTE EN LETRAS: </span>{{ \App\Services\NumberLetterService::convert(round($head->total - $head->discount, 2), 'SOLES') }}</p>
+    <p><span class="bold">IMPORTE EN LETRAS: </span>{{ \App\Services\NumberLetterService::convert(round($head->total - $head->total_discount, 2), 'SOLES') }}</p>
 
     @if (count($head->paymentTypes) == 1)
         

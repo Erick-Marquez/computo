@@ -58,7 +58,7 @@ class VoucherController extends Controller
                 's.id', 's.created_at', 'vt.description AS voucher_type', 'sr.serie', 's.document_number',
                 'id.description AS customer_identification_document', 'c.document AS customer_document',
                 'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod', 's.have_warranty',
-                'vt.id AS voucher_type_id', 'sr.id AS serie_id'
+                'vt.id AS voucher_type_id', 'sr.id AS serie_id', 's.total_discount'
                 )
             ->orderBy('s.created_at', 'DESC')
             ->getOrPaginate();

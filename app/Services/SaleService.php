@@ -46,7 +46,7 @@ class SaleService
             'date_due' => now(),
 
             'observation' => $request->voucher['observation'],
-            'discount' => $request->voucher['discount'],
+            'global_discount' => $request->voucher['discount'],
 
 
             'have_warranty' => $request->voucher['warranty'],
@@ -71,7 +71,7 @@ class SaleService
                 'document_number' => $serieWarranty->current_number,
                 'date_issue' => Carbon::now(),
 
-                'discount' => $request->voucher['discount'],
+                'global_discount' => $request->voucher['discount'],
 
                 'serie_id' => $request->voucher['warranty_serie_id'],
                 'sale_id' => $sale->id,
@@ -83,6 +83,8 @@ class SaleService
         $totalWarranty = 0;
         $dateDueWarranty = Carbon::now();
         // Variables para los totales de la venta
+        $itemDiscount = 0;
+
         $subtotalSale = 0;
         $totalIgvSale = 0;
         $totalExoneratedSale = 0;
@@ -109,7 +111,7 @@ class SaleService
                     $detail['sale_price'] = $priceWithoutIgv;
 
                     // hallar el subtotal = (precio sin igv * cantidad) - descuento
-                    $subtotal = ($priceWithoutIgv * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $priceWithoutIgv * $detail['quantity'];
 
                     // hallar el total = (subtotal * 1.18)
                     $total = $subtotal * (1 + $igv);
@@ -118,6 +120,7 @@ class SaleService
                     $totalIgv = $total - $subtotal;
 
                     // Actualizar totales globales
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalIgvSale += $totalIgv;
                     $totalTaxedSale += $subtotal;
@@ -129,24 +132,27 @@ class SaleService
                 case 14:
                 case 15:
                 case 16:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalFreeSale += $total;
                     break;
                 case 20:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalExoneratedSale += $subtotal;
                     $totalSale += $total;
                     break;
                 case 30:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalUnaffectedSale += $subtotal;
                     $totalSale += $total;
@@ -157,16 +163,18 @@ class SaleService
                 case 34:
                 case 35:
                 case 36:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalFreeSale += $total;
                     break;
                 case 40:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalSale += $subtotal;
                     $totalUnaffectedSale += $subtotal;
                     $totalSale += $total;
@@ -192,6 +200,7 @@ class SaleService
 
                 'discount' => $detail['discount'],
                 'price' => $detail['sale_price'],
+                'unit_value' => ($total - $detail['discount']) / $detail['quantity'],
                 'quantity' => $detail['quantity'],
 
                 'total_igv' => $totalIgv,
@@ -232,6 +241,7 @@ class SaleService
 
                     'discount' => $detail['discount'],
                     'price' => $detail['sale_price'],
+                    'unit_value' => ($total - $detail['discount']) / $detail['quantity'],
                     'quantity' => $detail['quantity'],
 
                     'total' => $total,
@@ -255,9 +265,8 @@ class SaleService
             $data['document'] = $sale->serie->serie . '-' . $sale->document_number;
             $data['series'] = $productSeries;
             $data['user_id'] = $request->user_id;
-
-
             KardexService::sale($data);
+
         }
 
 
@@ -278,6 +287,8 @@ class SaleService
 
 
         $sale->update([
+            'item_discount' => $itemDiscount,
+            'total_discount' => $itemDiscount + $request->voucher['discount'],
             'subtotal' => $subtotalSale,
             'total_igv' => $totalIgvSale,
             'total_exonerated' => $totalExoneratedSale,

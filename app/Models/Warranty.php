@@ -15,7 +15,9 @@ class Warranty extends Model
         'date_issue',
         'date_due',
 
-        'discount',
+        'global_discount',
+        'item_discount',
+        'total_discount',
         'total',
 
         'serie_id',

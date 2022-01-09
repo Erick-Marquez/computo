@@ -101,7 +101,7 @@ class CreditNoteController extends Controller
                     $detail['sale_price'] = $priceWithoutIgv;
 
                     // hallar el subtotal = (precio sin igv * cantidad) - descuento
-                    $subtotal = ($priceWithoutIgv * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $priceWithoutIgv * $detail['quantity'];
 
                     // hallar el total = (subtotal * 1.18)
                     $total = $subtotal * (1 + $igv);
@@ -121,14 +121,14 @@ class CreditNoteController extends Controller
                 case 14:
                 case 15:
                 case 16:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
                     $subtotalCreditNote += $subtotal;
                     $totalFreeCreditNote += $total;
                     break;
                 case 20:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
                     $subtotalCreditNote += $subtotal;
@@ -136,7 +136,7 @@ class CreditNoteController extends Controller
                     $totalCreditNote += $total;
                     break;
                 case 30:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
                     $subtotalCreditNote += $subtotal;
@@ -149,14 +149,14 @@ class CreditNoteController extends Controller
                 case 34:
                 case 35:
                 case 36:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
                     $subtotalCreditNote += $subtotal;
                     $totalFreeCreditNote += $total;
                     break;
                 case 40:
-                    $subtotal = ($detail['sale_price'] * $detail['quantity']) - $detail['discount'];
+                    $subtotal = $detail['sale_price'] * $detail['quantity'];
                     $total = $subtotal;
 
                     $subtotalCreditNote += $subtotal;
@@ -170,8 +170,8 @@ class CreditNoteController extends Controller
 
             CreditNoteDetail::create([
 
-                'discount' => $detail['discount'],
                 'price' => $detail['sale_price'],
+                'unit_value' => $total / $detail['quantity'],
                 'quantity' => $detail['quantity'],
 
                 'total_igv' => $totalIgv,

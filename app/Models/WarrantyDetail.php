@@ -15,6 +15,7 @@ class WarrantyDetail extends Model
 
         'discount',
         'price',
+        'unit_value',
         'quantity',
 
         'total',

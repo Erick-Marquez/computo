@@ -171,14 +171,14 @@
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($creditNoteDetail->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cac:PricingReference>
             <cac:AlternativeConditionPrice>
-                <cbc:PriceAmount currencyID="PEN">{{ round($creditNoteDetail->price, 2) }}</cbc:PriceAmount>
+                <cbc:PriceAmount currencyID="PEN">{{ round($creditNoteDetail->unit_value, 2) }}</cbc:PriceAmount>
                 <cbc:PriceTypeCode listName="Tipo de Precio" listAgencyName="PE:SUNAT" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo16">01</cbc:PriceTypeCode>
             </cac:AlternativeConditionPrice>
         </cac:PricingReference>
         <cac:TaxTotal>
             <cbc:TaxAmount currencyID="PEN">{{ round($creditNoteDetail->total_igv, 2) }}</cbc:TaxAmount>
             <cac:TaxSubtotal>
-                <cbc:TaxableAmount currencyID="PEN">{{ round($creditNoteDetail->total, 2) }}</cbc:TaxableAmount>
+                <cbc:TaxableAmount currencyID="PEN">{{ round($creditNoteDetail->subtotal, 2) }}</cbc:TaxableAmount>
                 <cbc:TaxAmount currencyID="PEN">{{ round($creditNoteDetail->total_igv, 2) }}</cbc:TaxAmount>
                 @switch($creditNoteDetail->igvType->id)
                 @case(10)
