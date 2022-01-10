@@ -104,6 +104,7 @@ Route::middleware([
     Route::patch('/cashbox/{id}/close', [CashboxController::class, 'closeCashbox'])->name('api.closecashbox');
     Route::get('/cashbox/detail/{id}', [CashboxController::class, 'cashboxDetail'])->name('api.cashboxdetail');
     Route::post('/cashbox/{id}/movement', [CashboxController::class, 'movement'])->name('api.movementCashbox');
+    Route::get('/isyouropening/{id}', [CashboxController::class, 'isYourOpening'])->name('api.isyouropening');
 
     Route::apiResource('openClosedCashboxes', OpenClosedCashboxController::class)->names('api.openClosedCashboxes');
 

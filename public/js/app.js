@@ -21207,7 +21207,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+
 
 var routes = [
 /* Sale */
@@ -21520,8 +21523,13 @@ var routes = [
     path: 'detalle/:id',
     name: 'show-cashbox',
     beforeEnter: function beforeEnter(to, from, next) {
-      console.log(to.params.id);
-      next();
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/isyouropening/".concat(to.params.id)).then(function (response) {
+        console.log(response.data);
+        next();
+      })["catch"](function (error) {
+        Swal.fire('Error!', 'Usted no puede ver esta apertura', 'error');
+        console.log(error.response.data.error);
+      });
     },
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_modules_cashboxes_open-closed_pages_CashboxDetail_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../modules/cashboxes/open-closed/pages/CashboxDetail.vue */ "./resources/js/modules/cashboxes/open-closed/pages/CashboxDetail.vue"));
@@ -21847,8 +21855,8 @@ var routes = [
     }
   }]
 }];
-var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createRouter)({
-  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_0__.createWebHistory)(),
+var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createRouter)({
+  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createWebHistory)(),
   routes: routes
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);

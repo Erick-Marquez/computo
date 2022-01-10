@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -278,8 +279,20 @@ const routes = [
                 path: 'detalle/:id',
                 name: 'show-cashbox',
                 beforeEnter: (to, from, next) => {
-                    console.log(to.params.id);
-                    next()
+                    axios.get(`/api/isyouropening/${to.params.id}`)
+                        .then(response => {
+                            console.log(response.data);
+                            next();
+                        })
+                        .catch(error => {
+                            Swal.fire(
+                                'Error!',
+                                'Usted no puede ver esta apertura',
+                                'error'
+                            );
+                            console.log(error.response.data.error);
+
+                        })
                 },
                 component: () => import('../modules/cashboxes/open-closed/pages/CashboxDetail.vue'),
             },

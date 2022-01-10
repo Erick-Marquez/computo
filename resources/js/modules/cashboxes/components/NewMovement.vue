@@ -15,7 +15,6 @@
           </button>
         </div>
         <div class="modal-body">
-          {{ movement }}
           <div class="d-flex justify-content-around mb-2">
             <div class="custom-control custom-radio">
               <input

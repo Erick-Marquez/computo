@@ -172,4 +172,16 @@ class CashboxController extends Controller
         $pdf = \PDF::loadView('templates.pdf.report-cashbox-oc', $dataReport)->setPaper('A4', 'portrait');
         return $pdf->stream();
     }
+
+    public function isYourOpening($cashboxId)
+    {
+        $occ = CashboxService::recoverOpening($cashboxId);
+        $userId = auth()->user()->id;
+
+        if ( $occ->user_id ==  $userId) {
+            return response()->json(['message' => 'Entre normal'], 201);
+        } else {
+            return response()->json(['error' => 'Esta apertura no esta asociada a usted'], 403);
+        }
+    }
 }

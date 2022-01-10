@@ -216,12 +216,6 @@
                     </tr>
                 @endif
             </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3">Total: </td>
-                    <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
-                </tr>
-            </tfoot>
         </table>
         <h3>Totales: </h3>
         <table style="margin-bottom: 10px">

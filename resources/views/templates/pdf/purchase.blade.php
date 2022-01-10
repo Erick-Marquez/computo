@@ -36,7 +36,7 @@
     </header>
     <main>
         <div class="cliente">
-            <p>Cliente <span class="cliente__puntos">:</span>{{ $purchase->provider->name }}</p>
+            <p>Proveedor <span class="cliente__puntos">:</span>{{ $purchase->provider->name }}</p>
             <p>Num.Doc:<span class="cliente__puntos">:</span>{{ $purchase->provider->document }}</p>
             <p>Direccion<span class="cliente__puntos">:</span>{{ $purchase->provider->address }}</p>
         </div>
@@ -76,10 +76,10 @@
                                 ({{ $serie }})
                             @endforeach
                         </td>
-                        <td>S/ {{ $detail->price }}</td>
+                        <td>{{ $purchase->handles_exchange_rate ? '$' : 'S/'}} {{ $detail->price }}</td>
                         <td>UNIDADES</td>
                         <td>Exonerado</td>
-                        <td>S/ {{ $detail->total }}</td>
+                        <td>{{ $purchase->handles_exchange_rate ? '$' : 'S/'}} {{ $detail->total }}</td>
                     </tr>
                 @endforeach
                 <tr class="tfood">
@@ -90,20 +90,15 @@
         <table class="transaccion">
             <tr>
                 <td>
-                    <div class="compra__texto">
-                        <p class="compra__vendedor">VENDEDOR: {{ $purchase->openClosedCashbox->user->name }}</p>
-                    </div>
-                </td>
-                <td>
                     <div class="resumen">
                         <p>RESUMEN:</p>
                         <div class="resumen__elemento">
                             <p>IGV (18.00%):</p>
-                            <p class="igv__precio">S/ {{ $purchase->total_igv }}</p>
+                            <p class="igv__precio">{{ $purchase->handles_exchange_rate ? '$' : 'S/'}} {{ $purchase->total_igv }}</p>
                         </div>
                         <div class="resumen__elemento">
                             <p>Total:</p>
-                            <p class="total__precio">S/ {{ $purchase->total }}</p>
+                            <p class="total__precio">{{ $purchase->handles_exchange_rate ? '$' : 'S/'}} {{ $purchase->total }}</p>
                         </div>
                     </div>
                 </td>
