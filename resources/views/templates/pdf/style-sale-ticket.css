@@ -62,7 +62,7 @@ body{
     width: 100%;
 }
 .sale thead th:first-child{
-    width: 55%;
+    width: 45%;
 }
 .sale thead th{
     text-align: start;

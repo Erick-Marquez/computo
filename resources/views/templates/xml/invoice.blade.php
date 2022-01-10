@@ -111,12 +111,12 @@
         <cbc:ID>FormaPago</cbc:ID>
         <cbc:PaymentMeansID>Contado</cbc:PaymentMeansID>
     </cac:PaymentTerms>
-    @if ($sale->discount > 0)
+    @if ($sale->global_discount > 0)
     <cac:AllowanceCharge>
         <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
         <cbc:AllowanceChargeReasonCode>03</cbc:AllowanceChargeReasonCode>
-        <cbc:MultiplierFactorNumeric>{{ round($sale->discount / $sale->total, 5) }}</cbc:MultiplierFactorNumeric>
-        <cbc:Amount currencyID="PEN">{{ round($sale->discount, 2) }}</cbc:Amount>
+        <cbc:MultiplierFactorNumeric>{{ round($sale->global_discount / $sale->total, 5) }}</cbc:MultiplierFactorNumeric>
+        <cbc:Amount currencyID="PEN">{{ round($sale->global_discount, 2) }}</cbc:Amount>
         <cbc:BaseAmount currencyID="PEN">{{ round($sale->total, 2) }}</cbc:BaseAmount>
     </cac:AllowanceCharge>
     @endif
@@ -182,12 +182,12 @@
     <cac:LegalMonetaryTotal>
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($sale->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cbc:TaxInclusiveAmount currencyID="PEN">{{ round($sale->total, 2) }}</cbc:TaxInclusiveAmount>
-        @if($sale->discount > 0)
-        <cbc:AllowanceTotalAmount currencyID="PEN">{{ round($sale->discount, 2) }}</cbc:AllowanceTotalAmount>
+        @if($sale->total_discount > 0)
+        <cbc:AllowanceTotalAmount currencyID="PEN">{{ round($sale->total_discount, 2) }}</cbc:AllowanceTotalAmount>
         @endif
         <cbc:ChargeTotalAmount currencyID="PEN">0.00</cbc:ChargeTotalAmount>
         <cbc:PrepaidAmount currencyID="PEN">0.00</cbc:PrepaidAmount>
-        <cbc:PayableAmount currencyID="PEN">{{ round($sale->total - $sale->discount, 2) }}</cbc:PayableAmount>
+        <cbc:PayableAmount currencyID="PEN">{{ round($sale->total - $sale->total_discount, 2) }}</cbc:PayableAmount>
     </cac:LegalMonetaryTotal>
     @foreach ($sale->saleDetails as $saleDetail)
     <cac:InvoiceLine>
@@ -196,17 +196,17 @@
         <cbc:LineExtensionAmount currencyID="PEN">{{ round($saleDetail->subtotal, 2) }}</cbc:LineExtensionAmount>
         <cac:PricingReference>
             <cac:AlternativeConditionPrice>
-                <cbc:PriceAmount currencyID="PEN">{{ round($saleDetail->total / $saleDetail->quantity, 2) }}</cbc:PriceAmount>
+                <cbc:PriceAmount currencyID="PEN">{{ round($saleDetail->unit_value, 2) }}</cbc:PriceAmount>
                 <cbc:PriceTypeCode listName="Tipo de Precio" listAgencyName="PE:SUNAT" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo16">01</cbc:PriceTypeCode>
             </cac:AlternativeConditionPrice>
         </cac:PricingReference>
         @if ($saleDetail->discount > 0)
         <cac:AllowanceCharge>
             <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
-            <cbc:AllowanceChargeReasonCode listAgencyName="PE:SUNAT" listName="Cargo/descuento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53">00</cbc:AllowanceChargeReasonCode>
-            <cbc:MultiplierFactorNumeric>{{ round($saleDetail->discount / ($saleDetail->subtotal + $saleDetail->discount), 5) }}</cbc:MultiplierFactorNumeric>
+            <cbc:AllowanceChargeReasonCode listAgencyName="PE:SUNAT" listName="Cargo/descuento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo53">01</cbc:AllowanceChargeReasonCode>
+            <cbc:MultiplierFactorNumeric>{{ round($saleDetail->discount / $saleDetail->total, 5) }}</cbc:MultiplierFactorNumeric>
             <cbc:Amount currencyID="PEN">{{ round($saleDetail->discount, 2) }}</cbc:Amount>
-            <cbc:BaseAmount currencyID="PEN">{{ round($saleDetail->subtotal + $saleDetail->discount, 2) }}</cbc:BaseAmount>
+            <cbc:BaseAmount currencyID="PEN">{{ round($saleDetail->total, 2) }}</cbc:BaseAmount>
         </cac:AllowanceCharge>
         @endif
         <cac:TaxTotal>

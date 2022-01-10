@@ -63,7 +63,7 @@
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ availableQuotation.customer.name }}
                     </td>
-                    <td class="align-middle text-center">S/. {{ availableQuotation.total - availableQuotation.discount }}</td>
+                    <td class="align-middle text-center">S/. {{ availableQuotation.total - availableQuotation.total_discount }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + availableQuotation.id">
                         <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
@@ -177,7 +177,7 @@
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ unavailableQuotation.customer.name }}
                     </td>
-                    <td class="align-middle text-center">S/. {{ unavailableQuotation.total }}</td>
+                    <td class="align-middle text-center">S/. {{ unavailableQuotation.total - unavailableQuotation.total_discount }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/quotations/' + unavailableQuotation.id">
                         <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">

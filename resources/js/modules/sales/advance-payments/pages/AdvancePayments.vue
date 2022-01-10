@@ -82,11 +82,17 @@
                         Acciones
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-print', advancePayment)">
+                          <i class="col-1 mr-3 fas fa-print"></i>Imprimir
+                        </a>
                         <a class="dropdown-item" href="#" @click="showModal('#modal-advance-update', advancePayment)">
                           <i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo
                         </a>
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-print', advancePayment)">
-                          <i class="col-1 mr-3 fas fa-print"></i>Imprimir
+                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-edit', advancePayment)">
+                          <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                        </a>
+                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-delete', advancePayment)">
+                          <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
                         </a>
                       </div>
                     </div>
@@ -118,6 +124,7 @@
             <AdvancePayment
               :paymentTypes="paymentTypes"
               :payments="advancePaymentCreate.payments"
+              :newPayments="advancePaymentCreate.newPayments"
               :errors="errorsAdvancePaymentCreate"
             ></AdvancePayment>
 
@@ -205,6 +212,7 @@
               v-if="showAdvancePaymentsTable"
               :paymentTypes="paymentTypes"
               :payments="advancePaymentCreate.payments"
+              :newPayments="advancePaymentCreate.newPayments"
               :errors="errorsAdvancePaymentCreate"
             ></AdvancePayment>
             
@@ -270,6 +278,132 @@
                     <a title="Haz Click para Visualizar el Ticket" target="_blank" :href="`print/advance-payments/A4/${payment.id}`">
                       <img src="../../../../../img/ticket_cpe.svg" style="width: 30px">
                     </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Anticipo Edit-->
+  <div class="modal fade" id="modal-advance-edit" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Anticipos: {{ advancePaymentCreate.serie }} - {{ advancePaymentCreate.document_number }}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" style="min-width: 600px;">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th scope="col" class="col-2">Descripción</th>
+                  <th scope="col" class="col-3">Fecha</th>
+                  <th scope="col" class="col-4">Tipo de pago</th>
+                  <th scope="col" class="col-3">Monto S/.</th>
+                  <th scope="col">Guardar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(payment, index) in advancePaymentCreate.payments" :key="index">
+                  <td class="text-center align-middle">Anticipo {{ index + 1 }}</td>
+                  <td class="align-middle">
+                    <span class="badge bg-maroon">Día:</span> {{ payment.date_updated_at }}
+                    <br>
+                    <span class="badge bg-maroon">Hora:</span> {{ payment.time_updated_at }}
+                  </td>
+                  <td class="align-middle">
+                    <select v-model="payment.payment_type_id" class="form-control rounded-pill">
+                      <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                        {{ paymentType.description }}
+                      </option>
+                    </select>
+                  </td>
+                  <td class="align-middle">
+                    <input class="form-control rounded-pill" type="number" min="0" step="0.01" v-model="payment.amount">
+                  </td>
+                  <td class="text-center align-middle">
+                    <button
+                      type="button"
+                      class="btn btn-dark"
+                      @click="editPayment(payment)"
+                    >
+                      Guardar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Anticipo Delete-->
+  <div class="modal fade" id="modal-advance-delete" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Anticipos: {{ advancePaymentCreate.serie }} - {{ advancePaymentCreate.document_number }}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" style="min-width: 600px;">
+              <thead class="thead-dark text-center">
+                <tr>
+                  <th scope="col" class="col-2">Descripción</th>
+                  <th scope="col" class="col-3">Fecha</th>
+                  <th scope="col" class="col-4">Tipo de pago</th>
+                  <th scope="col" class="col-3">Monto S/.</th>
+                  <th scope="col" >Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(payment, index) in advancePaymentCreate.payments" :key="index">
+                  <td class="text-center align-middle">Anticipo {{ index + 1 }}</td>
+                  <td class="align-middle">
+                    <span class="badge bg-maroon">Día:</span> {{ payment.date_updated_at }}
+                    <br>
+                    <span class="badge bg-maroon">Hora:</span> {{ payment.time_updated_at }}
+                  </td>
+                  <td class="align-middle">
+                    <select :value="payment.payment_type_id" class="form-control rounded-pill"  disabled>
+                      <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
+                        {{ paymentType.description }}
+                      </option>
+                    </select>
+                  </td>
+                  <td class="align-middle">
+                    <input class="form-control rounded-pill" type="number" min="0" step="0.01" :value="payment.amount" disabled>
+                  </td>
+                  <td class="text-center align-middle">
+                    <button
+                      type="button"
+                      class="btn btn-flat"
+                      @click="deletePayment(payment.id, index)"
+                    >
+                      <i class="text-danger fas fa-trash"></i>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -383,7 +517,8 @@ export default {
         serie: quotation.serie.serie,
         document_number: quotation.document_number,
 
-        payments: []
+        payments: [],
+        newPayments: []
       }
       
       quotation.payment_types.forEach(e => {
@@ -424,6 +559,60 @@ export default {
         this.loadingAdvancePaymentCreate = false;
       });
 
+    },
+
+    editPayment(payment){
+      Swal.fire({
+        title: "¿Estas Seguro?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, adelante",
+        cancelButtonText: "Cancelar",
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+
+          try {
+            const resp=await BaseUrl.put(`api/advance-payments/${payment.id}`, payment)
+            this.showAdvancePayments()
+            Swal.fire("Editado", "El anticipo ha sido editado.", "success")
+
+          } catch(error) {
+            console.log(error.response.data.error)
+            Swal.fire("Cancelado", "No se puede editar el anticipo.", "error")
+          }
+
+        }
+      })
+    },
+
+    deletePayment(id, index){
+      Swal.fire({
+        title: "¿Estas Seguro?",
+        text: "Esta acción no puede revertirse",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, adelante",
+        cancelButtonText: "Cancelar",
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+
+          try {
+            const resp=await BaseUrl.delete(`api/advance-payments/${id}`)
+            this.showAdvancePayments()
+            this.advancePaymentCreate.payments.splice(index, 1)
+            Swal.fire("Eliminado", "El anticipo ha sido eliminado.", "success")
+
+          } catch(error) {
+            console.log(error.response.data.error)
+            Swal.fire("Cancelado", "No se puede eliminar el anticipo.", "error")
+          }
+
+        }
+      })
     }
   }
 }

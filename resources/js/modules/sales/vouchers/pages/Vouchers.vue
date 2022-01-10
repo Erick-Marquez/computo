@@ -61,7 +61,7 @@
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ sale.customer_name }}
                     </td>
-                    <td class="align-middle">S/. {{ sale.total }}</td>
+                    <td class="align-middle">S/. {{ sale.total - sale.total_discount }}</td>
                     <td class="align-middle text-center">
                       <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/vouchers/A4/' + sale.id">
                         <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
@@ -106,13 +106,14 @@
                             v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
                             :href="`nueva-nota-de-credito?voucherType=${sale.voucher_type_id}&serie=${sale.serie_id}&documentNumber=${sale.document_number}`"
-                            ><i class="col-1 mr-3 fas fa-eye"></i>Crear Nota de Crédito</a
-                          ><a
+                            ><i class="col-1 mr-3 fas fa-edit"></i>Crear Nota de Crédito</a
+                          >
+                          <!-- <a
                             v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"
                             href="#"
                             ><i class="col-1 mr-3 fas fa-edit"></i>Crear Nota de Débito</a
-                          >
+                          > -->
                           <a
                             v-if="sale.state == 'ACEPTADO'"
                             class="dropdown-item"

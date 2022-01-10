@@ -67,9 +67,6 @@
                 </tr>
             </thead>
             <tbody class="detalle">
-                @php
-                    $discount = 0;
-                @endphp
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
@@ -83,12 +80,9 @@
                         <td>S/. {{ round($detail->discount, 2) }}</td>
                         <td>S/. {{ round($detail->total, 2) }}</td>
                     </tr>
-                    @php
-                        $discount += $detail->discount;
-                    @endphp
                 @endforeach
                 <tr class="tfood">
-                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert(round($head->total - $head->discount, 2), 'SOLES') }}</td>
+                    <td colspan="6"> SON {{ \App\Services\NumberLetterService::convert(round($head->total - $head->total_discount, 2), 'SOLES') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -112,18 +106,6 @@
                 <td>
                     <div class="resumen">
                         <p>RESUMEN:</p>
-                        @if ($head->discount > 0)
-                            <div class="resumen__elemento">
-                                <p>Descuento Global:</p>
-                                <p class="descuento__precio">S/. {{ round($head->discount, 3) }}</p>
-                            </div>
-                        @endif
-                        @if ($discount > 0)
-                            <div class="resumen__elemento">
-                                <p>Descuento por Item:</p>
-                                <p class="descuento__precio">S/. {{ round($discount, 3) }}</p>
-                            </div>
-                        @endif
                         @if ($head->total_taxed > 0)
                             <div class="resumen__elemento">
                                 <p>Gravado:</p>
@@ -154,9 +136,21 @@
                                 <p class="descuento__precio">S/. {{ round($head->total_igv, 3) }}</p>
                             </div>
                         @endif
+                        @if ($head->global_discount > 0)
+                            <div class="resumen__elemento">
+                                <p>Descuento Global:</p>
+                                <p class="descuento__precio">S/. {{ round($head->global_discount, 3) }}</p>
+                            </div>
+                        @endif
+                        @if ($head->item_discount > 0)
+                            <div class="resumen__elemento">
+                                <p>Descuento por Item:</p>
+                                <p class="descuento__precio">S/. {{ round($head->item_discount, 3) }}</p>
+                            </div>
+                        @endif
                         <div class="resumen__elemento">
                             <p>Total:</p>
-                            <p class="total__precio">S/ {{ round($head->total - $head->discount, 2) }}</p>
+                            <p class="total__precio">S/ {{ round($head->total - $head->total_discount, 2) }}</p>
                         </div>
                     </div>
                 </td>

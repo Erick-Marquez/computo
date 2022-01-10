@@ -644,10 +644,10 @@ export default {
             let priceWithoutIgv = e.sale_price / (1 + igv)
 
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
-            e.subtotal = this.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(priceWithoutIgv * e.quantity).toFixed(2)
 
             // hallar el total = (subtotal * 1.18)
-            e.total = this.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2)
+            e.total = this.roundToTwo((priceWithoutIgv * e.quantity) * (1 + igv)).toFixed(2)
 
             // Actualizar totales globales
             subtotal += Number(e.subtotal)
@@ -656,93 +656,93 @@ export default {
             total += Number(e.total)
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 13: //[Gratuita] Gravado – Retiro
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 20: //Exonerado - Operación Onerosa
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalExonerated += Number(e.subtotal)
             total += Number(e.total)
             break;
           case 30: //Inafecto - Operación Onerosa
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalUnaffected += Number(e.subtotal)
             total += Number(e.total)
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 32: //[Gratuita] Inafecto – Retiro
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break
           case 35: //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalFree += Number(e.total)
             break
           case 40: //Exportación
-            e.subtotal = this.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2)
+            e.subtotal = this.roundToTwo(e.sale_price * e.quantity).toFixed(2)
             e.total = this.roundToTwo(e.subtotal).toFixed(2)
             subtotal += Number(e.subtotal)
             totalUnaffected += Number(e.subtotal)
@@ -751,14 +751,14 @@ export default {
         }
       });
 
-      this.quotationData.quotation.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.quotationData.quotation.subtotal = this.roundToTwo(subtotal + totalIgv).toFixed(2);
       this.quotationData.quotation.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
       this.quotationData.quotation.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
       this.quotationData.quotation.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
       this.quotationData.quotation.totalFree = this.roundToTwo(totalFree).toFixed(2);
       this.quotationData.quotation.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
       this.quotationData.quotation.discountItems = this.roundToTwo(discountItems).toFixed(2);
-      this.quotationData.quotation.total = this.roundToTwo(total - this.quotationData.quotation.discount).toFixed(2);
+      this.quotationData.quotation.total = this.roundToTwo(total - this.quotationData.quotation.discount - this.quotationData.quotation.discountItems).toFixed(2);
     },
     roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");

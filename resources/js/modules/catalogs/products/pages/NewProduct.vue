@@ -79,6 +79,14 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
+                    <label for="">Slug</label>
+                    <input class="form-control" type="text" :value="slug" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-group">
                     <label for="">Descripción</label>
                     <textarea
                       name=""
@@ -394,6 +402,19 @@ export default {
       timeOfWarranty: null,
 
     };
+  },
+  computed: {
+    slug() {
+      let lineBackup = this.lines
+      let line = lineBackup.filter(
+        (e) => e.id == this.line
+      )
+      let brandBackup = this.brands
+      let brand = brandBackup.filter(
+        (e) => e.id == this.brand
+      )
+      return `${line.length != 0 ? line[0].description : ''} ${brand.length != 0 ? brand[0].description : ''} ${this.productName} `
+    }
   },
   methods:{
     //Precio compra

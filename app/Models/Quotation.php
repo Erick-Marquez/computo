@@ -14,8 +14,11 @@ class Quotation extends Model
         'document_number',
         'date_due',
 
+        'global_discount',
+        'item_discount',
+        'total_discount',
+        
         'subtotal',
-        'discount',
         'total_igv',
         'total_exonerated',
         'total_unaffected',

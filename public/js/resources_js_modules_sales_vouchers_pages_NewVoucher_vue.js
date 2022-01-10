@@ -676,8 +676,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var index = this.saleData.detail.findIndex(function (element) {
         return element.product_id == product.id;
       });
+      console.log(product.stock != 0);
 
-      if (index == -1) {
+      if (index == -1 && product.stock != 0) {
         this.saleData.detail.push({
           discount: 0,
           subtotal: 0,
@@ -739,9 +740,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             // hallar el precio sin igv
             var priceWithoutIgv = e.sale_price / (1 + igv); // hallar el subtotal = (precio sin igv * cantidad) - descuento
 
-            e.subtotal = _this5.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2); // hallar el total = (subtotal * 1.18)
+            e.subtotal = _this5.roundToTwo(priceWithoutIgv * e.quantity).toFixed(2); // hallar el total = (subtotal * 1.18)
 
-            e.total = _this5.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2); // Actualizar totales globales
+            e.total = _this5.roundToTwo(priceWithoutIgv * e.quantity * (1 + igv)).toFixed(2); // Actualizar totales globales
 
             subtotal += Number(e.subtotal);
             totalIgv += Number(e.total - e.subtotal);
@@ -751,7 +752,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 11:
             //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -759,7 +760,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 12:
             //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -767,7 +768,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 13:
             //[Gratuita] Gravado – Retiro
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -775,7 +776,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 14:
             //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -783,7 +784,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 15:
             //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -791,7 +792,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 16:
             //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -799,7 +800,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 20:
             //Exonerado - Operación Onerosa
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalExonerated += Number(e.subtotal);
@@ -808,7 +809,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 30:
             //Inafecto - Operación Onerosa
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalUnaffected += Number(e.subtotal);
@@ -817,7 +818,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 31:
             //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -825,7 +826,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 32:
             //[Gratuita] Inafecto – Retiro
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -833,7 +834,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 33:
             //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -841,7 +842,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 34:
             //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -849,7 +850,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 35:
             //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -857,7 +858,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 36:
             //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -865,7 +866,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 40:
             //Exportación
-            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this5.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this5.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalUnaffected += Number(e.subtotal);
@@ -873,14 +874,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             break;
         }
       });
-      this.saleData.voucher.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.saleData.voucher.subtotal = this.roundToTwo(subtotal + totalIgv).toFixed(2);
       this.saleData.voucher.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
       this.saleData.voucher.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
       this.saleData.voucher.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
       this.saleData.voucher.totalFree = this.roundToTwo(totalFree).toFixed(2);
       this.saleData.voucher.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
       this.saleData.voucher.discountItems = this.roundToTwo(discountItems).toFixed(2);
-      this.saleData.voucher.total = this.roundToTwo(total - this.saleData.voucher.discount).toFixed(2);
+      this.saleData.voucher.total = this.roundToTwo(total - this.saleData.voucher.discount - this.saleData.voucher.discountItems).toFixed(2);
     },
     roundToTwo: function roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");
@@ -961,7 +962,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("api/sales/quotation/".concat(this.quotationSerieSelect, "/").concat(this.numberQuotation)).then(function (resp) {
         var quotation = resp.data.data;
         _this8.saleData.voucher.quotation_id = Number(quotation.id);
-        _this8.saleData.voucher.discount = Number(quotation.discount);
+        _this8.saleData.voucher.discount = Number(quotation.global_discount);
         _this8.saleData.voucher.warranty = Boolean(quotation.have_warranty);
         _this8.saleData.voucher.observation = quotation.observation;
         _this8.saleData.voucher.isMultiPayment = quotation.payment_types.length > 0 ? true : false;
@@ -1757,7 +1758,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 3
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.products, function (product) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
-      key: product
+      key: product,
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(product.stock == 0 ? 'table-danger' : '')
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand), 1
@@ -1791,7 +1793,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , _hoisted_22)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.stock), 1
     /* TEXT */
-    )]);
+    )], 2
+    /* CLASS */
+    );
   }), 128
   /* KEYED_FRAGMENT */
   ))])], 32
@@ -2553,7 +2557,7 @@ var _hoisted_85 = {
 };
 
 var _hoisted_86 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento global:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravado:", -1
   /* HOISTED */
   );
 });
@@ -2569,7 +2573,7 @@ var _hoisted_88 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_89 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento por item:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerado:", -1
   /* HOISTED */
   );
 });
@@ -2585,7 +2589,7 @@ var _hoisted_91 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_92 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gravado:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Inafecto:", -1
   /* HOISTED */
   );
 });
@@ -2601,7 +2605,7 @@ var _hoisted_94 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_95 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Exonerado:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gratuita:", -1
   /* HOISTED */
   );
 });
@@ -2617,7 +2621,7 @@ var _hoisted_97 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_98 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Inafecto:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Igv (18%):", -1
   /* HOISTED */
   );
 });
@@ -2633,7 +2637,7 @@ var _hoisted_100 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_101 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Gratuita:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Subtotal:", -1
   /* HOISTED */
   );
 });
@@ -2649,7 +2653,7 @@ var _hoisted_103 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_104 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Igv (18%):", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento global:", -1
   /* HOISTED */
   );
 });
@@ -2665,7 +2669,7 @@ var _hoisted_106 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_107 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Total:", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Descuento por item:", -1
   /* HOISTED */
   );
 });
@@ -2680,19 +2684,35 @@ var _hoisted_109 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_110 = {
+var _hoisted_110 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Total:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_111 = {
+  "class": "d-flex justify-content-between"
+};
+
+var _hoisted_112 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "S/.", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_113 = {
   "class": "row no-print"
 };
-var _hoisted_111 = {
+var _hoisted_114 = {
   "class": "col-12"
 };
-var _hoisted_112 = {
+var _hoisted_115 = {
   key: 0,
   type: "submit",
   "class": "btn btn-dark float-right"
 };
 
-var _hoisted_113 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_116 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "far fa-credit-card"
   }, null, -1
@@ -2700,12 +2720,12 @@ var _hoisted_113 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_114 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guarda Documento Electronico ");
+var _hoisted_117 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Guarda Documento Electronico ");
 
-var _hoisted_115 = [_hoisted_113, _hoisted_114];
-var _hoisted_116 = ["disabled"];
+var _hoisted_118 = [_hoisted_116, _hoisted_117];
+var _hoisted_119 = ["disabled"];
 
-var _hoisted_117 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_120 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "spinner-border spinner-border-sm",
     role: "status"
@@ -2716,7 +2736,7 @@ var _hoisted_117 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_118 = [_hoisted_117];
+var _hoisted_121 = [_hoisted_120];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_SearchCustomers = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SearchCustomers");
 
@@ -2972,47 +2992,51 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.saleData.voucher.observation]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_87, [_hoisted_88, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.discount), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.saleData.voucher.observation]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_87, [_hoisted_88, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalTaxed), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.discount > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_89, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_90, [_hoisted_91, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.discountItems), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalTaxed > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_89, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_90, [_hoisted_91, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalExonerated), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_92, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_93, [_hoisted_94, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalTaxed), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalExonerated > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_92, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_93, [_hoisted_94, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalUnaffected), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalTaxed > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_96, [_hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalExonerated), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalUnaffected > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_95, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_96, [_hoisted_97, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalFree), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalExonerated > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_98, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_99, [_hoisted_100, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalUnaffected), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalFree > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_98, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_99, [_hoisted_100, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalIgv), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalUnaffected > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_101, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_102, [_hoisted_103, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalFree), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalIgv > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_101, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_102, [_hoisted_103, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.subtotal), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalFree > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_104, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_105, [_hoisted_106, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.totalIgv), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.discount || $data.saleData.voucher.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_104, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_105, [_hoisted_106, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.discount), 1
   /* TEXT */
   )])], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.totalIgv > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_107, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_108, [_hoisted_109, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.total), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.discount > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_107, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_108, [_hoisted_109, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.discountItems), 1
   /* TEXT */
-  )])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_110, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_111, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  )])], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saleData.voucher.discountItems > 0]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_110, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_111, [_hoisted_112, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saleData.voucher.total), 1
+  /* TEXT */
+  )])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Resumen de ventas "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_113, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_114, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.createSale();
     }, ["prevent"]))
-  }, [!$data.loadingVoucher ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_112, _hoisted_115)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, [!$data.loadingVoucher ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_115, _hoisted_118)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 1,
     "class": "btn btn-dark float-right",
     disabled: $data.loadingVoucher
-  }, _hoisted_118, 8
+  }, _hoisted_121, 8
   /* PROPS */
-  , _hoisted_116))], 32
+  , _hoisted_119))], 32
   /* HYDRATE_EVENTS */
   )])])])])], 64
   /* STABLE_FRAGMENT */

@@ -20,7 +20,10 @@ class CreateSalesTable extends Migration
             $table->date('date_issue')->nullable(); // FECHA DE EMISION
             $table->date('date_due')->nullable(); // FECHA VENCIMIENTO
 
-            $table->unsignedDecimal('discount', 12,3)->nullable()->default(0);
+            $table->unsignedDecimal('global_discount', 12,3)->nullable()->default(0);
+            $table->unsignedDecimal('item_discount', 12,3)->nullable()->default(0);
+            $table->unsignedDecimal('total_discount', 12,3)->nullable()->default(0);
+            
             $table->unsignedDecimal('subtotal', 12,3)->default(0);
             $table->unsignedDecimal('total_igv', 12,3)->default(0);
             $table->unsignedDecimal('total_exonerated', 12,3)->default(0);

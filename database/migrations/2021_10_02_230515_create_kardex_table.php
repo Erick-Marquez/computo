@@ -17,8 +17,8 @@ class CreateKardexTable extends Migration
             $table->id();
             $table->date('date')->nullable(); // FECHA DE EMISION
             $table->bigInteger('quantity')->nullable();
-            $table->enum('movement_type', ['INGRESO', 'SALIDA']);
-            $table->enum('description', ['VENTA', 'MODIFICA STOCK', 'COMPRA', 'MOVIMIENTO SUCURSAL', 'INVENTARIO INICIAL', 'DEVOLUCION', 'BAJA']);
+            $table->string('movement_type');
+            $table->string('description');
             $table->string('document')->nullable();
             $table->json('series')->nullable();
 

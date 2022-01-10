@@ -19,7 +19,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QuotationController extends Controller
@@ -107,7 +107,7 @@ class QuotationController extends Controller
             'document_number' => $serie->current_number,
             'date_due' => $request->quotation['date_due'],
 
-            'discount' => $request->quotation['discount'],
+            'global_discount' => $request->quotation['discount'],
 
             'have_warranty' => $request->quotation['warranty'],
 
@@ -119,6 +119,7 @@ class QuotationController extends Controller
         ]);
 
         // Variables para los totales de la cotizacion
+        $itemDiscount = 0;
         $subtotalQuotation = 0;
         $totalIgvQuotation = 0;
         $totalExoneratedQuotation = 0;
@@ -141,7 +142,7 @@ class QuotationController extends Controller
                     $priceWithoutIgv = $detail['sale_price'] / (1 + $igv);
 
                     // hallar el subtotal = (precio sin igv * cantidad) - descuento
-                    $subtotal = round($priceWithoutIgv * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($priceWithoutIgv * $detail['quantity'], 2);
 
                     // hallar el total = (subtotal * 1.18)
                     $total = round($subtotal * (1 + $igv), 2);
@@ -150,6 +151,7 @@ class QuotationController extends Controller
                     $totalIgv = $total - $subtotal;
 
                     // Actualizar totales globales
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalIgvQuotation += $totalIgv;
                     $totalTaxedQuotation += $subtotal;
@@ -161,24 +163,27 @@ class QuotationController extends Controller
                 case 14:
                 case 15:
                 case 16:
-                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2);
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalFreeQuotation += $total;
                     break;
                 case 20:
-                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2);
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalExoneratedQuotation += $subtotal;
                     $totalQuotation += $total;
                     break;
                 case 30:
-                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2);
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalUnaffectedQuotation += $subtotal;
                     $totalQuotation += $total;
@@ -189,16 +194,18 @@ class QuotationController extends Controller
                 case 34:
                 case 35:
                 case 36:
-                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2);
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalFreeQuotation += $total;
                     break;
                 case 40:
-                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2) - $detail['discount'];
+                    $subtotal = round($detail['sale_price'] * $detail['quantity'], 2);
                     $total = $subtotal;
 
+                    $itemDiscount += $detail['discount'];
                     $subtotalQuotation += $subtotal;
                     $totalUnaffectedQuotation += $subtotal;
                     $totalQuotation += $total;
@@ -212,6 +219,7 @@ class QuotationController extends Controller
 
                 'discount' => $detail['discount'],
                 'price' => $detail['sale_price'],
+                'unit_value' => ($total - $detail['discount']) / $detail['quantity'],
                 'quantity' => $detail['quantity'],
 
                 'total_igv' => $totalIgv,
@@ -226,6 +234,8 @@ class QuotationController extends Controller
         }
 
         $quotation->update([
+            'item_discount' => $itemDiscount,
+            'total_discount' => $itemDiscount + $request->quotation['discount'],
             'subtotal' => $subtotalQuotation,
             'total_igv' => $totalIgvQuotation,
             'total_exonerated' => $totalExoneratedQuotation,

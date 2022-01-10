@@ -17,11 +17,50 @@
                     <td class="align-middle">Anticipo {{ index + 1 }}</td>
                     <td>
                         <select
-                            v-model="payment.payment_type_id"
+                            :value="payment.payment_type_id"
                             class="form-control rounded-pill"
+                            disabled
+                        >
+                            <option
+                                v-for="paymentType in paymentTypes"
+                                :key="paymentType.id"
+                                :value="paymentType.id"
+                            >
+                                {{ paymentType.description }}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input
+                            class="form-control rounded-pill"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            :value="payment.amount"
+                            disabled
+                        >
+                    </td>
+                    <td class="text-center">
+                        <button
+                            type="button"
+                            class="btn btn-flat"
+                            disabled
+                        >
+                        <i class="text-danger fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr
+                    v-for="(newPayment, index) in newPayments"
+                    :key="index"
+                >
+                    <td class="align-middle">Anticipo {{ payments.length + index + 1 }}</td>
+                    <td>
+                        <select
+                            v-model="newPayment.payment_type_id"
                             :class="
                                 'form-control rounded-pill' +
-                                (errors['payments.' + index + '.payment_type_id'] == null
+                                (errors['newPayments.' + index + '.payment_type_id'] == null
                                 ? ''
                                 : ' is-invalid')
                             "
@@ -36,29 +75,29 @@
                         </select>
                         <div
                             class="invalid-feedback"
-                            v-if="errors['payments.' + index + '.payment_type_id']"
+                            v-if="errors['newPayments.' + index + '.payment_type_id']"
                         >
-                            {{ errors["payments." + index + ".payment_type_id"][0] }}
+                            {{ errors["newPayments." + index + ".payment_type_id"][0] }}
                         </div>
                     </td>
                     <td>
                         <input
                             :class="
                                 'form-control rounded-pill' +
-                                (errors['payments.' + index + '.amount'] == null
+                                (errors['newPayments.' + index + '.amount'] == null
                                 ? ''
                                 : ' is-invalid')
                             "
                             type="number"
                             min="0"
                             step="0.01"
-                            v-model="payment.amount"
+                            v-model="newPayment.amount"
                         >
                         <div
                             class="invalid-feedback"
-                            v-if="errors['payments.' + index + '.amount']"
+                            v-if="errors['newPayments.' + index + '.amount']"
                         >
-                            {{ errors["payments." + index + ".amount"][0] }}
+                            {{ errors["newPayments." + index + ".amount"][0] }}
                         </div>
                     </td>
                     <td class="text-center">
@@ -85,6 +124,7 @@ export default {
   props: {
     paymentTypes: Array,
     payments: Array,
+    newPayments: Array,
     errors: Object
   },
   methods: {
@@ -95,11 +135,11 @@ export default {
         amount: 0
       }
 
-      this.payments.push(temp)
+      this.newPayments.push(temp)
     },
     deletePayment(index) {
 
-      this.payments.splice(index, 1);
+      this.newPayments.splice(index, 1);
 
     },
   },

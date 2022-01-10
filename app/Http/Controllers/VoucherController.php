@@ -29,6 +29,7 @@ use App\Services\SaleService;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VoucherController extends Controller
@@ -57,7 +58,7 @@ class VoucherController extends Controller
                 's.id', 's.created_at', 'vt.description AS voucher_type', 'sr.serie', 's.document_number',
                 'id.description AS customer_identification_document', 'c.document AS customer_document',
                 'c.name AS customer_name', 's.total', 's.state', 'vt.cod AS voucher_type_cod', 's.have_warranty',
-                'vt.id AS voucher_type_id', 'sr.id AS serie_id'
+                'vt.id AS voucher_type_id', 'sr.id AS serie_id', 's.total_discount'
                 )
             ->orderBy('s.created_at', 'DESC')
             ->getOrPaginate();
@@ -271,8 +272,11 @@ class VoucherController extends Controller
     {
         $branchProducts = BranchProduct::from('branch_product AS bp')
             ->where('bp.branch_id', auth()->user()->branch_id)
-            ->where('p.name', 'like', '%' . $search . '%')
-            ->orWhere('p.cod', 'like', '%' . $search . '%')
+            ->where(function($query) use ($search){
+                $query->where('p.name', 'like', '%' . $search . '%')
+                ->orWhere('p.cod', 'like', '%' . $search . '%')
+                ->orWhere('p.slug', 'like', '%' . $search . '%');
+            })
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
             ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(

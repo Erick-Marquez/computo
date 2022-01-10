@@ -65,6 +65,7 @@
                                         v-else
                                         v-for="product in products"
                                         :key="product"
+                                        :class="product.stock == 0 ? 'table-danger' : ''"
                                     >
                                         <td>{{ product.name }}</td>
                                         <td class="col-2 text-center">{{ product.brand }}</td>

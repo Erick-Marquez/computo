@@ -68,8 +68,11 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
+        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name ]);
+
         $product = Product::create([
             'cod' => $request->cod,
+            'slug' => $slug,
             'name' => $request->name,
             'description' => $request->description,
             'referential_purchase_price' => $request->referential_purchase_price,
@@ -77,6 +80,7 @@ class ProductController extends Controller
             'sale_gain_two' => $request->sale_gain_two,
             'sale_gain_three' => $request->sale_gain_three,
             'manager_series' => $request->manager_series,
+
 
             'have_warranty' => $request->have_warranty,
             'type_of_time_for_warranty' => $request->type_of_time_for_warranty,
@@ -180,9 +184,12 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
+        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name ]);
+
         $product->update([
 
             'cod' => $request->cod,
+            'slug' => $slug,
             'name' => $request->name,
             'description' => $request->description,
             'referential_purchase_price' => $request->referential_purchase_price,

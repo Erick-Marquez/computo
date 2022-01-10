@@ -12,11 +12,10 @@ class DebitNoteDetail extends Model
     protected $fillable = [
         'price',
         'quantity',
-        'unit_price',
+        'unit_value',
         'total_igv',
         'subtotal',
         'total',
-        'discount',
         'igv_type_id',
         'debit_note_id',
         'branch_product_id'

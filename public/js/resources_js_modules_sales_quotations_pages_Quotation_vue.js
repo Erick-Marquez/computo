@@ -26,6 +26,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     paymentTypes: Array,
     payments: Array,
+    newPayments: Array,
     errors: Object
   },
   methods: {
@@ -34,10 +35,10 @@ __webpack_require__.r(__webpack_exports__);
         payment_type_id: null,
         amount: 0
       };
-      this.payments.push(temp);
+      this.newPayments.push(temp);
     },
     deletePayment: function deletePayment(index) {
-      this.payments.splice(index, 1);
+      this.newPayments.splice(index, 1);
     }
   }
 });
@@ -251,50 +252,68 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_4 = {
   "class": "align-middle"
 };
-var _hoisted_5 = ["onUpdate:modelValue"];
+var _hoisted_5 = ["value"];
 var _hoisted_6 = ["value"];
-var _hoisted_7 = {
-  key: 0,
-  "class": "invalid-feedback"
-};
-var _hoisted_8 = ["onUpdate:modelValue"];
+var _hoisted_7 = ["value"];
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "text-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  type: "button",
+  "class": "btn btn-flat",
+  disabled: ""
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+  "class": "text-danger fas fa-trash"
+})])], -1
+/* HOISTED */
+);
+
 var _hoisted_9 = {
+  "class": "align-middle"
+};
+var _hoisted_10 = ["onUpdate:modelValue"];
+var _hoisted_11 = ["value"];
+var _hoisted_12 = {
   key: 0,
   "class": "invalid-feedback"
 };
-var _hoisted_10 = {
+var _hoisted_13 = ["onUpdate:modelValue"];
+var _hoisted_14 = {
+  key: 0,
+  "class": "invalid-feedback"
+};
+var _hoisted_15 = {
   "class": "text-center"
 };
-var _hoisted_11 = ["onClick"];
+var _hoisted_16 = ["onClick"];
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "text-danger fas fa-trash"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_13 = [_hoisted_12];
+var _hoisted_18 = [_hoisted_17];
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fas fa-plus"
 })], -1
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Añadir otro anticipo ");
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Añadir otro anticipo ");
 
-var _hoisted_16 = [_hoisted_14, _hoisted_15];
+var _hoisted_21 = [_hoisted_19, _hoisted_20];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.payments, function (payment, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_4, "Anticipo " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
-      "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return payment.payment_type_id = $event;
-      },
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control rounded-pill", 'form-control rounded-pill' + ($props.errors['payments.' + index + '.payment_type_id'] == null ? '' : ' is-invalid')])
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+      value: payment.payment_type_id,
+      "class": "form-control rounded-pill",
+      disabled: ""
     }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.paymentTypes, function (paymentType) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
         key: paymentType.id,
@@ -304,31 +323,64 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , _hoisted_6);
     }), 128
     /* KEYED_FRAGMENT */
+    ))], 8
+    /* PROPS */
+    , _hoisted_5)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      "class": "form-control rounded-pill",
+      type: "number",
+      min: "0",
+      step: "0.01",
+      value: payment.amount,
+      disabled: ""
+    }, null, 8
+    /* PROPS */
+    , _hoisted_7)]), _hoisted_8]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.newPayments, function (newPayment, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      key: index
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, "Anticipo " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.payments.length + index + 1), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+      "onUpdate:modelValue": function onUpdateModelValue($event) {
+        return newPayment.payment_type_id = $event;
+      },
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('form-control rounded-pill' + ($props.errors['newPayments.' + index + '.payment_type_id'] == null ? '' : ' is-invalid'))
+    }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.paymentTypes, function (paymentType) {
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+        key: paymentType.id,
+        value: paymentType.id
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(paymentType.description), 9
+      /* TEXT, PROPS */
+      , _hoisted_11);
+    }), 128
+    /* KEYED_FRAGMENT */
     ))], 10
     /* CLASS, PROPS */
-    , _hoisted_5), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, payment.payment_type_id]]), $props.errors['payments.' + index + '.payment_type_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors["payments." + index + ".payment_type_id"][0]), 1
+    , _hoisted_10), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, newPayment.payment_type_id]]), $props.errors['newPayments.' + index + '.payment_type_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors["newPayments." + index + ".payment_type_id"][0]), 1
     /* TEXT */
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('form-control rounded-pill' + ($props.errors['payments.' + index + '.amount'] == null ? '' : ' is-invalid')),
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('form-control rounded-pill' + ($props.errors['newPayments.' + index + '.amount'] == null ? '' : ' is-invalid')),
       type: "number",
       min: "0",
       step: "0.01",
       "onUpdate:modelValue": function onUpdateModelValue($event) {
-        return payment.amount = $event;
+        return newPayment.amount = $event;
       }
     }, null, 10
     /* CLASS, PROPS */
-    , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, payment.amount]]), $props.errors['payments.' + index + '.amount'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors["payments." + index + ".amount"][0]), 1
+    , _hoisted_13), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, newPayment.amount]]), $props.errors['newPayments.' + index + '.amount'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors["newPayments." + index + ".amount"][0]), 1
     /* TEXT */
-    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn btn-flat",
       onClick: function onClick($event) {
         return $options.deletePayment(index);
       }
-    }, _hoisted_13, 8
+    }, _hoisted_18, 8
     /* PROPS */
-    , _hoisted_11)])]);
+    , _hoisted_16)])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
@@ -337,7 +389,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.addPayment();
     })
-  }, _hoisted_16)], 64
+  }, _hoisted_21)], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -834,7 +886,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), _hoisted_18, _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(availableQuotation.customer.name), 1
     /* TEXT */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(availableQuotation.total - availableQuotation.discount), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(availableQuotation.total - availableQuotation.total_discount), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       title: "Haz Click para Visualizar el PDF",
@@ -875,7 +927,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), _hoisted_50, _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unavailableQuotation.customer.name), 1
     /* TEXT */
-    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_52, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unavailableQuotation.total), 1
+    )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_52, "S/. " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unavailableQuotation.total - unavailableQuotation.total_discount), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       title: "Haz Click para Visualizar el PDF",

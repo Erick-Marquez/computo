@@ -481,9 +481,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             // hallar el precio sin igv
             var priceWithoutIgv = e.sale_price / (1 + igv); // hallar el subtotal = (precio sin igv * cantidad) - descuento
 
-            e.subtotal = _this3.roundToTwo(priceWithoutIgv * e.quantity - e.discount).toFixed(2); // hallar el total = (subtotal * 1.18)
+            e.subtotal = _this3.roundToTwo(priceWithoutIgv * e.quantity).toFixed(2); // hallar el total = (subtotal * 1.18)
 
-            e.total = _this3.roundToTwo((priceWithoutIgv * e.quantity - e.discount) * (1 + igv)).toFixed(2); // Actualizar totales globales
+            e.total = _this3.roundToTwo(priceWithoutIgv * e.quantity * (1 + igv)).toFixed(2); // Actualizar totales globales
 
             subtotal += Number(e.subtotal);
             totalIgv += Number(e.total - e.subtotal);
@@ -493,7 +493,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 11:
             //[Gratuita] Gravado – Retiro por premio
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -501,7 +501,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 12:
             //[Gratuita] Gravado – Retiro por donación
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -509,7 +509,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 13:
             //[Gratuita] Gravado – Retiro
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -517,7 +517,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 14:
             //[Gratuita] Gravado – Retiro por publicidad
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -525,7 +525,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 15:
             //[Gratuita] Gravado – Bonificaciones
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -533,7 +533,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 16:
             //[Gratuita] Gravado – Retiro por entrega a trabajadores
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -541,7 +541,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 20:
             //Exonerado - Operación Onerosa
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalExonerated += Number(e.subtotal);
@@ -550,7 +550,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 30:
             //Inafecto - Operación Onerosa
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalUnaffected += Number(e.subtotal);
@@ -559,7 +559,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 31:
             //[Gratuita] Inafecto – Retiro por Bonificación
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -567,7 +567,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 32:
             //[Gratuita] Inafecto – Retiro
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -575,7 +575,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 33:
             //[Gratuita] Inafecto – Retiro por Muestras Médicas
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -583,7 +583,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 34:
             //[Gratuita] Inafecto - Retiro por Convenio Colectivo
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -591,7 +591,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 35:
             //[Gratuita] Inafecto – Retiro por premio
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -599,7 +599,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 36:
             //[Gratuita] Inafecto - Retiro por publicidad
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalFree += Number(e.total);
@@ -607,7 +607,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           case 40:
             //Exportación
-            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity - e.discount).toFixed(2);
+            e.subtotal = _this3.roundToTwo(e.sale_price * e.quantity).toFixed(2);
             e.total = _this3.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
             totalUnaffected += Number(e.subtotal);
@@ -615,14 +615,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             break;
         }
       });
-      this.quotationData.quotation.subtotal = this.roundToTwo(subtotal).toFixed(2);
+      this.quotationData.quotation.subtotal = this.roundToTwo(subtotal + totalIgv).toFixed(2);
       this.quotationData.quotation.totalIgv = this.roundToTwo(totalIgv).toFixed(2);
       this.quotationData.quotation.totalExonerated = this.roundToTwo(totalExonerated).toFixed(2);
       this.quotationData.quotation.totalUnaffected = this.roundToTwo(totalUnaffected).toFixed(2);
       this.quotationData.quotation.totalFree = this.roundToTwo(totalFree).toFixed(2);
       this.quotationData.quotation.totalTaxed = this.roundToTwo(totalTaxed).toFixed(2);
       this.quotationData.quotation.discountItems = this.roundToTwo(discountItems).toFixed(2);
-      this.quotationData.quotation.total = this.roundToTwo(total - this.quotationData.quotation.discount).toFixed(2);
+      this.quotationData.quotation.total = this.roundToTwo(total - this.quotationData.quotation.discount - this.quotationData.quotation.discountItems).toFixed(2);
     },
     roundToTwo: function roundToTwo(num) {
       return +(Math.round(num + "e+2") + "e-2");
@@ -1172,7 +1172,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 3
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.products, function (product) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
-      key: product
+      key: product,
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(product.stock == 0 ? 'table-danger' : '')
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand), 1
@@ -1206,7 +1207,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , _hoisted_22)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.stock), 1
     /* TEXT */
-    )]);
+    )], 2
+    /* CLASS */
+    );
   }), 128
   /* KEYED_FRAGMENT */
   ))])], 32

@@ -198,6 +198,10 @@
                       <br>
                       <b>SubTotal: </b>{{ detail.oldTotals.subtotal }}
                       <br>
+                      <template v-if="detail.oldTotals.totalIgv > 0">
+                        <b>Igv (18%): </b>{{ detail.oldTotals.totalIgv }}
+                        <br>
+                      </template>
                       <b>Total: </b>{{ detail.oldTotals.total }}
                       <br>
                     </template>
@@ -635,7 +639,7 @@ export default {
 
         this.creditNote.sale_id = resp.data.data.id
 
-        this.creditNote.discount = Number(resp.data.data.discount)
+        this.creditNote.discount = Number(resp.data.data.global_discount)
         this.creditNote.observation = resp.data.data.observation
 
         resp.data.data.sale_details.forEach(e => {
@@ -646,14 +650,14 @@ export default {
             product_id: e.branch_product.id,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
-            igv_type_id: e.branch_product.product.igv_type_id,
+            igv_type_id: e.igv_type_id,
             description: e.branch_product.product.name,
             brand: e.branch_product.product.brand.description,
-            sale_price: Number(e.price) - Number(e.discount/e.quantity),
+            sale_price: Number(e.unit_value),
             quantity: e.quantity,
 
             oldTotals: {
-              price: Number(e.price).toFixed(2),
+              price: Number(Number(e.unit_value) + Number(e.discount / e.quantity)).toFixed(2),
               discount: Number(e.discount).toFixed(2),
               subtotal: Number(e.subtotal).toFixed(2),
               total: Number(e.total).toFixed(2),
@@ -722,12 +726,12 @@ export default {
 
             // hallar el subtotal = (precio sin igv * cantidad) - descuento
             e.subtotal = this.roundToTwo(
-              priceWithoutIgv * e.quantity - e.discount
+              priceWithoutIgv * e.quantity
             ).toFixed(2);
 
             // hallar el total = (subtotal * 1.18)
             e.total = this.roundToTwo(
-              (priceWithoutIgv * e.quantity - e.discount) * (1 + igv)
+              (priceWithoutIgv * e.quantity) * (1 + igv)
             ).toFixed(2);
 
             // Actualizar totales globales
@@ -738,7 +742,7 @@ export default {
             break;
           case 11: //[Gratuita] Gravado – Retiro por premio
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -746,7 +750,7 @@ export default {
             break;
           case 12: //[Gratuita] Gravado – Retiro por donación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -754,7 +758,7 @@ export default {
             break;
           case 13: //[Gratuita] Gravado – Retiro
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -762,7 +766,7 @@ export default {
             break;
           case 14: //[Gratuita] Gravado – Retiro por publicidad
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -770,7 +774,7 @@ export default {
             break;
           case 15: //[Gratuita] Gravado – Bonificaciones
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -778,7 +782,7 @@ export default {
             break;
           case 16: //[Gratuita] Gravado – Retiro por entrega a trabajadores
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -786,7 +790,7 @@ export default {
             break;
           case 20: //Exonerado - Operación Onerosa
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -795,7 +799,7 @@ export default {
             break;
           case 30: //Inafecto - Operación Onerosa
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -804,7 +808,7 @@ export default {
             break;
           case 31: //[Gratuita] Inafecto – Retiro por Bonificación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -812,7 +816,7 @@ export default {
             break;
           case 32: //[Gratuita] Inafecto – Retiro
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -820,7 +824,7 @@ export default {
             break;
           case 33: //[Gratuita] Inafecto – Retiro por Muestras Médicas
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -828,7 +832,7 @@ export default {
             break;
           case 34: //[Gratuita] Inafecto - Retiro por Convenio Colectivo
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -836,7 +840,7 @@ export default {
             break;
           case 35: //[Gratuita] Inafecto – Retiro por premio
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -844,7 +848,7 @@ export default {
             break;
           case 36: //[Gratuita] Inafecto - Retiro por publicidad
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -852,7 +856,7 @@ export default {
             break;
           case 40: //Exportación
             e.subtotal = this.roundToTwo(
-              e.sale_price * e.quantity - e.discount
+              e.sale_price * e.quantity
             ).toFixed(2);
             e.total = this.roundToTwo(e.subtotal).toFixed(2);
             subtotal += Number(e.subtotal);
@@ -863,7 +867,7 @@ export default {
       });
 
       this.creditNote.subtotal =
-        this.roundToTwo(subtotal).toFixed(2);
+        this.roundToTwo(subtotal + totalIgv).toFixed(2);
       this.creditNote.totalIgv =
         this.roundToTwo(totalIgv).toFixed(2);
       this.creditNote.totalExonerated =
@@ -877,7 +881,7 @@ export default {
       this.creditNote.discountItems =
         this.roundToTwo(discountItems).toFixed(2);
       this.creditNote.total = this.roundToTwo(
-        total - this.creditNote.discount
+        total - this.creditNote.discount - this.creditNote.discountItems
       ).toFixed(2);
     },
     roundToTwo(num) {

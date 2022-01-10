@@ -16,15 +16,14 @@ class CreateCreditNoteDetailsTable extends Migration
         Schema::create('credit_note_details', function (Blueprint $table) {
             $table->id();
 
-            $table->decimal('price', 12, 3);
+            $table->unsignedDecimal('price', 12, 3);
+            $table->unsignedDecimal('unit_value', 12,3);
             $table->bigInteger('quantity');
             
             $table->decimal('total_igv', 12, 3)->default(0);
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
             $table->unsignedDecimal('total', 12, 3)->nullable();;
-            $table->unsignedDecimal('discount', 12, 3)->nullable();
             $table->string('igv_type_id');
-
 
             $table->foreign('igv_type_id')
                 ->references('id')

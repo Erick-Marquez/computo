@@ -26,10 +26,10 @@ class AdvancePaymentRequest extends FormRequest
         return [
             'id_quotation' => 'required|exists:quotations,id',
 
-            'payments' => 'required',
+            'newPayments' => 'required',
 
-            'payments.*.payment_type_id' => 'required',
-            'payments.*.amount' => 'required|numeric|min:0|not_in:0'
+            'newPayments.*.payment_type_id' => 'required',
+            'newPayments.*.amount' => 'required|numeric|min:0|not_in:0'
         ];
     }
 
@@ -41,14 +41,14 @@ class AdvancePaymentRequest extends FormRequest
             'id_quotation.required' => 'Debe ingresar una cotización.',
             'id_quotation.exists' => 'La cotizacion que ingreso no existe.',
 
-            'payments.required' => 'Debe ingresar al menos un anticipo.',
+            'newPayments.required' => 'Debe ingresar al menos un anticipo.',
 
-            'payments.*.payment_type_id.required' => 'El tipo de pago es requerido.',
+            'newPayments.*.payment_type_id.required' => 'El tipo de pago es requerido.',
 
-            'payments.*.amount.required' => 'El tipo de monto es requerido.',
-            'payments.*.amount.numeric' => 'El monto debe ser numérico.',
-            'payments.*.amount.min' => 'El monto debe ser mayor que 0.',
-            'payments.*.amount.not_in' => 'El monto no puede ser 0.',
+            'newPayments.*.amount.required' => 'El tipo de monto es requerido.',
+            'newPayments.*.amount.numeric' => 'El monto debe ser numérico.',
+            'newPayments.*.amount.min' => 'El monto debe ser mayor que 0.',
+            'newPayments.*.amount.not_in' => 'El monto no puede ser 0.',
         ];
     }
 }

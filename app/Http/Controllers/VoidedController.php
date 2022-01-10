@@ -13,6 +13,7 @@ use App\Services\Facturacion\Exception\TicketSunatRejectedException;
 use App\Services\Facturacion\Exception\XmlSunatOutOfServiceException;
 use App\Services\Facturacion\Exception\XmlSunatRejectedException;
 use App\Services\Facturacion\VoidedService;
+use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class VoidedController extends Controller
 
         //Hallar la fecha de referencia
 
-        $sale = Sale::findOrFail($request->sale_id);
+        $sale = Sale::with('saleDetails')->findOrFail($request->sale_id);
 
         $numberVoidedToday = Voided::where('date_issue', now()->format('Y-m-d'))->count();
         $numeration = $numberVoidedToday + 1;
@@ -89,6 +90,15 @@ class VoidedController extends Controller
                 'state' => Sale::ANULADO,
                 'canceled' => true
             ]);
+
+            foreach ($sale->saleDetails as $saleDetail) {
+                KardexService::voided(
+                    $saleDetail->quantity,
+                    $identifier,
+                    $saleDetail->series,
+                    $saleDetail->branch_product_id,
+                    auth()->user()->id);
+            }
 
             return response()->json([
                 'message' => $response['response']['message']
@@ -133,6 +143,15 @@ class VoidedController extends Controller
                 'canceled' => true
             ]);
 
+            foreach ($sale->saleDetails as $saleDetail) {
+                KardexService::voided(
+                    $saleDetail->quantity,
+                    $identifier,
+                    $saleDetail->series,
+                    $saleDetail->branch_product_id,
+                    auth()->user()->id);
+            }
+
             return response()->json([
                 'have_ticket' => true,
                 'error' => $e->getMessage(),
@@ -161,6 +180,15 @@ class VoidedController extends Controller
                 'state' => Sale::ANULADO,
                 'canceled' => true
             ]);
+            
+            foreach ($sale->saleDetails as $saleDetail) {
+                KardexService::voided(
+                    $saleDetail->quantity,
+                    $identifier,
+                    $saleDetail->series,
+                    $saleDetail->branch_product_id,
+                    auth()->user()->id);
+            }
 
             return response()->json([
                 'have_ticket' => true,
