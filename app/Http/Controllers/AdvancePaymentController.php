@@ -22,7 +22,7 @@ class AdvancePaymentController extends Controller
     public function index()
     {
         $advancePayments = Quotation::has('paymentTypes')
-            ->with('customer', 'user', 'serie', 'paymentTypes')
+            ->with('customer', 'user', 'serie', 'paymentTypeQuotations')
             ->withMax('paymentTypes as last_created_at_advance_payment', 'payment_type_quotation.updated_at')
             ->withSum('paymentTypes as total_advance_payment', 'payment_type_quotation.amount')
             ->orderBy('last_created_at_advance_payment', 'DESC')->get();
@@ -126,7 +126,7 @@ class AdvancePaymentController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::with('customer', 'user', 'serie', 'paymentTypes')
+        $quotation = Quotation::with('customer', 'user', 'serie', 'paymentTypeQuotations')
             ->where('serie_id', $serie)
             ->where('document_number', $number)
             ->firstOrFail();
@@ -142,7 +142,7 @@ class AdvancePaymentController extends Controller
         $company = Company::active();
 
 
-        $pdf = PDF::loadView('templates.pdf.advance-payments.advance-payments-ticket', compact('advancePayment', 'advancePayments', 'company'))->setPaper(array(0,0,220,500), 'portrait');
+        $pdf = PDF::loadView('templates.pdf.advance-payments.advance-payments-ticket', compact('advancePayment', 'advancePayments', 'company'))->setPaper(array(0,0,220,700), 'portrait');
 
         // TICKET
         //setPaper(array(0,0,220,700)
