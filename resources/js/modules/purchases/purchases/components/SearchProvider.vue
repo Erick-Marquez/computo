@@ -223,6 +223,11 @@ export default {
     voucherType: String,
     errors: Object,
   },
+  watch: {
+    voucherType: function(newVal, oldVal) {
+        this.provider.identification_document_id = 6
+    }
+  },
   created() {
     this.getTypeDocuments();
     this.getUbigees();

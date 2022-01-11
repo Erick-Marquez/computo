@@ -6,10 +6,7 @@
   </div>
 
   <div class="container-fluid">
-    <a
-      class="btn btn-lg btn-block btn-dark mb-4"
-      href="/nueva-compra"
-    >
+    <a class="btn btn-lg btn-block btn-dark mb-4" href="/nueva-compra">
       <i class="fas fa-plus"></i>
       Nueva Compra
     </a>
@@ -63,22 +60,29 @@
                     {{ purchase.document_type }}
                   </td>
                   <td>
-                    <span class="badge badge-success">{{ purchase.handles_exchange_rate ? 'USD' : 'PEN' }}</span>
-                    <br>
+                    <span class="badge badge-success">{{
+                      purchase.handles_exchange_rate ? "USD" : "PEN"
+                    }}</span>
+                    <br />
                     {{ purchase.exchange_rate }}
                   </td>
                   <td>
                     {{ purchase.provider.name }}
                   </td>
                   <td>
-                    {{ purchase.handles_exchange_rate ? '$' : 'S/.' }} {{ purchase.total }}
+                    {{ purchase.handles_exchange_rate ? "$" : "S/." }}
+                    {{ purchase.total }}
                   </td>
                   <td v-if="purchase.account_to_pay != null">
-                    <span v-if="purchase.account_to_pay.debt == 0" class="badge badge-success">Cancelado</span>
+                    <span
+                      v-if="purchase.account_to_pay.debt == 0"
+                      class="badge badge-success"
+                      >Cancelado</span
+                    >
                     <span v-else class="badge badge-danger">Pendiente</span>
                   </td>
                   <td v-else>
-                      <span class="badge badge-info">Sin credito</span>
+                    <span class="badge badge-info">Sin credito</span>
                   </td>
                   <td>
                     <div class="dropdown">
@@ -97,13 +101,20 @@
                         aria-labelledby="dropdownMenuButton"
                         style=""
                       >
-                        <a class="dropdown-item" href="#"
+                        <!-- <a class="dropdown-item" href="#"
                           ><i class="col-1 mr-3 fas fa-eye"></i>Mostrar</a
                         ><a class="dropdown-item" href="#"
                           ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
-                        ><a class="dropdown-item" :href="`print/purchase/${purchase.id}`" target="_blank"
-                          ><i class="col-1 mr-3 far fa-file-pdf"></i>PDF</a
+                        >-->
+
+                        <a
+                          class="dropdown-item"
+                          :href="`print/purchase/${purchase.id}`"
+                          target="_blank"
                         >
+                          <i class="col-1 mr-3 far fa-file-pdf"></i>
+                          PDF
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -112,6 +123,9 @@
             </table>
           </div>
           <!-- /.card-body -->
+          <div class="card-footer">
+            <Paginator :links="links" v-on:getDataPaginate="getPurchases" />
+          </div>
         </div>
         <!-- /.card -->
       </div>
@@ -121,11 +135,14 @@
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import Paginator from "../../../../compositions/Paginator.vue";
 
 export default {
+  components: { Paginator },
   data() {
     return {
       purchases: [],
+      links: {},
     };
   },
   mounted() {
@@ -133,10 +150,13 @@ export default {
   },
   methods: {
     async getPurchases() {
-      await BaseUrl.get(`/api/purchases?included=provider,accountToPay`)
+      await BaseUrl.get(
+        `/api/purchases?included=provider,accountToPay&sort=-id&perPage=10&page=${this.$route.query.page}`
+      )
         .then((response) => {
           this.purchases = response.data.data;
-          console.log(this.purchases)
+          this.links = response.data.meta.links;
+          console.log(this.purchases);
         })
         .catch((error) => {
           console.log(error.response.data);

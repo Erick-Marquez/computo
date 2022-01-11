@@ -18,7 +18,10 @@ class ExpenseIncomeController extends Controller
      */
     public function index()
     {
-        $movements = ExpenseIncome::all();
+        $movements = ExpenseIncome::included()
+            ->filter()
+            ->sort()
+            ->getOrPaginate();
         return ExpenseIncomeResource::collection($movements);
     }
 
@@ -41,7 +44,6 @@ class ExpenseIncomeController extends Controller
         } catch (\Throwable $th) {
             return abort(405, $th->getMessage());
         }
-
     }
 
     /**

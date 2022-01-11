@@ -48,8 +48,8 @@
               </span>
             </td>
             <td>{{ account.purchase.provider.name }}</td>
-            <td>{{ account.debt }}</td>
-            <td>{{ account.residue }}</td>
+            <td>{{ account.purchase.handles_exchange_rate ? '$' : 'S/' }} {{ account.debt }}</td>
+            <td>{{ account.purchase.handles_exchange_rate ? '$' : 'S/' }} {{ account.residue }}</td>
             <td>
               <span v-if="account.debt != 0" class="badge badge-danger"
                 >Pendiente</span

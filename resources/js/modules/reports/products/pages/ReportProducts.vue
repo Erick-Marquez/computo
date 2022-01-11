@@ -50,6 +50,7 @@
           </a>
           <a
             class="btn btn-flat bg-olive rounded-pill"
+            target="_blank"
             :href="`/reports/products/excel/${filters.branch_id}`"
           >
             <i class="fas fa-file-excel"></i> Excel

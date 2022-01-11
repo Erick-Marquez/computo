@@ -150,7 +150,7 @@ class ReportService
                 's.date_issue',
                 's.created_at',
                 's.total',
-                's.discount',
+                's.total_discount',
                 's.state',
 
                 DB::raw('SUM((sd.price - (bp.referential_purchase_price * 3.70) - sd.discount) * sd.quantity) as utility'),
@@ -165,7 +165,7 @@ class ReportService
                 's.date_issue',
                 's.created_at',
                 's.total',
-                's.discount',
+                's.total_discount',
                 's.state',
             );
 

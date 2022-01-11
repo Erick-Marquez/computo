@@ -141,9 +141,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['page-item', link.active ? 'active' : '']),
       key: link.index
-    }, [(link.url == null ? false : true) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_router_link, {
-      key: 0,
-      "class": "page-link",
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+      "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['page-link', link.url == null ? 'disabled' : '']),
       to: {
         query: {
           page: $options.getPage(link.url)
@@ -160,7 +159,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["to"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
+    , ["class", "to"])], 2
     /* CLASS */
     );
   }), 128
@@ -387,7 +386,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\r\n    color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\r\n    background-color: #23272b;\r\n    border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\r\n    color: #23272b;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\n  color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\n  background-color: #23272b;\n  border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\n  color: #23272b;\n}\na.disabled[data-v-57d2602e] {\n  pointer-events: none;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
