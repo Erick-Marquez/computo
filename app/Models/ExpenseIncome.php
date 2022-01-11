@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ExpenseIncome extends Model
 {
-    use HasFactory;
+    use HasFactory, ApiTrait;
 
     protected $fillable = [
         'type',
@@ -19,6 +20,10 @@ class ExpenseIncome extends Model
     ];
 
     protected $table = 'expenses_incomes';
+
+    protected $allowIncluded = [];
+    protected $allowFilter = ['id'];
+    protected $allowSort = ['id'];
 
     public function branch() {
         return $this->belongsTo(Branch::class);

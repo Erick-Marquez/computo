@@ -87,10 +87,10 @@
                         (sale.utility2 =
                           sale.state === "ANULADO"
                             ? 0
-                            : sale.discount === 0
+                            : sale.total_discount === 0
                             ? parseFloat(sale.utility).toFixed(2)
                             : parseFloat(sale.utility).toFixed(2) -
-                              sale.discount)
+                              sale.total_discount)
                       }}
                     </td>
                   </tr>

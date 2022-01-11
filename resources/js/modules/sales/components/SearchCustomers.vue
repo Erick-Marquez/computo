@@ -225,6 +225,11 @@ export default {
     voucherType: Number,
     errors: Object,
   },
+  watch: {
+    voucherType: function(newVal, oldVal) {
+        this.customer.identification_document_id = 6
+    }
+  },
   mounted() {
     this.getTypeDocuments();
     this.getUbigees();

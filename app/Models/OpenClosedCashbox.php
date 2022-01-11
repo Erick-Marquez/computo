@@ -95,7 +95,7 @@ class OpenClosedCashbox extends Model
                 ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
                 ->whereNotIn('sales.state', ['ANULADO'])->sum('payment_type_sale.amount'),
 
-            "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
+            "purchases" => $this->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total,
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
             "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->sum('amount'),
@@ -114,7 +114,8 @@ class OpenClosedCashbox extends Model
                 ->whereNotIn('sales.state', ['ANULADO'])
                 ->where('payment_types.id', 1)->sum('payment_type_sale.amount'),
 
-            "purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
+            //"purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
+            "purchases" => $this->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total,
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->where('payment_type_id', 1)->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->where('payment_type_id', 1)->sum('amount'),
             "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->where('payment_type_id', 1)->sum('amount'),
@@ -164,7 +165,7 @@ class OpenClosedCashbox extends Model
     public function getPurchases()
     {
         return $this->purchases()
-            ->select('created_at as date', DB::raw("CONCAT(serie, '-',document_number) as observation"), 'total as amount')
+            ->select('created_at as date', DB::raw("CONCAT(serie, '-',document_number) as observation"), DB::raw("(total * exchange_rate) as amount"))
             ->where('is_credit', false)
             ->get()
             ->each(function ($item, $key) {

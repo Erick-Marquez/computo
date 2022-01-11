@@ -108,7 +108,7 @@
                     <tbody>
                         <tr>
                             <td>Total:</td>
-                            <td>{{ $occ->purchases()->where('is_credit', false)->sum('total') }}</td>
+                            <td>{{ $occ->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -183,7 +183,7 @@
             <tfoot>
                 <tr>
                     <td>Total: </td>
-                    <td>{{ $total['account_to_pay'] + $total['expenses'] }}</td>
+                    <td>{{ $total['account_to_pay'] + $total['expenses'] + $total['remunerations'] }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -226,13 +226,18 @@
                 </tr>
                 <tr>
                     <td>Total de Egresos:</td>
-                    <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] }}</td>
+                    <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] + $total['remunerations'] }}</td>
                 </tr>
                 <tr>
                     <td>Total de Efectivo:</td>
-                    <td>{{ $moneyCash['sales'] + $moneyCash['incomes'] + $moneyCash['quotations'] - $moneyCash['purchases'] - $moneyCash['expenses'] - $moneyCash['account_to_pay'] }}
+                    <td>{{ $moneyCash['sales'] + $moneyCash['incomes'] + $moneyCash['quotations'] - $moneyCash['purchases'] - $moneyCash['expenses'] - $moneyCash['account_to_pay'] - $moneyCash['remunerations'] }}
                     </td>
                 </tr>
+                <tr>
+                    <td>Total:</td>
+                    <td>{{ $occ->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total }}</td>
+                </tr>
+
             </tfoot>
         </table>
     </div>

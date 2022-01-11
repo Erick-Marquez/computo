@@ -1,8 +1,12 @@
 <template>
   <ul class="pagination pagination-sm m-0 float-right">
-    <li :class="['page-item', link.active ?  'active' : '']" v-for="(link) in links" :key="link.index">
-      <router-link v-if="link.url == null ? false : true"
-        class="page-link"
+    <li
+      :class="['page-item', link.active ? 'active' : '']"
+      v-for="link in links"
+      :key="link.index"
+    >
+      <router-link
+        :class="['page-link', link.url == null ? 'disabled' : '']"
         :to="{ query: { page: getPage(link.url) } }"
       >
         {{ link.label }}
@@ -25,8 +29,8 @@ export default {
     getPage(url) {
       if (url != null) {
         const indice = url.search("=");
-        const page = url.slice(indice + 1)
-        return page
+        const page = url.slice(indice + 1);
+        return page;
       }
     },
   },
@@ -35,15 +39,19 @@ export default {
 
 <style scoped>
 .page-link {
-    color: #23272b;
+  color: #23272b;
 }
 
 .page-item.active .page-link {
-    background-color: #23272b;
-    border-color: #1d2124;
+  background-color: #23272b;
+  border-color: #1d2124;
 }
 
 .page-link:hover {
-    color: #23272b;
+  color: #23272b;
+}
+
+a.disabled {
+  pointer-events: none;
 }
 </style>

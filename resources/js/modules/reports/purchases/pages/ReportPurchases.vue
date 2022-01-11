@@ -51,6 +51,7 @@
           </a>
           <a
             :href="`/reports/purchases/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.provider_id}/${filters.document_type}`"
+            target="_blank"
             class="btn btn-flat bg-olive rounded-pill"
           >
             <i class="fas fa-file-excel"></i> Excel

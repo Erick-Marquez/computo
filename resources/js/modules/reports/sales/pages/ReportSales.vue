@@ -37,7 +37,7 @@
           </v-select>
         </div>
       </div>
-      <div class="col-md">
+      <!-- <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Vendedor:</label>
           <v-select
@@ -58,7 +58,7 @@
             </template>
           </v-select>
         </div>
-      </div>
+      </div> -->
     </filters>
   </form>
 
@@ -77,6 +77,7 @@
           </a>
           <a
             class="btn btn-flat bg-olive rounded-pill"
+            target="_blank"
             :href="`/reports/sales/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
           >
             <i class="fas fa-file-excel"></i> Excel
@@ -201,7 +202,7 @@ export default {
         });
     },
     async getSellers() {
-      await BaseUrl.get(`/api/roles/Vendedor/users`)
+      await BaseUrl.get(`/api/roles/Cajero/users`)
         .then((response) => {
           this.sellers = response.data;
           this.sellers.push({ name: "TODOS", id: null });

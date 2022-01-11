@@ -181,13 +181,14 @@
             <td>
               {{
                 parseFloat(
-                  parseFloat(details.opening_amount, 3) +
-                    parseFloat(details.movementsTotal.sales, 3) +
-                    parseFloat(details.movementsTotal.incomes, 3) -
-                    parseFloat(details.movementsTotal.expenses, 3) -
-                    parseFloat(details.movementsTotal.remunerations, 3) -
-                    parseFloat(details.movementsTotal.purchases, 3) -
-                    parseFloat(details.movementsTotal.account_to_pay, 3)
+                  parseFloat(details.opening_amount) +
+                    parseFloat(details.movementsTotal.sales) +
+                    parseFloat(details.movementsTotal.incomes) +
+                    parseFloat(details.movementsTotal.quotations) -
+                    parseFloat(details.movementsTotal.expenses) -
+                    parseFloat(details.movementsTotal.remunerations) -
+                    parseFloat(details.movementsTotal.purchases) -
+                    parseFloat(details.movementsTotal.account_to_pay)
                 ).toFixed(2)
               }}
             </td>
@@ -250,6 +251,7 @@ export default {
           this.openClosedCashbox.cashbox_id = this.details.cashbox_id;
 
           this.movements = this.details.movements;
+          console.log(response.data)
         })
         .catch((error) => {
           this.details = [];

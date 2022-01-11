@@ -9,13 +9,12 @@
   </button>
 
   <form @submit.prevent="createMovement()">
-    <new-movement-vue :movement="movement" :errors="errors">
-    </new-movement-vue>
+    <new-movement-vue :movement="movement" :errors="errors"> </new-movement-vue>
   </form>
 
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Responsive Hover Table</h3>
+      <h3 class="card-title">Movimientos no asociados a caja</h3>
 
       <div class="card-tools">
         <div class="input-group input-group-sm" style="width: 150px">
@@ -44,11 +43,12 @@
             <th>Monto</th>
             <th>Tipo</th>
             <th>Observación</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="movement in movements" :key="movement.id">
-            <td>{{ movement.date }}</td>
+            <td>{{ datetime(movement.date) }}</td>
             <td>{{ movement.user }}</td>
             <td>{{ movement.amount }}</td>
             <td>{{ movement.type }}</td>
@@ -92,15 +92,19 @@
       </table>
     </div>
     <!-- /.card-body -->
+    <div class="card-footer">
+      <Paginator :links="links" v-on:getDataPaginate="getMovements" />
+    </div>
   </div>
 </template>
 
 <script>
 import BaseUrl from "../../../../api/BaseUrl";
+import Paginator from "../../../../compositions/Paginator.vue";
 import NewMovementVue from "../../components/NewMovement.vue";
 
 export default {
-  components: { BaseUrl, NewMovementVue },
+  components: { BaseUrl, NewMovementVue, Paginator },
   data() {
     return {
       movement: {
@@ -109,16 +113,20 @@ export default {
       },
       movements: [],
       errors: [],
+      links: {},
     };
   },
   created() {
-    this.showMovements();
+    this.getMovements();
   },
   methods: {
-    async showMovements() {
-      await BaseUrl.get("api/egresos-ingresos")
+    async getMovements() {
+      await BaseUrl.get(
+        `api/egresos-ingresos?sort=-id&perPage=10&page=${this.$route.query.page}`
+      )
         .then((response) => {
           this.movements = response.data.data;
+          this.links = response.data.meta.links;
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -127,7 +135,7 @@ export default {
     async createMovement() {
       await BaseUrl.post("/api/egresos-ingresos", this.movement)
         .then((response) => {
-          this.showMovements();
+          this.getMovements();
           this.errors = [];
           this.movement = { type: "EGRESO", payment_type_id: 1 };
           $("#new-movement").modal("hide");
@@ -157,7 +165,7 @@ export default {
             .then((response) => {
               console.log(response.data);
               Swal.fire("Deleted!", "Su movimiento fue eliminado.", "success");
-              this.showMovements();
+              this.getMovements();
             })
             .catch((error) => {
               console.log(error.response.data);
@@ -165,6 +173,9 @@ export default {
         }
       });
     },
+    datetime(date) {
+        return moment(date).format('YYYY-MM-DD, h:mm:ss a')
+    }
   },
 };
 </script>

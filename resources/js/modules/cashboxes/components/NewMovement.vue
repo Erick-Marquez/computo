@@ -176,9 +176,9 @@ export default {
         });
     },
     async getSellers() {
-      await BaseUrl.get(`/api/roles/Vendedor/users`)
+      await BaseUrl.get(`/api/users`)
         .then((response) => {
-          this.sellers = response.data;
+          this.sellers = response.data.data;
         })
         .catch((error) => {
           console.log(error.response.data);
