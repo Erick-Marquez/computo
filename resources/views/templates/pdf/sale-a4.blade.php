@@ -70,7 +70,7 @@
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->branchProduct->product->name  }} - Series: 
+                        <td>{{ $detail->branchProduct->product->slug  }} - Series: 
                             @foreach ($detail->series as $serie)
                                 ({{ $serie }})
                             @endforeach

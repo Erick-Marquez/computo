@@ -59,7 +59,7 @@
                         @endphp
                         <td>{{ $time_of_warranty }}</td>
                         <td>{{ $detail->date_due }}</td>
-                        <td>{{ $detail->branchProduct->product->name  }} - Series: 
+                        <td>{{ $detail->branchProduct->product->slug  }} - Series: 
                             @foreach ($detail->series as $serie)
                                 ({{ $serie }})
                             @endforeach

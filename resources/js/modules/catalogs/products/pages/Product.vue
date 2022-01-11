@@ -42,21 +42,23 @@
               <table class="table table-hover text-nowrap">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Codigo</th>
                     <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Price</th>
+                    <th>Precio Compra</th>
+                    <th>Precio 1</th>
+                    <th>Precio 2</th>
+                    <th>Precio 3</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="product in products" :key="product.id">
-                    <td>{{ product.id }}</td>
                     <td>{{ product.cod }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.referential_purchase_price }}</td>
+                    <td>{{ product.slug }}</td>
+                    <td>S/. {{ roundToTwo(product.referential_purchase_price * currencyExchange.change) }}</td>
+                    <td>S/. {{ product.price_one }}</td>
+                    <td>S/. {{ product.price_two }}</td>
+                    <td>S/. {{ product.price_three }}</td>
                     <td>
                       <div class="dropdown">
                         <button
@@ -117,12 +119,17 @@ import BaseUrl from '../../../../api/BaseUrl.js'
 export default {
   components: { BaseUrl },
   async created(){
+    await BaseUrl.get(`api/currencyexchanges/current`).then( resp=>{
+      this.currencyExchange = resp.data.data
+    })
     this.showProducts()
   },
   data(){
     return{
       meta: {},
       perPage: 10,
+
+      currencyExchange: {},
 
       products: [],
     }
@@ -131,6 +138,11 @@ export default {
     async showProducts(){
       await BaseUrl.get(`api/products?page=1&perPage=${this.perPage}`).then( resp=>{
         this.products = resp.data.data
+        this.products.forEach(e => {
+          e.price_one = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_one/100) * this.currencyExchange.change)
+          e.price_two = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_two/100) * this.currencyExchange.change)
+          e.price_three = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_three/100) * this.currencyExchange.change)
+        })
         this.meta = resp.data.meta
       })
     },
@@ -138,8 +150,17 @@ export default {
       await axios.get(`${url}&perPage=${this.perPage}`)
       .then( resp => {
         this.products = resp.data.data
+        this.products.forEach(e => {
+          e.price_one = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_one/100) * this.currencyExchange.change)
+          e.price_two = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_two/100) * this.currencyExchange.change)
+          e.price_three = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_three/100) * this.currencyExchange.change)
+        })
         this.meta = resp.data.meta
       })
+    },
+
+    roundToTwo(num) {
+      return +(Math.round(num + "e+2") + "e-2");
     },
   }
 }

@@ -174,6 +174,7 @@ Route::middleware([
 
     //Currency Exchanges
     Route::get('currencyexchanges/current', [CurrencyExchangeController::class, 'currentCurrencyExchange'])->name('api.currencyexchanges.currentCurrencyExchange');
+    Route::get('currencyexchanges/current-sunat', [CurrencyExchangeController::class, 'currentCurrencyExchangeSunat'])->name('api.currencyexchanges.currentCurrencyExchangeSunat');
     Route::apiResource('currencyexchanges', CurrencyExchangeController::class)->names('api.currencyexchanges');
 
     //Payment Types

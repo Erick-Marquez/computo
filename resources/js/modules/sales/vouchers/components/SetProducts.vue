@@ -21,7 +21,7 @@
                             <input
                                 :class="['form-control', 'rounded-pill', errors[`detail.${i}.product_id`] == null ? '' : 'is-invalid']"
                                 type="text"
-                                :value="`${detail.description} - ${detail.brand} - ${detail.cod}`"
+                                :value="`${detail.slug} - ${detail.cod}`"
                                 disabled
                             >
                             <div class="invalid-feedback" v-if="errors[`detail.${i}.product_id`]">

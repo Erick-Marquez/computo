@@ -117,13 +117,7 @@
                         : ' is-invalid')
                     "
                     type="text"
-                    :value="
-                      detail.description +
-                      ' - ' +
-                      detail.brand +
-                      ' - ' +
-                      detail.cod
-                    "
+                    :value="detail.slug + ' - ' + detail.cod"
                     disabled
                   />
                   <div
@@ -583,6 +577,7 @@ export default {
           total: 0,
 
           product_id: product.id,
+          slug: product.slug,
           cod: product.cod,
           affect_icbper: false,
           igv_type_id: product.igv_type_id,

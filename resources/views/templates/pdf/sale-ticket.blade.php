@@ -113,7 +113,7 @@
             @if ($detail->discount > 0)
                 <tr>
                     <td>
-                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}
+                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->slug  }}
                         <br>
                         <span style="font-size: 0.6rem; vertical-align: middle; color: white;">[{{ $detail->quantity }}]</span> Descuento</span>
                     </td>

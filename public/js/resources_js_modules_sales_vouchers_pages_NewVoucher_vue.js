@@ -652,6 +652,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         subtotal: 0,
         total: 0,
         product_id: productAssembly.id,
+        slug: productAssembly.slug,
         cod: productAssembly.cod,
         affect_icbper: false,
         igv_type_id: productAssembly.igv_type_id,
@@ -684,6 +685,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           subtotal: 0,
           total: 0,
           product_id: product.id,
+          slug: product.slug,
           cod: product.cod,
           affect_icbper: false,
           igv_type_id: product.igv_type_id,
@@ -985,6 +987,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             subtotal: 0,
             total: 0,
             product_id: e.branch_product_id,
+            slug: e.slug,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
             igv_type_id: e.igv_type_id,
@@ -2018,7 +2021,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(['form-control', 'rounded-pill', $props.errors["detail.".concat(i, ".product_id")] == null ? '' : 'is-invalid']),
       type: "text",
-      value: "".concat(detail.description, " - ").concat(detail.brand, " - ").concat(detail.cod),
+      value: "".concat(detail.slug, " - ").concat(detail.cod),
       disabled: ""
     }, null, 10
     /* CLASS, PROPS */

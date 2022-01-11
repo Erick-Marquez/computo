@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CurrencyExchangeRequest;
 use App\Http\Resources\CurrencyExchangeResource;
+use App\Http\Resources\GlobalResource;
 use App\Models\CurrencyExchange;
 use Carbon\Carbon;
 use Exception;
@@ -72,7 +73,7 @@ class CurrencyExchangeController extends Controller
         return response()->json(['message' => 'Cambio de Divisa Eliminado']);
     }
 
-    public function currentCurrencyExchange()
+    public function currentCurrencyExchangeSunat()
     {
 
         $curl = curl_init();
@@ -116,5 +117,12 @@ class CurrencyExchangeController extends Controller
         }
 
         
+    }
+
+    public function currentCurrencyExchange()
+    {
+        $currencyExchange = CurrencyExchange::latest()->first();
+
+        return GlobalResource::make($currencyExchange);        
     }
 }

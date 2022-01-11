@@ -254,7 +254,7 @@ export default {
       })
     },
     async getCurrentCurrencyExchange(){
-      await BaseUrl.get(`api/currencyexchanges/current`).then( resp=>{
+      await BaseUrl.get(`api/currencyexchanges/current-sunat`).then( resp=>{
         this.currentCurrencyExchange=resp.data
       })
     },
