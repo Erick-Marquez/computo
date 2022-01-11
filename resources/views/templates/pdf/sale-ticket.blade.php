@@ -120,16 +120,15 @@
                     <td>
                         S/. {{ round($detail->price, 2) }}
                         <br>
-                        S/. {{ round($detail->discount, 2) }}
+                        &nbsp;
                     </td>
                     <td>
                         S/. {{ round($detail->total, 2) }}
                         <br>
-                        &nbsp;
+                        S/. {{ round($detail->discount, 2) }}
                     </td>
                 </tr> 
             @else
-                
                 <tr>
                     <td>
                         <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}
@@ -138,6 +137,19 @@
                     <td>S/. {{ round($detail->total, 2) }}</td>
                 </tr>
 
+            @endif
+
+            @if (count($detail->series) > 0)
+                <tr>
+                    <td>
+                        <span style="font-size: 0.6rem; vertical-align: middle; color: white;">[{{ $detail->quantity }}]</span> Series: 
+                    </td>
+                    <td colspan="2">
+                        @foreach ($detail->series as $serie)
+                            ({{ $serie }})
+                        @endforeach
+                    </td>
+                </tr>
             @endif
 
         @endforeach
@@ -172,6 +184,11 @@
                     <td><span class="bold">Igv (18%): </span> S/. {{ round($head->total_igv, 2) }}</td>
                 </tr>
             @endif
+            @if ($head->total_discount > 0)
+                <tr>
+                    <td><span class="bold">Subtotal: </span> S/. {{ round($head->total, 2) }}</td>
+                </tr>
+            @endif
             @if ($head->global_discount > 0)
                 <tr>
                     <td><span class="bold">Descuento Global: </span> S/. {{ round($head->global_discount, 2) }}</td>
@@ -181,7 +198,7 @@
                 <tr>
                     <td><span class="bold">Descuento por Item: </span> S/. {{ round($head->item_discount, 2) }}</td>
                 </tr>
-            @endif
+            @endif 
             <tr>
                 <td><span class="bold">Total: </span> S/. {{ round($head->total - $head->total_discount, 2) }}</td>
             </tr>

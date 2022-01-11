@@ -178,7 +178,7 @@ class VoucherController extends Controller
             $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4', 'portrait');
         }
         if ($type == 'TICKET') {
-            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,700), 'portrait');
+            $pdf = PDF::loadView('templates.pdf.sale-ticket', compact('company', 'head', 'details', 'qr'))->setPaper(array(0,0,220,1000), 'portrait');
         }
         if ($type == 'WARRANTY') {
 
@@ -280,7 +280,7 @@ class VoucherController extends Controller
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
             ->join('brands AS b', 'p.brand_id', '=', 'b.id')
             ->select(
-                'bp.id', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'bp.stock', 'bp.igv_type_id',
+                'bp.id', 'p.slug', 'p.cod', 'p.name', 'b.description as brand', 'p.manager_series', 'bp.stock', 'bp.igv_type_id',
                 'p.referential_purchase_price', 'bp.sale_gain_one', 'bp.sale_gain_two', 'bp.sale_gain_three'
                 )
             ->limit(10)

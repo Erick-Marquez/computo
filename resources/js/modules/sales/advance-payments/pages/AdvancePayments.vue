@@ -39,67 +39,69 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <table class="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Comprobante</th>
-                  <th>Cliente</th>
-                  <th>Total Cotización</th>
-                  <th>Total Anticipo</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="advancePayment in advancePayments" :key="advancePayment.id">
-                  <td class="align-middle">{{ getTimestamp(advancePayment.last_created_at_advance_payment) }}</td>
-                  <td class="align-middle">
-                    <span class="text-muted">COTIZACIÓN: </span>{{ advancePayment.serie.serie }} - {{ advancePayment.document_number }}
-                    <br>
-                    
-                  </td>
-                  <td class="align-middle">
-                    <span class="badge bg-maroon">{{ advancePayment.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ advancePayment.customer.document }}
-                    <br>
-                    <span class="badge bg-maroon">Nombre:</span> {{ advancePayment.customer.name }}
-                  </td>
-                  <td class="align-middle">
-                    S/. {{ advancePayment.total - advancePayment.discount}}
-                  </td>
-                  <td class="align-middle">
-                    S/. {{ Number(advancePayment.total_advance_payment) }}
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-danger dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Acciones
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-print', advancePayment)">
-                          <i class="col-1 mr-3 fas fa-print"></i>Imprimir
-                        </a>
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-update', advancePayment)">
-                          <i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo
-                        </a>
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-edit', advancePayment)">
-                          <i class="col-1 mr-3 fas fa-edit"></i>Editar
-                        </a>
-                        <a class="dropdown-item" href="#" @click="showModal('#modal-advance-delete', advancePayment)">
-                          <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
-                        </a>
+            <div class="table-responsive">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Comprobante</th>
+                    <th>Cliente</th>
+                    <th>Total Cotización</th>
+                    <th>Total Anticipo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="advancePayment in advancePayments" :key="advancePayment.id">
+                    <td class="align-middle">{{ getTimestamp(advancePayment.last_created_at_advance_payment) }}</td>
+                    <td class="align-middle">
+                      <span class="text-muted">COTIZACIÓN: </span>{{ advancePayment.serie.serie }} - {{ advancePayment.document_number }}
+                      <br>
+                      
+                    </td>
+                    <td class="align-middle">
+                      <span class="badge bg-maroon">{{ advancePayment.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ advancePayment.customer.document }}
+                      <br>
+                      <span class="badge bg-maroon">Nombre:</span> {{ advancePayment.customer.name }}
+                    </td>
+                    <td class="align-middle">
+                      S/. {{ advancePayment.total - advancePayment.total_discount}}
+                    </td>
+                    <td class="align-middle">
+                      S/. {{ Number(advancePayment.total_advance_payment) }}
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button
+                          class="btn btn-danger dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          Acciones
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-advance-print', advancePayment)">
+                            <i class="col-1 mr-3 fas fa-print"></i>Imprimir
+                          </a>
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-advance-update', advancePayment)">
+                            <i class="col-1 mr-3 far fa-money-bill-alt"></i>Anticipo
+                          </a>
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-advance-edit', advancePayment)">
+                            <i class="col-1 mr-3 fas fa-edit"></i>Editar
+                          </a>
+                          <a class="dropdown-item" href="#" @click="showModal('#modal-advance-delete', advancePayment)">
+                            <i class="col-1 mr-3 fas fa-trash"></i>Eliminar
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- /.card-body -->
         </div>
@@ -120,6 +122,10 @@
         </div>
         <form @submit.prevent="createAdvancePayment('#modal-advance-update')">
           <div class="modal-body">
+            <ShowQuotationInfo
+              v-if="advancePaymentCreate.quotation != null"
+              :quotation="advancePaymentCreate.quotation"
+            ></ShowQuotationInfo>
 
             <AdvancePayment
               :paymentTypes="paymentTypes"
@@ -208,6 +214,11 @@
               </div>
             </div>
 
+            <ShowQuotationInfo
+              v-if="showAdvancePaymentsTable && advancePaymentCreate.quotation != null"
+              :quotation="advancePaymentCreate.quotation"
+            ></ShowQuotationInfo>
+
             <AdvancePayment
               v-if="showAdvancePaymentsTable"
               :paymentTypes="paymentTypes"
@@ -245,6 +256,12 @@
           </button>
         </div>
         <div class="modal-body">
+
+          <ShowQuotationInfo
+            v-if="advancePaymentCreate.quotation != null"
+            :quotation="advancePaymentCreate.quotation"
+          ></ShowQuotationInfo>
+
           <div class="table-responsive">
             <table class="table table-bordered" style="min-width: 600px;">
               <thead class="thead-dark text-center">
@@ -304,6 +321,12 @@
           </button>
         </div>
         <div class="modal-body">
+
+          <ShowQuotationInfo
+            v-if="advancePaymentCreate.quotation != null"
+            :quotation="advancePaymentCreate.quotation"
+          ></ShowQuotationInfo>
+
           <div class="table-responsive">
             <table class="table table-bordered" style="min-width: 600px;">
               <thead class="thead-dark text-center">
@@ -367,6 +390,12 @@
           </button>
         </div>
         <div class="modal-body">
+
+          <ShowQuotationInfo
+            v-if="advancePaymentCreate.quotation != null"
+            :quotation="advancePaymentCreate.quotation"
+          ></ShowQuotationInfo>
+          
           <div class="table-responsive">
             <table class="table table-bordered" style="min-width: 600px;">
               <thead class="thead-dark text-center">
@@ -424,8 +453,9 @@
 <script>
 import BaseUrl from '../../../../api/BaseUrl.js';
 import AdvancePayment from "../../components/AdvancePayment.vue";
+import ShowQuotationInfo from "../components/ShowQuotationInfo.vue";
 export default {
-  components: { BaseUrl, AdvancePayment },
+  components: { BaseUrl, AdvancePayment, ShowQuotationInfo },
   async created(){
 
     await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
@@ -513,6 +543,7 @@ export default {
 
     getAdvancePaymentFormat(quotation){
       let advancePaymentTemp = {
+        quotation: quotation,
         id_quotation: quotation.id,
         serie: quotation.serie.serie,
         document_number: quotation.document_number,
@@ -521,14 +552,14 @@ export default {
         newPayments: []
       }
       
-      quotation.payment_types.forEach(e => {
+      quotation.payment_type_quotations.forEach(e => {
 
         let temp = {
-          id: e.pivot.id,
-          payment_type_id: e.pivot.payment_type_id,
-          amount: e.pivot.amount,
-          date_updated_at: new Date(Date.parse(e.pivot.updated_at)).toLocaleDateString('en-US', { timeZone: 'America/Lima' }),
-          time_updated_at: new Date(Date.parse(e.pivot.updated_at)).toLocaleTimeString('en-US', { timeZone: 'America/Lima' })
+          id: e.id,
+          payment_type_id: e.payment_type_id,
+          amount: e.amount,
+          date_updated_at: new Date(Date.parse(e.updated_at)).toLocaleDateString('en-US', { timeZone: 'America/Lima' }),
+          time_updated_at: new Date(Date.parse(e.updated_at)).toLocaleTimeString('en-US', { timeZone: 'America/Lima' })
         }
 
         advancePaymentTemp.payments.push(temp)

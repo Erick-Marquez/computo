@@ -18,7 +18,7 @@
                                 <thead class="thead-dark text-center">
                                     <tr>
                                         <td>Nombre</td>
-                                        <td class="col-2">Marca</td>
+                                        <td class="col-2">Codigo</td>
                                         <td class="col-2">Precio 1</td>
                                         <td class="col-2">Precio 2</td>
                                         <td class="col-2">Precio 3</td>
@@ -67,8 +67,8 @@
                                         :key="product"
                                         :class="product.stock == 0 ? 'table-danger' : ''"
                                     >
-                                        <td>{{ product.name }}</td>
-                                        <td class="col-2 text-center">{{ product.brand }}</td>
+                                        <td>{{ product.slug }}</td>
+                                        <td class="col-2 text-center">{{ product.cod }}</td>
                                         <td class="col-2 text-center">
                                             <input
                                                 class="btn btn-sm btn-success w-50"

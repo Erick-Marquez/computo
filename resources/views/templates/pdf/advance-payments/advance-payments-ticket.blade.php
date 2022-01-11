@@ -131,6 +131,32 @@
 
     <table class="price">
         <tbody>
+            @if ($advancePayment->quotation->item_discount > 0 || $advancePayment->quotation->global_discount > 0)
+            <tr>
+                <td>
+                    <span class="bold">Subtotal: </span> S/. {{ round($advancePayment->quotation->total, 2) }}
+                </td>
+            </tr>
+            @endif
+            @if ($advancePayment->quotation->item_discount > 0)
+            <tr>
+                <td>
+                    <span class="bold">Descuento por items: </span> S/. {{ round($advancePayment->quotation->item_discount, 2) }}
+                </td>
+            </tr>
+            @endif
+            @if ($advancePayment->quotation->global_discount > 0)
+            <tr>
+                <td>
+                    <span class="bold">Descuento global: </span> S/. {{ round($advancePayment->quotation->global_discount, 2) }}
+                </td>
+            </tr>
+            @endif
+            <tr>
+                <td>
+                    <span class="bold">Total: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->total_discount, 2) }}
+                </td>
+            </tr>
             @php
                $totalAdvance = 0; 
             @endphp
@@ -149,12 +175,7 @@
             @endforeach
             <tr>
                 <td>
-                    <span class="bold">Total: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->discount, 2) }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="bold">Deuda: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->discount, 2) - round($totalAdvance, 2) }}
+                    <span class="bold">Deuda: </span> S/. {{ round($advancePayment->quotation->total - $advancePayment->quotation->total_discount, 2) - round($totalAdvance, 2) }}
                 </td>
             </tr>
         </tbody>
