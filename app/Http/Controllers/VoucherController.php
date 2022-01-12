@@ -172,7 +172,7 @@ class VoucherController extends Controller
             $head->hash_cdr
         ]);
 
-        // $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
 
         if ($type == 'A4') {
             $pdf = PDF::loadView('templates.pdf.sale-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4', 'portrait');

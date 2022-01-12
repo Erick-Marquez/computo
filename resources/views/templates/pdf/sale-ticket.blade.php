@@ -131,7 +131,7 @@
             @else
                 <tr>
                     <td>
-                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->name  }}
+                        <span style="font-size: 0.6rem; vertical-align: middle">[{{ $detail->quantity }}]</span> {{ $detail->branchProduct->product->slug  }}
                     </td>
                     <td>S/. {{ round($detail->price, 2) }}</td>
                     <td>S/. {{ round($detail->total, 2) }}</td>
