@@ -123,6 +123,20 @@
             </div>
           </div>
           <!-- /.card-body -->
+
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in availableQuotationsMeta.links" :key="link.index"
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click="(link.url == null || link.active) ? null : showPaginateAvailableQuotation(link.url)"
+                >
+                  {{ index == 0 ? 'Anterior' : index == availableQuotationsMeta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -226,6 +240,19 @@
             </div>
           </div>
           <!-- /.card-body -->
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in unavailableQuotationsMeta.links" :key="link.index"
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click="(link.url == null || link.active) ? null : showPaginateUnavailableQuotation(link.url)"
+                >
+                  {{ index == 0 ? 'Anterior' : index == unavailableQuotationsMeta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -275,7 +302,8 @@ import AdvancePayment from "../../components/AdvancePayment.vue";
 export default {
   components: { BaseUrl, AdvancePayment },
   async created(){
-    this.showQuotations();
+    this.showAvailableQuotations()
+    this.showUnavailableQuotations()
 
     await BaseUrl.get(`api/sales/paymenttypes`).then((resp) => {
       this.paymentTypes = resp.data.data;
@@ -284,7 +312,12 @@ export default {
   data(){
     return{
       availableQuotations: [],
+      availableQuotationsMeta: {},
+      availableQuotationsPerPage: 10,
+
       unavailableQuotations: [],
+      unavailableQuotationsMeta: {},
+      unavailableQuotationsPerPage: 10,
 
       paymentTypes: [],
       advancePayment: {
@@ -299,12 +332,33 @@ export default {
   },
   methods:{
 
-    async showQuotations(){
-      await BaseUrl.get(`api/quotations`).then( resp=>{
-        this.availableQuotations = resp.data.availableQuotations
-        this.unavailableQuotations = resp.data.unavailableQuotations
+    async showAvailableQuotations(){
+      await BaseUrl.get(`api/quotations/available-quotations?page=1&perPage=${this.availableQuotationsPerPage}`).then( resp=>{
+        this.availableQuotations = resp.data.data
+        this.availableQuotationsMeta = resp.data.meta
       });
     },
+    async showPaginateAvailableQuotation(url){
+      await axios.get(`${url}&perPage=${this.availableQuotationsPerPage}`)
+      .then( resp => {
+        this.availableQuotations = resp.data.data
+        this.availableQuotationsMeta = resp.data.meta
+      })
+    },
+    async showUnavailableQuotations(){
+      await BaseUrl.get(`api/quotations/unavailable-quotations?page=1&perPage=${this.unavailableQuotationsPerPage}`).then( resp=>{
+        this.unavailableQuotations = resp.data.data
+        this.unavailableQuotationsMeta = resp.data.meta
+      });
+    },
+    async showPaginateUnavailableQuotation(url){
+      await axios.get(`${url}&perPage=${this.unavailableQuotationsPerPage}`)
+      .then( resp => {
+        this.unavailableQuotations = resp.data.data
+        this.unavailableQuotationsMeta = resp.data.meta
+      })
+    },
+    
 
     getElapsedTime(endDate){
 

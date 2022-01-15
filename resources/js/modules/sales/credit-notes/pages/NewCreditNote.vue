@@ -185,7 +185,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(detail, index) in creditNote.detail" :key="detail">
+              <tr v-for="(detail, index) in creditNote.details" :key="detail">
                 <td>
                   <Popper class="light" arrow>
                     <button type="button" class="btn btn-flat bg-light">
@@ -217,13 +217,7 @@
                         : ' is-invalid')
                     "
                     type="text"
-                    :value="
-                      detail.description +
-                      ' - ' +
-                      detail.brand +
-                      ' - ' +
-                      detail.cod
-                    "
+                    :value="detail.slug + ' - ' + detail.cod"
                     disabled
                   />
                   <div
@@ -265,6 +259,7 @@
                     type="number"
                     min="1"
                     v-model="detail.quantity"
+                    @change="addSeries(index)"
                     @input="getTotals()"
                   />
                   <div
@@ -333,7 +328,7 @@
           </table>
           <div
             class="image-without-products"
-            v-if="creditNote.detail.length == 0"
+            v-if="creditNote.details.length == 0"
           >
             <img
               src="../../../../../img/add_product.png"
@@ -341,6 +336,56 @@
               style="max-height: 120px"
             />
             <h1 class="display-4">Agregue productos</h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL SERIES -->
+      <div
+        v-if="creditNote.details.length !== 0"
+        class="modal fade"
+        id="modal-series"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="seriesModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="seriesModalLabel">
+                Registrar series para {{ creditNote.details[index].slug }} - {{ creditNote.details[index].cod }}
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div
+                v-for="(serie, i) in creditNote.details[index].series"
+                :key="serie"
+                class="form-group"
+              >
+                <v-select v-model="creditNote.details[index].series[i]" label="serie" :options="creditNote.details[index].seriesSearch" >
+                  <template v-slot:no-options="{ search, searching }">
+                    <template v-if="searching">
+                      No se encontraron resultados para <b><em>{{ search }}</em></b>.
+                    </template>
+                    <em v-else style="opacity: 0.5">Escribe la serie del producto.</em>
+                  </template>
+                </v-select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-dark" data-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -549,6 +594,8 @@ export default {
       creditNoteTypes: [],
       igvTypes: [],
 
+      index: 0,
+
       voucherToModifySeries: [],
       creditNoteSeries: [],
 
@@ -578,7 +625,7 @@ export default {
 
         observation: "",
 
-        detail: []
+        details: []
 
       },
 
@@ -628,11 +675,30 @@ export default {
       );
       this.currentNumber = serieFilter[0].current_number + 1;
     },
+    showModalSeries(index) {
+      this.index = index
+      $('#modal-series').modal("show")
+    },
+    addSeries(i){
+      if (this.creditNote.details[i].manager_series) {
+        let dif = this.creditNote.details[i].quantity - this.creditNote.details[i].series.length
+        if (dif > 0) {
+          for (let j = 0; j < dif; j++) {
+            this.creditNote.details[i].series.push('')
+          }
+        } else {
+          for (let j = 0; j < -dif; j++) {
+            this.creditNote.details[i].series.pop(1)
+          }
+        }
+      }
+
+    },
     getVoucherToModify() {
 
       this.loadingSearchVoucher = true
 
-      this.creditNote.detail = []
+      this.creditNote.details = []
       this.creditNote.sale_id = null
       this.creditNote.discount = null
       this.creditNote.observation = null
@@ -652,8 +718,8 @@ export default {
         this.creditNote.discount = Number(resp.data.data.global_discount)
         this.creditNote.observation = resp.data.data.observation
 
-        resp.data.data.sale_details.forEach(e => {
-          this.creditNote.detail.push({
+        resp.data.data.sale_details.forEach((e, i) => {
+          this.creditNote.details.push({
             subtotal: 0,
             total: 0,
             discount: 0,
@@ -669,6 +735,9 @@ export default {
 
             manager_series: Boolean(e.branch_product.product.manager_series),
 
+            series: [],
+            seriesSearch: e.series,
+
             oldTotals: {
               price: Number(Number(e.unit_value) + Number(e.discount / e.quantity)).toFixed(2),
               discount: Number(e.discount).toFixed(2),
@@ -677,6 +746,9 @@ export default {
               totalIgv: Number(e.total_igv).toFixed(2)
             }
           })
+          for (let index = 0; index < e.quantity; index++) {
+            this.addSeries(i)
+          }
         })
         console.log(resp.data.data)
       })
@@ -691,13 +763,13 @@ export default {
       })
     },
     deleteItem(index) {
-      this.creditNote.detail.splice(index, 1);
+      this.creditNote.details.splice(index, 1);
       this.getTotals();
     },
     activateOrDesactivateGlobalDiscount() {
       // recorrer el array detalle en busca de un descuento
       let discount = 0;
-      this.creditNote.detail.forEach((e) => {
+      this.creditNote.details.forEach((e) => {
         discount += e.discount * 1;
       });
 
@@ -729,7 +801,7 @@ export default {
       // igv constante
       const igv = 0.18;
 
-      this.creditNote.detail.forEach((e) => {
+      this.creditNote.details.forEach((e) => {
         discountItems += e.discount;
 
         switch (parseInt(e.igv_type_id)) {

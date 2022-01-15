@@ -423,6 +423,11 @@ return [
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.kardex',
                 ],
+                [
+                    'text'   => 'Editar series',
+                    'icon'   => 'far fa-fw fa-circle',
+                    'route'  => 'web.edit-series',
+                ],
                 // [
                 //     'text'   => 'Modificación de Stock',
                 //     'icon'   => 'far fa-fw fa-circle',

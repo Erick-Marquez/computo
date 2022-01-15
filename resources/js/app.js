@@ -19,6 +19,7 @@ import Permissions from './mixins/Permissions';
 import ErrorsForm from './mixins/ErrorsForm';
 
 import indexKardex from './modules/inventory/kardex/index.vue';
+import indexEditSeries from './modules/inventory/edit-series/index.vue';
 import indexBranches from './modules/inventory/branches/index.vue';
 import indexModificactionStock from './modules/inventory/modification-stock/index.vue';
 
@@ -84,6 +85,7 @@ app.component('index-product-series', indexProductSeries);
 app.component('index-assemblies', indexAssemblies);
 
 app.component('index-kardex', indexKardex);
+app.component('index-edit-series', indexEditSeries);
 app.component('index-modification-stock', indexModificactionStock);
 app.component('index-branches', indexBranches);
 app.component('index-cashboxes', indexCashbox);

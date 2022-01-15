@@ -169,7 +169,7 @@ class VoucherController extends Controller
             $head->date_issue,
             $head->customer->identificationDocument->id,
             $head->customer->document,
-            $head->hash_cdr
+            $head->hash_cpe
         ]);
 
         $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));

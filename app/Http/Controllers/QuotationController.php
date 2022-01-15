@@ -29,19 +29,33 @@ class QuotationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function availableQuotations()
     {
-        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())->doesnthave('sale')->with('customer', 'user','serie', 'paymentTypes')->withCount('sale')->latest()->get();
+        $availableQuotations = Quotation::where('date_due', '>', Carbon::now())
+            ->doesnthave('sale')
+            ->with('customer', 'user','serie', 'paymentTypes')
+            ->withCount('sale')
+            ->latest()
+            ->paginate(intVal(request('perPage')));
 
-        $unavailableQuotations = Quotation::has('sale')->orWhere('date_due', '<', Carbon::now())->with('customer', 'user','serie')->withCount('sale')->latest()->get();
+        return GlobalResource::collection($availableQuotations);
+    }
 
-        return response()->json([
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function unavailableQuotations()
+    {
+        $unavailableQuotations = Quotation::has('sale')
+            ->orWhere('date_due', '<', Carbon::now())
+            ->with('customer', 'user','serie')
+            ->withCount('sale')
+            ->latest()
+            ->paginate(intVal(request('perPage')));
 
-            'availableQuotations' => $availableQuotations,
-
-            'unavailableQuotations' => $unavailableQuotations
-
-        ]);
+        return GlobalResource::collection($unavailableQuotations);
     }
 
     /**

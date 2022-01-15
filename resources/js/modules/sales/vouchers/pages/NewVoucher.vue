@@ -966,7 +966,7 @@ export default {
               subtotal: 0,
               total: 0,
               product_id: e.branch_product_id,
-              slug: e.slug,
+              slug: e.branch_product.product.slug,
               cod: e.branch_product.product.cod,
               affect_icbper: false,
               igv_type_id: e.igv_type_id,

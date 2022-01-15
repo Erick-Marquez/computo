@@ -250,6 +250,22 @@ const routes = [
         ]
     },
     {
+        path: '/editar-series',
+        name: 'edit-series-index',
+        component: () => import('../modules/inventory/edit-series/index.vue'),
+        children: [
+            {
+                path: '',
+                name: 'layout-edit-series',
+                component: () => import('../modules/inventory/edit-series/pages/EditSeries.vue'),
+            },
+            {
+                path: '',
+                redirect: { name: 'layout-edit-series' }
+            }
+        ]
+    },
+    {
         path: '/modificacion-stock',
         name: 'modification-stock-index',
         component: () => import('../modules/inventory/modification-stock/index.vue'),

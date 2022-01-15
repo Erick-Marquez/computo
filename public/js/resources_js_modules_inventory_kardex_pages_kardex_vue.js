@@ -261,7 +261,17 @@ var _hoisted_27 = {
   "class": "card"
 };
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"card-header\" data-v-5200fd71><h3 class=\"card-title\" data-v-5200fd71>Kardex de Productos</h3><div class=\"card-tools\" data-v-5200fd71><a href=\"`../../reports/products/print/${filters.branch_id}`\" target=\"_blank\" class=\"btn btn-flat btn-danger mr-2 rounded-pill\" data-v-5200fd71><i class=\"fas fa-file-excel\" data-v-5200fd71></i> PDF </a></div></div>", 1);
+var _hoisted_28 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "card-header"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
+    "class": "card-title"
+  }, "Kardex de Productos"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "card-tools"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\r\n                        href=\"`../../reports/products/print/${filters.branch_id}`\"\r\n                        target=\"_blank\"\r\n                        class=\"btn btn-flat btn-danger mr-2 rounded-pill\"\r\n                    >\r\n                        <i class=\"fas fa-file-excel\"></i> PDF\r\n                    </a> ")])], -1
+  /* HOISTED */
+  );
+});
 
 var _hoisted_29 = {
   "class": "card-body p-0"
@@ -353,12 +363,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onSearch: $options.onProductSearch
   }, {
     option: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (option) {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(option.name, " - ").concat(option.brand).concat(option.cod ? ' - ' + option.cod : '')), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(option.slug).concat(option.cod ? ' - ' + option.cod : '')), 1
       /* TEXT */
       )];
     }),
     "selected-option": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (option) {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(option.name, " - ").concat(option.brand).concat(option.cod ? ' - ' + option.cod : '')), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(option.slug).concat(option.cod ? ' - ' + option.cod : '')), 1
       /* TEXT */
       )];
     }),

@@ -11,6 +11,7 @@ use App\Http\Controllers\AssemblyController;
 
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CashboxController;
+use App\Http\Controllers\CreditNoteController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\OpenClosedCashboxController;
@@ -93,6 +94,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
     Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
 
+    Route::get('/editar-series', [WebController::class, 'editSeries'])->name('web.edit-series');
+
     Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
     Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
 
@@ -109,6 +112,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
     Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print')
         ->where('type', 'A4|TICKET|WARRANTY');
+    
+    Route::get('print/credit-notes/{type}/{id}', [CreditNoteController::class, 'print'])->name('credit-notes.print')
+        ->where('type', 'A4');
 
     Route::get('print/advance-payments/{type}/{id}', [AdvancePaymentController::class, 'print'])->name('advance-payments.print')
         ->where('type', 'A4|TICKET');

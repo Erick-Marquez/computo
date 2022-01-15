@@ -96,6 +96,11 @@ class WebController extends Controller
         return view('inventory.kardex.index');
     }
 
+    public function editSeries()
+    {
+        return view('inventory.edit-series.index');
+    }
+
     public function cashboxes()
     {
         return view('cashboxes.open-closed.index');

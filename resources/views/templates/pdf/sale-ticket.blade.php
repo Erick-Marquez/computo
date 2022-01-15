@@ -141,10 +141,8 @@
 
             @if (count($detail->series) > 0)
                 <tr>
-                    <td>
-                        <span style="font-size: 0.6rem; vertical-align: middle; color: white;">[{{ $detail->quantity }}]</span> Series: 
-                    </td>
-                    <td colspan="2">
+                    <td colspan="3" style="font-size: 0.6rem">
+                        Series: 
                         @foreach ($detail->series as $serie)
                             ({{ $serie }})
                         @endforeach

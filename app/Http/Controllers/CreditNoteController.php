@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\GlobalResource;
+use App\Models\Company;
 use App\Models\CreditNote;
 use App\Models\CreditNoteDetail;
 use App\Models\CreditNoteType;
@@ -13,6 +14,8 @@ use App\Models\VoucherType;
 use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CreditNoteController extends Controller
 {
@@ -23,7 +26,7 @@ class CreditNoteController extends Controller
      */
     public function index()
     {
-        $creditNotes = CreditNote::with('serie.voucherType', 'sale.serie', 'sale.customer')->latest()->get();
+        $creditNotes = CreditNote::with('serie.voucherType', 'sale.serie', 'sale.customer')->latest()->paginate(intVal(request('perPage')));
         return GlobalResource::collection($creditNotes);
     }
 
@@ -71,6 +74,7 @@ class CreditNoteController extends Controller
             'credit_note_type_id' => $request->credit_note_type_id,
             'sale_id' => $request->sale_id,
             'serie_id' => $request->serie_id,
+            'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
             'user_id' => auth()->user()->id
         ]);
 
@@ -86,7 +90,7 @@ class CreditNoteController extends Controller
         $igv = 0.18;
 
         // Crear los detalles de la nota de credito
-        foreach ($request->detail as $key => $detail) {
+        foreach ($request->details as $key => $detail) {
 
             $subtotal = 0;
             $totalIgv = 0;
@@ -205,13 +209,13 @@ class CreditNoteController extends Controller
             case '06': //Devolución total
             case '07': //Devolución por ítem
                 
-                foreach ($request->detail as $detail) {
+                foreach ($request->details as $detail) {
 
                     KardexService::creditNote(
-                        $detail->quantity,
+                        $detail['quantity'],
                         $serie->serie . '-' . $creditNote->document_number,
-                        $detail->series,
-                        $detail->branch_product_id,
+                        $detail['series'],
+                        $detail['product_id'],
                         auth()->user()->id);
 
                 }
@@ -290,5 +294,37 @@ class CreditNoteController extends Controller
             ->with('saleDetails.branchProduct.product.brand', 'customer.identificationDocument')
             ->firstOrFail();
         return GlobalResource::make($voucher);
+    }
+
+    public function print($type, $id)
+    {
+        $company = Company::active();
+        $head = CreditNote::with('creditNoteDetails.branchProduct.product', 'sale.customer.identificationDocument', 'serie.voucherType')->findOrFail($id);
+
+        $details = $head->creditNoteDetails;
+
+        $text = join('|', [
+            $company->ruc,
+            $head->serie->voucherType->id,
+            $head->serie->serie,
+            $head->document_number,
+            $head->total_igv,
+            $head->total,
+            $head->date_issue,
+            $head->sale->customer->identificationDocument->id,
+            $head->sale->customer->document,
+            $head->hash_cpe
+        ]);
+
+        $qr = base64_encode(QrCode::format('png')->size(200)->generate($text));
+
+        if ($type == 'A4') {
+            $pdf = PDF::loadView('templates.pdf.credit-note-a4', compact('company', 'head', 'details', 'qr'))->setPaper('A4', 'portrait');
+        }
+
+        // TICKET
+        //setPaper(array(0,0,220,700)
+
+        return $pdf->stream();
     }
 }

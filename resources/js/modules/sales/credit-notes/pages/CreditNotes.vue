@@ -43,6 +43,7 @@
                     <th>Comprobante</th>
                     <th>Cliente</th>
                     <th>Total</th>
+                    <th class="text-center">PDF</th>
                     <th class="text-center">XML</th>
                     <th class="text-center">CDR</th>
                     <th class="text-center">Sunat</th>
@@ -74,6 +75,11 @@
                       {{ creditNote.sale.customer.name }}
                     </td>
                     <td class="align-middle">S/. {{ creditNote.total }}</td>
+                    <td class="align-middle text-center">
+                      <a title="Haz Click para Visualizar el PDF" target="_blank" :href="'print/credit-notes/A4/' + creditNote.id">
+                        <img src="../../../../../img/pdf_cpe.svg" style="width: 30px">
+                      </a>
+                    </td>
                     <td class="align-middle text-center">
                       <a
                         title="Haz Click para Descargar el XML"
@@ -144,6 +150,21 @@
             </div>
           </div>
           <!-- /.card-body -->
+
+          <div class="card-footer">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li v-for="(link, index) in meta.links" :key="link.index"
+              :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                <button type="button"
+                  class="page-link"
+                  @click="(link.url == null || link.active) ? null : showPaginateCreditNotes(link.url)"
+                >
+                  {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
         </div>
         <!-- /.card -->
       </div>
@@ -160,14 +181,26 @@ export default {
   },
   data() {
     return {
+
+      meta: {},
+      perPage: 10,
+
       creditNotes: [],
     };
   },
   methods: {
     async getCreditNotes() {
-      await BaseUrl.get(`api/credit-notes`).then((resp) => {
-        this.creditNotes = resp.data.data;
+      await BaseUrl.get(`api/credit-notes?page=1&perPage=${this.perPage}`).then((resp) => {
+        this.creditNotes = resp.data.data
+        this.meta = resp.data.meta
       });
+    },
+    async showPaginateCreditNotes(url){
+      await axios.get(`${url}&perPage=${this.perPage}`)
+      .then( resp => {
+        this.creditNotes = resp.data.data
+        this.meta = resp.data.meta
+      })
     },
     getTimestamp(date) {
       let dateString = new Date(Date.parse(date)).toLocaleString("en-US", {
