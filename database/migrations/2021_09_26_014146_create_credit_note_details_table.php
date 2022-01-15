@@ -22,9 +22,11 @@ class CreateCreditNoteDetailsTable extends Migration
             
             $table->decimal('total_igv', 12, 3)->default(0);
             $table->unsignedDecimal('subtotal', 12, 3)->nullable();
-            $table->unsignedDecimal('total', 12, 3)->nullable();;
-            $table->string('igv_type_id');
+            $table->unsignedDecimal('total', 12, 3)->nullable();
 
+            $table->json('series')->nullable();
+            
+            $table->string('igv_type_id');
             $table->foreign('igv_type_id')
                 ->references('id')
                 ->on('igv_types') 

@@ -11,14 +11,16 @@ class Kardex extends Model
 
     const INGRESO = 'INGRESO';
     const SALIDA = 'SALIDA';
+    
     const VENTA = 'VENTA';
     const COMPRA = 'COMPRA';
     const MODIFICA_STOCK = 'MODIFICA STOCK';
     const MOVIMIENTO_SUCURSAL = 'MOVIMIENTO SUCURSAL';
     const INVENTARIO_INICIAL = 'INVENTARIO INICIAL';
-    const DEVOLUCION = 'DEVOLUCION';
+    const DEVOLUCION = 'DEVOLUCIÓN';
     const BAJA = 'BAJA';
-    const ANULACION = 'DEVOLUCION POR ANULACION';
+    const ANULACION = 'DEVOLUCIÓN POR ANULACIÓN';
+    const NOTA_CREDITO = 'DEVOLUCIÓN POR NOTA DE CRÉDITO';
 
     protected $table = "kardex";
 

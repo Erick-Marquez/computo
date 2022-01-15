@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
         Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
         Route::get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
+        Route::get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
     });
 
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
@@ -57,7 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
 
     Route::get('/notas-de-credito', [WebController::class, 'creditNotes'])->name('web.credit-notes');
-    Route::get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
+    
 
     Route::get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
 

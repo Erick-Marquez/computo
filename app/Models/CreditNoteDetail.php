@@ -10,15 +10,24 @@ class CreditNoteDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+        
         'price',
         'quantity',
         'unit_value',
+
         'total_igv',
         'subtotal',
         'total',
+
+        'series',
+
         'igv_type_id',
         'credit_note_id',
         'branch_product_id'
+    ];
+
+    protected $casts = [
+        'series' => 'array'
     ];
 
     public function creditNote()

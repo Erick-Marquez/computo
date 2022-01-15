@@ -38,8 +38,6 @@ class CreateCreditNotesTable extends Migration
             $table->boolean('canceled')->default(false);
             
             $table->string('credit_note_type_id');
-
-
             $table->foreign('credit_note_type_id')
                 ->references('id')
                 ->on('credit_note_types') 
@@ -54,7 +52,12 @@ class CreateCreditNotesTable extends Migration
             $table->foreignId('sale_id')
                 ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('cascade');   
+                ->onDelete('cascade');
+                
+            $table->foreignId('open_closed_cashbox_id')->nullable()
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade'); 
 
             $table->foreignId('user_id')
                 ->constrained()

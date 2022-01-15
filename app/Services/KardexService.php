@@ -194,7 +194,39 @@ class KardexService
 
         if ($branchProduct->manager_series) { //Comprobar si maneja series
             foreach ($series as $serie) { // Iterar cada serie del array
-                BranchProductSerie::where('serie', $serie)->where('branch_product_id', $branch_product_id)->update(["sold" => false]); //actualizar serie a vendido
+                BranchProductSerie::where('serie', $serie)->where('branch_product_id', $branch_product_id)->update(["sold" => false]); //actualizar serie a no vendido
+            }
+        } 
+    }
+
+    public static function creditNote(
+        Int $quantity, 
+        String $document, 
+        Array $series, 
+        Int $branch_product_id, 
+        Int $user_id
+    )
+    {
+        $kardex = Kardex::create([
+            'date' => Carbon::now()->toDateTimeString(),
+            'quantity' => $quantity,
+            'movement_type' => Kardex::INGRESO,
+            'description' => Kardex::NOTA_CREDITO,
+            'document' => $document,
+            'series' => $series,
+            'branch_product_id' => $branch_product_id,
+            'user_id' => $user_id,
+        ]);
+
+        // Actualizar stock de productos
+        $branchProduct = BranchProduct::find($branch_product_id);
+        $branchProduct->stock = $branchProduct->stock + $quantity;
+        $branchProduct->save();
+
+
+        if ($branchProduct->manager_series) { //Comprobar si maneja series
+            foreach ($series as $serie) { // Iterar cada serie del array
+                BranchProductSerie::where('serie', $serie)->where('branch_product_id', $branch_product_id)->update(["sold" => false]); //actualizar serie a no vendido
             }
         } 
     }

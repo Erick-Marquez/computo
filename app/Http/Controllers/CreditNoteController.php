@@ -10,6 +10,7 @@ use App\Models\IgvType;
 use App\Models\Sale;
 use App\Models\Serie;
 use App\Models\VoucherType;
+use App\Services\KardexService;
 use App\Services\SunatService;
 use Illuminate\Http\Request;
 
@@ -84,7 +85,7 @@ class CreditNoteController extends Controller
 
         $igv = 0.18;
 
-        // Crear los detalles de la cotizacion
+        // Crear los detalles de la nota de credito
         foreach ($request->detail as $key => $detail) {
 
             $subtotal = 0;
@@ -174,6 +175,8 @@ class CreditNoteController extends Controller
                 'unit_value' => $total / $detail['quantity'],
                 'quantity' => $detail['quantity'],
 
+                'series' => $detail['series'],
+
                 'total_igv' => $totalIgv,
                 'subtotal' => $subtotal,
                 'total' => $total,
@@ -195,6 +198,30 @@ class CreditNoteController extends Controller
             'total_taxed' => $totalTaxedCreditNote,
             'total' => $totalCreditNote
         ]);
+
+        switch ($request->credit_note_type_id) {
+            case '01': //Anulación de la operación
+            case '02': //Anulación por error en el RUC
+            case '06': //Devolución total
+            case '07': //Devolución por ítem
+                
+                foreach ($request->detail as $detail) {
+
+                    KardexService::creditNote(
+                        $detail->quantity,
+                        $serie->serie . '-' . $creditNote->document_number,
+                        $detail->series,
+                        $detail->branch_product_id,
+                        auth()->user()->id);
+
+                }
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
 
         $sunat = SunatService::facturar($creditNote->id, 'credit');
 

@@ -174,12 +174,13 @@
             <thead>
               <tr>
                 <th style="width: 2%"></th>
-                <th style="width: 40%">Descripción</th>
+                <th style="width: 35%">Descripción</th>
                 <th style="width: 20%">Tipo IGV</th>
                 <th style="width: 3%">Cantidad</th>
                 <th style="width: 10%">Precio</th>
                 <th style="width: 10%">Sub Total</th>
                 <th style="width: 10%">Total</th>
+                <th style="width: 5%">Series</th>
                 <th style="width: 3%"></th>
               </tr>
             </thead>
@@ -309,6 +310,15 @@
                     disabled
                     :value="detail.total"
                   />
+                </td>
+                <td>
+                  <input
+                    :disabled="!detail.manager_series"
+                    type="button"
+                    class="btn btn-dark btn-sm"
+                    value="Series"
+                    @click="showModalSeries(index)"
+                  >
                 </td>
                 <td>
                   <button
@@ -648,6 +658,7 @@ export default {
             total: 0,
             discount: 0,
             product_id: e.branch_product.id,
+            slug: e.branch_product.product.slug,
             cod: e.branch_product.product.cod,
             affect_icbper: false,
             igv_type_id: e.igv_type_id,
@@ -655,6 +666,8 @@ export default {
             brand: e.branch_product.product.brand.description,
             sale_price: Number(e.unit_value),
             quantity: e.quantity,
+
+            manager_series: Boolean(e.branch_product.product.manager_series),
 
             oldTotals: {
               price: Number(Number(e.unit_value) + Number(e.discount / e.quantity)).toFixed(2),
