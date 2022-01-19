@@ -126,7 +126,7 @@ class AdvancePaymentController extends Controller
 
     public function quotation($serie, $number)
     {
-        $quotation = Quotation::with('customer', 'user', 'serie', 'paymentTypeQuotations')
+        $quotation = Quotation::with('customer', 'user', 'serie', 'paymentTypeQuotations', 'quotationDetails.branchProduct.product')
             ->where('serie_id', $serie)
             ->where('document_number', $number)
             ->firstOrFail();

@@ -1,5 +1,5 @@
 <template>
-    <form action="" @submit.prevent="generateKardex()">
+    <form action="" @submit.prevent="getBranchProductSeries()">
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row">
@@ -41,11 +41,11 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button v-if="!kardexLoading" type="submit" class="btn btn-block btn-sm btn-dark">
+                <button v-if="!branchProductSeriesLoading" type="submit" class="btn btn-block btn-sm btn-dark">
                     <i class="fas fa-search"></i>
                     Buscar
                 </button>
-                <button v-else class="btn btn-block btn-sm btn-dark" :disabled="kardexLoading">
+                <button v-else class="btn btn-block btn-sm btn-dark" :disabled="branchProductSeriesLoading">
                     <div class="spinner-border spinner-border-sm" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
@@ -55,71 +55,125 @@
     </form>
 
     <div class="card">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Kardex de Productos</h3>
-                <div class="card-tools">
-                    <!-- <a
-                        href="`../../reports/products/print/${filters.branch_id}`"
-                        target="_blank"
-                        class="btn btn-flat btn-danger mr-2 rounded-pill"
-                    >
-                        <i class="fas fa-file-excel"></i> PDF
-                    </a> -->
+        <div class="card-header">
+            <h3 class="card-title">Lista de series del producto</h3>
+
+            <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 150px">
+                <input
+                    type="text"
+                    name="table_search"
+                    class="form-control float-right"
+                    placeholder="Search"
+                />
+
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                    </button>
+                </div>
                 </div>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered text-nowrap text-center">
-                        <thead>
-                            <tr>
-                                <th>FECHA</th>
-                                <th>DOCUMENTO</th>
-                                <th>SERIES</th>
-                                <th>DESCRIPCIÓN</th>
-                                <th>ENTRADA</th>
-                                <th>SALIDA</th>
-                                <th>STOCK</th>
-                            </tr>
-                        </thead>
-
-                        <tbody v-if="kardex.length >= 1">
-                            <tr v-for="kardexDetail in kardex" :key="kardexDetail.id">
-                                <td>{{ getTimestamp(kardexDetail.created_at) }}</td>
-                                <td>{{ kardexDetail.document ? kardexDetail.document : '-' }}</td>
-                                <td>
-                                    <Popper class="light" arrow>
-                                        <button class="btn btn-block btn-sm btn-dark" :disabled="kardexDetail.series.length == 0">Series</button>
-                                        
-                                        <template v-slot:content>
-
-                                            <b v-for="serie in kardexDetail.series" :key="serie">
-                                                {{ serie }}
-                                                <br>
-                                            </b>
-                                        </template>
-                                    </Popper>
-                                </td>
-                                <td>{{ kardexDetail.description }}</td>
-                                <td>{{ kardexDetail.movement_type == "INGRESO" ? kardexDetail.quantity : '-' }}</td>
-                                <td>{{ kardexDetail.movement_type == "SALIDA" ? kardexDetail.quantity : '-' }}</td>
-                                <td>{{ kardexDetail.stock }}</td>
-                            </tr>
-                        </tbody>
-                        <tbody v-else>
-                            <tr>
-                                <td colspan="7">
-                                <p class="lead">
-                                    <b>No existen Registros.</b>
-                                </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Serie</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="serie in series" :key="serie.id">
+                            <td class="align-middle">
+                                {{ serie.serie }}
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="dropdown">
+                                    <button
+                                        class="btn btn-danger dropdown-toggle"
+                                        type="button"
+                                        id="dropdownMenuButton"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
+                                        Acciones
+                                    </button>
+                                    <div
+                                        class="dropdown-menu"
+                                        aria-labelledby="dropdownMenuButton"
+                                        style=""
+                                    >
+                                        <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click="showModal('#modal-edit', serie)"
+                                        ><i class="col-1 mr-3 fas fa-edit"></i>Editar</a
+                                        >
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
         <!-- /.card-body -->
+
+        <div class="card-footer">
+        <ul class="pagination pagination-sm m-0 float-right">
+            <li v-for="(link, index) in meta.links" :key="link.index"
+            :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+            <button type="button"
+                class="page-link"
+                @click="(link.url == null || link.active) ? null : showPaginateBranchProductSeries(link.url)"
+            >
+                {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+            </button>
+            </li>
+        </ul>
+        </div>
+
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modal-edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar Serie</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form @submit.prevent="editBranchProductSerie()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Serie Anterior</label>
+                            <input type="text" class="form-control" :value="serieEdit.oldSerie" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Serie Nueva</label>
+                            <input type="text" class="form-control" v-model="serieEdit.newSerie">
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Cerrar
+                        </button>
+
+                        <button v-if="!editBranchProductSeriesLoading" type="submit" class="btn btn-primary">Actualizar</button>
+                        <button v-else class="btn btn-primary" :disabled="editBranchProductSeriesLoading">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -144,10 +198,19 @@ export default {
 
             branchSelected: null,
             productSelected: null,
-            stock: 0,
 
-            kardex: [],
-            kardexLoading: false,
+            meta: {},
+            perPage: 10,
+
+            series: [],
+            branchProductSeriesLoading: false,
+
+            serieEdit: {
+                id: null,
+                oldSerie: null,
+                newSerie: null
+            },
+            editBranchProductSeriesLoading: false,
 
 
 
@@ -161,9 +224,6 @@ export default {
 
     },
     methods:{
-        getTimestamp(date){
-            return new Date(Date.parse(date)).toLocaleString('en-US', { timeZone: 'America/Lima' })
-        },
         onProductSearch(search, loading) {
             this.search = search
             this.selectLoading = loading
@@ -192,33 +252,56 @@ export default {
             });
 
         },
-        generateKardex(){
+        getBranchProductSeries(){
 
-            this.kardexLoading = true
+            this.branchProductSeriesLoading = true
 
-            BaseUrl.get(`api/kardex/${this.productSelected.id}`).then((resp) => {
+            BaseUrl.get(`api/edit-series/${this.productSelected.id}?page=1&perPage=${this.perPage}`).then((resp) => {
 
-                this.kardex = resp.data.data
-                let stock = 0
-
-                this.kardex.forEach((element, index) => {
-                    
-                    if (element.movement_type == 'SALIDA') {
-                        stock -= element.quantity
-                    }
-                    if (element.movement_type == 'INGRESO') {
-                        stock += element.quantity
-                    }
-
-                    this.kardex[index].stock = stock
-
-                });
+                this.series = resp.data.data
+                this.meta = resp.data.meta
 
             })
             .finally(() => {
-                this.kardexLoading = false
+                this.branchProductSeriesLoading = false
             });
 
+        },
+        async showPaginateBranchProductSeries(url){
+            await axios.get(`${url}&perPage=${this.perPage}`)
+            .then( resp => {
+                this.series = resp.data.data
+                this.meta = resp.data.meta
+            })
+        },
+
+        showModal(modal, serie = null) {
+            if (serie !== null) {
+                this.serieEdit.id = serie.id
+                this.serieEdit.oldSerie = serie.serie
+                this.serieEdit.newSerie = null
+            }
+            $(modal).modal("show");
+        },
+        editBranchProductSerie(){
+
+            this.editBranchProductSeriesLoading = true
+
+            BaseUrl.put(`api/edit-series/${this.serieEdit.id}`, this.serieEdit).then( resp => {
+        
+                console.log(resp)
+                $("#modal-edit").modal("hide")
+                this.getBranchProductSeries()
+                this.serieEdit = {}
+
+                Swal.fire("Actualizado", "La serie ha sido actualizada", "success");
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                this.editBranchProductSeriesLoading = false
+            })
         }
     }
 }

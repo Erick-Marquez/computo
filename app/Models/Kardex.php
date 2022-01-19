@@ -21,6 +21,9 @@ class Kardex extends Model
     const BAJA = 'BAJA';
     const ANULACION = 'DEVOLUCIÓN POR ANULACIÓN';
     const NOTA_CREDITO = 'DEVOLUCIÓN POR NOTA DE CRÉDITO';
+    const EDITAR_SERIES_SALIDA = 'SALIDA POR EDICIÓN DE SERIE';
+    const EDITAR_SERIES_INGRESO = 'INGRESO POR EDICIÓN DE SERIE';
+
 
     protected $table = "kardex";
 

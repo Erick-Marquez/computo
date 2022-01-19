@@ -24,6 +24,7 @@ use App\Http\Controllers\LineController;
 use App\Http\Controllers\OpenClosedCashboxController;
 use App\Http\Controllers\BranchProductSerieController;
 use App\Http\Controllers\CreditNoteController;
+use App\Http\Controllers\EditSerieController;
 use App\Http\Controllers\KardexController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProviderController;
@@ -154,6 +155,10 @@ Route::middleware([
 
     Route::get('kardex/{id}', [KardexController::class, 'show']);
     Route::get('kardex/search-products/{branchId}/{search}', [KardexController::class, 'searchProducts'])->name('api.branches.searchProducts');
+
+    Route::get('edit-series/{id}', [EditSerieController::class, 'show']);
+    Route::put('edit-series/{id}', [EditSerieController::class, 'update']);
+
 
     //------------------------Settings-----------------------
 

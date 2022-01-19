@@ -231,6 +231,34 @@ class KardexService
         } 
     }
 
+    public static function serieEdit( 
+        Array $oldSerie,
+        Array $newSerie,
+        Int $branch_product_id, 
+        Int $user_id
+    )
+    {
+        $kardex = Kardex::create([
+            'date' => Carbon::now()->toDateTimeString(),
+            'quantity' => 1,
+            'movement_type' => Kardex::SALIDA,
+            'description' => Kardex::EDITAR_SERIES_SALIDA,
+            'series' => $oldSerie,
+            'branch_product_id' => $branch_product_id,
+            'user_id' => $user_id,
+        ]);
+
+        $kardex = Kardex::create([
+            'date' => Carbon::now()->toDateTimeString(),
+            'quantity' => 1,
+            'movement_type' => Kardex::INGRESO,
+            'description' => Kardex::EDITAR_SERIES_INGRESO,
+            'series' => $newSerie,
+            'branch_product_id' => $branch_product_id,
+            'user_id' => $user_id,
+        ]);
+    }
+
     public static function initialStock($data)
     {   
         $kardex = Kardex::create([
