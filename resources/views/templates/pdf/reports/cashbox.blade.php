@@ -21,9 +21,13 @@
             margin-top: 0;
         }
 
-        #content {
+        .content {
             width: 100%;
             position: relative;
+        }
+
+        .cabecera {
+            height: 250px;
         }
 
         #left,
@@ -51,8 +55,8 @@
 
 <body>
 
-    <div id="content">
-        <div>
+    <div class="content">
+        <div class="cabecera">
             <div id="left" class="description">
                 <h3>{{ $company->name }}</h3>
                 <p>Reporte de apertura y cierre de: <strong> {{ $occ->cashbox->description }} </strong></p>
@@ -99,23 +103,10 @@
                         </tr>
                     </tfoot>
                 </table>
-                <table style="margin-top: 1em">
-                    <thead>
-                        <tr>
-                            <th colspan="2" class="text-center">Compras</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Total:</td>
-                            <td>{{ $occ->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total }}</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
-    <div style="text-align: left">
+    <div class="content">
         <h3>Ingresos: </h3>
         <table style="margin-bottom: 10px">
             <thead>
@@ -183,7 +174,41 @@
             <tfoot>
                 <tr>
                     <td>Total: </td>
-                    <td>{{ $total['account_to_pay'] + $total['expenses'] + $total['remunerations'] }}</td>
+                    <td>{{ $total['expenses'] + $total['remunerations'] }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <h3>Notas de credito: </h3>
+        <table style="margin-bottom: 10px">
+            <thead>
+                <tr>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Serie</th>
+                    <th class="text-center">Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (count($creditNotes))
+                    @foreach ($creditNotes as $cn)
+
+                        <tr>
+                            <td>{{ $cn->type }}</td>
+                            <td>{{ $cn->observation }}</td>
+                            <td>{{ $cn->amount }}</td>
+                        </tr>
+
+                    @endforeach
+                @else
+
+                    <tr>
+                        <td colspan="3" style="text-align:center">No hay notas de credito</td>
+                    </tr>
+                @endif
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total: </td>
+                    <td>{{ $occ->creditNotes()->sum('total') }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -226,16 +251,12 @@
                 </tr>
                 <tr>
                     <td>Total de Egresos:</td>
-                    <td>{{ $total['purchases'] + $total['expenses'] + $total['account_to_pay'] + $total['remunerations'] }}</td>
+                    <td>{{ $total['expenses'] + $total['remunerations'] }}</td>
                 </tr>
                 <tr>
                     <td>Total de Efectivo:</td>
-                    <td>{{ $moneyCash['sales'] + $moneyCash['incomes'] + $moneyCash['quotations'] - $moneyCash['purchases'] - $moneyCash['expenses'] - $moneyCash['account_to_pay'] - $moneyCash['remunerations'] }}
+                    <td>{{ $moneyCash['sales'] + $moneyCash['incomes'] + $moneyCash['quotations'] - $moneyCash['expenses'] - $moneyCash['remunerations'] - $moneyCash['credit_notes']}}
                     </td>
-                </tr>
-                <tr>
-                    <td>Total:</td>
-                    <td>{{ $occ->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total }}</td>
                 </tr>
 
             </tfoot>

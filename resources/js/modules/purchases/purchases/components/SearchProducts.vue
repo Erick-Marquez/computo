@@ -15,9 +15,10 @@
         class="form-control rounded-pill form-control rounded-pill-lg"
         placeholder="Escribe tu producto o código"
         v-model="productName"
-        @keyup="searchProduct"
+        @keyup.prevent="searchProduct"
         @blur="toggle = false"
         @focus="toggle = true"
+        @keydown.enter.prevent=""
       />
 
       <!-- AUTOCOMPLETE -->
@@ -84,7 +85,8 @@ export default {
         });
     },
     // metodo para buscar productos
-    searchProduct() {
+    searchProduct(e) {
+
       clearTimeout(this.searching);
       if (this.productName !== "") {
         clearTimeout(this.searching);
@@ -105,7 +107,11 @@ export default {
       this.productsFound = [];
       this.productName = null;
 
-      product.sale_price = parseFloat((parseFloat(100 + parseFloat(product.sale_gain_one)) * product.referential_purchase_price)/100).toFixed(2);
+      product.sale_price = parseFloat(
+        (parseFloat(100 + parseFloat(product.sale_gain_one)) *
+          product.referential_purchase_price) /
+          100
+      ).toFixed(2);
       product.discount = 0;
 
       let index = this.products.findIndex(

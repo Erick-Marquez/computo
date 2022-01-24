@@ -42,10 +42,9 @@ class OpenClosedCashbox extends Model
         return $this->hasMany(Sale::class);
     }
 
-    // RELACION DE UNO A MUCHOs
-    public function purchases()
+    public function creditNotes()
     {
-        return $this->hasMany(Purchase::class);
+        return $this->hasMany(CreditNote::class);
     }
 
     // RELACION DE UNO A MUCHO
@@ -54,10 +53,10 @@ class OpenClosedCashbox extends Model
         return $this->hasMany(OpenClosedCashboxDetail::class);
     }
 
-    public function accountToPayDetail()
-    {
-        return $this->hasMany(AccountToPayDetail::class);
-    }
+    // public function accountToPayDetail()
+    // {
+    //     return $this->hasMany(AccountToPayDetail::class);
+    // }
 
     public function paymentTypeQuotations()
     {
@@ -77,9 +76,9 @@ class OpenClosedCashbox extends Model
     public function getMovementsArray()
     {
         $movements = $this->getSales()
-            ->mergeRecursive($this->getPurchases())
             ->mergeRecursive($this->getExpenses())
             ->mergeRecursive($this->getIncomes())
+            ->mergeRecursive($this->getCreditNotes())
             ->sortBy(['create_at', 'desc']);
 
         return $movements;
@@ -95,12 +94,12 @@ class OpenClosedCashbox extends Model
                 ->join('payment_types', 'payment_type_sale.payment_type_id', '=', 'payment_types.id')
                 ->whereNotIn('sales.state', ['ANULADO'])->sum('payment_type_sale.amount'),
 
-            "purchases" => $this->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total,
+            "credit_notes" => $this->creditNotes()->sum('total'),
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->sum('amount'),
             "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->sum('amount'),
-            "account_to_pay" => $this->accountToPayDetail()->sum('amount'), # 1 = EFECTIVO
-            "quotations" => $this->paymentTypeQuotations()->sum('amount')
+            // "account_to_pay" => $this->accountToPayDetail()->sum('amount'), # 1 = EFECTIVO
+            "quotations" => $this->paymentTypeQuotations()->sum('amount'),
         ];
     }
 
@@ -114,12 +113,11 @@ class OpenClosedCashbox extends Model
                 ->whereNotIn('sales.state', ['ANULADO'])
                 ->where('payment_types.id', 1)->sum('payment_type_sale.amount'),
 
-            //"purchases" => $this->purchases()->where('is_credit', false)->sum('total'),
-            "purchases" => $this->purchases()->selectRaw("SUM(total * exchange_rate) as total")->where('is_credit', false)->first()->total,
+            "credit_notes" => $this->creditNotes()->sum('total'),
             "incomes" => $this->openClosedCashboxDetails()->where('type', 'INGRESO')->where('payment_type_id', 1)->sum('amount'),
             "expenses" => $this->openClosedCashboxDetails()->where('type', 'EGRESO')->where('payment_type_id', 1)->sum('amount'),
             "remunerations" => $this->openClosedCashboxDetails()->where('type', 'REMUNERACION')->where('payment_type_id', 1)->sum('amount'),
-            "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount'), # 1 = EFECTIVO
+            // "account_to_pay" => $this->accountToPayDetail()->where('payment_type_id', 1)->sum('amount'), # 1 = EFECTIVO
             "quotations" => $this->paymentTypeQuotations()->where('payment_type_id', 1)->sum('amount')
         ];
 
@@ -162,15 +160,16 @@ class OpenClosedCashbox extends Model
             });
     }
 
-    public function getPurchases()
+    public function getCreditNotes()
     {
-        return $this->purchases()
-            ->select('created_at as date', DB::raw("CONCAT(serie, '-',document_number) as observation"), DB::raw("(total * exchange_rate) as amount"))
-            ->where('is_credit', false)
+        return $this->creditNotes()
+            ->join('series', 'credit_notes.serie_id', '=', 'series.id')
+            ->select('credit_notes.created_at as date', 'credit_notes.observation as type', DB::raw("CONCAT(series.serie, '-',credit_notes.document_number) as observation"), 'credit_notes.total as amount')
             ->get()
+
             ->each(function ($item, $key) {
-                $item['concept'] = 'COMPRA';
-                $item['payment_type'] = 'EFECTIVO';
+                $item['concept'] = 'NOTA DE CREDITO';
+                $item['payment_type'] = 'Efectivo';
             });
     }
 
@@ -192,15 +191,15 @@ class OpenClosedCashbox extends Model
                 $item['observation'] = "REMUNERACION - " . $item['observation'];
             });
 
-        $accounts = $this->accountToPayDetail()->join('payment_types as pt', 'account_to_pay_details.payment_type_id', '=', 'pt.id')
-            ->select('account_to_pay_details.created_at as date', 'account_to_pay_details.amount', 'pt.description as payment_type')
-            ->get()
-            ->each(function ($item, $key) {
-                $item['concept'] = 'EGRESO';
-                $item['observation'] = "Cuenta por pagar";
-            });
+        // $accounts = $this->accountToPayDetail()->join('payment_types as pt', 'account_to_pay_details.payment_type_id', '=', 'pt.id')
+        //     ->select('account_to_pay_details.created_at as date', 'account_to_pay_details.amount', 'pt.description as payment_type')
+        //     ->get()
+        //     ->each(function ($item, $key) {
+        //         $item['concept'] = 'EGRESO';
+        //         $item['observation'] = "Cuenta por pagar";
+        //     });
 
-        return $expenses->mergeRecursive($accounts)->mergeRecursive($remunerations);
+        return $expenses->mergeRecursive($remunerations);
     }
 
     public function getIncomes()

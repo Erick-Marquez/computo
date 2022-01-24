@@ -52,6 +52,7 @@ class ReportService
             ->join('voucher_types as vt', 'series.voucher_type_id', '=', 'vt.id')
             ->join('customers as cust', 's.customer_id', '=', 'cust.id')
             ->join('identification_documents as id', 'cust.identification_document_id', '=', 'id.id')
+            ->join('quotations as q', 's.id', '=', 'q.sale_id')
             ->select('s.*', 'series.serie', 'vt.description as voucher_type', 'cust.name as customer_name', 'cust.document as customer_document', 'id.description as customer_document_type')
             ->whereDate('s.created_at', '>=', $request['fromDate'])
             ->whereDate('s.created_at', '<=', $request['untilDate']);
@@ -59,6 +60,7 @@ class ReportService
         $sales = is_null($request['voucher_type_id']) ?  $sales : $sales->where('vt.id', '=', $request['voucher_type_id']);
         $sales = is_null($request['branch_id']) ?  $sales : $sales->where('c.branch_id', '=', $request['branch_id']);
         $sales = is_null($request['customer_id']) ?  $sales : $sales->where('s.customer_id', '=', $request['customer_id']);
+        $sales = is_null($request['seller_id']) ?  $sales : $sales->where('q.user_id', '=', $request['seller_id']);
 
         $sales = $sales->get();
 

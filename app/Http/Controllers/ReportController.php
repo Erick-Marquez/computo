@@ -79,7 +79,7 @@ class ReportController extends Controller
         return $pdf->stream();
     }
 
-    public function ReportSales($type, $fromDate, $untilDate, $branch_id = null, $customer_id = null, $voucher_type_id = null)
+    public function ReportSales($type, $fromDate, $untilDate, $branch_id = null, $customer_id = null, $voucher_type_id = null, $seller_id = null)
     {
 
         $filters['fromDate'] = $fromDate;
@@ -87,7 +87,7 @@ class ReportController extends Controller
         $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
         $filters['customer_id'] = $customer_id == 'null' ? null : $customer_id;
         $filters['voucher_type_id'] = $voucher_type_id == 'null' ? null : $voucher_type_id;
-
+        $filters['seller_id'] = $seller_id == 'null' ? null : $seller_id;
 
         if ($type == 'excel') {
             return Excel::download(new SalesExport($filters), 'sales.xlsx');

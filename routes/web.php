@@ -44,12 +44,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
     //Sale
     Route::middleware(['is.opening.cashbox'])->group(function () {
-        Route::get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
         Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
         Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
-        Route::get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
         Route::get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
     });
+
+    Route::get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
+    Route::get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
+
 
     Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
     Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
@@ -59,7 +61,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
 
     Route::get('/notas-de-credito', [WebController::class, 'creditNotes'])->name('web.credit-notes');
-    
+
 
     Route::get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
 
@@ -112,7 +114,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
     Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print')
         ->where('type', 'A4|TICKET|WARRANTY');
-    
+
     Route::get('print/credit-notes/{type}/{id}', [CreditNoteController::class, 'print'])->name('credit-notes.print')
         ->where('type', 'A4');
 
@@ -171,5 +173,5 @@ Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer
 Route::get('/reports/details/print/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{product_id?}', [ReportController::class, 'printReportSalesDetails'])->name('reports.details.print');
 
 Route::get('reports/products/{type}/{branch_id?}', [ReportController::class, 'reportProducts']);
-Route::get('reports/sales/{type}/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{voucher_type_id?}', [ReportController::class, 'reportSales']);
+Route::get('reports/sales/{type}/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{voucher_type_id?}/{seller_id?}', [ReportController::class, 'reportSales']);
 Route::get('reports/purchases/{type}/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'reportPurchases']);

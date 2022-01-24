@@ -130,7 +130,7 @@ class CashboxService
         $movements = $occ->getMoneyCash();
 
         $balance = $movements['opening_amount'] + $movements['sales'] + $movements['incomes'] + $movements['quotations']
-                    - $movements['expenses'] - $movements['remunerations'] - $movements['purchases'] - $movements['account_to_pay'];
+                    - $movements['expenses'] - $movements['remunerations'] - $movements['credit_notes'];
 
         return $balance;
     }
@@ -162,10 +162,8 @@ class CashboxService
             ->where('open_closed_cashbox_id', $occ['id'])
             ->get();
 
-        $purchasesDetails = $occ->purchases()->with('provider')->get();
-
         $cashboxMovements = $occ->openClosedCashboxDetails;
 
-        return compact("occ", "cashbox", "company", "movements", 'salesDetails', 'purchasesDetails', 'cashboxMovements');
+        return compact("occ", "cashbox", "company", "movements", 'salesDetails', 'cashboxMovements');
     }
 }

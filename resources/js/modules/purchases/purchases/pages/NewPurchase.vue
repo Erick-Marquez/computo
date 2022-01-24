@@ -317,7 +317,7 @@ export default {
           document_number: null,
           handles_exchange_rate: true,
           exchange_rate: null,
-          is_credit: false,
+          is_credit: true,
           observation: null,
           subtotal: 0,
           total_igv: 0,

@@ -37,7 +37,7 @@
           </v-select>
         </div>
       </div>
-      <!-- <div class="col-md">
+      <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Vendedor:</label>
           <v-select
@@ -58,7 +58,7 @@
             </template>
           </v-select>
         </div>
-      </div> -->
+      </div>
     </filters>
   </form>
 
@@ -66,10 +66,10 @@
   <div class="card">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Rerporte de Ventas</h3>
+        <h3 class="card-title">Reporte de Ventas</h3>
         <div class="card-tools" v-show="sales.length >= 1">
           <a
-            :href="`/reports/sales/pdf/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
+            :href="`/reports/sales/pdf/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}/${filters.seller_id}`"
             target="_blank"
             class="btn btn-flat btn-danger mr-2 rounded-pill"
           >
@@ -78,7 +78,7 @@
           <a
             class="btn btn-flat bg-olive rounded-pill"
             target="_blank"
-            :href="`/reports/sales/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}`"
+            :href="`/reports/sales/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.customer_id}/${filters.voucher_type_id}/${filters.seller_id}`"
           >
             <i class="fas fa-file-excel"></i> Excel
           </a>
@@ -202,7 +202,7 @@ export default {
         });
     },
     async getSellers() {
-      await BaseUrl.get(`/api/roles/Cajero/users`)
+      await BaseUrl.get(`/api/roles/Vendedor/users`)
         .then((response) => {
           this.sellers = response.data;
           this.sellers.push({ name: "TODOS", id: null });

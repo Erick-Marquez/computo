@@ -43,7 +43,6 @@ class PurchaseService
                 'is_credit' => $request->voucherDetail['is_credit'],
                 'has_debt' => $request->voucherDetail['is_credit'] ? true : false,
                 'provider_id' => $provider->id,
-                'open_closed_cashbox_id' => auth()->user()->open_closed_cashbox_id,
                 'branch_id' => auth()->user()->branch_id,
             ]);
 

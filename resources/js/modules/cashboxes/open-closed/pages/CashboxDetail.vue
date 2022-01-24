@@ -49,15 +49,15 @@
           <!-- /.info-box -->
         </div>
         <div class="col-md-6">
-          <div class="info-box" @click="changeSelectedFilter('COMPRA')">
+          <div class="info-box" @click="changeSelectedFilter('NOTA DE CREDITO')">
             <span class="info-box-icon bg-warning">
               <i class="fas fa-shopping-basket"></i>
             </span>
 
             <div class="info-box-content">
-              <span class="info-box-text">compras</span>
+              <span class="info-box-text">Notas de credito</span>
               <span class="info-box-number">{{
-                details.movementsTotal.purchases
+                details.movementsTotal.credit_notes
               }}</span>
             </div>
             <!-- /.info-box-content -->
@@ -129,7 +129,7 @@
               v-model="filterConceptSelected"
             >
               <option value="VENTA">Ventas</option>
-              <option value="COMPRA">Compras</option>
+              <option value="NOTA DE CREDITO">Nota de credito</option>
               <option value="EGRESO">Egresos</option>
               <option value="INGRESO">Ingresos</option>
               <option value="TODOS" selected>Todos</option>
@@ -187,8 +187,7 @@
                     parseFloat(details.movementsTotal.quotations) -
                     parseFloat(details.movementsTotal.expenses) -
                     parseFloat(details.movementsTotal.remunerations) -
-                    parseFloat(details.movementsTotal.purchases) -
-                    parseFloat(details.movementsTotal.account_to_pay)
+                    parseFloat(details.movementsTotal.credit_notes)
                 ).toFixed(2)
               }}
             </td>

@@ -61,4 +61,9 @@ class CreditNote extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function openClosedCashbox()
+    {
+        return $this->belongsTo(OpenClosedCashbox::class);
+    }
 }

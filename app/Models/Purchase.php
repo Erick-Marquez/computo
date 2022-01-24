@@ -40,11 +40,6 @@ class Purchase extends Model
         return $this->belongsTo(Provider::class);
     }
 
-    public function openClosedCashbox()
-    {
-        return $this->belongsTo(OpenClosedCashbox::class);
-    }
-
     public function accountToPay()
     {
         return $this->hasOne(AccountToPay::class);

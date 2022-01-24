@@ -30,8 +30,9 @@ class OpenClosedCashboxController extends Controller
         $total = $occ->getMovementsTotal();
         $salesNull = $occ->getSalesNull();
         $moneyCash = $occ->getMoneyCash();
+        $creditNotes = $occ->getCreditNotes();
 
-        $pdf = \PDF::loadView('templates.pdf.reports.cashbox', compact('occ', 'company', 'salesPayment', 'expenses', 'incomes', 'total', 'salesNull', 'moneyCash'))->setPaper('A4');
+        $pdf = \PDF::loadView('templates.pdf.reports.cashbox', compact('occ', 'company', 'salesPayment', 'expenses', 'incomes', 'total', 'salesNull', 'moneyCash', 'creditNotes'))->setPaper('A4');
         return $pdf->stream();
     }
 }

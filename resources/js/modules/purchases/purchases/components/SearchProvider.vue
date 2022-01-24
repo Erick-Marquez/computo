@@ -43,7 +43,7 @@
         </label>
         <div v-if="showSearchingData" class="input-group">
           <input
-            type="number"
+            type="text"
             :class="[
               $errorsClassSquare(errors['provider.document']),
               'rounded-pill-left',
@@ -51,6 +51,7 @@
             v-model="provider.document"
             :maxlength="maxLenghDocument"
             @keyup="searchDocument"
+            @keydown.enter.prevent=""
             @blur="toggle = false"
             @focus="toggle = true"
             autocomplete="nop"

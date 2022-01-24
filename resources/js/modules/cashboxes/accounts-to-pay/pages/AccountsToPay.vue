@@ -40,6 +40,8 @@
           <tr v-for="account in accounts" :key="account.id">
             <td>
               {{ transformDateTime(account.created) }}
+                <br>
+              <span class="text-maroon">{{ getProxAccount(account.details) }}</span>
             </td>
             <td>
               <span class="badge badge-danger">
@@ -48,8 +50,14 @@
               </span>
             </td>
             <td>{{ account.purchase.provider.name }}</td>
-            <td>{{ account.purchase.handles_exchange_rate ? '$' : 'S/' }} {{ account.debt }}</td>
-            <td>{{ account.purchase.handles_exchange_rate ? '$' : 'S/' }} {{ account.residue }}</td>
+            <td>
+              {{ account.purchase.handles_exchange_rate ? "$" : "S/" }}
+              {{ account.debt }}
+            </td>
+            <td>
+              {{ account.purchase.handles_exchange_rate ? "$" : "S/" }}
+              {{ account.residue }}
+            </td>
             <td>
               <span v-if="account.debt != 0" class="badge badge-danger"
                 >Pendiente</span
@@ -111,7 +119,9 @@
                   <!-- mostrar lista de pago de cuentas -->
                   <tr v-for="detail in account.details" :key="detail.id">
                     <td>{{ detail.installment }}</td>
-                    <td>{{ detail.date_issue }}</td>
+                    <td>
+                      {{ detail.date_issue }}
+                    </td>
 
                     <td v-if="detail.payment == null">
                       <select
@@ -271,7 +281,9 @@ export default {
   },
   methods: {
     async getAccountsToPay() {
-      await BaseUrl.get(`/api/accounts-to-pay?included=purchase.provider`)
+      await BaseUrl.get(
+        `/api/accounts-to-pay?included=purchase.provider,accountToPayDetails`
+      )
         .then((response) => {
           this.accounts = response.data.data;
           console.log(response.data.data);
@@ -372,6 +384,23 @@ export default {
 
     transformDateTime(date_time) {
       return moment(date_time).utc().format("YYYY-MM-DD h:mm:ss");
+    },
+
+    getProxAccount(details) {
+      var a = details.filter((d) => d.payd == 0);
+
+      if (a.length > 0) {
+
+        let arrayFechas = a.map((f) => new Date(f.date_issue) );
+        let account = new Date(Math.min.apply(null,arrayFechas)).getTime();
+        let today = new Date().getTime();
+
+        if (account > today) {
+            return `${parseInt(((account - today) / (1000*60*60*24)) + 1)} Días para la proxima cuota`
+        } else if (today > account) {
+            return `${parseInt(((today - account) / (1000*60*60*24)))} Días atrasados`
+        }
+      }
     },
   },
 };

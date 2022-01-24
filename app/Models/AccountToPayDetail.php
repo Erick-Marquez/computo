@@ -36,8 +36,8 @@ class AccountToPayDetail extends Model
         return $this->belongsTo(PaymentType::class);
     }
 
-    public function openClosedCashbox()
-    {
-        return $this->belongsTo(OpenClosedCashbox::class);
-    }
+    // public function openClosedCashbox()
+    // {
+    //     return $this->belongsTo(OpenClosedCashbox::class);
+    // }
 }

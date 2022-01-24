@@ -36,11 +36,6 @@ class CreatePurchasesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('open_closed_cashbox_id')->nullable()
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
             $table->timestamps();
         });
     }
