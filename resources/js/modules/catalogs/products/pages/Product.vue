@@ -23,13 +23,15 @@
               <div class="input-group input-group-sm" style="width: 150px">
                 <input
                   type="text"
+                  v-model="search"
                   name="table_search"
                   class="form-control float-right"
                   placeholder="Search"
+                  @keydown.enter.prevent="showSearchProducts()"
                 >
 
                 <div class="input-group-append">
-                  <button type="submit" class="btn btn-default">
+                  <button type="button" class="btn btn-default" @click="showSearchProducts()">
                     <i class="fas fa-search"></i>
                   </button>
                 </div>
@@ -131,6 +133,8 @@ export default {
 
       currencyExchange: {},
 
+      search: '',
+
       products: [],
     }
   },
@@ -147,8 +151,20 @@ export default {
       })
     },
     async showPaginateProducts(url){
-      await axios.get(`${url}&perPage=${this.perPage}`)
+      await axios.get(`${url}&perPage=${this.perPage}&search=${this.search}`)
       .then( resp => {
+        this.products = resp.data.data
+        this.products.forEach(e => {
+          e.price_one = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_one/100) * this.currencyExchange.change)
+          e.price_two = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_two/100) * this.currencyExchange.change)
+          e.price_three = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_three/100) * this.currencyExchange.change)
+        })
+        this.meta = resp.data.meta
+      })
+    },
+
+    async showSearchProducts(){
+      await BaseUrl.get(`api/products?page=1&perPage=${this.perPage}&search=${this.search}`).then( resp=>{
         this.products = resp.data.data
         this.products.forEach(e => {
           e.price_one = this.roundToTwo(e.referential_purchase_price * (1 + e.sale_gain_one/100) * this.currencyExchange.change)

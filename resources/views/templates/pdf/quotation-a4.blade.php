@@ -75,7 +75,7 @@
                 @foreach ($details as $detail)
                     <tr>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->branchProduct->product->name  }}</td>
+                        <td>{{ $detail->branchProduct->product->slug  }}</td>
                         <td>{{ $detail->igvType->description }}</td>
                         <td>S/. {{ round($detail->price, 3) }}</td>
                         <td>S/. {{ round($detail->discount, 3) }}</td>

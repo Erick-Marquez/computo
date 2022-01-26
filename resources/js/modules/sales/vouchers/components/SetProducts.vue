@@ -171,7 +171,7 @@
                         :key="serie"
                         class="form-group"
                     >
-                        <v-select v-model="details[index].series[i]" :filterable="false" :reduce="serie => serie.serie" label="serie" :options="series" @search="onSerieSearch">
+                        <v-select v-model="details[index].series[i]" :filterable="false" :reduce="serie => serie.serie" label="serie" :options="series" @search="onSerieSearch" @keydown.enter.prevent="">
                             <template v-slot:no-options="{ search, searching }">
                                 <template v-if="searching">
                                     No se encontraron resultados para <b><em>{{ search }}</em></b>.
