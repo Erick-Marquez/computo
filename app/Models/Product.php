@@ -33,7 +33,7 @@ class Product extends Model
 
     protected $allowIncluded = ['brand', 'line'];
     protected $allowFilter = ['id', 'name', 'cod'];
-    protected $allowSearch = ['name', 'cod'];
+    protected $allowSearch = ['name', 'cod', 'slug'];
     protected $allowSort = ['id'];
 
     public function brand()

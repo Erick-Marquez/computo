@@ -187,7 +187,7 @@
                                 <div class="col-md">
                                     <div class="form-group">
                                         <label for="">Código</label>
-                                        <input type="text" class="form-control" v-model="product.cod">
+                                        <input type="text" class="form-control" v-model="product.cod" @keydown.enter.prevent="">
                                     </div>
                                 </div>
                             </div>

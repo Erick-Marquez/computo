@@ -23,11 +23,21 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::included()
-                            ->filter()
-                            ->search()
-                            ->sort()
-                            ->getOrPaginate();
+        if (empty(request('search'))) {
+            $products = Product::paginate(intVal(request('perPage')));
+        }
+        else {
+
+            $search = request('search');
+
+            $products = Product::where(function($query) use ($search){
+                $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('cod', 'like', '%' . $search . '%')
+                ->orWhere('slug', 'like', '%' . $search . '%');
+            })->paginate(intVal(request('perPage')));
+
+        }
+        
         return GlobalResource::collection($products);
     }
 

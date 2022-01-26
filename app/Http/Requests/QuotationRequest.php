@@ -58,7 +58,7 @@ class QuotationRequest extends FormRequest
             'detail.*.product_id' => [
                 'required',
                 Rule::exists('branch_product', 'id')->where(function ($query) {
-                    $query->where('branch_id', auth()->user()->branch_id)->where('stock','>',0); // con stock mayor a 0
+                    $query->where('branch_id', auth()->user()->branch_id); // con stock mayor a 0
                 }),
                 'distinct'
             ],

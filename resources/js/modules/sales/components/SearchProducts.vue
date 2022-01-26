@@ -8,6 +8,7 @@
                     @keyup="searchProducts"
                     @blur="toggle = false"
                     @focus="toggle = true"
+                    @keydown.enter.prevent=""
                     class="form-control rounded-pill form-control rounded-pill-lg"
                     placeholder="Escribe tu producto o código"
                 />

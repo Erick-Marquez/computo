@@ -205,7 +205,7 @@
                 <div class="col-md">
                   <div class="form-group">
                     <label for="">Código</label>
-                    <input type="text" class="form-control" v-model="cod">
+                    <input type="text" class="form-control" v-model="cod" @keydown.enter.prevent="">
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@
                               </div>
                               <div class="modal-body">
                                 <div class="row m-3" v-for="obj in selectedBranch.series" :key="obj">
-                                  <input type="text" class="form-control" placeholder="Serie" v-model="obj.serie">
+                                  <input type="text" class="form-control" placeholder="Serie" v-model="obj.serie" @keydown.enter.prevent="">
                                 </div>
                               </div>
                               <div class="modal-footer">
