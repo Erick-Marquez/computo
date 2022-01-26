@@ -104,6 +104,7 @@ class ReportService
                 's.date_issue as date',
                 'series.serie',
                 's.document_number',
+                's.total_exonerated',
                 'cust.name',
                 'p.cod',
                 'p.name',

@@ -86,9 +86,9 @@
                 <td>{{ product.brand }}</td>
                 <td>{{ product.stock }}</td>
                 <td>{{ product.referential_purchase_price }}</td>
-                <td>{{ product.sale_price }}</td>
-                <td>{{ product.referential_sale_price_one }}</td>
-                <td>{{ product.referential_sale_price_two }}</td>
+                <td>{{ parseFloat(product.referential_purchase_price * product.sale_gain_one).toFixed(2) }}</td>
+                <td>{{ parseFloat(product.referential_purchase_price * product.sale_gain_two).toFixed(2) }}</td>
+                <td>{{ parseFloat(product.referential_purchase_price * product.sale_gain_three).toFixed(2) }}</td>
                 <td>{{ product.active ? "SI" : "NO" }}</td>
               </tr>
             </tbody>

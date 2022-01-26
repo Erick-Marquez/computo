@@ -130,7 +130,7 @@
                 <td class="text-wrap">{{ sale.customer_name }}</td>
 
                 <td>{{ sale.subtotal }}</td>
-                <td>{{ sale.discount }}</td>
+                <td>{{ sale.total_discount }}</td>
                 <td>{{ sale.total_igv }}</td>
                 <td>{{ sale.total_exonerated }}</td>
                 <td>{{ sale.total_unaffected }}</td>
@@ -169,6 +169,7 @@ export default {
         untilDate: null,
         voucher_type_id: null,
         customer_id: null,
+        seller_id: null,
       },
       sales: [],
       customers: [],

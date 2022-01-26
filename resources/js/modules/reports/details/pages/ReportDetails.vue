@@ -106,6 +106,7 @@
                 <th>DESC.</th>
                 <th>IGV</th>
                 <th>OP. GRAVADA</th>
+                <th>OP. EXONERADA</th>
                 <th>TOTAL</th>
                 <th>SERIES</th>
               </tr>
@@ -129,6 +130,7 @@
                 <td>{{ sale.discount }}</td>
                 <td>{{ sale.total_igv }}</td>
                 <td>{{ sale.subtotal }}</td>
+                <td>{{ sale.total_exonerated }}</td>
                 <td>{{ sale.total }}</td>
                 <td>{{ sale.series }}</td>
               </tr>

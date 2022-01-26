@@ -81,7 +81,7 @@
                     </td>
                     <td>{{ sale.name }}</td>
                     <td>{{ sale.created_at }}</td>
-                    <td>{{ sale.state === "ANULADO" ? 0 : sale.total }}</td>
+                    <td>{{ sale.state === "ANULADO" ? 0 : parseFloat(sale.total - sale.total_discount).toFixed(2) }}</td>
                     <td>
                       {{
                         (sale.utility2 =
