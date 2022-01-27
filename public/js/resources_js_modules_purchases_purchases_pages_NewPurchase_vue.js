@@ -71,7 +71,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       max_length: 8,
       productName: null,
       searching: [],
-      productsFound: []
+      productsFound: [],
+      searchAssembly: "",
+      searchingTable: []
     };
   },
   props: {
@@ -88,7 +90,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products?included=brand,line&search[name]=".concat(_this.productName, "&search[cod]=").concat(_this.productName)).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products-trait?included=brand,line&search[slug]=".concat(_this.productName, "&search[name]=").concat(_this.productName, "&search[cod]=").concat(_this.productName, "&perPage=10")).then(function (response) {
                   _this.productsFound = response.data.data;
                   console.log(_this.productsFound);
                 })["catch"](function (error) {
@@ -103,13 +105,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    // metodo para buscar productos
+    // metodo para buscar tabla
     searchProduct: function searchProduct(e) {
       clearTimeout(this.searching);
 
       if (this.productName !== "") {
         clearTimeout(this.searching);
         this.searching = setTimeout(this.getProducts, 300);
+      } else {
+        this.productsFound = [];
       }
     },
     setProduct: function setProduct(product) {
@@ -772,7 +776,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       onMousedown: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"])),
       tabindex: "0"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.cod) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand.description), 1
     /* TEXT */
@@ -1414,18 +1418,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "form-control",
       type: "text",
+      onKeydown: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]), ["enter"])),
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return $props.products[$data.index].series[serieIndex] = $event;
       }
-    }, null, 8
-    /* PROPS */
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
     , _hoisted_41), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.products[$data.index].series[serieIndex]]])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-outline-dark",
-    onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.closeModalSeries();
     }, ["prevent"]))
   }, " Guardar Series ")])])])])], 64
@@ -1852,7 +1857,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1875,7 +1880,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1899,7 +1904,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.item {\r\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\r\n  border-left: 0.1rem solid rgb(180, 180, 180);\r\n  border-right: 0.1rem solid rgb(180, 180, 180);\r\n  margin: 0;\r\n  padding: 0.5em 1em;\r\n  text-decoration: none;\r\n  list-style: none;\n}\n.item:hover {\r\n  background: #f2f2f2;\n}\n.rounded-pill-left {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\r\n  border-radius: 50px;\r\n  width: 100%;\r\n  height: calc(2.25rem + 2px);\r\n  font-size: 1rem;\r\n  font-weight: 400;\r\n  line-height: 1.5;\r\n  color: #495057;\r\n  background-color: #fff;\r\n  background-clip: padding-box;\r\n  border-color: #ced4da;\r\n  box-shadow: inset 0 0 0 transparent;\r\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\r\n.style-chooser .vs__open-indicator {\r\n  fill: #394066;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete {\n  position: relative;\n  cursor: pointer;\n}\n.list {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.item {\n  border-bottom: 0.1rem solid rgb(180, 180, 180);\n  border-left: 0.1rem solid rgb(180, 180, 180);\n  border-right: 0.1rem solid rgb(180, 180, 180);\n  margin: 0;\n  padding: 0.5em 1em;\n  text-decoration: none;\n  list-style: none;\n}\n.item:hover {\n  background: #f2f2f2;\n}\n.rounded-pill-left {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n.style-chooser .vs__dropdown-toggle {\n  border-radius: 50px;\n  width: 100%;\n  height: calc(2.25rem + 2px);\n  font-size: 1rem;\n  font-weight: 400;\n  line-height: 1.5;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border-color: #ced4da;\n  box-shadow: inset 0 0 0 transparent;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n}\n.style-chooser .vs__clear,\n.style-chooser .vs__open-indicator {\n  fill: #394066;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1923,7 +1928,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  align-content: center;\r\n  opacity: 0.7;\r\n  height: 150px;\r\n  width: 100%;\r\n  min-width: 850px;\n}\n.image-without-products img {\r\n  margin-bottom: 0.5rem;\r\n  margin-right: 0.5rem;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n  opacity: 0.7;\n  height: 150px;\n  width: 100%;\n  min-width: 850px;\n}\n.image-without-products img {\n  margin-bottom: 0.5rem;\n  margin-right: 0.5rem;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1947,7 +1952,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark {\r\n  border-top-right-radius: 23px;\r\n  border-bottom-right-radius: 23px;\r\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\r\n  background: linear-gradient(\r\n    to right,\r\n    #292e49,\r\n    #536976\r\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel {\r\n  color: rgba(48, 48, 48, 0.774);\r\n  font-weight: 300;\n}\n.rounded-pill-left {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn.btn-dark {\n  border-top-right-radius: 23px;\n  border-bottom-right-radius: 23px;\n  background: #536976; /* fallback for old browsers */ /* Chrome 10-25, Safari 5.1-6 */\n  background: linear-gradient(\n    to right,\n    #292e49,\n    #536976\n  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\nlabel {\n  color: rgba(48, 48, 48, 0.774);\n  font-weight: 300;\n}\n.rounded-pill-left {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

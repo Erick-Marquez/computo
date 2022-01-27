@@ -22,6 +22,8 @@
             name="table_search"
             class="form-control float-right"
             placeholder="Search"
+            v-model.trim="searchProvider"
+            @keyup.prevent="searchTable"
           />
 
           <div class="input-group-append">
@@ -45,13 +47,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="provider, index in providers" :key="provider.id">
+          <tr v-for="(provider, index) in providers" :key="provider.id">
             <td class="text-wrap" style="width: 20%">{{ provider.name }}</td>
             <td class="text-wrap" style="width: 20%">
               {{ provider.tradename }}
             </td>
             <td class="text-wrap" style="width: 10%">
-              <span class="badge bg-maroon">{{  provider.identification_document != null ? provider.identification_document.description : 'Otro' }}</span>
+              <span class="badge bg-maroon">{{
+                provider.identification_document != null
+                  ? provider.identification_document.description
+                  : "Otro"
+              }}</span>
               <br />
               {{ provider.document }}
             </td>
@@ -90,7 +96,11 @@
                     ><i class="col-1 mr-3 fas fa-edit"></i>
                     Editar
                   </a>
-                  <a class="dropdown-item" href="#" @click="deleteProvider(provider.id)">
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    @click="deleteProvider(provider.id)"
+                  >
                     <i class="col-1 mr-3 fas fa-trash"></i>
                     Eliminar
                   </a>
@@ -126,12 +136,13 @@ export default {
       provider: {
         identification_document_id: 1,
       },
-      editProvider: {
-
-      },
+      editProvider: {},
       links: {},
       providers: {},
       errors: [],
+
+      searchingTable: [],
+      searchProvider: "",
     };
   },
   created() {
@@ -140,7 +151,7 @@ export default {
   methods: {
     async getProviders() {
       await BaseUrl.get(
-        `/api/providers?included=ubigee,identificationDocument&sort=-id&perPage=10&page=${this.$route.query.page}`
+        `/api/providers?included=ubigee,identificationDocument&sort=-id&search[name]=${this.searchProvider}&search[tradename]=${this.searchProvider}&search[document]=${this.searchProvider}&perPage=10&page=${this.$route.query.page}`
       )
         .then((response) => {
           this.providers = response.data.data;
@@ -166,7 +177,10 @@ export default {
     },
 
     async updateProvider() {
-      await BaseUrl.put(`/api/providers/${this.editProvider.id}`, this.editProvider)
+      await BaseUrl.put(
+        `/api/providers/${this.editProvider.id}`,
+        this.editProvider
+      )
         .then((response) => {
           $("#edit-provider").modal("hide");
           Swal.fire("Proveedor Editado", "Exito!!", "success");
@@ -177,7 +191,6 @@ export default {
           this.errors = error.response.data.errors;
         });
     },
-
 
     deleteProvider(id) {
       Swal.fire({
@@ -200,6 +213,11 @@ export default {
             });
         }
       });
+    },
+
+    async searchTable() {
+      clearTimeout(this.searchingTable);
+      this.searchingTable = setTimeout(this.getProviders, 300);
     },
 
     editModalProvider(index) {

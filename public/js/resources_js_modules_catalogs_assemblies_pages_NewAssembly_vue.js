@@ -168,7 +168,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       max_length: 8,
       productName: null,
       searching: [],
-      productsFound: []
+      productsFound: [],
+      searchAssembly: "",
+      searchingTable: []
     };
   },
   props: {
@@ -185,7 +187,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products?included=brand,line&search[name]=".concat(_this.productName, "&search[cod]=").concat(_this.productName)).then(function (response) {
+                return _api_BaseUrl__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/products-trait?included=brand,line&search[slug]=".concat(_this.productName, "&search[name]=").concat(_this.productName, "&search[cod]=").concat(_this.productName, "&perPage=10")).then(function (response) {
                   _this.productsFound = response.data.data;
                   console.log(_this.productsFound);
                 })["catch"](function (error) {
@@ -200,13 +202,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    // metodo para buscar productos
+    // metodo para buscar tabla
     searchProduct: function searchProduct(e) {
       clearTimeout(this.searching);
 
       if (this.productName !== "") {
         clearTimeout(this.searching);
         this.searching = setTimeout(this.getProducts, 300);
+      } else {
+        this.productsFound = [];
       }
     },
     setProduct: function setProduct(product) {
@@ -460,7 +464,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_search_products = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("search-products");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.storeAssembly();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -482,9 +486,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.$errorsClass($data.errors['cod'])),
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.newAssembly.cod = $event;
-    })
-  }, null, 2
-  /* CLASS */
+    }),
+    onKeydown: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)((0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]), ["enter"]))
+  }, null, 34
+  /* CLASS, HYDRATE_EVENTS */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newAssembly.cod]]), _ctx.$errorsExists($data.errors['cod']) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$errorsPrint($data.errors["cod"])), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -505,7 +510,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     name: "",
     id: "",
     rows: "5",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.newAssembly.description = $event;
     })
   }, null, 512
@@ -521,7 +526,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_27)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", _hoisted_28)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "btn btn-block btn-outline-dark",
-    onClick: _cache[3] || (_cache[3] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.toggleShow && $options.toggleShow.apply($options, arguments);
     })
   }, _hoisted_31), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_my_upload, {
@@ -529,7 +534,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onCropSuccess: $options.cropSuccess,
     onSrcFileSet: $options.srcFileSet,
     modelValue: $data.imageUpload.show,
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
       return $data.imageUpload.show = $event;
     }),
     langExt: $data.imageUpload.idioma,
@@ -540,7 +545,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "img-format": "png"
   }, null, 8
   /* PROPS */
-  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\r\n                type=\"search\"\r\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\r\n                placeholder=\"Escribe tu producto o código\"\r\n                v-model=\"productName\"\r\n                @keyup=\"searchProduct\"\r\n                @blur=\"toggle = false\"\r\n                @focus=\"toggle = true\"\r\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
+  , ["onCropSuccess", "onSrcFileSet", "modelValue", "langExt", "params", "headers"])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input\n                type=\"search\"\n                class=\"form-control rounded-pill form-control rounded-pill-lg\"\n                placeholder=\"Escribe tu producto o código\"\n                v-model=\"productName\"\n                @keyup=\"searchProduct\"\n                @blur=\"toggle = false\"\n                @focus=\"toggle = true\"\n              /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_search_products, {
     products: $data.newAssembly.products,
     errors: $data.errors
   }, null, 8
@@ -682,7 +687,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       onMousedown: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"])),
       tabindex: "0"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.cod) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(product.brand.description), 1
     /* TEXT */
@@ -719,7 +724,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://computo.test/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -742,7 +747,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  align-content: center;\r\n  opacity: 0.7;\r\n  height: 150px;\r\n  width: 100%;\r\n  min-width: 850px;\n}\n.image-without-products img {\r\n  margin-bottom: 0.5rem;\r\n  margin-right: 0.5rem;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image-without-products {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n  opacity: 0.7;\n  height: 150px;\n  width: 100%;\n  min-width: 850px;\n}\n.image-without-products img {\n  margin-bottom: 0.5rem;\n  margin-right: 0.5rem;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -766,7 +771,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\r\n  position: relative;\r\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\r\n  position: absolute;\r\n  background: #fff;\r\n  width: 100%;\r\n  padding: 0;\r\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\r\n  border-top-left-radius: 50px;\r\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\r\n  border-top-right-radius: 50px;\r\n  border-bottom-right-radius: 50px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.autocomplete[data-v-588ffcd6] {\n  position: relative;\n  cursor: pointer;\n}\n.list[data-v-588ffcd6] {\n  position: absolute;\n  background: #fff;\n  width: 100%;\n  padding: 0;\n  z-index: 1000;\n}\n.rounded-pill-left[data-v-588ffcd6] {\n  border-top-left-radius: 50px;\n  border-bottom-left-radius: 50px;\n}\n.rounded-pill-right[data-v-588ffcd6] {\n  border-top-right-radius: 50px;\n  border-bottom-right-radius: 50px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

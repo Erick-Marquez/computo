@@ -20,6 +20,7 @@ class Assembly extends Model
 
     protected $allowIncluded = ['products', 'image'];
     protected $allowFilter = ['id', 'name', 'active'];
+    protected $allowSearch = ['name', 'cod'];
     protected $allowSort = ['id'];
 
     public function products()

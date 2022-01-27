@@ -19,14 +19,14 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Lista de Ensamblajes</h3>
-
             <div class="card-tools">
               <div class="input-group input-group-sm" style="width: 150px">
                 <input
                   type="text"
                   name="table_search"
                   class="form-control float-right"
-                  placeholder="Search"
+                  v-model.trim="searchAssembly"
+                  @keyup.prevent="searchTable"
                 />
 
                 <div class="input-group-append">
@@ -128,6 +128,9 @@ export default {
     return {
       assemblies: [],
       links: {},
+
+      searchAssembly: "",
+      searchingTable: [], // acumular busquedas
     };
   },
   created() {
@@ -135,7 +138,9 @@ export default {
   },
   methods: {
     async getAssemblies() {
-      await BaseUrl.get(`/api/assemblies?included=products,image&perPage=10`)
+      await BaseUrl.get(
+        `/api/assemblies?included=products,image&search[name]=${this.searchAssembly}&perPage=10&page=${this.$route.query.page}`
+      )
         .then((response) => {
           this.assemblies = response.data.data;
           this.links = response.data.meta.links;
@@ -143,6 +148,11 @@ export default {
         .catch((error) => {
           console.log(error.response);
         });
+    },
+
+    async searchTable() {
+      clearTimeout(this.searchingTable);
+      this.searchingTable = setTimeout(this.getAssemblies, 300);
     },
   },
 };

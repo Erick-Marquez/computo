@@ -18,6 +18,7 @@ class ProviderController extends Controller
     {
         $providers = Provider::included()
                                 ->filter()
+                                ->search()
                                 ->sort()
                                 ->getOrPaginate();
 

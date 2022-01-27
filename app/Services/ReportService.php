@@ -9,8 +9,6 @@ class ReportService
     public static function purchases($request)
     {
         $purchases = DB::table('purchases')
-            ->join('open_closed_cashboxes', 'purchases.open_closed_cashbox_id', '=', 'open_closed_cashboxes.id')
-            ->join('cashboxes', 'open_closed_cashboxes.cashbox_id', '=', 'cashboxes.id')
             ->join('providers', 'purchases.provider_id', '=', 'providers.id')
             ->join('identification_documents as id', 'providers.identification_document_id', '=', 'id.id')
             ->select('purchases.*', 'providers.name as provider_name', 'providers.document as provider_document', 'id.description as provider_document_type')
@@ -18,7 +16,7 @@ class ReportService
             ->whereDate('purchases.date_issue', '<=', $request['untilDate']);
 
         $purchases = is_null($request['document_type']) ?  $purchases : $purchases->where('purchases.document_type', '=', $request['document_type']);
-        $purchases = is_null($request['branch_id']) ?  $purchases : $purchases->where('cashboxes.branch_id', '=', $request['branch_id']);
+        $purchases = is_null($request['branch_id']) ?  $purchases : $purchases->where('purchases.branch_id', '=', $request['branch_id']);
         $purchases = is_null($request['provider_id']) ?  $purchases : $purchases->where('purchases.provider_id', '=', $request['provider_id']);
 
         $purchases = $purchases->get();

@@ -23,6 +23,8 @@
                   name="table_search"
                   class="form-control float-right"
                   placeholder="Search"
+                  v-model.trim="searchPurchase"
+                  @keyup.prevent="searchTable"
                 />
 
                 <div class="input-group-append">
@@ -143,6 +145,9 @@ export default {
     return {
       purchases: [],
       links: {},
+
+      searchingTable: [],
+      searchPurchase: "",
     };
   },
   mounted() {
@@ -151,7 +156,7 @@ export default {
   methods: {
     async getPurchases() {
       await BaseUrl.get(
-        `/api/purchases?included=provider,accountToPay&sort=-id&perPage=10&page=${this.$route.query.page}`
+        `/api/purchases?included=provider,accountToPay&sort=-id&search[serie]=${this.searchPurchase}&search[document_number]=${this.searchPurchase}&search[document_type]=${this.searchPurchase}&perPage=10&page=${this.$route.query.page}`
       )
         .then((response) => {
           this.purchases = response.data.data;
@@ -162,6 +167,12 @@ export default {
           console.log(error.response.data);
         });
     },
+
+    async searchTable() {
+      clearTimeout(this.searchingTable);
+      this.searchingTable = setTimeout(this.getPurchases, 300);
+    },
+
   },
 };
 </script>

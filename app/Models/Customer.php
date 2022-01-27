@@ -23,6 +23,7 @@ class Customer extends Model
     protected $allowIncluded = ['ubigee', 'identificationDocument'];
     protected $allowFilter = ['id', 'document', 'name', 'identification_document_id'];
     protected $allowSort = ['id'];
+    protected $allowSearch = ['name', 'document'];
 
     public function identificationDocument()
     {

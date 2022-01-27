@@ -36,6 +36,11 @@ class CreatePurchasesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->foreignId('branch_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

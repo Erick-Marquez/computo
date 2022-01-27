@@ -22,6 +22,8 @@
             name="table_search"
             class="form-control float-right"
             placeholder="Search"
+            v-model.trim="searchCustomer"
+            @keyup.prevent="searchTable"
           />
 
           <div class="input-group-append">
@@ -96,7 +98,11 @@
                     ><i class="col-1 mr-3 fas fa-edit"></i>
                     Editar
                   </a>
-                  <a class="dropdown-item" href="#" @click="deleteCustomer(customer.id)">
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    @click="deleteCustomer(customer.id)"
+                  >
                     <i class="col-1 mr-3 fas fa-trash"></i>
                     Eliminar
                   </a>
@@ -114,7 +120,7 @@
   </div>
 
   <form @submit.prevent="updateCustomer">
-      <EditCustomer :customer="editCustomer" :errors="errors" />
+    <EditCustomer :customer="editCustomer" :errors="errors" />
   </form>
 </template>
 
@@ -135,6 +141,9 @@ export default {
       links: {},
       customers: {},
       errors: [],
+
+      searchingTable: [],
+      searchCustomer: "",
     };
   },
 
@@ -144,7 +153,7 @@ export default {
   methods: {
     async getCustomers() {
       await BaseUrl.get(
-        `/api/customers?included=ubigee,identificationDocument&sort=-id&perPage=10&page=${this.$route.query.page}`
+        `/api/customers?included=ubigee,identificationDocument&sort=-id&search[name]=${this.searchCustomer}&search[document]=${this.searchCustomer}&perPage=10&page=${this.$route.query.page}`
       )
         .then((response) => {
           this.customers = response.data.data;
@@ -195,7 +204,10 @@ export default {
     },
 
     async updateCustomer() {
-      await BaseUrl.put(`/api/customers/${this.editCustomer.id}`, this.editCustomer)
+      await BaseUrl.put(
+        `/api/customers/${this.editCustomer.id}`,
+        this.editCustomer
+      )
         .then((response) => {
           $("#edit-customer").modal("hide");
           Swal.fire("Cliente Editado", "Exito!!", "success");
@@ -205,6 +217,11 @@ export default {
           console.log(error.response);
           this.errors = error.response.data.errors;
         });
+    },
+
+    async searchTable() {
+      clearTimeout(this.searchingTable);
+      this.searchingTable = setTimeout(this.getCustomers, 300);
     },
 
     editModal(index) {

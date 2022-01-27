@@ -43,7 +43,7 @@
               @mousedown.prevent
               tabindex="0"
             >
-              <td>{{ product.name }}</td>
+              <td>{{ product.cod }} - {{ product.name }}</td>
               <td>{{ product.brand.description }}</td>
               <td>{{ product.line.description }}</td>
             </tr>
@@ -65,6 +65,9 @@ export default {
       productName: null,
       searching: [],
       productsFound: [],
+
+      searchAssembly: "",
+      searchingTable: [],
     };
   },
   props: {
@@ -74,7 +77,7 @@ export default {
   methods: {
     async getProducts() {
       await BaseUrl.get(
-        `/api/products?included=brand,line&search[name]=${this.productName}&search[cod]=${this.productName}`
+        `/api/products-trait?included=brand,line&search[slug]=${this.productName}&search[name]=${this.productName}&search[cod]=${this.productName}&perPage=10`
       )
         .then((response) => {
           this.productsFound = response.data.data;
@@ -84,13 +87,15 @@ export default {
           console.log(error.response);
         });
     },
-    // metodo para buscar productos
-    searchProduct(e) {
 
+    // metodo para buscar tabla
+    searchProduct(e) {
       clearTimeout(this.searching);
       if (this.productName !== "") {
         clearTimeout(this.searching);
         this.searching = setTimeout(this.getProducts, 300);
+      } else {
+        this.productsFound = [];
       }
     },
 

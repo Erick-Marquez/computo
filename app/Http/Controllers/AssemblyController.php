@@ -22,6 +22,7 @@ class AssemblyController extends Controller
     {
         $assemblies = Assembly::included()
             ->filter()
+            ->search()
             ->sort()
             ->getOrPaginate();
 

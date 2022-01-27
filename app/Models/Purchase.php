@@ -23,12 +23,14 @@ class Purchase extends Model
         'total',
         'observation',
         'provider_id',
-        'open_closed_cashbox_id',
+        'branch_id',
+
     ];
 
     protected $allowIncluded = ['provider', 'provider.identificationDocument','accountToPay'];
     protected $allowFilter = ['id', 'document_type', 'date_issue', 'provider_id'];
     protected $allowSort = ['id'];
+    protected $allowSearch = ['serie', 'document_number', 'document_type'];
 
     public function purchaseDetails()
     {
@@ -43,6 +45,11 @@ class Purchase extends Model
     public function accountToPay()
     {
         return $this->hasOne(AccountToPay::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Purchase::class);
     }
 
     /**

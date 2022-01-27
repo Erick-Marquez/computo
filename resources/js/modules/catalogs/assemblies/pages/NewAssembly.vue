@@ -37,6 +37,7 @@
                       id=""
                       :class="$errorsClass(errors['cod'])"
                       v-model="newAssembly.cod"
+                      @keydown.enter.prevent=""
                     />
                     <div
                       class="invalid-feedback ml-3"

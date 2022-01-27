@@ -21,6 +21,7 @@ class PurchaseController extends Controller
     {
         $purchases = Purchase::included()
                                 ->filter()
+                                ->search()
                                 ->sort()
                                 ->getOrPaginate();
 

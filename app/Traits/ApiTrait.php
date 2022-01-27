@@ -63,8 +63,6 @@ trait ApiTrait
                 $query->orWhere($search, 'LIKE', '%' . $valor . '%');
             }
         }
-
-        $query->limit(10);
     }
 
     // funcion para ordenar que obtiene como parametro la consulta

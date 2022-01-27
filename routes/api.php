@@ -143,6 +143,8 @@ Route::middleware([
     Route::get('products/edit/{id}', [ProductController::class, 'edit'])->name('api.products.edit');
     Route::put('products/{product}', [ProductController::class, 'update'])->name('api.products.update');
 
+    Route::get('products-trait', [ProductController::class, 'searchProductsTrait'])->name('api.products-trait');
+
     //Product-Series
     Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');
 

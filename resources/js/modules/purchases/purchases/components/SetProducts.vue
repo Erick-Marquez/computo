@@ -185,6 +185,7 @@
             <input
               class="form-control"
               type="text"
+              @keydown.enter.prevent=""
               v-model="products[index].series[serieIndex]"
             />
           </div>

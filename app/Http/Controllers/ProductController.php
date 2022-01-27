@@ -37,7 +37,7 @@ class ProductController extends Controller
             })->paginate(intVal(request('perPage')));
 
         }
-        
+
         return GlobalResource::collection($products);
     }
 
@@ -78,7 +78,7 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
-        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name ]);
+        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name]);
 
         $product = Product::create([
             'cod' => $request->cod,
@@ -194,7 +194,7 @@ class ProductController extends Controller
             'brand_id' => 'required'
         ]);
 
-        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name ]);
+        $slug = join(' ', [Line::find($request->line_id)->description, Brand::find($request->brand_id)->description, $request->name]);
 
         $product->update([
 
@@ -230,5 +230,16 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('products.index');
+    }
+
+    public function searchProductsTrait()
+    {
+        $products = Product::included()
+            ->filter()
+            ->search()
+            ->sort()
+            ->getOrPaginate();
+
+        return GlobalResource::collection($products);
     }
 }

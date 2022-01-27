@@ -18,6 +18,7 @@ class CustomerController extends Controller
     {
         $customers = Customer::included()
             ->filter()
+            ->search()
             ->sort()
             ->getOrPaginate();
 

@@ -25,6 +25,7 @@ class Provider extends Model
     protected $allowIncluded = ['identificationDocument', 'ubigee'];
     protected $allowFilter = ['id', 'document', 'tradename', 'identification_document_id'];
     protected $allowSort = ['id'];
+    protected $allowSearch = ['name', 'document', 'tradename'];
 
     public function identificationDocument()
     {
