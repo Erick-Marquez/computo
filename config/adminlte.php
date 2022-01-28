@@ -274,13 +274,13 @@ return [
         [
             'text'    => 'Ventas',
             'icon'    => 'fas fa-fw fa-dollar-sign',
-            //'can'     => 'sales',
+            'can'     => 'sales',
             'submenu' => [
                 [
                     'text' => 'Nuevo Comprobante',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.new-sale',
-                    'can'    => 'sales',
+                    'can'    => 'vouchers.create',
                 ],
                 [
                     'text' => 'Comprobantes',
@@ -292,23 +292,26 @@ return [
                     'text' => 'Notas de Venta',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.sale-notes',
-                    // 'can'    => 'vouchers.index',
+                    'can'    => 'vouchers.index',
                 ],
                 [
                     'text' => 'Anticipo de Venta',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.advance-payments',
+                    'can'    => 'advance-payments.index',
                 ],
                 [
                     'text' => 'Notas de crédito',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.credit-notes',
+                    'can'    => 'credit-notes.index',
                     'active' => ['notas-de-credito', 'nueva-nota-de-credito']
                 ],
                 [
                     'text' => 'Comunicaciones de Baja',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.voideds',
+                    'can'    => 'voideds.index',
                 ],
                 [
                     'text' => 'Cotización',
@@ -321,7 +324,7 @@ return [
                     'text' => 'Garantías',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.warranties',
-                    //'can'    => 'quotations.index',
+                    'can'    => 'warranties.index',
                 ],
 
             ],
@@ -363,6 +366,7 @@ return [
                     'text' => 'Familias, Lineas y Marcas',
                     'icon' => 'far fa-fw fa-circle',
                     'route'  => 'web.families-lines-brands',
+                    'can' => 'families-lines-brands'
                 ],
                 [
                     'text' => 'Productos',
@@ -422,11 +426,13 @@ return [
                     'text'   => 'Kardex',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.kardex',
+                    'can'    => 'kardex.index'
                 ],
                 [
                     'text'   => 'Editar series',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.edit-series',
+                    'can'    => 'edit-series.index'
                 ],
                 // [
                 //     'text'   => 'Modificación de Stock',
@@ -528,13 +534,13 @@ return [
                     'text'   => 'Empresa',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.company',
-                    // 'can'    => 'users.index',
+                    'can'    => 'company.index',
                 ],
                 [
                     'text'   => 'Usuarios',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.users',
-                    // 'can'    => 'users.index',
+                    'can'    => 'users.index',
                 ],
                 [
                     'text'   => 'Roles',
@@ -546,19 +552,19 @@ return [
                     'text'   => 'Series',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.series',
-                    // 'can'    => 'series.index',
+                    'can'    => 'series.index',
                 ],
                 [
                     'text'   => 'Cambio de Divisas',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.currency-exchanges',
-                    // 'can'    => 'currency-exchanges.index',
+                    'can'    => 'currency-exchanges.index',
                 ],
                 [
                     'text'   => 'Tipo de Pagos',
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.payment-types',
-                    // 'can'    => 'currency-exchanges.index',
+                    'can'    => 'payment-types.index',
                 ],
             ],
         ],

@@ -36,11 +36,35 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'vouchers.edit', 'description' => 'Editar Venta'])->syncRoles([$role1]);
             Permission::create(['name' => 'vouchers.destroy', 'description' => 'Eliminar Venta'])->syncRoles([$role1]);
 
+            //Advance Payments Permissions
+            Permission::create(['name' => 'advance-payments.index', 'description' => 'Ver Lista de Anticipos'])->syncRoles([$role1]);
+            Permission::create(['name' => 'advance-payments.create', 'description' => 'Crear Anticipo'])->syncRoles([$role1]);
+            Permission::create(['name' => 'advance-payments.edit', 'description' => 'Editar Anticipo'])->syncRoles([$role1]);
+            Permission::create(['name' => 'advance-payments.destroy', 'description' => 'Eliminar Anticipo'])->syncRoles([$role1]);
+
+            //Credit Notes Permissions
+            Permission::create(['name' => 'credit-notes.index', 'description' => 'Ver Lista de Notas de Créditos'])->syncRoles([$role1]);
+            Permission::create(['name' => 'credit-notes.create', 'description' => 'Crear Nota de Crédito'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'credit-notes.edit', 'description' => 'Editar Nota de Crédito'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'credit-notes.destroy', 'description' => 'Eliminar Nota de Crédito'])->syncRoles([$role1]);
+
+            //Voideds Permissions
+            Permission::create(['name' => 'voideds.index', 'description' => 'Ver Lista de Comunicaciones de baja'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'voideds.create', 'description' => 'Crear Comunicacion de baja'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'voideds.edit', 'description' => 'Editar Comunicacion de baja'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'voideds.destroy', 'description' => 'Eliminar Comunicacion de baja'])->syncRoles([$role1]);
+
             //Quotations Permissions
             Permission::create(['name' => 'quotations.index', 'description' => 'Ver Lista de Cotizaciones'])->syncRoles([$role1]);
             Permission::create(['name' => 'quotations.create', 'description' => 'Crear Cotización'])->syncRoles([$role1]);
-            Permission::create(['name' => 'quotations.edit', 'description' => 'Editar Cotización'])->syncRoles([$role1]);
-            Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'quotations.edit', 'description' => 'Editar Cotización'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'quotations.destroy', 'description' => 'Eliminar Cotización'])->syncRoles([$role1]);
+
+            //Warranties Permissions
+            Permission::create(['name' => 'warranties.index', 'description' => 'Ver Lista de Garantías'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'warranties.create', 'description' => 'Crear Garantía'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'warranties.edit', 'description' => 'Editar Garantía'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'warranties.destroy', 'description' => 'Eliminar Garantía'])->syncRoles([$role1]);
 
         //Cash Register Permissions
         Permission::create(['name' => 'cashboxes', 'description' => 'Modulo de Caja'])->syncRoles([$role1, $role4]);
@@ -59,26 +83,31 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'accounts.index', 'description' => 'Cuentas por pagar'])->syncRoles([$role1, $role4]);
         Permission::create(['name' => 'accounts.pay', 'description' => 'Pagar cuenta'])->syncRoles([$role1, $role4]);
+
+
         //Catalogs Permissions
         Permission::create(['name' => 'catalogs', 'description' => 'Ver Catalagos'])->syncRoles([$role1]);
 
-            //Families Permissions
-            Permission::create(['name' => 'families.index', 'description' => 'Ver Lista de Familias'])->syncRoles([$role1]);
-            Permission::create(['name' => 'families.create', 'description' => 'Crear Familia'])->syncRoles([$role1]);
-            Permission::create(['name' => 'families.edit', 'description' => 'Editar Familia'])->syncRoles([$role1]);
-            Permission::create(['name' => 'families.destroy', 'description' => 'Eliminar Familia'])->syncRoles([$role1]);
+            //Families, Lines and Brands Permissions
+            Permission::create(['name' => 'families-lines-brands', 'description' => 'Ver Familias, lineas y marcas'])->syncRoles([$role1]);
 
-            //Lines Permissions
-            Permission::create(['name' => 'lines.index', 'description' => 'Ver Lista de Lineas'])->syncRoles([$role1]);
-            Permission::create(['name' => 'lines.create', 'description' => 'Crear Linea'])->syncRoles([$role1]);
-            Permission::create(['name' => 'lines.edit', 'description' => 'Editar Linea'])->syncRoles([$role1]);
-            Permission::create(['name' => 'lines.destroy', 'description' => 'Eliminar Linea'])->syncRoles([$role1]);
+                //Families Permissions
+                Permission::create(['name' => 'families.index', 'description' => 'Ver Lista de Familias'])->syncRoles([$role1]);
+                Permission::create(['name' => 'families.create', 'description' => 'Crear Familia'])->syncRoles([$role1]);
+                Permission::create(['name' => 'families.edit', 'description' => 'Editar Familia'])->syncRoles([$role1]);
+                Permission::create(['name' => 'families.destroy', 'description' => 'Eliminar Familia'])->syncRoles([$role1]);
 
-            //Brands Permissions
-            Permission::create(['name' => 'brands.index', 'description' => 'Ver Lista de Marcas'])->syncRoles([$role1]);
-            Permission::create(['name' => 'brands.create', 'description' => 'Crear Marca'])->syncRoles([$role1]);
-            Permission::create(['name' => 'brands.edit', 'description' => 'Editar Marca'])->syncRoles([$role1]);
-            Permission::create(['name' => 'brands.destroy', 'description' => 'Eliminar Marca'])->syncRoles([$role1]);
+                //Lines Permissions
+                Permission::create(['name' => 'lines.index', 'description' => 'Ver Lista de Lineas'])->syncRoles([$role1]);
+                Permission::create(['name' => 'lines.create', 'description' => 'Crear Linea'])->syncRoles([$role1]);
+                Permission::create(['name' => 'lines.edit', 'description' => 'Editar Linea'])->syncRoles([$role1]);
+                Permission::create(['name' => 'lines.destroy', 'description' => 'Eliminar Linea'])->syncRoles([$role1]);
+
+                //Brands Permissions
+                Permission::create(['name' => 'brands.index', 'description' => 'Ver Lista de Marcas'])->syncRoles([$role1]);
+                Permission::create(['name' => 'brands.create', 'description' => 'Crear Marca'])->syncRoles([$role1]);
+                Permission::create(['name' => 'brands.edit', 'description' => 'Editar Marca'])->syncRoles([$role1]);
+                Permission::create(['name' => 'brands.destroy', 'description' => 'Eliminar Marca'])->syncRoles([$role1]);
 
             //Products Permissions
             Permission::create(['name' => 'products.index', 'description' => 'Ver Lista de Productos'])->syncRoles([$role1]);
@@ -88,9 +117,9 @@ class RoleSeeder extends Seeder
 
             //Product Series Permissions
             Permission::create(['name' => 'product-series.index', 'description' => 'Ver Lista de Series de Productos'])->syncRoles([$role1]);
-            Permission::create(['name' => 'product-series.create', 'description' => 'Crear Serie de Producto'])->syncRoles([$role1]);
-            Permission::create(['name' => 'product-series.edit', 'description' => 'Editar Serie de Producto'])->syncRoles([$role1]);
-            Permission::create(['name' => 'product-series.destroy', 'description' => 'Eliminar Serie de Producto'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'product-series.create', 'description' => 'Crear Serie de Producto'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'product-series.edit', 'description' => 'Editar Serie de Producto'])->syncRoles([$role1]);
+            // Permission::create(['name' => 'product-series.destroy', 'description' => 'Eliminar Serie de Producto'])->syncRoles([$role1]);
 
             //Assemblies Permissions
             Permission::create(['name' => 'assemblies.index', 'description' => 'Ver Lista de Configuraciones de PC'])->syncRoles([$role1]);
@@ -112,6 +141,13 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'branches.edit', 'description' => 'Editar Sucursal'])->syncRoles([$role1]);
             Permission::create(['name' => 'branches.destroy', 'description' => 'Eliminar Sucursal'])->syncRoles([$role1]);
             Permission::create(['name' => 'branches.products', 'description' => 'Ver Productos de la Sucursal'])->syncRoles([$role1]);
+            Permission::create(['name' => 'branches.add-products', 'description' => 'Añadir Productos de la Sucursal'])->syncRoles([$role1]);
+
+            //Kardex Permissions
+            Permission::create(['name' => 'kardex.index', 'description' => 'Ver Lista de Kardex de productos'])->syncRoles([$role1]);
+
+            //Edit Series Permissions
+            Permission::create(['name' => 'edit-series.index', 'description' => 'Editar Series'])->syncRoles([$role1]);
 
             //Devolutions Permissions
             Permission::create(['name' => 'devolutions.index', 'description' => 'Ver Lista de Devoluciones'])->syncRoles([$role1]);
@@ -146,6 +182,9 @@ class RoleSeeder extends Seeder
         //Settings Permissions
         Permission::create(['name' => 'settings', 'description' => 'Ver Configuracion'])->syncRoles([$role1]);
 
+            //Company Permissions
+            Permission::create(['name' => 'company.index', 'description' => 'Ver Compania'])->syncRoles([$role1]);
+
             //User Permissions
             Permission::create(['name' => 'users.index', 'description' => 'Ver Lista de Usuarios'])->syncRoles([$role1]);
             Permission::create(['name' => 'users.create', 'description' => 'Crear Usuario'])->syncRoles([$role1]);
@@ -170,5 +209,10 @@ class RoleSeeder extends Seeder
             Permission::create(['name' => 'currency-exchanges.edit', 'description' => 'Editar Cambio de Divisa'])->syncRoles([$role1]);
             Permission::create(['name' => 'currency-exchanges.destroy', 'description' => 'Eliminar Cambio de Divisa'])->syncRoles([$role1]);
 
+            //Payment Types Permissions
+            Permission::create(['name' => 'payment-types.index', 'description' => 'Ver lista de Tipos de Pago'])->syncRoles([$role1]);
+            Permission::create(['name' => 'payment-types.create', 'description' => 'Crear Tipo de Pago'])->syncRoles([$role1]);
+            Permission::create(['name' => 'payment-types.edit', 'description' => 'Editar Tipo de Pago'])->syncRoles([$role1]);
+            Permission::create(['name' => 'payment-types.destroy', 'description' => 'Eliminar Tipo de Pago'])->syncRoles([$role1]);
     }
 }
