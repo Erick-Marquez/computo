@@ -44,13 +44,13 @@ class CashboxService
 
         try {
 
-            $openClosedCashbox = OpenClosedCashbox::create($data); //  Creo la Apertura
-            $cashbox->update(['is_open' => true]); //  Le doy un estado de TRUE - Aperturada a la caja
+            $openClosedCashbox = OpenClosedCashbox::create($data);
+            $cashbox->update(['is_open' => true]);
             $user->update(['open_closed_cashbox_id' => $openClosedCashbox['id']]);
 
             return response()->json([$openClosedCashbox]);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return response()->json(['message' => $th->getMessage()], 405);
         }
 
         // return response()->json($data);

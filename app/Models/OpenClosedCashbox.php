@@ -155,7 +155,6 @@ class OpenClosedCashbox extends Model
             ->where('sales.canceled', false)
             ->where('payment_types.id', 1)
             ->get()
-
             ->each(function ($item, $key) {
                 $item['concept'] = 'VENTA';
             });
@@ -167,7 +166,6 @@ class OpenClosedCashbox extends Model
             ->join('series', 'credit_notes.serie_id', '=', 'series.id')
             ->select('credit_notes.created_at as date', 'credit_notes.observation as type', DB::raw("CONCAT(series.serie, '-',credit_notes.document_number) as observation"), 'credit_notes.total as amount')
             ->get()
-
             ->each(function ($item, $key) {
                 $item['concept'] = 'NOTA DE CREDITO';
                 $item['payment_type'] = 'Efectivo';
@@ -231,3 +229,4 @@ class OpenClosedCashbox extends Model
             ->where('sales.state', 'ANULADO')
             ->get();
     }
+}

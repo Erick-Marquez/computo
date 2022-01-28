@@ -30,7 +30,7 @@ class DashboardController extends Controller
         try {
             $facturas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('SUM(sales.total) as y'))
                 ->where('sales.canceled', false)
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.cod', '01')
@@ -40,7 +40,7 @@ class DashboardController extends Controller
 
             $boletas = Sale::join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('SUM(sales.total) as y'))
                 ->where('sales.canceled', false)
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.cod', '03')
@@ -51,7 +51,7 @@ class DashboardController extends Controller
             $notas_venta = DB::table('sales')
                 ->join('series', 'sales.serie_id', '=', 'series.id')
                 ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('COUNT(sales.id) as y'))
+                ->select(DB::raw('DATE(sales.created_at) as x'), DB::raw('SUM(sales.total) as y'))
                 ->where('series.branch_id', $branch_id,)
                 ->where('voucher_types.id', 3)
                 ->where('sales.created_at', '>', $fechasAtras)
