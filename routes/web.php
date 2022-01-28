@@ -42,74 +42,104 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', [WebController::class, 'dashboard'])->name('web.dashboard');
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
-    //Sale
-    Route::middleware(['is.opening.cashbox'])->group(function () {
-        Route::get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
-        Route::get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
-        Route::get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
-    });
+    
 
     Route::get('/cuentas-por-pagar', [WebController::class, 'accountsToPay'])->name('web.accounts-to-pay');
     Route::get('/nueva-compra', [WebController::class, 'newPurchase'])->name('web.new-purchase');
 
-
-    Route::get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
-    Route::get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
-
-
-    Route::get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
-    Route::get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
-
-    Route::get('/notas-de-credito', [WebController::class, 'creditNotes'])->name('web.credit-notes');
-
-
-    Route::get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
-
-    Route::get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
-
-    //CashBoxes
     Route::get('/cajas', [WebController::class, 'cashboxes'])->name('web.cajas');
     Route::get('/cajas/detalle/{id}', [WebController::class, 'cashboxes']);
 
+
+    //Sale
+
+    Route::middleware(['is.opening.cashbox', 'can:vouchers.create'])->get('/nueva-venta', [WebController::class, 'newSale'])->name('web.new-sale');
+
+    Route::middleware(['can:vouchers.index'])->get('/ventas', [WebController::class, 'sales'])->name('web.ventas');
+    
+    Route::middleware(['can:sale-notes.index'])->get('/notas-de-venta', [WebController::class, 'saleNotes'])->name('web.sale-notes');
+
+    Route::middleware(['is.opening.cashbox', 'can:advance-payments.index'])->get('/anticipos', [WebController::class, 'advancePayments'])->name('web.advance-payments');
+
+    Route::middleware(['can:credit-notes.index'])->get('/notas-de-credito', [WebController::class, 'creditNotes'])->name('web.credit-notes');
+    Route::middleware(['is.opening.cashbox', 'can:credit-notes.create'])->get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
+
+    Route::middleware(['is.opening.cashbox', 'can:credit-notes.create'])->get('/nueva-nota-de-credito', [WebController::class, 'newCreditNote'])->name('web.new-credit-note');
+
+    Route::middleware(['can:voideds.index'])->get('/comunicaciones-de-baja', [WebController::class, 'voideds'])->name('web.voideds');
+
+    Route::middleware(['can:quotations.index'])->get('/cotizaciones', [WebController::class, 'quotations'])->name('web.quotations');
+    Route::middleware(['can:quotations.create'])->get('/nueva-cotizacion', [WebController::class, 'quotations'])->name('web.new-quotation');
+
+    Route::middleware(['can:warranties.index'])->get('/garantias', [WebController::class, 'warranties'])->name('web.warranties');
+
+
+    //CashBoxes
+
+
+
+
     //Catalogs
-    Route::get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
-    Route::get('/productos', [WebController::class, 'products'])->name('web.products');
-    Route::get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
-    Route::get('/editar-producto/{id}', [WebController::class, 'products'])->name('web.edit-products');
-    Route::get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
+
+    Route::middleware(['can:families-lines-brands'])->get('/familias-lineas-marcas', [WebController::class, 'familiesLinesBrands'])->name('web.families-lines-brands');
+
+    Route::middleware(['can:products.index'])->get('/productos', [WebController::class, 'products'])->name('web.products');
+    Route::middleware(['can:products.create'])->get('/nuevo-producto', [WebController::class, 'products'])->name('web.new-products');
+    Route::middleware(['can:products.edit'])->get('/editar-producto/{id}', [WebController::class, 'products'])->name('web.edit-products');
+
+    Route::middleware(['can:product-series.index'])->get('/producto-series', [WebController::class, 'productSeries'])->name('web.product-series');
+
+    Route::middleware(['can:assemblies.index'])->get('/ensamblajes', [WebController::class, 'assemblies'])->name('web.assemblies');
+
+    //Purchases
+
+    Route::middleware(['can:purchases.index'])->get('/compras', [WebController::class, 'purchases'])->name('web.compras');
+
+    //Inventory
+
+    Route::middleware(['can:branches.index'])->get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
+    Route::middleware(['can:branches.products'])->get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
+    Route::middleware(['can:branches.add-products'])->get('/sucursales/productos/{id}/agregar', [WebController::class, 'branches'])->name('web.branches.add-products');
+
+    // Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
+
+    Route::middleware(['can:kardex.index'])->get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
+
+    Route::middleware(['can:edit-series.index'])->get('/editar-series', [WebController::class, 'editSeries'])->name('web.edit-series');
+
+    // Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
+    // Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
+
 
     //Rutas egresos-ingresos
     Route::get('/egresos-ingresos', [WebController::class, 'expensesIncomes'])->name('web.egresos-ingresos');
 
-    // Rutas compras
-    Route::get('/compras', [WebController::class, 'purchases'])->name('web.compras');
+    
 
     // Rutas Terceros
     Route::get('/proveedores', [WebController::class, 'providers'])->name('web.proveedores');
     Route::get('/clientes', [WebController::class, 'customers'])->name('web.clientes');
 
-    //Inventory
-    Route::get('/sucursales', [WebController::class, 'branches'])->name('web.branches');
-    Route::get('/sucursales/productos/{id}', [WebController::class, 'branches'])->name('web.branches.products');
-    Route::get('/sucursales/productos/{id}/agregar', [WebController::class, 'branches'])->name('web.branches.add-products');
-
-    Route::get('/movimiento-sucursal', [WebController::class, 'branchMovements'])->name('web.branch-movements');
-    Route::get('/kardex', [WebController::class, 'kardex'])->name('web.kardex');
-
-    Route::get('/editar-series', [WebController::class, 'editSeries'])->name('web.edit-series');
-
-    Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
-    Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
+    
 
     //Modulo Configuracion
-    Route::get('/empresa', [WebController::class, 'company'])->name('web.company');
-    Route::get('/usuarios', [WebController::class, 'users'])->name('web.users');
-    Route::get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
-    Route::get('/tipo-de-pagos', [WebController::class, 'paymentTypes'])->name('web.payment-types');
-    Route::get('/roles', [WebController::class, 'roles'])->name('web.roles');
-    Route::get('/roles/{id}', [WebController::class, 'roles'])->name('web.roles.update');
-    Route::get('/series', [WebController::class, 'series'])->name('web.series');
 
+    Route::middleware(['can:company.index'])->get('/empresa', [WebController::class, 'company'])->name('web.company');
+
+    Route::middleware(['can:users.index'])->get('/usuarios', [WebController::class, 'users'])->name('web.users');
+
+    Route::middleware(['can:currency-exchanges.index'])->get('/cambio-de-divisas', [WebController::class, 'currencyExchanges'])->name('web.currency-exchanges');
+    
+    Route::middleware(['can:payment-types.index'])->get('/tipo-de-pagos', [WebController::class, 'paymentTypes'])->name('web.payment-types');
+    
+    Route::middleware(['can:roles.index'])->get('/roles', [WebController::class, 'roles'])->name('web.roles');
+    Route::middleware(['can:roles.edit'])->get('/roles/{id}', [WebController::class, 'roles'])->name('web.roles.update');
+    
+    Route::middleware(['can:series.index'])->get('/series', [WebController::class, 'series'])->name('web.series');
+
+
+
+    
     //Rutas imprimir
     Route::get('print/quotations/{quotation}', [QuotationController::class, 'print'])->name('quotations.print');
     Route::get('print/vouchers/{type}/{sale}', [VoucherController::class, 'print'])->name('vouchers.print')
@@ -123,11 +153,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     //Rutas descarga
     Route::get('download/vouchers/{voucherType}/{type}/{sale}', [VoucherController::class, 'download'])->name('vouchers.download');
-
-
-
-    // Rutas emsamblajes
-    Route::get('/ensamblajes', [WebController::class, 'assemblies'])->name('web.assemblies');
+    
 
     // Rutas reportes
     Route::get('/reportes/cajas', [WebController::class, 'reportCashboxes'])->name('web.reports.cashboxes');

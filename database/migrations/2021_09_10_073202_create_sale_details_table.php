@@ -21,7 +21,7 @@ class CreateSaleDetailsTable extends Migration
             $table->unsignedDecimal('unit_value', 12,3);
             $table->bigInteger('quantity');
 
-            $table->unsignedDecimal('purchase_price', 12,3);
+            $table->unsignedDecimal('purchase_price', 12,3)->nullable()->default(0);
 
             $table->unsignedDecimal('total_igv', 12,3)->default(0);
             $table->unsignedDecimal('subtotal', 12,3)->nullable();
