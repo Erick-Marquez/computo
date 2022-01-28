@@ -277,7 +277,7 @@ class SaleService
                 $sale->paymentTypes()->attach($payment['payment_type_id'], ['amount' => $payment['amount']]);
             }
         } else {
-            $sale->paymentTypes()->attach($request->voucher['payments'][0]['payment_type_id'], ['amount' => $totalSale - $request->voucher['discount']]);
+            $sale->paymentTypes()->attach($request->voucher['payments'][0]['payment_type_id'], ['amount' => $totalSale - $itemDiscount + $request->voucher['discount']]);
 
             $sale->update([
                 'received_money' => $request->voucher['received_money'],
