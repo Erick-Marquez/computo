@@ -34,7 +34,7 @@
                 <td class="celda">{{ $sale->customer_document_type }}</td>
                 <td class="celda">{{ $sale->customer_document }}</td>
                 <td class="celda">{{ $sale->customer_name }}</td>
-                <td class="celda">{{ $sale->subtotal }}</td>
+                <td class="celda">{{ $sale->total_taxed }}</td>
                 <td class="celda">{{ $sale->total_discount }}</td>
                 <td class="celda">{{ $sale->total_igv }}</td>
                 <td class="celda">{{ $sale->total_exonerated }}</td>

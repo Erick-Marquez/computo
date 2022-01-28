@@ -139,6 +139,7 @@ class OpenClosedCashbox extends Model
     {
         return [
             "TOTAL" => $this->sales()->where('canceled', false)->sum('total'),
+            "TOTAL_DISCOUNT" => $this->sales()->where('canceled', false)->sum('total_discount'),
             "SUBTOTAL" => $this->sales()->where('canceled', false)->sum('subtotal'),
             "IGV" => $this->sales()->where('canceled', false)->sum('igv'),
         ];
@@ -226,8 +227,7 @@ class OpenClosedCashbox extends Model
         return $this->sales()
             ->join('series', 'sales.serie_id', '=', 'series.id')
             ->join('voucher_types', 'series.voucher_type_id', '=', 'voucher_types.id')
-            ->select('sales.document_number', 'series.serie', 'voucher_types.description', 'sales.total')
+            ->select('sales.document_number', 'series.serie', 'voucher_types.description', 'sales.total', 'sales.total_discount')
             ->where('sales.state', 'ANULADO')
             ->get();
     }
-}

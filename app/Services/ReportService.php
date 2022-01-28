@@ -50,7 +50,7 @@ class ReportService
             ->join('voucher_types as vt', 'series.voucher_type_id', '=', 'vt.id')
             ->join('customers as cust', 's.customer_id', '=', 'cust.id')
             ->join('identification_documents as id', 'cust.identification_document_id', '=', 'id.id')
-            ->join('quotations as q', 's.id', '=', 'q.sale_id')
+            ->join('quotations as q', 's.id', '=', 'q.sale_id', 'left')
             ->select('s.*', 'series.serie', 'vt.description as voucher_type', 'cust.name as customer_name', 'cust.document as customer_document', 'id.description as customer_document_type')
             ->whereDate('s.created_at', '>=', $request['fromDate'])
             ->whereDate('s.created_at', '<=', $request['untilDate']);

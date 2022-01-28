@@ -88,7 +88,7 @@
                     <tfoot>
                         <tr>
                             <td class="text-right"> TOTAL: </td>
-                            <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('total') }}
+                            <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('total') - $occ->sales()->where('canceled', false)->sum('total_discount') }}
                             </td>
                         </tr>
                         <tr>
@@ -230,7 +230,7 @@
                             <td>{{ $sn->description }}</td>
                             <td>{{ $sn->serie }}</td>
                             <td>{{ $sn->document_number }}</td>
-                            <td>{{ $sn->total }}</td>
+                            <td>{{ $sn->total - $sn->total_discount }}</td>
                         </tr>
 
                     @endforeach
