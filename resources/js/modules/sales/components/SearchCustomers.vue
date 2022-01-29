@@ -90,6 +90,7 @@
             $errorsClassSquare(errors['customer.document']),
             'rounded-pill-left',
           ]"
+          v-model="customer.document"
           @keyup="searchDocument"
           @blur="toggle = false"
           @focus="toggle = true"

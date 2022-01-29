@@ -35,7 +35,7 @@ class PurchaseRequest extends FormRequest
             'voucherDetail.total' => 'numeric',
 
             'provider.identification_document_id' => 'required|exists:identification_documents,id',
-            'provider.document' => 'required|min:8|max:11',
+            'provider.document' => 'required|string',
             'provider.ubigee_id' => 'exists:ubigees,id',
             'provider.name' => 'required|string',
             'provider.phone' => 'max:20',

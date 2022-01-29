@@ -26,7 +26,7 @@ class CustomerRequest extends FormRequest
         return [
             'name' => 'required|string',
             'identification_document_id' => 'required|exists:identification_documents,id',
-            'document' => 'required|min:8|max:20|unique:customers,document',
+            'document' => 'required|string',
             'phone' => 'max:20',
             'email' => 'max:100',
         ];

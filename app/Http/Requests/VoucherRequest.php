@@ -54,7 +54,7 @@ class VoucherRequest extends FormRequest
             // Validar Cliente
 
             'customer.identification_document_id' => 'required|exists:identification_documents,id',
-            'customer.document' => 'required|min:8|max:11',
+            'customer.document' => 'required|string',
             'customer.name' => 'required|string',
 
             // Voucher detalle

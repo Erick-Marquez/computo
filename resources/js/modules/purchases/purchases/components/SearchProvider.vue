@@ -89,6 +89,7 @@
             'rounded-pill-left',
           ]"
           @keyup="searchDocument"
+          v-model="provider.document"
           @blur="toggle = false"
           @focus="toggle = true"
           autocomplete="nop"

@@ -10,8 +10,12 @@ class IdentificationDocument extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'description',
     ];
+
+    protected $keyType = 'String';
+    public $incrementing = false;
 
     public function customers()
     {

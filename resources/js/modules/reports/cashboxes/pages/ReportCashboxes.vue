@@ -52,7 +52,7 @@
                 <p class="lead">
                   Fecha: <b>{{ occ.opening_date }}</b>
                 </p>
-                <hr />
+                <hr />v-model="provider.document"
                 <p class="lead">
                   Monto: <b>{{ occ.opening_amount }}</b>
                 </p>

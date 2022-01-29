@@ -342,18 +342,7 @@ return [
                     'active' => ['cajas/detalle/*'],
                     'can' => 'cashboxes.index',
                 ],
-                [
-                    'text' => 'Egresos e Ingresos',
-                    'icon' => 'far fa-fw fa-circle',
-                    'route'  => 'web.egresos-ingresos',
-                    'can' => 'movements.index',
-                ],
-                [
-                    'text' => 'Por Pagar',
-                    'icon' => 'far fa-fw fa-circle',
-                    'route' => 'web.accounts-to-pay',
-                    'can' => 'accounts.index',
-                ]
+
             ],
         ],
 
@@ -402,6 +391,12 @@ return [
                     'active' => ['nueva-compra'],
                     'can' => 'purchases.index'
                 ],
+                [
+                    'text' => 'Por Pagar',
+                    'icon' => 'far fa-fw fa-circle',
+                    'route' => 'web.accounts-to-pay',
+                    'can' => 'accounts.index',
+                ]
             ],
         ],
 
@@ -528,7 +523,7 @@ return [
         [
             'text'    => 'Configuración',
             'icon'    => 'fas fa-fw fa-cogs',
-            // 'can'     => 'settings',
+            'can'     => 'settings',
             'submenu' => [
                 [
                     'text'   => 'Empresa',
@@ -565,6 +560,12 @@ return [
                     'icon'   => 'far fa-fw fa-circle',
                     'route'  => 'web.payment-types',
                     'can'    => 'payment-types.index',
+                ],
+                [
+                    'text' => 'Egresos e Ingresos Externos',
+                    'icon' => 'far fa-fw fa-circle',
+                    'route'  => 'web.egresos-ingresos',
+                    'can' => 'movements.index',
                 ],
             ],
         ],

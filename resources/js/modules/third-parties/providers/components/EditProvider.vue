@@ -87,6 +87,7 @@
             </div>
             <input
               v-else
+              v-model="provider.document"
               type="text"
               :class="$errorsClassSquare(errors['document'])"
             />

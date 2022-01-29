@@ -22,29 +22,29 @@ class RoleSeeder extends Seeder
         $role4 = Role::create(['name' => 'Cajero']);
 
         //Dashboard Permissions
-        Permission::create(['name' => 'dashboard', 'description' => 'Ver Dashboard'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'dashboard', 'description' => 'Ver Dashboard'])->syncRoles([$role1, $role2, $role4]);
 
         //Profile Permissions
         Permission::create(['name' => 'profile', 'description' => 'Ver Perfil'])->syncRoles([$role1]);
 
         //Sales Permissions
-        Permission::create(['name' => 'sales', 'description' => 'Ver Ventas'])->syncRoles([$role1]);
+        Permission::create(['name' => 'sales', 'description' => 'Ver Ventas'])->syncRoles([$role1, $role4]);
 
             //Vouchers Permissions
-            Permission::create(['name' => 'vouchers.index', 'description' => 'Ver Lista de Ventas'])->syncRoles([$role1]);
-            Permission::create(['name' => 'vouchers.create', 'description' => 'Crear Venta'])->syncRoles([$role1]);
+            Permission::create(['name' => 'vouchers.index', 'description' => 'Ver Lista de Ventas'])->syncRoles([$role1, $role4]);
+            Permission::create(['name' => 'vouchers.create', 'description' => 'Crear Venta'])->syncRoles([$role1, $role4]);
             Permission::create(['name' => 'vouchers.edit', 'description' => 'Editar Venta'])->syncRoles([$role1]);
             Permission::create(['name' => 'vouchers.destroy', 'description' => 'Eliminar Venta'])->syncRoles([$role1]);
 
             //Advance Payments Permissions
-            Permission::create(['name' => 'advance-payments.index', 'description' => 'Ver Lista de Anticipos'])->syncRoles([$role1]);
-            Permission::create(['name' => 'advance-payments.create', 'description' => 'Crear Anticipo'])->syncRoles([$role1]);
-            Permission::create(['name' => 'advance-payments.edit', 'description' => 'Editar Anticipo'])->syncRoles([$role1]);
-            Permission::create(['name' => 'advance-payments.destroy', 'description' => 'Eliminar Anticipo'])->syncRoles([$role1]);
+            Permission::create(['name' => 'advance-payments.index', 'description' => 'Ver Lista de Anticipos'])->syncRoles([$role1, $role4]);
+            Permission::create(['name' => 'advance-payments.create', 'description' => 'Crear Anticipo'])->syncRoles([$role1, $role4]);
+            Permission::create(['name' => 'advance-payments.edit', 'description' => 'Editar Anticipo'])->syncRoles([$role1, $role4]);
+            Permission::create(['name' => 'advance-payments.destroy', 'description' => 'Eliminar Anticipo'])->syncRoles([$role1, $role4]);
 
             //Credit Notes Permissions
-            Permission::create(['name' => 'credit-notes.index', 'description' => 'Ver Lista de Notas de Créditos'])->syncRoles([$role1]);
-            Permission::create(['name' => 'credit-notes.create', 'description' => 'Crear Nota de Crédito'])->syncRoles([$role1]);
+            Permission::create(['name' => 'credit-notes.index', 'description' => 'Ver Lista de Notas de Créditos'])->syncRoles([$role1, $role4]);
+            Permission::create(['name' => 'credit-notes.create', 'description' => 'Crear Nota de Crédito'])->syncRoles([$role1, $role4]);
             // Permission::create(['name' => 'credit-notes.edit', 'description' => 'Editar Nota de Crédito'])->syncRoles([$role1]);
             // Permission::create(['name' => 'credit-notes.destroy', 'description' => 'Eliminar Nota de Crédito'])->syncRoles([$role1]);
 

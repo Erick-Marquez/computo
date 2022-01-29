@@ -129,10 +129,10 @@
                 <td>{{ sale.quantity }}</td>
                 <td>{{ sale.discount }}</td>
                 <td>{{ sale.total_igv }}</td>
-                <td>{{ sale.subtotal }}</td>
+                <td>{{ sale.total_taxed }}</td>
                 <td>{{ sale.total_exonerated }}</td>
-                <td>{{ sale.total }}</td>
-                <td>{{ sale.series }}</td>
+                <td>{{ parseFloat(sale.total - sale.total_discount).toFixed(2) }}</td>
+                  <td>{{ sale.series }}</td>
               </tr>
             </tbody>
             <tbody v-else>

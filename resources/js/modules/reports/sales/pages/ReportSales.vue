@@ -129,12 +129,12 @@
                 <td>{{ sale.customer_document }}</td>
                 <td class="text-wrap">{{ sale.customer_name }}</td>
 
-                <td>{{ sale.subtotal }}</td>
+                <td>{{ sale.total_taxed }}</td>
                 <td>{{ sale.total_discount }}</td>
                 <td>{{ sale.total_igv }}</td>
                 <td>{{ sale.total_exonerated }}</td>
                 <td>{{ sale.total_unaffected }}</td>
-                <td>{{ sale.total }}</td>
+                <td>{{ parseFloat(sale.total - sale.total_discount).toFixed(2) }}</td>
                 <td>{{ sale.state }}</td>
               </tr>
             </tbody>
