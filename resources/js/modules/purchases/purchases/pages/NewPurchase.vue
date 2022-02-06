@@ -235,6 +235,18 @@
                     </td>
                   </tr>
                   <tr>
+                      <th>Total igv:</th>
+                      <td>
+                          {{ currencySymbol }}
+                          {{
+                              (newPurchase.voucherDetail.total_igv = parseFloat(
+                                  newPurchase.voucherDetail.total -
+                                  newPurchase.voucherDetail.subtotal
+                              ).toFixed(2))
+                          }}
+                      </td>
+                  </tr>
+                  <tr>
                     <th>Total:</th>
                     <td>
                       {{ currencySymbol }}
@@ -253,18 +265,7 @@
                       }}
                     </td>
                   </tr>
-                  <tr>
-                    <th>Total igv:</th>
-                    <td>
-                      {{ currencySymbol }}
-                      {{
-                        (newPurchase.voucherDetail.total_igv = parseFloat(
-                          newPurchase.voucherDetail.total -
-                            newPurchase.voucherDetail.subtotal
-                        ).toFixed(2))
-                      }}
-                    </td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>

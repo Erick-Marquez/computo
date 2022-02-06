@@ -41,6 +41,41 @@ class ReportService
         return $cashboxes;
     }
 
+    public static function movements($request)
+    {
+        $movements = DB::table('open_closed_cashbox_details as occd')
+
+            ->join('users as u', 'occd.user_id', '=', 'u.id', 'left')
+            ->join('open_closed_cashboxes as occ', 'occd.open_closed_cashbox_id', '=', 'occ.id')
+            ->join('cashboxes as c', 'occ.cashbox_id', '=', 'c.id')
+            ->join('payment_types as pt', 'occd.payment_type_id', '=', 'pt.id')
+            ->select('occd.id','occd.amount', 'occd.type', 'occd.observation', 'u.name as user_name', 'occd.created_at', 'pt.description as payment_type')
+            ->whereDate('occd.created_at', '>=', $request['fromDate'])
+            ->whereDate('occd.created_at', '<=', $request['untilDate']);
+
+        $movements = is_null($request['cashbox_id']) ? $movements : $movements->where('c.id', $request['cashbox_id']);
+        $movements = is_null($request['branch_id']) ? $movements : $movements->where('c.branch_id', $request['branch_id']);
+        $movements = is_null($request['movement_type']) ? $movements : $movements->where('occd.type', $request['movement_type']);
+
+        $movements = is_null($request['user_id']) ? $movements : $request['movement_type'] != 'REMUNERACION' ? $movements : $movements->where('occd.user_id', $request['user_id']);
+
+        $movements = $movements->get();
+
+        return $movements;
+    }
+
+    public static function series($request)
+    {
+        $series = DB::table('kardex as k')
+            ->join('branch_product as bp', 'k.branch_product_id', '=', 'bp.id')
+            ->join('products as p', 'bp.product_id', '=', 'p.id')
+            ->select(DB::raw("CONCAT('" . $request['serie'] . "', '') as serie"), 'p.slug as product', 'k.movement_type', 'k.document', 'k.date', 'k.description')
+            ->where('series', 'LIKE', '%' . $request['serie'] . '%')
+            ->get();
+
+        return $series;
+    }
+
     public static function sales($request)
     {
         $sales = DB::table('sales as s')

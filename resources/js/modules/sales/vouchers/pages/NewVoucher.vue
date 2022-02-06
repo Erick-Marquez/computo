@@ -944,6 +944,7 @@ export default {
       )
         .then((resp) => {
           let quotation = resp.data.data;
+          this.saleData.customer = quotation.customer
           this.saleData.voucher.quotation_id = Number(quotation.id);
           this.saleData.voucher.discount = Number(quotation.global_discount);
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);

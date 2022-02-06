@@ -73,14 +73,13 @@
               </option>
             </select>
           </div>
-
           <div v-if="movement.type == 'REMUNERACION'" class="form-group">
-            <label for="">Vendedor:</label>
+            <label for="">Personal:</label>
             <v-select
               class="style-chooser"
-              v-model="movement.seller"
+              v-model="movement.user_id"
               label="name"
-              :reduce="(seller) => seller.name"
+              :reduce="(seller) => seller.id"
               :options="sellers"
             >
               <template v-slot:no-options="{ search, searching }">

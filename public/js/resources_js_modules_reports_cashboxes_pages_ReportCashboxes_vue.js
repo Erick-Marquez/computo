@@ -360,7 +360,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "card-title"
 }, "Aperturas y Cierres"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-tools"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-flat btn-danger mr-2 rounded-pill\">\n          <i class=\"fas fa-file-excel\"></i> PDF\n        </button>\n        <button class=\"btn btn-flat bg-olive rounded-pill\">\n          <i class=\"fas fa-file-pdf\"></i> Excel\n        </button> ")])], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"btn btn-flat btn-danger mr-2 rounded-pill\">\r\n          <i class=\"fas fa-file-excel\"></i> PDF\r\n        </button>\r\n        <button class=\"btn btn-flat bg-olive rounded-pill\">\r\n          <i class=\"fas fa-file-pdf\"></i> Excel\r\n        </button> ")])], -1
 /* HOISTED */
 );
 
@@ -514,13 +514,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(occ.user_name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\n                      class=\"dropdown-item\"\n                      target=\"_blank\"\n                      :href=\"'/print/cashbox/report/' + occ.id\"\n                    >\n                      <i class=\"col-1 mr-3 fas fa-edit\"></i>\n                      General\n                    </a> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a\r\n                      class=\"dropdown-item\"\r\n                      target=\"_blank\"\r\n                      :href=\"'/print/cashbox/report/' + occ.id\"\r\n                    >\r\n                      <i class=\"col-1 mr-3 fas fa-edit\"></i>\r\n                      General\r\n                    </a> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       "class": "dropdown-item",
       target: "_blank",
       href: "/occ/report/".concat(occ.id)
     }, _hoisted_30, 8
     /* PROPS */
-    , _hoisted_27), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\n                          Eliminar\n                        </a> ")])])])]);
+    , _hoisted_27), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a class=\"dropdown-item\" href=\"#\">\r\n                          <i class=\"col-1 mr-3 fas fa-edit\"></i>\r\n                          Eliminar\r\n                        </a> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_31, _hoisted_33))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.card-body ")])], 64

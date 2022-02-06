@@ -91,16 +91,6 @@
                             <td class="text-center"> {{ $occ->sales()->where('canceled', false)->sum('total') - $occ->sales()->where('canceled', false)->sum('total_discount') }}
                             </td>
                         </tr>
-                        <tr>
-                            <td class="text-right"> SUBTOTAL: </td>
-                            <td class="text-center">
-                                {{ $occ->sales()->where('canceled', false)->sum('subtotal') }} </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right"> IGV: </td>
-                            <td class="text-center">
-                                {{ $occ->sales()->where('canceled', false)->sum('total_igv') }} </td>
-                        </tr>
                     </tfoot>
                 </table>
             </div>

@@ -309,7 +309,7 @@ class VoucherController extends Controller
     {
         $quotation = Quotation::where('document_number', $number)
             ->where('serie_id', $serie)
-            ->with('quotationDetails.branchProduct.product.brand', 'paymentTypes')
+            ->with('quotationDetails.branchProduct.product.brand', 'paymentTypes', 'customer')
             ->firstOrFail();
         return QuotationResource::make($quotation);
     }

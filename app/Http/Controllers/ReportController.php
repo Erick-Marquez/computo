@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MovementsExport;
 use App\Exports\ProductExport;
 use App\Exports\PurchaseExport;
+use App\Exports\SeriesExport;
 use App\Http\Requests\ReportRequest;
 use App\Models\Purchase;
 use Facade\FlareClient\Report;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use Barryvdh\DomPDF\PDF;
@@ -33,6 +36,18 @@ class ReportController extends Controller
     {
         $cashboxes = $this->reportService->cashboxes($request->all());
         return response()->json($cashboxes, 200);
+    }
+
+    public function movements(ReportRequest $request)
+    {
+        $movements = ReportService::movements($request->all());
+        return response()->json($movements, 200);
+    }
+
+    public function series(Request $request)
+    {
+        $series = ReportService::series($request->all());
+        return response()->json($series, 200);
     }
 
     public function sales(ReportRequest $request)
@@ -125,6 +140,38 @@ class ReportController extends Controller
         } else {
             $purchases = ReportService::purchases($filters);
             $pdf = \PDF::loadView('templates.pdf.reports.purchases', compact('filters', 'purchases'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
+
+    public function ReportMovements($type, $fromDate, $untilDate, $branch_id = null, $cashbox_id = null, $movement_type = null, $user_id = null)
+    {
+
+        $filters['fromDate'] = $fromDate;
+        $filters['untilDate'] = $untilDate;
+        $filters['branch_id'] = $branch_id == 'null' ? null : $branch_id;
+        $filters['cashbox_id'] = $cashbox_id == 'null' ? null : $cashbox_id;
+        $filters['movement_type'] = $movement_type == 'null' ? null : $movement_type;
+        $filters['user_id'] = $user_id == 'null' ? null : $user_id;
+
+        if ($type == 'excel') {
+            return Excel::download(new MovementsExport($filters), 'movements.xlsx');
+        } else {
+            $movements = ReportService::movements($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.movements', compact('filters', 'movements'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
+
+    public function reportSeries($type, $serie)
+    {
+        $filters['serie'] = $serie;
+
+        if ($type == 'excel') {
+            return Excel::download(new SeriesExport($filters), 'series.xlsx');
+        } else {
+            $series = ReportService::series($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.series', compact('filters', 'series'))->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
     }

@@ -6,7 +6,7 @@ use App\Services\ReportService;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class SalesExport implements FromView
+class SeriesExport implements FromView
 {
     public $filters;
 
@@ -17,8 +17,8 @@ class SalesExport implements FromView
 
     public function view(): View
     {
-        return view('templates.xlsx.sales', [
-            'sales' => ReportService::movements($this->filters)
+        return view('templates.xlsx.series', [
+            'series' => ReportService::series($this->filters)
         ]);
     }
 }

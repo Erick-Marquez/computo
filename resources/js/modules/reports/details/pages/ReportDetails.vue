@@ -21,7 +21,7 @@
           <v-select
             class="style-chooser"
             v-model="filters.product_id"
-            label="name"
+            label="slug"
             placeholder="TODOS"
             :reduce="(product) => product.id"
             :options="products"
@@ -192,6 +192,7 @@ export default {
       await BaseUrl.get(`/api/customers`)
         .then((response) => {
           this.customers = response.data.data;
+        this.customers.push({ name: "TODOS", id: null });
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -201,6 +202,7 @@ export default {
       await BaseUrl.get(`/api/products`)
         .then((response) => {
           this.products = response.data.data;
+            this.products.push({ slug: "TODOS", id: null });
         })
         .catch((error) => {
           console.log(error.response.data);

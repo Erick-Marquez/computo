@@ -15,6 +15,7 @@ class OpenClosedCashboxDetail extends Model
         'type',
         'open_closed_cashbox_id',
         'payment_type_id',
+        'user_id',
     ];
 
     public function openClosedCashbox()
@@ -30,5 +31,10 @@ class OpenClosedCashboxDetail extends Model
     public function paymentType()
     {
         return $this->belongsTo(PaymentType::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
