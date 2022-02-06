@@ -18,19 +18,23 @@
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Proveedor:</label>
-          <select
-            class="form-control rounded-pill"
-            v-model="filters.provider_id"
-          >
-            <option :value="null">TODOS</option>
-            <option
-              v-for="provider in providers"
-              :key="provider.id"
-              :value="provider.id"
+            <v-select
+                class="style-chooser"
+                v-model="filters.provider_id"
+                label="name"
+                placeholder="TODOS"
+                :reduce="(provider) => provider.id"
+                :options="providers"
             >
-              {{ provider.name }} - {{ provider.document }}
-            </option>
-          </select>
+                <template v-slot:no-options="{ search, searching }">
+                    <template v-if="searching">
+                        No se encontraron resultados para
+                        <b
+                        ><em>{{ search }}</em></b
+                        >.
+                    </template>
+                </template>
+            </v-select>
         </div>
       </div>
     </filters>
@@ -162,6 +166,8 @@ export default {
       await BaseUrl.get(`/api/providers`)
         .then((response) => {
           this.providers = response.data.data;
+            this.providers.push({ name: "TODOS", id: null });
+
         })
         .catch((error) => {
           console.log(error.response.data);

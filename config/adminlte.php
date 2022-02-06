@@ -339,12 +339,12 @@ return [
                     'active' => ['cajas/detalle/*'],
                     'can' => 'cashboxes.index',
                 ],
-                [
-                    'text' => 'Egresos e Ingresos',
-                    'icon' => 'far fa-fw fa-circle',
-                    'route'  => 'web.egresos-ingresos',
-                    'can' => 'movements.index',
-                ],
+                // [
+                //     'text' => 'Egresos e Ingresos',
+                //     'icon' => 'far fa-fw fa-circle',
+                //     'route'  => 'web.egresos-ingresos',
+                //     'can' => 'movements.index',
+                // ],
                 [
                     'text' => 'Por Pagar',
                     'icon' => 'far fa-fw fa-circle',

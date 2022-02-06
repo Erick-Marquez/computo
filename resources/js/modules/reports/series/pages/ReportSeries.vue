@@ -1,13 +1,11 @@
 <template>
-  <form action="" @submit.prevent="generateReportSalesDetails()">
+  <form action="" @submit.prevent="generateReportSeries()">
     <div class="card mb-4">
       <div class="card-body">
         <div class="row">
           <div class="col-md">
             <div class="form-group">
               <label class="lead" for="">Series: </label>
-
-              {{ filters.serie }}
               <v-select
                 v-model="filters.serie"
                 :filterable="false"
@@ -42,10 +40,70 @@
     </div>
   </form>
 
-  <!-- tabla de reportes de Ventas -->
-  <div class="card">
+    <!-- tabla de reportes de Ventas -->
+    <div class="card">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Reporte de Serie</h3>
+                <div class="card-tools" v-show="serieMovements.length >= 1">
+                    <a
+                        :href="`/reports/series/pdf/${filters.serie}`"
+                        target="_blank"
+                        class="btn btn-flat btn-danger mr-2 rounded-pill"
+                    >
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                    <a
+                        class="btn btn-flat bg-olive rounded-pill"
+                        target="_blank"
+                        :href="`/reports/series/excel/${filters.serie}`"
+                    >
+                        <i class="fas fa-file-excel"></i> Excel
+                    </a>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table
+                        class="table table-hover table-bordered text-nowrap text-center"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Serie</th>
+                                <th>Producto</th>
+                                <th>Tipo de movimiento</th>
+                                <th>Descripción</th>
+                                <th>Documento</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
 
-  </div>
+                        <tbody v-if="serieMovements.length >= 1">
+                            <tr v-for="serie in serieMovements" :key="serie.id">
+                                <td>{{ serie.serie }}</td>
+                                <td>{{ serie.product }}</td>
+                                <td>{{ serie.movement_type }}</td>
+                                <td>{{ serie.description }}</td>
+                                <td>{{ serie.document }}</td>
+                                <td>{{ serie.date }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                        <tr>
+                            <td colspan="5">
+                                <p class="lead">
+                                    <b>No existen Registros las fechas seleccionadas </b>
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
 </template>
 
 <script>
@@ -57,14 +115,9 @@ export default {
   data() {
     return {
       filters: {
-        branch_id: null,
-        fromDate: null,
-        untilDate: null,
-        voucher_type_id: null,
-        customer_id: null,
-        product_id: null,
+        serie: null,
       },
-
+      serieMovements: [],
       series: [],
 
       //Vue select
@@ -76,11 +129,11 @@ export default {
   mounted() {
   },
   methods: {
-    async generateReportSalesDetails() {
-      await BaseUrl.post(`/api/reports/details`, this.filters)
+    async generateReportSeries() {
+      await BaseUrl.post(`/api/reports/series`, this.filters)
         .then((response) => {
           console.log(response.data);
-          this.sales_details = response.data;
+          this.serieMovements = response.data;
         })
         .catch((error) => {
           console.log(error.response.data);

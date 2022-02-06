@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\MovementsExport;
 use App\Exports\ProductExport;
 use App\Exports\PurchaseExport;
+use App\Exports\SeriesExport;
 use App\Http\Requests\ReportRequest;
 use App\Models\Purchase;
 use Facade\FlareClient\Report;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use Barryvdh\DomPDF\PDF;
@@ -42,9 +44,9 @@ class ReportController extends Controller
         return response()->json($movements, 200);
     }
 
-    public function series(ReportRequest $request)
+    public function series(Request $request)
     {
-        $series = $this->reportService->series($request->all());
+        $series = ReportService::series($request->all());
         return response()->json($series, 200);
     }
 
@@ -157,6 +159,19 @@ class ReportController extends Controller
         } else {
             $movements = ReportService::movements($filters);
             $pdf = \PDF::loadView('templates.pdf.reports.movements', compact('filters', 'movements'))->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        }
+    }
+
+    public function reportSeries($type, $serie)
+    {
+        $filters['serie'] = $serie;
+
+        if ($type == 'excel') {
+            return Excel::download(new SeriesExport($filters), 'series.xlsx');
+        } else {
+            $series = ReportService::series($filters);
+            $pdf = \PDF::loadView('templates.pdf.reports.series', compact('filters', 'series'))->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
     }

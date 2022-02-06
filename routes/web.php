@@ -177,5 +177,6 @@ Route::get('reports/products/{type}/{branch_id?}', [ReportController::class, 're
 Route::get('reports/sales/{type}/{fromDate}/{untilDate}/{branch_id?}/{customer_id?}/{voucher_type_id?}/{seller_id?}', [ReportController::class, 'reportSales']);
 Route::get('reports/movements/{type}/{fromDate}/{untilDate}/{branch_id?}/{cashbox_id?}/{movement_type?}/{user_id?}', [ReportController::class, 'reportMovements']);
 Route::get('reports/purchases/{type}/{fromDate}/{untilDate}/{branch_id?}/{provider_id?}/{document_type?}', [ReportController::class, 'reportPurchases']);
+Route::get('reports/series/{type}/{serie}', [ReportController::class, 'reportSeries']);
 
 Route::get('/print/movement/{occd_id}', [OpenClosedCashboxDetailController::class, 'printDetail']);

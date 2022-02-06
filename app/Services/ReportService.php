@@ -64,21 +64,16 @@ class ReportService
         return $movements;
     }
 
-    public function series($request)
+    public static function series($request)
     {
-        $cashboxes = DB::table('open_closed_cashboxes as occ')
-            ->join('cashboxes as c', 'occ.cashbox_id', '=', 'c.id')
-            ->join('users as u', 'occ.user_id', '=', 'u.id')
-            ->select('occ.id', 'occ.opening_date', 'occ.opening_amount', 'occ.closing_date', 'occ.closing_amount', 'c.description as cashbox_name', 'u.name as user_name')
-            ->whereDate('occ.opening_date', '>=', $request['fromDate'])
-            ->whereDate('occ.opening_date', '<=', $request['untilDate']);
+        $series = DB::table('kardex as k')
+            ->join('branch_product as bp', 'k.branch_product_id', '=', 'bp.id')
+            ->join('products as p', 'bp.product_id', '=', 'p.id')
+            ->select(DB::raw("CONCAT('" . $request['serie'] . "', '') as serie"), 'p.slug as product', 'k.movement_type', 'k.document', 'k.date', 'k.description')
+            ->where('series', 'LIKE', '%' . $request['serie'] . '%')
+            ->get();
 
-        $cashboxes = is_null($request['cashbox_id']) ? $cashboxes : $cashboxes->where('c.id', $request['cashbox_id']);
-        $cashboxes = is_null($request['branch_id']) ? $cashboxes : $cashboxes->where('c.branch_id', $request['branch_id']);
-
-        $cashboxes = $cashboxes->get();
-
-        return $cashboxes;
+        return $series;
     }
 
     public static function sales($request)
