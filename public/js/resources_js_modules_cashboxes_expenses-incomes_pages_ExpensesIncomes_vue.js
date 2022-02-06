@@ -439,7 +439,7 @@ var _hoisted_17 = {
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Vendedor:", -1
+}, "Personal:", -1
 /* HOISTED */
 );
 
@@ -547,13 +547,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $props.movement.payment_type_id]])]), $props.movement.type == 'REMUNERACION' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     "class": "style-chooser",
-    modelValue: $props.movement.seller,
+    modelValue: $props.movement.user_id,
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $props.movement.seller = $event;
+      return $props.movement.user_id = $event;
     }),
     label: "name",
     reduce: function reduce(seller) {
-      return seller.name;
+      return seller.id;
     },
     options: $data.sellers
   }, {

@@ -178,13 +178,13 @@ class OpenClosedCashbox extends Model
     {
         $expenses = $this->openClosedCashboxDetails()
             ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
-            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
+            ->select('open_closed_cashbox_details.id', 'open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
             ->where('type', 'EGRESO')
             ->get();
 
         $remunerations = $this->openClosedCashboxDetails()
             ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
-            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'payment_types.description as payment_type')
+            ->select('open_closed_cashbox_details.id', 'open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'payment_types.description as payment_type')
             ->where('type', 'REMUNERACION')
             ->get()
             ->each(function ($item, $key) {
@@ -207,7 +207,7 @@ class OpenClosedCashbox extends Model
     {
         $incomes = $this->openClosedCashboxDetails()
             ->join('payment_types', 'open_closed_cashbox_details.payment_type_id', '=', 'payment_types.id')
-            ->select('open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
+            ->select('open_closed_cashbox_details.id', 'open_closed_cashbox_details.created_at as date', 'open_closed_cashbox_details.observation', 'open_closed_cashbox_details.amount', 'open_closed_cashbox_details.type as concept', 'payment_types.description as payment_type')
             ->where('type', 'INGRESO')
             ->get();
 
@@ -231,3 +231,4 @@ class OpenClosedCashbox extends Model
             ->where('sales.state', 'ANULADO')
             ->get();
     }
+}

@@ -30,6 +30,12 @@ class CreateOpenClosedCashboxDetailsTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('SET NULL');
 
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('SET NULL');
+
             $table->timestamps();
         });
     }

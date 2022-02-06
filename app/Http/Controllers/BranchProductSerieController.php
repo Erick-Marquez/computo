@@ -17,24 +17,25 @@ class BranchProductSerieController extends Controller
      */
     public function index()
     {
+        # ?? xd
         $products = Product::where('manager_series', true)
-                            ->withCount([
-                                'branchProducts', 
-                                'branchProductSeries as branchProductSerieAvailables' => function ($query){
-                                    $query->where('sold', false);
-                                },
-                                'branchProductSeries as branchProductSerieSolds' => function ($query){
-                                    $query->where('sold', true);
-                                },
-                            ])
-                            ->with([
-                                'branchProducts' => function ($query){
-                                    $query->withCount('branchProductSeries');
-                                },
-                                'branchProducts.branch',
-                                'brand'
-                            ])
-                            ->get();
+            ->withCount([
+                'branchProducts',
+                'branchProductSeries as branchProductSerieAvailables' => function ($query) {
+                    $query->where('sold', false);
+                },
+                'branchProductSeries as branchProductSerieSolds' => function ($query) {
+                    $query->where('sold', true);
+                },
+            ])
+            ->with([
+                'branchProducts' => function ($query) {
+                    $query->withCount('branchProductSeries');
+                },
+                'branchProducts.branch',
+                'brand'
+            ])
+            ->get();
         return BranchProductSerieResource::collection($products);
     }
 
@@ -102,5 +103,13 @@ class BranchProductSerieController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAllSeries($serie)
+    {
+        $series = BranchProductSerie::where('serie', 'LIKE', '%' . $serie . '%')
+            ->get();
+
+        return BranchProductSerieResource::collection($series);
     }
 }

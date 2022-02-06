@@ -464,11 +464,11 @@ return [
                     'route'  => 'web.reports.products',
                     'can'     => 'report.products',
                 ],
-                // [
-                //     'text' => 'Reporte de Series',
-                //     'icon' => 'far fa-fw fa-circle',
-                //     'route'  => 'web.reports.series',
-                // ],
+                [
+                    'text' => 'Reporte de Series',
+                    'icon' => 'far fa-fw fa-circle',
+                    'route'  => 'web.reports.series',
+                ],
                 [
                     'text' => 'Reporte de Compras',
                     'icon' => 'far fa-fw fa-circle',
@@ -481,11 +481,11 @@ return [
                     'route'  => 'web.reports.cashboxes',
                     'can'     => 'report.cashboxes',
                 ],
-                // [
-                //     'text' => 'Reporte de Movimientos',
-                //     'icon' => 'far fa-fw fa-circle',
-                //     'route'  => 'web.reports.expenses-incomes',
-                // ],
+                [
+                    'text' => 'Reporte de Movimientos',
+                    'icon' => 'far fa-fw fa-circle',
+                    'route'  => 'web.reports.expenses-incomes',
+                ],
                 [
                     'text' => 'Reporte Detallado',
                     'icon' => 'far fa-fw fa-circle',

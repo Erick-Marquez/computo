@@ -153,17 +153,7 @@ class CashboxController extends Controller
             'payment_type_id' => 'required'
         ]);
 
-        $data['type'] = $request->type;
-        $data['amount'] = $request->amount;
-        $data['payment_type_id'] = $request->payment_type_id;
-
-        if ($data['type'] == 'REMUNERACION') {
-            $data['observation'] = $request->seller . ' - ' . $request->observation;
-        } else {
-            $data['observation'] = $request->observation;
-        }
-
-        return $this->cashboxService->movement($id, $data);
+        return $this->cashboxService->movement($id, $request->all());
     }
 
     public function reportCashboxOpenClosed($occId)

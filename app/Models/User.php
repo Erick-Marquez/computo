@@ -36,7 +36,7 @@ class User extends Authenticatable
         'email',
         'password',
         'open_closed_cashbox_id',
-        'branch_id'
+        'branch_id',
     ];
 
     /**

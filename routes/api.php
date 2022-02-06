@@ -147,6 +147,7 @@ Route::middleware([
 
     //Product-Series
     Route::get('productseries', [BranchProductSerieController::class, 'index'])->name('api.product-series.index');
+    Route::get('productseries/all/{serie?}', [BranchProductSerieController::class, 'getAllSeries'])->name('api.product-series-all.index');
 
     Route::apiResource('assemblies', AssemblyController::class)->names('api.assemblies');
 
@@ -204,6 +205,8 @@ Route::middleware([
     // reports
     route::post('reports/purchases', [ReportController::class, 'purchases'])->name('api.reports.purchases');
     route::post('reports/cashboxes', [ReportController::class, 'cashboxes'])->name('api.reports.cashboxes');
+    route::post('reports/movements', [ReportController::class, 'movements'])->name('api.reports.movements');
+    route::post('reports/series', [ReportController::class, 'series'])->name('api.reports.series');
     route::post('reports/sales', [ReportController::class, 'sales'])->name('api.reports.sales');
     route::post('reports/products', [ReportController::class, 'products'])->name('api.reports.products');
     route::post('reports/inventory', [ReportController::class, 'inventory'])->name('api.reports.inventory');

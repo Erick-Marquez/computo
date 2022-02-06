@@ -1,10 +1,13 @@
 <template>
-  <form action="" @submit.prevent="generateReportCashboxes()">
+  <form action="" @submit.prevent="generateReportMovements()">
     <filters :filters="filters" v-on:changeBranch="getCashboxes()">
       <div class="col-md">
         <div class="form-group">
           <label class="lead" for="">Caja:</label>
-          <select class="form-control rounded-pill" v-model="filters.cashbox_id">
+          <select
+            class="form-control rounded-pill"
+            v-model="filters.cashbox_id"
+          >
             <option :value="null">TODOS</option>
             <option
               v-for="cashbox in cashboxes"
@@ -16,20 +19,66 @@
           </select>
         </div>
       </div>
+
+      <div class="col-md">
+        <div class="form-group">
+          <label class="lead" for="">Tipo de movimiento:</label>
+          <select
+            class="form-control rounded-pill"
+            v-model="filters.movement_type"
+            @change="changeMovementType"
+          >
+            <option :value="null">TODOS</option>
+            <option value="EGRESO">EGRESO</option>
+            <option value="INGRESO">INGRESO</option>
+            <option value="REMUNERACION">REMUNERACIÓN</option>
+          </select>
+        </div>
+      </div>
+      <div v-if="filters.movement_type == 'REMUNERACION'" class="col-md">
+        <div class="form-group">
+          <label class="lead" for="">Personal:</label>
+          <v-select
+            class="style-chooser"
+            v-model="filters.user_id"
+            placeholder="TODOS"
+            label="name"
+            :reduce="(seller) => seller.id"
+            :options="sellers"
+          >
+            <template v-slot:no-options="{ search, searching }">
+              <template v-if="searching">
+                No se encontraron resultados para
+                <b
+                  ><em>{{ search }}</em></b
+                >.
+              </template>
+            </template>
+          </v-select>
+        </div>
+      </div>
     </filters>
   </form>
 
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Aperturas y Cierres</h3>
-      <div class="card-tools">
-        <!-- <button class="btn btn-flat btn-danger mr-2 rounded-pill">
-          <i class="fas fa-file-excel"></i> PDF
-        </button>
-        <button class="btn btn-flat bg-olive rounded-pill">
-          <i class="fas fa-file-pdf"></i> Excel
-        </button> -->
-      </div>
+      <div class="card-tools" v-show="movements.length >= 1">
+          <a
+            :href="`/reports/movements/pdf/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.cashbox_id}/${filters.movement_type}/${filters.user_id}`"
+            target="_blank"
+            class="btn btn-flat btn-danger mr-2 rounded-pill"
+          >
+            <i class="fas fa-file-pdf"></i> PDF
+          </a>
+          <a
+            class="btn btn-flat bg-olive rounded-pill"
+            target="_blank"
+            :href="`/reports/movements/excel/${filters.fromDate}/${filters.untilDate}/${filters.branch_id}/${filters.cashbox_id}/${filters.movement_type}/${filters.user_id}`"
+          >
+            <i class="fas fa-file-excel"></i> Excel
+          </a>
+        </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0">
@@ -37,67 +86,32 @@
         <table class="table table-hover text-nowrap">
           <thead>
             <tr>
-              <th>Caja</th>
-              <th>Apertura</th>
-              <th>Cierre</th>
-              <th>Usuario</th>
-              <th>Acciones</th>
+              <th>Fecha y Hora</th>
+              <th>Concepto</th>
+              <th>Tipo de pago</th>
+              <th>Observación</th>
+              <th>Monto</th>
+              <th>Print</th>
             </tr>
           </thead>
 
-          <tbody v-if="openClosedCashboxes.length >= 1">
-            <tr v-for="occ in openClosedCashboxes" :key="occ.id">
-              <td>{{ occ.cashbox_name }}</td>
+          <tbody v-if="movements.length >= 1">
+            <tr v-for="mov in movements" :key="mov.id">
+              <td>{{ mov.created_at }}</td>
+              <td>{{ mov.type }}</td>
+              <td>{{ mov.payment_type }}</td>
+              <td>{{ mov.observation }}</td>
+              <td>{{ mov.amount }}</td>
               <td>
-                <p class="lead">
-                  Fecha: <b>{{ occ.opening_date }}</b>
-                </p>
-                <hr />
-                <p class="lead">
-                  Monto: <b>{{ occ.opening_amount }}</b>
-                </p>
-              </td>
-              <td>
-                <p class="lead">
-                  Fecha: <b>{{ occ.closing_date }}</b>
-                </p>
-                <hr />
-                <p class="lead">
-                  Monto: <b>{{ occ.closing_amount }}</b>
-                </p>
-              </td>
-              <td>{{ occ.user_name}}</td>
-              <td>
-                <div class="dropdown">
-                  <button
-                    class="btn btn-danger dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Acciones
-                  </button>
-                  <div
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                    style=""
-                  >
-                    <a
-                      class="dropdown-item"
-                      target="_blank"
-                      :href="'/print/cashbox/report/' + occ.id"
-                    >
-                      <i class="col-1 mr-3 fas fa-edit"></i>
-                      PDF
-                    </a>
-                    <!-- <a class="dropdown-item" href="#">
-                          <i class="col-1 mr-3 fas fa-edit"></i>
-                          Eliminar
-                        </a> -->
-                  </div>
-                </div>
+                <a
+                  class="btn btn-flat btn-default"
+                  target="_blank"
+                  :href="`/print/movement/${mov.id}`"
+                >
+                  <span class="text-success"
+                    ><i class="fas fa-file-alt"></i
+                  ></span>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -133,18 +147,26 @@ export default {
         fromDate: null,
         untilDate: null,
         cashbox_id: null,
+        user_id: null,
+        movement_type: null,
       },
 
+      sellers: [],
       cashboxes: [],
-      openClosedCashboxes: [],
+      movements: [],
     };
   },
   mounted() {
     this.getCashboxes();
+    this.getSellers();
   },
   methods: {
     async getCashboxes() {
-      await BaseUrl.get(`/api/cajas?filter[branch_id]=${this.filters.branch_id == null ? '' : this.filters.branch_id}`)
+      await BaseUrl.get(
+        `/api/cajas?filter[branch_id]=${
+          this.filters.branch_id == null ? "" : this.filters.branch_id
+        }`
+      )
         .then((response) => {
           this.cashboxes = response.data.data;
         })
@@ -152,19 +174,29 @@ export default {
           console.log(error.response.data);
         });
     },
-    async generateReportCashboxes() {
-      await BaseUrl.post(`/api/reports/cashboxes`, this.filters)
+    async generateReportMovements() {
+      await BaseUrl.post(`/api/reports/movements`, this.filters)
         .then((response) => {
-          this.openClosedCashboxes = response.data;
-          console.log(this.openClosedCashboxes);
+          this.movements = response.data;
         })
         .catch((error) => {
           console.log(error.response.data);
         });
     },
-    doSomething() {
-        console.log('algo');
-    }
+    async getSellers() {
+      await BaseUrl.get(`/api/users`)
+        .then((response) => {
+          this.sellers = response.data.data;
+          this.sellers.push({ name: "TODOS", id: null });
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    },
+
+    changeMovementType() {
+      this.filters.user_id = null;
+    },
   },
   computed: {},
 };

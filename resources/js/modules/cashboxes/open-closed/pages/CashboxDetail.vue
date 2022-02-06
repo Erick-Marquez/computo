@@ -157,6 +157,7 @@
             <th>Tipo de Pago</th>
             <th>Observación</th>
             <th>Monto</th>
+            <th>Print</th>
           </tr>
         </thead>
         <tbody>
@@ -171,6 +172,11 @@
             <td>{{ movement.payment_type }}</td>
             <td>{{ movement.observation }}</td>
             <td>{{ movement.amount }}</td>
+            <td>
+                <a v-if="movement.id != undefined" class="btn btn-flat btn-default" target="_blank" :href="`/print/movement/${movement.id}`">
+                    <span class="text-success"><i class="fas fa-file-alt"></i></span>
+                </a>
+            </td>
           </tr>
         </tbody>
         <tfoot>
