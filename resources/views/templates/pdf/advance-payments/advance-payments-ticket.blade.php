@@ -65,6 +65,9 @@
                 <td><span class="bold">{{ $advancePayment->quotation->customer->identificationDocument->description }}:  </span>{{ $advancePayment->quotation->customer->document }}</td>
             </tr>
             <tr>
+                <td><span class="bold">Telf.: </span>{{ $advancePayment->quotation->customer->phone }}</td>
+            </tr>
+            <tr>
                 <td><span class="bold">Direc.: </span>{{ $advancePayment->quotation->customer->address }}</td>
             </tr>
         </tbody>
