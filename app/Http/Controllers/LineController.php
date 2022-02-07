@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LineRequest;
 use App\Http\Resources\LineResource;
 use App\Models\Line;
 use Illuminate\Http\Request;
@@ -28,12 +29,8 @@ class LineController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LineRequest $request)
     {
-        $request->validate([
-            'description' => 'required',
-            'family_id' => 'required'
-        ]);
 
         $line = line::create([
             'cod' => $request->cod,

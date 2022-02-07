@@ -101,7 +101,10 @@
 
                 <div class="form-group">
                     <label for="name">Descripción</label>
-                    <input type="text" class="form-control" v-model="line.description" required>
+                    <input type="text" :class="'form-control' + (errors['description'] == null ? '' : ' is-invalid')" v-model="line.description" required>
+                    <div class="invalid-feedback" v-if="errors['description']">
+                        {{ errors["description"][0] }}
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -113,6 +116,9 @@
                             </template>
                         </template>
                     </v-select>
+                    <div class="invalid-feedback" v-if="errors['family_id']">
+                        {{ errors["family_id"][0] }}
+                    </div>
                 </div>
 
             </div>
@@ -200,6 +206,7 @@ export default {
                 description: '',
                 family_id: '',
             },
+            errors: {},
             lineEdit: {
                 id: '',
                 cod: '',
@@ -252,6 +259,8 @@ export default {
                 Swal.fire("Creado", "La linea ha sido creada", "success");
             })
             .catch((error) => {
+
+                this.errors = error.response.data.errors
                 console.log(error.response);
             }).finally(() => {
                 this.loading = false;

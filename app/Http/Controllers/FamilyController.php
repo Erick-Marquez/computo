@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FamilyRequest;
 use App\Http\Resources\FamilyResource;
 use Illuminate\Http\Request;
 use App\Models\Family;
@@ -25,12 +26,8 @@ class FamilyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FamilyRequest $request)
     {
-        $request->validate([
-            'description' => 'required'
-        ]);
-
         $family = Family::create([
             'cod' => $request->cod,
             'description' => $request->description,

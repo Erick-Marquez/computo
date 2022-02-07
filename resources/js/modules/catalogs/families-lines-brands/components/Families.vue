@@ -90,8 +90,11 @@
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="family.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" :class="'form-control' + (errors['description'] == null ? '' : ' is-invalid')" v-model="family.description" required>
+                    <div class="invalid-feedback" v-if="errors['description']">
+                        {{ errors["description"][0] }}
+                    </div>
                 </div>
 
             </div>
@@ -166,6 +169,7 @@ export default {
             cod: '',
             description: '',
         },
+        errors: {},
         familyEdit: {
             id: '',
             cod: '',
@@ -213,7 +217,8 @@ export default {
                 this.$emit("getFamilies")
             })
             .catch((error) => {
-                console.log(error)
+                this.errors = error.response.data.errors
+                console.log(error.response)
             })
             .finally(() => {
                 this.loading = false

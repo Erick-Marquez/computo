@@ -110,8 +110,11 @@
                 </div>
 
                 <div class="form-group">
-                <label for="name">Descripción</label>
-                <input type="text" class="form-control" v-model="brand.description" required>
+                    <label for="name">Descripción</label>
+                    <input type="text" :class="'form-control' + (errors['description'] == null ? '' : ' is-invalid')" v-model="brand.description" required>
+                    <div class="invalid-feedback" v-if="errors['description']">
+                        {{ errors["description"][0] }}
+                    </div>
                 </div>
 
             </div>
@@ -190,6 +193,7 @@ export default {
                 cod: '',
                 description: '',
             },
+            errors: {},
             brandEdit: {
                 id: '',
                 cod: '',
@@ -249,7 +253,8 @@ export default {
                 this.$emit("getBrands")
             })
             .catch((error) => {
-                console.log(error)
+                this.errors = error.response.data.errors
+                console.log(error.response)
             }).finally(() => {
                 this.loading = false
             });
