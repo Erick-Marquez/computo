@@ -33,7 +33,7 @@ class QuotationController extends Controller
     {
         $availableQuotations = Quotation::where('date_due', '>', Carbon::now())
             ->doesnthave('sale')
-            ->with('customer', 'user','serie', 'paymentTypes')
+            ->with('customer.identificationDocument', 'user','serie', 'paymentTypes')
             ->withCount('sale')
             ->latest()
             ->paginate(intVal(request('perPage')));
@@ -50,7 +50,7 @@ class QuotationController extends Controller
     {
         $unavailableQuotations = Quotation::has('sale')
             ->orWhere('date_due', '<', Carbon::now())
-            ->with('customer', 'user','serie')
+            ->with('customer.identificationDocument', 'user','serie')
             ->withCount('sale')
             ->latest()
             ->paginate(intVal(request('perPage')));

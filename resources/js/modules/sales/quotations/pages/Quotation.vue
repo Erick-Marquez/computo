@@ -59,7 +59,7 @@
                     <td class="align-middle text-center">{{availableQuotation.serie.serie}}-{{ availableQuotation.document_number }}</td>
                     <td class="align-middle text-center">{{ availableQuotation.user.name }}</td>
                     <td class="align-middle">
-                      <span class="badge bg-maroon">{{ availableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ availableQuotation.customer.document }}
+                      <span class="badge bg-maroon">{{ availableQuotation.customer.identification_document.description }}</span> {{ availableQuotation.customer.document }}
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ availableQuotation.customer.name }}
                     </td>
@@ -187,7 +187,7 @@
                     <td class="align-middle text-center">{{unavailableQuotation.serie.serie}}-{{ unavailableQuotation.document_number }}</td>
                     <td class="align-middle text-center">{{ unavailableQuotation.user.name }}</td>
                     <td class="align-middle">
-                      <span class="badge bg-maroon">{{ unavailableQuotation.customer.identification_document_id = 6 ? "RUC:" : "DNI:" }}</span> {{ unavailableQuotation.customer.document }}
+                      <span class="badge bg-maroon">{{ unavailableQuotation.customer.identification_document.description }}</span> {{ unavailableQuotation.customer.document }}
                       <br>
                       <span class="badge bg-maroon">Nombre:</span> {{ unavailableQuotation.customer.name }}
                     </td>

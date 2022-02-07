@@ -943,14 +943,17 @@ export default {
         `api/sales/quotation/${this.quotationSerieSelect}/${this.numberQuotation}`
       )
         .then((resp) => {
-          let quotation = resp.data.data;
+          let quotation = resp.data.data
           this.saleData.customer = quotation.customer
+          if (quotation.customer != "1") {
+            this.saleData.voucher.document_type = 2
+            this.loadSeries()
+          }
           this.saleData.voucher.quotation_id = Number(quotation.id);
           this.saleData.voucher.discount = Number(quotation.global_discount);
           this.saleData.voucher.warranty = Boolean(quotation.have_warranty);
           this.saleData.voucher.observation = quotation.observation;
-          this.saleData.voucher.isMultiPayment =
-            quotation.payment_types.length > 0 ? true : false;
+          this.saleData.voucher.isMultiPayment = quotation.payment_types.length > 0 ? true : false;
           if (this.saleData.voucher.isMultiPayment) {
             this.saleData.voucher.payments = [];
             quotation.payment_types.forEach((e) => {
