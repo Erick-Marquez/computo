@@ -31,12 +31,11 @@
           <tr v-for="(product, index) in products" :key="product.id">
             <td class="px-1">
               {{ product.name }}
-              <p v-if="$errorsExists(errors[`products.${index}.series`])" class="text-danger text-sm">
-                {{
-                  $errorsPrint(
-                    errors[`products.${index}.series`]
-                  )
-                }}
+              <p
+                v-if="$errorsExists(errors[`products.${index}.series`])"
+                class="text-danger text-sm"
+              >
+                {{ $errorsPrint(errors[`products.${index}.series`]) }}
                 <i class="fas fa-exclamation-circle"></i>
               </p>
             </td>
@@ -50,27 +49,17 @@
             <td class="px-1">
               <input
                 :class="[
-                  $errorsClassSquare(
-                    errors[`products.${index}.quantity`]
-                  ),
+                  $errorsClassSquare(errors[`products.${index}.quantity`]),
                   'form-control-border p-0 text-center',
                 ]"
                 type="text"
                 v-model="product.quantity"
               />
               <div
-                v-if="
-                  $errorsExists(
-                    errors[`products.${index}.quantity`]
-                  )
-                "
+                v-if="$errorsExists(errors[`products.${index}.quantity`])"
                 class="invalid-feedback"
               >
-                {{
-                  $errorsPrint(
-                    errors[`products.${index}.quantity`]
-                  )
-                }}
+                {{ $errorsPrint(errors[`products.${index}.quantity`]) }}
               </div>
             </td>
             <td class="px-1">
@@ -177,17 +166,33 @@
           </button>
         </div>
         <div class="modal-body">
+
+
           <div
             v-for="(serie, serieIndex) in Number(quantity)"
             :key="serie.id"
             class="form-group"
           >
             <input
-              class="form-control"
+              :class="[$errorsClassSquare(errors[`products.${index}.series.${serieIndex}`]) ,'series-enter']"
               type="text"
-              @keydown.enter.prevent=""
+              @keydown.enter.prevent="serieEnter(serieIndex)"
               v-model="products[index].series[serieIndex]"
             />
+            <div
+                v-if="
+                  $errorsExists(
+                    errors[`products.${index}.series.${serieIndex}`]
+                  )
+                "
+                class="invalid-feedback"
+              >
+                {{
+                  $errorsPrint(
+                    errors[`products.${index}.series.${serieIndex}`]
+                  )
+                }}
+              </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -230,6 +235,12 @@ export default {
       this.index = null;
       this.quantity = null;
       $("#modal-series").modal("hide");
+    },
+    serieEnter(index) {
+      let series = document.getElementsByClassName("series-enter");
+      if (series.length != index + 1) {
+        series[index + 1].focus();
+      }
     },
   },
 };

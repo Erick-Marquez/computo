@@ -364,7 +364,6 @@ export default {
           this.disabled = false;
           console.log(error.response.data);
           this.errors = error.response.data.errors;
-          console.log(this.errors);
         });
     },
     async getCurrencyExchange() {

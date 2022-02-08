@@ -47,7 +47,8 @@ class PurchaseRequest extends FormRequest
             'products.*.quantity' => 'required|numeric|min:1',
             'products.*.manager_series' => 'required|boolean',
             'products.*.series' => 'bail|exclude_if:products.*.manager_series,0|required|array',
-            'products.*.series.*' => 'distinct|string|min:1|unique:branch_product_series,serie',
+
+            'products.*.series.*' => 'required|distinct|string|min:1|unique:branch_product_series,serie',
 
             'installments.dates' => 'exclude_if:voucherDetail.is_credit,false|required|array',
             'installments.dates.*' => 'exclude_if:voucherDetail.is_credit,false|required|date',
@@ -95,7 +96,8 @@ class PurchaseRequest extends FormRequest
             'products.*.quantity.min' => 'No puede ser negativo',
 
             'products.*.series.required' => 'Digite las series',
-            'products.*.series.*.distinc' => 'La serie debe ser diferente, Asegurese de no poner series repetidas',
+            'products.*.series.*.required' => 'Digite una serie',
+            'products.*.series.*.distinct' => 'La serie debe ser diferente, Asegurese de no poner series repetidas',
             'products.*.series.*.unique' => 'Esta serie ya existe',
 
             'installments.dates.*' => 'Te falta agregar fechas'
