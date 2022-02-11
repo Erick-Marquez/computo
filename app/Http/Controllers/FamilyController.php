@@ -16,7 +16,10 @@ class FamilyController extends Controller
      */
     public function index()
     {
-        $families = Family::all();
+        $families = Family::included()
+                            ->filter()
+                            ->sort()
+                            ->getOrPaginate();
         return FamilyResource::collection($families);
     }
 

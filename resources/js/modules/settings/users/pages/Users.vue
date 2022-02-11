@@ -277,31 +277,60 @@ export default {
       console.log(this.userEdit)
     },
     createUser(){
-      console.log(this.userCreate)
-      // BaseUrl.post(`api/users`, this.user).then( resp => {
+
+      let user = {
+        name: this.userCreate.name,
+        email: this.userCreate.email,
+        password: this.userCreate.password,
+        branch_id: this.userCreate.branch_id,
+        roles: []
+      }
+
+      this.userCreate.roles.forEach( e => {
+        console.log(e)
+        if (e.isAvailable) {
+          user.roles.push(e.name)
+        }
+
+      })
+
+      BaseUrl.post(`api/users`, user).then( resp => {
         
-      //   console.log(resp)
-      //   $("#modal-create").modal("hide")
-      //   this.showusers()
-      //   this.user = {
-      //     change: '',
-      //     date: ''
-      //   }
-      //   Swal.fire("Creado", "El Cambio de Divisa ha sido creado", "success");
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+        console.log(resp)
+        $("#modal-create").modal("hide")
+        this.showUsers()
+        this.userCreate = {
+          name: '',
+          email: '',
+          password: '',
+          branch_id: '',
+          roles: []
+        }
+
+        this.roles.forEach(e => {
+          let tem = {
+            id: e.id,
+            name: e.name,
+            isAvailable: false
+          }
+          this.userCreate.roles.push(tem)
+        })
+
+        Swal.fire("Creado", "El Usuario ha sido creado", "success");
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
     },
     editUser(){
       BaseUrl.put(`api/users/${this.userEdit.id}`, this.userEdit).then( resp => {
         
         console.log(resp)
         $("#modal-edit").modal("hide")
-        this.showusers()
+        this.showUsers()
         this.userEdit = {}
 
-        Swal.fire("Actualizado", "El Cambio de Divisa ha sido actualizado", "success");
+        Swal.fire("Actualizado", "El Usuario ha sido actualizado", "success");
       })
       .catch((error) => {
         console.log(error);
@@ -320,13 +349,13 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           BaseUrl.delete(`api/users/${id}`).then( resp => {
-              this.showusers();
+              this.showUsers();
             })
             .catch((error) => {
               console.log(error);
             });
 
-          Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
+          Swal.fire("Eliminado", "El Usuario ha sido eliminado", "success");
         }
       });
     },

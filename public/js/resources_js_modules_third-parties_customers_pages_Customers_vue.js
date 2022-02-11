@@ -1539,7 +1539,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1562,7 +1562,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\n  color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\n  background-color: #23272b;\n  border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\n  color: #23272b;\n}\na.disabled[data-v-57d2602e] {\n  pointer-events: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.page-link[data-v-57d2602e] {\r\n  color: #23272b;\n}\n.page-item.active .page-link[data-v-57d2602e] {\r\n  background-color: #23272b;\r\n  border-color: #1d2124;\n}\n.page-link[data-v-57d2602e]:hover {\r\n  color: #23272b;\n}\na.disabled[data-v-57d2602e] {\r\n  pointer-events: none;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

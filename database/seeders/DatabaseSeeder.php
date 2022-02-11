@@ -28,13 +28,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RoleSeeder::class);
         $this->call(VoucherTypeSeeder::class);
-        $this->call(ProductSeeder::class);
+        // $this->call(ProductSeeder::class);
         $this->call(UbigeeSeeder::class);
 
-        Provider::factory(10)->create();
+        // Provider::factory(10)->create();
 
-        Customer::factory(50)->customerWithDni()->create();
-        Customer::factory(50)->customerWithRuc()->create();
+        // Customer::factory(50)->customerWithDni()->create();
+        // Customer::factory(50)->customerWithRuc()->create();
 
         $this->call(UserSeeder::class);
         $this->call(CurrencyExchangeSeeder::class);

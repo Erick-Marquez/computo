@@ -76,6 +76,20 @@
             </div>
             </div>
             <!-- /.card-body -->
+
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    <li v-for="(link, index) in meta.links" :key="link.index" 
+                    :class="link.url == null ? 'page-item disabled' : link.active ? 'page-item active' : 'page-item'">
+                        <button type="button"
+                            class="page-link"
+                            @click="(link.url == null || link.active) ? null : showPaginateLines(link.url)" 
+                        >
+                            {{ index == 0 ? 'Anterior' : index == meta.links.length - 1 ? 'Siguiente' : link.label }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- /.card -->
         </div>
@@ -200,6 +214,9 @@ export default {
 
             loading: false,
 
+            meta: {},
+            perPage: 10,
+
             lines: [],
             line: {
                 cod: '',
@@ -225,8 +242,17 @@ export default {
     },
     methods: {
         async showLines(){
-            await BaseUrl.get(`api/lines?included=brands`).then( resp => {
+            await BaseUrl.get(`api/lines?page=1&perPage=${this.perPage}`).then( resp => {
                 this.lines = resp.data.data
+                this.meta = resp.data.meta
+            })
+        },
+
+        async showPaginateLines(url){
+            await axios.get(`${url}&perPage=${this.perPage}`)
+            .then( resp => {
+                this.lines = resp.data.data
+                this.meta = resp.data.meta
             })
         },
 

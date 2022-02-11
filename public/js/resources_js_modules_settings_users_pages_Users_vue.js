@@ -173,37 +173,68 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log(this.userEdit);
     },
     createUser: function createUser() {
-      console.log(this.userCreate); // BaseUrl.post(`api/users`, this.user).then( resp => {
-      //   console.log(resp)
-      //   $("#modal-create").modal("hide")
-      //   this.showusers()
-      //   this.user = {
-      //     change: '',
-      //     date: ''
-      //   }
-      //   Swal.fire("Creado", "El Cambio de Divisa ha sido creado", "success");
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
+      var _this5 = this;
+
+      var user = {
+        name: this.userCreate.name,
+        email: this.userCreate.email,
+        password: this.userCreate.password,
+        branch_id: this.userCreate.branch_id,
+        roles: []
+      };
+      this.userCreate.roles.forEach(function (e) {
+        console.log(e);
+
+        if (e.isAvailable) {
+          user.roles.push(e.name);
+        }
+      });
+      _api_BaseUrl_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("api/users", user).then(function (resp) {
+        console.log(resp);
+        $("#modal-create").modal("hide");
+
+        _this5.showUsers();
+
+        _this5.userCreate = {
+          name: '',
+          email: '',
+          password: '',
+          branch_id: '',
+          roles: []
+        };
+
+        _this5.roles.forEach(function (e) {
+          var tem = {
+            id: e.id,
+            name: e.name,
+            isAvailable: false
+          };
+
+          _this5.userCreate.roles.push(tem);
+        });
+
+        Swal.fire("Creado", "El Usuario ha sido creado", "success");
+      })["catch"](function (error) {
+        console.log(error.response);
+      });
     },
     editUser: function editUser() {
-      var _this5 = this;
+      var _this6 = this;
 
       _api_BaseUrl_js__WEBPACK_IMPORTED_MODULE_1__["default"].put("api/users/".concat(this.userEdit.id), this.userEdit).then(function (resp) {
         console.log(resp);
         $("#modal-edit").modal("hide");
 
-        _this5.showusers();
+        _this6.showUsers();
 
-        _this5.userEdit = {};
-        Swal.fire("Actualizado", "El Cambio de Divisa ha sido actualizado", "success");
+        _this6.userEdit = {};
+        Swal.fire("Actualizado", "El Usuario ha sido actualizado", "success");
       })["catch"](function (error) {
         console.log(error);
       });
     },
     deleteUser: function deleteUser(id) {
-      var _this6 = this;
+      var _this7 = this;
 
       Swal.fire({
         title: "¿Estas Seguro?",
@@ -217,11 +248,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (result) {
         if (result.isConfirmed) {
           _api_BaseUrl_js__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"]("api/users/".concat(id)).then(function (resp) {
-            _this6.showusers();
+            _this7.showUsers();
           })["catch"](function (error) {
             console.log(error);
           });
-          Swal.fire("Eliminado", "El Cambio de Divisa ha sido eliminado", "success");
+          Swal.fire("Eliminado", "El Usuario ha sido eliminado", "success");
         }
       });
     }
@@ -754,7 +785,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test/'
+  baseURL: 'http://computo.test:82/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 

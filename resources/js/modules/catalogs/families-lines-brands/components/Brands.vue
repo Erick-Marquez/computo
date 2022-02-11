@@ -184,8 +184,8 @@ export default {
         return {
 
             loading: false,
+            
             meta: {},
-
             perPage: 10,
 
             brands: [],

@@ -395,7 +395,7 @@ export default {
       selectedBranches: [],
       showInventory: false,
 
-      igvTypeId: 20,
+      igvTypeId: 10,
 
       haveWarranty: false,
       typeOfTimeForWarranty: 'months',

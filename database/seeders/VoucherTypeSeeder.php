@@ -21,8 +21,8 @@ class VoucherTypeSeeder extends Seeder
 
         DB::table('branches')->insert([
             ['state' => true, 'description' => 'HUANUCO'],
-            ['state' => true, 'description' => 'AMARILIS'],
-            ['state' => true, 'description' => 'PILLCO MARCA']
+            // ['state' => true, 'description' => 'AMARILIS'],
+            // ['state' => true, 'description' => 'PILLCO MARCA']
         ]);
 
         DB::table('igv_types')->insert([
@@ -81,7 +81,8 @@ class VoucherTypeSeeder extends Seeder
 
         DB::table('identification_documents')->insert([
             ['id' => '1', 'description' => 'DNI'],
-            ['id' => '6', 'description' => 'RUC']
+            ['id' => '6', 'description' => 'RUC'],
+            ['id' => '-', 'description' => 'OTROS']
         ]);
 
         DB::table('payment_types')->insert([
@@ -90,64 +91,64 @@ class VoucherTypeSeeder extends Seeder
             ['description' => 'Transferencia bancaria']
         ]);
 
-        DB::table('series')->insert([
-            ['active' => true, 'serie' => 'F001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '1'],
-            ['active' => true, 'serie' => 'B001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '2'],
-            ['active' => true, 'serie' => 'N001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '3'],
-            ['active' => true, 'serie' => 'FC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '4'],
-            ['active' => true, 'serie' => 'BC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '5'],
-            ['active' => true, 'serie' => 'FD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '6'],
-            ['active' => true, 'serie' => 'BD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '7'],
-            ['active' => true, 'serie' => 'C001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '8'],
-            ['active' => true, 'serie' => 'G001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '9'],
+        // DB::table('series')->insert([
+        //     ['active' => true, 'serie' => 'F001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '1'],
+        //     ['active' => true, 'serie' => 'B001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '2'],
+        //     ['active' => true, 'serie' => 'N001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '3'],
+        //     ['active' => true, 'serie' => 'FC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '4'],
+        //     ['active' => true, 'serie' => 'BC01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '5'],
+        //     ['active' => true, 'serie' => 'FD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '6'],
+        //     ['active' => true, 'serie' => 'BD01', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '7'],
+        //     ['active' => true, 'serie' => 'C001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '8'],
+        //     ['active' => true, 'serie' => 'G001', 'current_number' => 0, 'branch_id' => 1, 'voucher_type_id' => '9'],
 
-            ['active' => true, 'serie' => 'F021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '1'],
-            ['active' => true, 'serie' => 'B021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '2'],
-            ['active' => true, 'serie' => 'N021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '3'],
-            ['active' => true, 'serie' => 'FC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '4'],
-            ['active' => true, 'serie' => 'BC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '5'],
-            ['active' => true, 'serie' => 'FD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '6'],
-            ['active' => true, 'serie' => 'BD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '7'],
-            ['active' => true, 'serie' => 'C021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '8'],
-            ['active' => true, 'serie' => 'G021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '9'],
+        //     ['active' => true, 'serie' => 'F021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '1'],
+        //     ['active' => true, 'serie' => 'B021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '2'],
+        //     ['active' => true, 'serie' => 'N021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '3'],
+        //     ['active' => true, 'serie' => 'FC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '4'],
+        //     ['active' => true, 'serie' => 'BC21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '5'],
+        //     ['active' => true, 'serie' => 'FD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '6'],
+        //     ['active' => true, 'serie' => 'BD21', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '7'],
+        //     ['active' => true, 'serie' => 'C021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '8'],
+        //     ['active' => true, 'serie' => 'G021', 'current_number' => 0, 'branch_id' => 2, 'voucher_type_id' => '9'],
 
-            ['active' => true, 'serie' => 'F031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '1'],
-            ['active' => true, 'serie' => 'B031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '2'],
-            ['active' => true, 'serie' => 'N031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '3'],
-            ['active' => true, 'serie' => 'FC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '4'],
-            ['active' => true, 'serie' => 'BC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '5'],
-            ['active' => true, 'serie' => 'FD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '6'],
-            ['active' => true, 'serie' => 'BD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '7'],
-            ['active' => true, 'serie' => 'C031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '8'],
-            ['active' => true, 'serie' => 'G031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '9'],
-        ]);
+        //     ['active' => true, 'serie' => 'F031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '1'],
+        //     ['active' => true, 'serie' => 'B031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '2'],
+        //     ['active' => true, 'serie' => 'N031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '3'],
+        //     ['active' => true, 'serie' => 'FC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '4'],
+        //     ['active' => true, 'serie' => 'BC31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '5'],
+        //     ['active' => true, 'serie' => 'FD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '6'],
+        //     ['active' => true, 'serie' => 'BD31', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '7'],
+        //     ['active' => true, 'serie' => 'C031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '8'],
+        //     ['active' => true, 'serie' => 'G031', 'current_number' => 0, 'branch_id' => 3, 'voucher_type_id' => '9'],
+        // ]);
 
-        DB::table('families')->insert([
-            ['active' => true, 'description' => 'Hardware'],
-            ['active' => true, 'description' => 'Software'],
-            ['active' => true, 'description' => 'Periféricos de Entrada'],
-            ['active' => true, 'description' => 'Redes']
-        ]);
+        // DB::table('families')->insert([
+        //     ['active' => true, 'description' => 'Hardware'],
+        //     ['active' => true, 'description' => 'Software'],
+        //     ['active' => true, 'description' => 'Periféricos de Entrada'],
+        //     ['active' => true, 'description' => 'Redes']
+        // ]);
 
-        DB::table('lines')->insert([
-            ['active' => true, 'family_id' => 1, 'description' => 'Tarjeta de Video'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Case'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Procesador'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Placa Base'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Disco Duro'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Memoria RAM'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Tarjeta de red'],
-            ['active' => true, 'family_id' => 1, 'description' => 'Fuente de poder']
-        ]);
+        // DB::table('lines')->insert([
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Tarjeta de Video'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Case'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Procesador'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Placa Base'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Disco Duro'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Memoria RAM'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Tarjeta de red'],
+        //     ['active' => true, 'family_id' => 1, 'description' => 'Fuente de poder']
+        // ]);
 
-        DB::table('brands')->insert([
-            ['active' => true, 'description' => 'Nvidia'],
-            ['active' => true, 'description' => 'AMD'],
-            ['active' => true, 'description' => 'Antrix'],
-            ['active' => true, 'description' => 'Intel'],
-            ['active' => true, 'description' => 'Kingston'],
-            ['active' => true, 'description' => 'Gigabyte'],
-            ['active' => true, 'description' => 'Western Digital']
-        ]);
+        // DB::table('brands')->insert([
+        //     ['active' => true, 'description' => 'Nvidia'],
+        //     ['active' => true, 'description' => 'AMD'],
+        //     ['active' => true, 'description' => 'Antrix'],
+        //     ['active' => true, 'description' => 'Intel'],
+        //     ['active' => true, 'description' => 'Kingston'],
+        //     ['active' => true, 'description' => 'Gigabyte'],
+        //     ['active' => true, 'description' => 'Western Digital']
+        // ]);
     }
 }

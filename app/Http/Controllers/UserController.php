@@ -41,16 +41,19 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'branch_id' => $request->branch_id
         ]);
 
-        return redirect()->route('users.index');
+        $user->syncRoles($request->roles);
+
+        return UserResource::make($user);
 
     }
 
