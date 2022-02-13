@@ -19,6 +19,7 @@ class Brand extends Model
     protected $allowIncluded = ['products'];
     protected $allowFilter = ['id', 'cod', 'description'];
     protected $allowSort = ['id', 'cod', 'description', 'active'];
+    protected $allowSearch = ['cod', 'description'];
 
     public function products()
     {

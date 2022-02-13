@@ -17,6 +17,9 @@
                     name="table_search"
                     class="form-control float-right"
                     placeholder="Search"
+                    v-model.trim="search"
+                    @keydown.enter.prevent=""
+                    @keyup="searchLines"
                 >
 
                 <div class="input-group-append">
@@ -40,9 +43,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(line, index) in lines" :key="line.id">
-                    <td>{{ index+1 }}</td>
-                    <td>{{ line.cod }}</td>
+
+                    <tr v-if="loadingTable">
+                        <td colspan="4">
+                            <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                    <div class="spinner-border text-danger mr-2" role="status" style="font-size: 0.8rem">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    Cargando...
+                                </h3>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-else-if="linesNotFound">
+                        <td colspan="4">
+                            <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    No se encontraron Lineas
+                                </h3>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-else v-for="(line, index) in lines" :key="line.id">
+                    <td>{{ index + meta.from }}</td>
+                    <td>{{ line.cod == null ? 'SIN CODIGO' : line.cod }}</td>
                     <td>{{ line.description }}</td>
                     <td>
                         <div class="dropdown">
@@ -216,6 +244,10 @@ export default {
 
             meta: {},
             perPage: 10,
+            search: '',
+            loadingTable: false,
+            searching: null,
+            linesNotFound: false,
 
             lines: [],
             line: {
@@ -253,6 +285,30 @@ export default {
             .then( resp => {
                 this.lines = resp.data.data
                 this.meta = resp.data.meta
+            })
+        },
+
+        searchLines(){
+
+            this.loadingTable = true
+            this.linesNotFound = false
+            clearTimeout(this.searching)
+
+            this.searching = setTimeout(this.showSearchLines, 400)
+
+            
+        },
+        showSearchLines(){
+            BaseUrl.get(`api/families?page=1&perPage=${this.perPage}&search[description]=${this.search}&search[cod]=${this.search}`).then( resp=>{
+                this.lines = resp.data.data
+                this.meta = resp.data.meta
+
+                if (this.lines.length == 0) {
+                    this.linesNotFound = true
+                }
+            })
+            .finally(() => {
+                this.loadingTable = false
             })
         },
 

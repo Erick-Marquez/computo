@@ -19,6 +19,7 @@ class FamilyController extends Controller
         $families = Family::included()
                             ->filter()
                             ->sort()
+                            ->search()
                             ->getOrPaginate();
         return FamilyResource::collection($families);
     }

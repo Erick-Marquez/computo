@@ -18,6 +18,7 @@ class Family extends Model
 
     protected $allowFilter = ['id', 'cod', 'description'];
     protected $allowSort = ['id', 'cod', 'description', 'active'];
+    protected $allowSearch = ['cod', 'description'];
 
     public function lines()
     {

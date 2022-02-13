@@ -19,6 +19,7 @@ class LineController extends Controller
         $lines = Line::included()
                         ->filter()
                         ->sort()
+                        ->search()
                         ->getOrPaginate();
         return LineResource::collection($lines);
     }

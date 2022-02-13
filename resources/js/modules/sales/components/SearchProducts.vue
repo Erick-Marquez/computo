@@ -4,7 +4,7 @@
             <div class="">
                 <input
                     type="search"
-                    v-model="search"
+                    v-model.trim="search"
                     @keyup="searchProducts"
                     @blur="toggle = false"
                     @focus="toggle = true"

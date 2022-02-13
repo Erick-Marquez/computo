@@ -17,6 +17,9 @@
                     name="table_search"
                     class="form-control float-right"
                     placeholder="Search"
+                    v-model.trim="search"
+                    @keydown.enter.prevent=""
+                    @keyup="searchFamilies"
                 >
 
                 <div class="input-group-append">
@@ -40,9 +43,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(family, index) in families" :key="family.id">
-                    <td>{{ index+1 }}</td>
-                    <td>{{ family.cod }}</td>
+
+                    <tr v-if="loadingTable">
+                        <td colspan="4">
+                            <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                    <div class="spinner-border text-danger mr-2" role="status" style="font-size: 0.8rem">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    Cargando...
+                                </h3>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-else-if="familiesNotFound">
+                        <td colspan="4">
+                            <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                                    No se encontraron Familias
+                                </h3>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr v-else v-for="(family, index) in families" :key="family.id">
+                    <td>{{ index + meta.from }}</td>
+                    <td>{{ family.cod == null ? 'SIN CODIGO' : family.cod }}</td>
                     <td>{{ family.description }}</td>
                     <td>
                         <div class="dropdown">
@@ -181,6 +209,10 @@ export default {
 
         meta: {},
         perPage: 10,
+        search: '',
+        loadingTable: false,
+        searching: null,
+        familiesNotFound: false,
 
         families: [],
         family: {
@@ -212,6 +244,30 @@ export default {
             .then( resp => {
                 this.families = resp.data.data
                 this.meta = resp.data.meta
+            })
+        },
+
+        searchFamilies(){
+
+            this.loadingTable = true
+            this.brandsNotFound = false
+            clearTimeout(this.searching)
+
+            this.searching = setTimeout(this.showSearchFamilies, 400)
+
+            
+        },
+        showSearchFamilies(){
+            BaseUrl.get(`api/families?page=1&perPage=${this.perPage}&search[description]=${this.search}&search[cod]=${this.search}`).then( resp=>{
+                this.families = resp.data.data
+                this.meta = resp.data.meta
+
+                if (this.families.length == 0) {
+                    this.familiesNotFound = true
+                }
+            })
+            .finally(() => {
+                this.loadingTable = false
             })
         },
 

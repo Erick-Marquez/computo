@@ -20,6 +20,7 @@ class Line extends Model
     protected $allowIncluded = ['family', 'products'];
     protected $allowFilter = ['id', 'cod', 'description'];
     protected $allowSort = ['id', 'cod', 'description', 'active'];
+    protected $allowSearch = ['cod', 'description'];
 
     public function family()
     {

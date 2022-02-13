@@ -19,6 +19,7 @@ class BrandController extends Controller
         $brands = Brand::included()
                             ->filter()
                             ->sort()
+                            ->search()
                             ->getOrPaginate();
         return BrandResource::collection($brands);
     }

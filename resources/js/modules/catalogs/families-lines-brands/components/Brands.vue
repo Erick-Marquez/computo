@@ -17,6 +17,9 @@
                             name="table_search"
                             class="form-control float-right"
                             placeholder="Search"
+                            v-model.trim="search"
+                            @keydown.enter.prevent=""
+                            @keyup="searchBrands"
                         >
 
                         <div class="input-group-append">
@@ -40,9 +43,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(brand, index) in brands" :key="brand.id">
+
+                            <tr v-if="loadingTable">
+                                <td colspan="4">
+                                    <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                        <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                            <div class="spinner-border text-danger mr-2" role="status" style="font-size: 0.8rem">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            Cargando...
+                                        </h3>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr v-else-if="brandsNotFound">
+                                <td colspan="4">
+                                    <div style="height: 400px;" class="d-flex justify-content-center align-items-center">
+                                        <h3 style="font-weight: 300;" class="d-flex align-items-center">
+                                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                                            No se encontraron Marcas
+                                        </h3>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr v-else v-for="(brand, index) in brands" :key="brand.id">
                                 <td>{{ index + meta.from }}</td>
-                                <td>{{ brand.cod }}</td>
+                                <td>{{ brand.cod == null ? 'SIN CODIGO' : brand.cod }}</td>
                                 <td>{{ brand.description }}</td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -187,6 +215,10 @@ export default {
             
             meta: {},
             perPage: 10,
+            search: '',
+            loadingTable: false,
+            searching: null,
+            brandsNotFound: false,
 
             brands: [],
             brand: {
@@ -222,6 +254,31 @@ export default {
                 this.meta = resp.data.meta
             })
         },
+
+        searchBrands(){
+
+            this.loadingTable = true
+            this.brandsNotFound = false
+            clearTimeout(this.searching)
+
+            this.searching = setTimeout(this.showSearchBrands, 400)
+
+            
+        },
+        showSearchBrands(){
+            BaseUrl.get(`api/brands?page=1&perPage=${this.perPage}&search[description]=${this.search}&search[cod]=${this.search}`).then( resp=>{
+                this.brands = resp.data.data
+                this.meta = resp.data.meta
+
+                if (this.brands.length == 0) {
+                    this.brandsNotFound = true
+                }
+            })
+            .finally(() => {
+                this.loadingTable = false
+            })
+        },
+
 
         showModal(modal, data = null) {
       
