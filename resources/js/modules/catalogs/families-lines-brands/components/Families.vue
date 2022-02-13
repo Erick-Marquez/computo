@@ -36,10 +36,10 @@
                 <table class="table table-hover text-nowrap">
                 <thead>
                     <tr>
-                    <th>N°</th>
-                    <th>Codigo</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
+                        <th class="text-center" style="width: 5%">N°</th>
+                        <th class="text-center" style="width: 25%">Código</th>
+                        <th style="width: 50%">Descripción</th>
+                        <th class="text-center" style="width: 20%">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,10 +69,10 @@
                     </tr>
 
                     <tr v-else v-for="(family, index) in families" :key="family.id">
-                    <td>{{ index + meta.from }}</td>
-                    <td>{{ family.cod == null ? 'SIN CODIGO' : family.cod }}</td>
-                    <td>{{ family.description }}</td>
-                    <td>
+                    <td class="text-center align-middle">{{ index + meta.from }}</td>
+                    <td class="text-center align-middle">{{ family.cod == null ? 'SIN CODIGO' : family.cod }}</td>
+                    <td class="align-middle">{{ family.description }}</td>
+                    <td class="text-center align-middle">
                         <div class="dropdown">
                         <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Acciones

@@ -36,10 +36,10 @@
                         <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
-                                <th style="width: 5%;">N°</th>
-                                <th style="width: 10%;">Codigo</th>
-                                <th style="width: 75%;">Descripción</th>
-                                <th style="width: 10%;" class="text-center">Acciones</th>
+                                <th class="text-center" style="width: 5%">N°</th>
+                                <th class="text-center" style="width: 25%">Código</th>
+                                <th style="width: 50%">Descripción</th>
+                                <th class="text-center" style="width: 20%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,10 +69,10 @@
                             </tr>
 
                             <tr v-else v-for="(brand, index) in brands" :key="brand.id">
-                                <td>{{ index + meta.from }}</td>
-                                <td>{{ brand.cod == null ? 'SIN CODIGO' : brand.cod }}</td>
-                                <td>{{ brand.description }}</td>
-                                <td class="text-center">
+                                <td class="text-center align-middle">{{ index + meta.from }}</td>
+                                <td class="text-center align-middle">{{ brand.cod == null ? 'SIN CODIGO' : brand.cod }}</td>
+                                <td class="align-middle">{{ brand.description }}</td>
+                                <td class="text-center align-middle">
                                     <div class="dropdown">
                                         <button
                                             class="btn btn-danger dropdown-toggle"

@@ -36,10 +36,10 @@
                 <table class="table table-hover text-nowrap">
                 <thead>
                     <tr>
-                    <th>ID</th>
-                    <th>Codigo</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
+                        <th class="text-center" style="width: 5%">N°</th>
+                        <th class="text-center" style="width: 25%">Código</th>
+                        <th style="width: 50%">Descripción</th>
+                        <th class="text-center" style="width: 20%">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,10 +69,10 @@
                     </tr>
 
                     <tr v-else v-for="(line, index) in lines" :key="line.id">
-                    <td>{{ index + meta.from }}</td>
-                    <td>{{ line.cod == null ? 'SIN CODIGO' : line.cod }}</td>
-                    <td>{{ line.description }}</td>
-                    <td>
+                    <td class="text-center align-middle">{{ index + meta.from }}</td>
+                    <td class="text-center align-middle">{{ line.cod == null ? 'SIN CODIGO' : line.cod }}</td>
+                    <td class="align-middle">{{ line.description }}</td>
+                    <td class="text-center align-middle">
                         <div class="dropdown">
                         <button
                             class="btn btn-danger dropdown-toggle"
@@ -299,7 +299,7 @@ export default {
             
         },
         showSearchLines(){
-            BaseUrl.get(`api/families?page=1&perPage=${this.perPage}&search[description]=${this.search}&search[cod]=${this.search}`).then( resp=>{
+            BaseUrl.get(`api/lines?page=1&perPage=${this.perPage}&search[description]=${this.search}&search[cod]=${this.search}`).then( resp=>{
                 this.lines = resp.data.data
                 this.meta = resp.data.meta
 
