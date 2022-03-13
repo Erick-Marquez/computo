@@ -12,11 +12,11 @@
     <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
     <cbc:CustomizationID schemeAgencyName="PE:SUNAT">2.0</cbc:CustomizationID>
     <cbc:ProfileID schemeName="Tipo de Operacion" schemeAgencyName="PE:SUNAT" schemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">0101</cbc:ProfileID>
-    <cbc:ID>{{ $sale->serie->serie }}-{{ $sale->document_number }}</cbc:ID>
-    <cbc:IssueDate>{{ $sale->date_issue }}</cbc:IssueDate>
-    <cbc:IssueTime>{{ date_format($sale->created_at, 'H:i:s') }}</cbc:IssueTime>
-    <cbc:DueDate>{{ $sale->date_due }}</cbc:DueDate>
-    <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale->serie->voucherType->cod }}</cbc:InvoiceTypeCode>
+    <cbc:ID>{{ $sale['head']['serie'] }}-{{ $sale['head']['document_number'] }}</cbc:ID>
+    <cbc:IssueDate>{{ $sale['head']['date_issue'] }}</cbc:IssueDate>
+    <cbc:IssueTime>{{ $sale['head']['time_issue'] }}</cbc:IssueTime>
+    <cbc:DueDate>{{ $sale['head']['date_due'] }}</cbc:DueDate>
+    <cbc:InvoiceTypeCode listAgencyName="PE:SUNAT" listName="Tipo de Documento" listURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo01" listID="0101" name="Tipo de Operacion" listSchemeURI="urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo51">{{ $sale['head']['voucher_type'] }}</cbc:InvoiceTypeCode>
     <cbc:Note languageLocaleID="1000">{{ \App\Services\NumberLetterService::convert(round($sale->total, 2), 'SOLES') }}</cbc:Note>
     <cbc:DocumentCurrencyCode listID="ISO 4217 Alpha" listName="Currency" listAgencyName="United Nations Economic Commission for Europe">PEN</cbc:DocumentCurrencyCode>
     <cbc:LineCountNumeric>{{ count($sale->saleDetails) }}</cbc:LineCountNumeric>

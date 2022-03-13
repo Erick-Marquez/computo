@@ -273,7 +273,7 @@ const routes = [
             {
                 path: '',
                 name: 'layout-modification-stock',
-                component: () => import('../modules/inventory/modification-stock/pages/layout.vue'),
+                component: () => import('../modules/inventory/modification-stock/pages/ModificationStock.vue'),
             },
             {
                 path: '',

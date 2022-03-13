@@ -440,11 +440,11 @@ return [
                     'route'  => 'web.edit-series',
                     'can'    => 'edit-series.index'
                 ],
-                // [
-                //     'text'   => 'Modificación de Stock',
-                //     'icon'   => 'far fa-fw fa-circle',
-                //     'route'  => 'web.stock-modifications',
-                // ],
+                [
+                    'text'   => 'Modificación de Stock',
+                    'icon'   => 'far fa-fw fa-circle',
+                    'route'  => 'web.stock-modifications',
+                ],
                 // [
                 //     'text'   => 'Devoluciones',
                 //     'icon'   => 'far fa-fw fa-circle',

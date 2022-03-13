@@ -69,32 +69,38 @@ class KardexService
         }
     }
 
-    public static function stockModification($data)
+    public static function stockModification(
+        Int $quantity,
+        String $operation,
+        Array $series,
+        Int $branch_product_id,
+        Int $user_id
+    )
     {   
         $kardex = Kardex::create([
             'date' => Carbon::now()->toDateTimeString(),
-            'quantity' => $data['quantity'],
-            'movement_type' => $data['operation'] == 'suma' ? Kardex::INGRESO : Kardex::SALIDA, // Determinar si es aumento o disminucion
+            'quantity' => $quantity,
+            'movement_type' => $operation == 'suma' ? Kardex::INGRESO : Kardex::SALIDA, // Determinar si es aumento o disminucion
             'description' => Kardex::MODIFICA_STOCK,
-            'series' => $data['series'],
-            'branch_product_id' => $data['branch_product_id'],
-            'user_id' => $data['user_id'],
+            'series' => $series,
+            'branch_product_id' => $branch_product_id,
+            'user_id' => $user_id,
         ]);
 
         // Actualizar stock de productos
-        $branchProduct = BranchProduct::find($data['branch_product_id']);
-        $branchProduct->stock = $data['operation'] == 'suma' ? $branchProduct->stock + $data['quantity'] : $branchProduct->stock - $data['quantity']; // Determinar si es aumento o disminucion
+        $branchProduct = BranchProduct::find($branch_product_id);
+        $branchProduct->stock = $operation == 'suma' ? $branchProduct->stock + $quantity : $branchProduct->stock - $quantity; // Determinar si es aumento o disminucion
         $branchProduct->save();
 
         // Agregar las series si maneja serie
         if ($branchProduct->manager_series) { //Comprobar si maneja series
-            foreach ($data['series'] as $key => $serie) { // Iterar cada serie del array
+            foreach ($series as $serie) { // Iterar cada serie del array
 
-                if ($data['operation'] == 'suma') {
+                if ($operation == 'suma') {
                     // Agregar las series
                     BranchProductSerie::create([
                         'serie' => $serie,
-                        'branch_product_id' => $data['branch_product_id']
+                        'branch_product_id' => $branch_product_id
                     ]);
                 }
                 else{

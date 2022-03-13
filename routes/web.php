@@ -108,7 +108,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::middleware(['can:edit-series.index'])->get('/editar-series', [WebController::class, 'editSeries'])->name('web.edit-series');
 
-    // Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
+    Route::get('/modificacion-stock', [WebController::class, 'stockModifications'])->name('web.stock-modifications');
     // Route::get('/devoluciones', [WebController::class, 'devolutions'])->name('web.devolutions');
 
 
