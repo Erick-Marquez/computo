@@ -545,7 +545,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 var baseUrl = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: 'http://computo.test:82/'
+  baseURL: 'http://localhost:8080/'
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (baseUrl);
 
@@ -1328,13 +1328,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Filters_vue_vue_type_template_id_3377aad3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filters.vue?vue&type=template&id=3377aad3 */ "./resources/js/compositions/Filters.vue?vue&type=template&id=3377aad3");
 /* harmony import */ var _Filters_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filters.vue?vue&type=script&lang=js */ "./resources/js/compositions/Filters.vue?vue&type=script&lang=js");
-/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_Archivos_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Filters_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filters_vue_vue_type_template_id_3377aad3__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/compositions/Filters.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_Archivos_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Filters_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Filters_vue_vue_type_template_id_3377aad3__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/compositions/Filters.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -1356,13 +1356,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ReportCashboxes_vue_vue_type_template_id_5f49bb50__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReportCashboxes.vue?vue&type=template&id=5f49bb50 */ "./resources/js/modules/reports/cashboxes/pages/ReportCashboxes.vue?vue&type=template&id=5f49bb50");
 /* harmony import */ var _ReportCashboxes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReportCashboxes.vue?vue&type=script&lang=js */ "./resources/js/modules/reports/cashboxes/pages/ReportCashboxes.vue?vue&type=script&lang=js");
-/* harmony import */ var C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_Archivos_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_laragon_www_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ReportCashboxes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ReportCashboxes_vue_vue_type_template_id_5f49bb50__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/reports/cashboxes/pages/ReportCashboxes.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_Archivos_computo_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_ReportCashboxes_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_ReportCashboxes_vue_vue_type_template_id_5f49bb50__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/modules/reports/cashboxes/pages/ReportCashboxes.vue"]])
 /* hot reload */
 if (false) {}
 
