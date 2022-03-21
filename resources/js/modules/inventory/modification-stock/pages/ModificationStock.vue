@@ -3,7 +3,10 @@
         class="btn btn-dark btn-block btn-lg mb-4"
         data-toggle="modal"
         data-target="#new-modification"
-    >Nueva modificacion</button>
+    >
+        <i class="fas fa-plus"></i>
+        Nueva modificacion
+    </button>
 
     <form >
         <new-modification-vue :modification="modification" :errors="errors"></new-modification-vue>
@@ -106,9 +109,11 @@ export default {
         return {
             modification: {
                 type: 'ENTRADA',
-                stock: 5,
                 branch_id: 'null', // tal vez lo necesites idk
                 product_id: null,
+                stock: 5,
+                manage_series: true,
+                series: [],
                 quantity: null,
                 price_referential_purchase: null
             },
@@ -188,4 +193,10 @@ export default {
 </script>
 
 <style>
+.modal:nth-of-type(even) {
+    z-index: 1052 !important;
+}
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1051 !important;
+}
 </style>
