@@ -45,52 +45,34 @@
                     >{{ $errorsPrint(errors["type"]) }}</div>
 
                     <div class="form-group">
-                        <label for>Local</label>
-                        <select class="form-control" name id v-model="modification.branch_id">
-                            <option value></option>
-                            <option value></option>
-                            <option value></option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for>Producto</label>
-                        <v-select
-                            v-model="modification.product"
-                            :filterable="false"
-                            label="product"
-                            :reduce="(product) => product.name"
-                            :options="products"
-                            @search="onProductsSearch"
-                            @keydown.enter.prevent
-                        >
+                        <label for="" class="lead">Sucursal</label>
+                        <v-select v-model="modification.branch_id" label="description" :reduce="branch => branch.id" :options="branches">
                             <template v-slot:no-options="{ search, searching }">
                                 <template v-if="searching">
-                                    No se encontraron resultados para
-                                    <b>
-                                        <em>{{ search }}</em>
-                                    </b>.
+                                    No se encontraron resultados para <b><em>{{ search }}</em></b>.
                                 </template>
-                                <em v-else style="opacity: 0.5">Escribe el nombre del Producto.</em>
                             </template>
                         </v-select>
                     </div>
-                    <div v-if="modification.type == 'REMUNERACION'" class="form-group">
-                        <label for>Personal:</label>
-                        <v-select
-                            class="style-chooser"
-                            v-model="modification.user_id"
-                            label="name"
-                            :reduce="(seller) => seller.id"
-                            :options="sellers"
-                        >
+
+                    <div class="form-group">
+                        <label for="" class="lead">Producto</label>
+                        <v-select v-model="modification.product" :filterable="false" label="name" :options="products" @search="onProductSearch" @option:selected="selectProduct">
+                            
+                            <template v-slot:option="option">
+                                {{  `${option.slug}${ option.cod ? ' - '+option.cod : ''}` }}
+                            </template>
+
+                            <template v-slot:selected-option="option">
+                                {{  `${option.slug}${ option.cod ? ' - '+option.cod : ''}` }}
+                            </template>
+                            
                             <template v-slot:no-options="{ search, searching }">
                                 <template v-if="searching">
-                                    No se encontraron resultados para
-                                    <b>
-                                        <em>{{ search }}</em>
-                                    </b>.
+                                    No se encontraron resultados para <b><em>{{ search }}</em></b>.
                                 </template>
+                                <em v-else-if="modification.branch_id == null" style="opacity: 0.5"><b>Seleccione una sucursal.</b></em>
+                                <em v-else style="opacity: 0.5">Escribe el nombre de un producto.</em>
                             </template>
                         </v-select>
                     </div>
@@ -133,7 +115,7 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for>Costo</label>
+                                <label for>Costo $</label>
                                 <input
                                     type="number"
                                     step="0.0001"
@@ -149,7 +131,7 @@
                     </div>
 
                     <button
-                        v-if="modification.manage_series && modification.quantity > 0"
+                        v-if="modification.manager_series && modification.quantity > 0"
                         type="button"
                         class="btn btn-dark btn-block"
                         data-toggle="modal"
@@ -287,17 +269,17 @@ export default {
         return {
             products: [],
             series: [],
+            branches: [],
 
             product: {
                 manage_serie: false,
             },
 
+            //Vue select Product
+            searchingProduct: null,
             searchProduct: null,
-            searchSeries: null,
+            selectLoadingProduct: null
 
-            //Vue select
-            searching: null,
-            selectLoading: null,
         };
     },
     props: {
@@ -305,24 +287,50 @@ export default {
         errors: Object,
         disabled: Boolean,
     },
-    created() {
+    async created() {
+
+        await BaseUrl.get(`/api/branches`).then( resp=>{
+            this.branches = resp.data.data
+        })  
+
     },
     methods: {
-        onProductsSearch(search, loading) {
-            this.searchProduct = searchProduct;
-            this.selectLoading = loading;
+        onProductSearch(search, loading) {
+            this.searchProduct = search
+            this.selectLoadingProduct = loading
 
-            clearTimeout(this.searching);
+            clearTimeout(this.searchingProduct);
 
-            if (search.length !== 0) {
-                this.selectLoading(true);
-                this.searching = setTimeout(this.searchProduct, 500);
-            } else {
-                clearTimeout(this.searching);
-                this.products = [];
-                this.selectLoading(false);
+            if(search.length !== 0) {
+                this.selectLoadingProduct(true);
+                this.searchingProduct = setTimeout(this.searchProducts, 500)
+            }
+            else{
+                clearTimeout(this.searchingProduct)
+                this.products  = []
+                this.selectLoadingProduct(false)
             }
         },
+        searchProducts() {
+
+            BaseUrl.get(`api/kardex/search-products/${this.modification.branch_id}/${this.searchProduct}`).then((resp) => {
+
+                this.products = resp.data.data
+
+            })
+            .finally(() => {
+                this.selectLoadingProduct(false)
+            });
+
+        },
+        selectProduct(selectedOption){
+            this.modification.product_id = selectedOption.id
+            this.modification.stock = selectedOption.stock
+            this.modification.manager_series = Boolean(selectedOption.manager_series)
+            this.modification.referential_purchase_price = selectedOption.referential_purchase_price
+            console.log(this.modification)
+        },
+
 
         onSeriesSearch(search, loading) {
             this.searchSeries = searchSeries;
@@ -339,19 +347,6 @@ export default {
                 this.selectLoading(false);
             }
         },
-
-        async searchProduct() {
-            await BaseUrl.get(
-                `/api/products_url/${this.search}`
-            )
-            .then((resp) => {
-                this.products = resp.data.data;
-            })
-            .finally(() => {
-                this.selectLoading(false);
-            });
-        },
-
         async searchSeries() {
             await BaseUrl.get(
                 `/api/series_url/`

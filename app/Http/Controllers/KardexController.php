@@ -90,7 +90,7 @@ class KardexController extends Controller
 
     public function searchProducts($branchId, $search)
     {
-        $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'p.slug', 'p.cod', 'b.description as brand')
+        $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'p.slug', 'p.cod', 'b.description as brand', 'branch_product.stock', 'p.manager_series', 'branch_product.referential_purchase_price')
             ->where('branch_id', $branchId)
             ->join('products as p', 'branch_product.product_id', '=', 'p.id')
             ->join('brands as b', 'p.brand_id', '=', 'b.id')

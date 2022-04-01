@@ -46,7 +46,6 @@
                         <th>Costo</th>
                         <th>Stock</th>
                         <th>Observación</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,36 +56,6 @@
                         <td>{{ modification.price }}</td>
                         <td>{{ modification.stock }}</td>
                         <td>{{ modification.observation }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-danger dropdown-toggle"
-                                    type="button"
-                                    id="dropdownMenuButton"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >Acciones</button>
-                                <div
-                                    class="dropdown-menu"
-                                    aria-labelledby="dropdownMenuButton"
-                                    style
-                                >
-                                    <a class="dropdown-item" href="#">
-                                        <i class="col-1 mr-3 fas fa-edit"></i>
-                                        Editar
-                                    </a>
-                                    <a
-                                        class="dropdown-item"
-                                        href="#"
-                                        @click="deletemodification(modification.id)"
-                                    >
-                                        <i class="col-1 mr-3 fas fa-trash"></i>
-                                        Eliminar
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -109,13 +78,13 @@ export default {
         return {
             modification: {
                 type: 'ENTRADA',
-                branch_id: 'null', // tal vez lo necesites idk
+                branch_id: null, // tal vez lo necesites idk
                 product_id: null,
-                stock: 5,
-                manage_series: true,
+                stock: 0,
+                manager_series: true,
                 series: [],
                 quantity: null,
-                price_referential_purchase: null
+                referential_purchase_price: null
             },
             modifications: [],
             errors: [],
