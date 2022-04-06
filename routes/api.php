@@ -31,6 +31,7 @@ use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SerieController;
+use App\Http\Controllers\StockModificationController;
 use App\Http\Controllers\UbigeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoidedController;
@@ -157,10 +158,14 @@ Route::middleware([
     Route::apiResource('branches', BranchController::class)->names('api.branches');
 
     Route::get('kardex/{id}', [KardexController::class, 'show']);
-    Route::get('kardex/search-products/{branchId}/{search}', [KardexController::class, 'searchProducts'])->name('api.branches.searchProducts');
+    Route::get('kardex/search-products/{branchId}/{search}', [KardexController::class, 'searchProducts'])->name('api.kardex.searchProducts');
 
     Route::get('edit-series/{id}', [EditSerieController::class, 'show']);
     Route::put('edit-series/{id}', [EditSerieController::class, 'update']);
+
+    Route::post('stock-modification', [StockModificationController::class, 'store'])->name('api.stock-modification.store');
+    Route::get('stock-modification/search-products/{branchId}/{search}', [StockModificationController::class, 'searchProducts'])->name('api.stock-modification.searchProducts');
+    Route::get('stock-modification/branch-product-series/{branchProductId}', [StockModificationController::class, 'getBranchProductSeries'])->name('api.stock-modification.getBranchProductSeries');
 
 
     //------------------------Settings-----------------------

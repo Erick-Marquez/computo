@@ -8,7 +8,7 @@
         Nueva modificacion
     </button>
 
-    <form >
+    <form @submit.prevent="createModification()">
         <new-modification-vue :modification="modification" :errors="errors"></new-modification-vue>
     </form>
 
@@ -110,45 +110,26 @@ export default {
                 });
         },
 
-        async createmodification() {
-            await BaseUrl.post("/api/url", this.modification)
+        async createModification() {
+
+            console.log(this.modification)
+            await BaseUrl.post("/api/stock-modification", this.modification)
                 .then((response) => {
-                this.getModifications();
-                this.errors = [];
-                this.modification = { type: "ENTRADA"};
-                $("#new-modification").modal("hide");
-                Swal.fire("Registrado!", response.data.message, "success");
+                    this.getModifications();
+                    this.errors = [];
+                    this.modification = { type: "ENTRADA"};
+                    $("#new-modification").modal("hide");
+                    Swal.fire("Registrado!", response.data.message, "success");
+
+                    console.log(response)
                 })
                 .catch((error) => {
-                error.response.data.errors != undefined
-                    ? (this.errors = error.response.data.errors)
-                    : console.log(error.response);
+                    error.response.data.errors != undefined
+                        ? (this.errors = error.response.data.errors)
+                        : console.log(error.response);
                 });
         },
 
-        async deletemodification(id) {
-            Swal.fire({
-                title: "Estas seguro que desea eliminar este movimiento?",
-                text: "Esta accion no puede ser revertida!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#343a40",
-                cancelButtonColor: "#ee1919",
-                confirmButtonText: "Si, Borralo!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    BaseUrl.delete(`/api/url/` + id)
-                        .then((response) => {
-                            console.log(response.data);
-                            Swal.fire("Deleted!", "Su movimiento fue eliminado.", "success");
-                            this.getModifications();
-                        })
-                        .catch((error) => {
-                            console.log(error.response.data);
-                        });
-                }
-            });
-        },
         async searchTable() {
             clearTimeout(this.searchingTable);
             this.searchingTable = setTimeout(this.getModifications, 300);

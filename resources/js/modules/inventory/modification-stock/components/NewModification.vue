@@ -226,27 +226,16 @@
                 <div class="modal-body">
                     <div v-for="(index, q) in modification.quantity" :key="q.id">
                         <div v-if="modification.type == 'ENTRADA'" class="form-group">
-                            <input v-model="modification.series[index - 1]" class="form-control" type="text" :key="index"/>
+                            <input v-model="modification.series[index - 1]" class="form-control" type="text" :key="index" @keydown.enter.prevent/>
                         </div>
                         <div v-if="modification.type == 'SALIDA'" class="form-group ">
-                            <v-select
-                                v-model="modification.series[index - 1] "
-                                :key="index"
-                                :filterable="false"
-                                label="series"
-                                :reduce="(series) => series.serie"
-                                :options="series"
-                                @search="onPseriesSearch"
-                                @keydown.enter.prevent
-                            >
+
+                            <v-select v-model="modification.series[index - 1]" label="serie" :reduce="serie => serie.serie" :options="modification.allSeries" @keydown.enter.prevent>
                                 <template v-slot:no-options="{ search, searching }">
                                     <template v-if="searching">
-                                        No se encontraron resultados para
-                                        <b>
-                                            <em>{{ search }}</em>
-                                        </b>.
+                                    No se encontraron resultados para <b><em>{{ search }}</em></b>.
                                     </template>
-                                    <em v-else style="opacity: 0.5">Escribe la serie.</em>
+                                    <em v-else style="opacity: 0.5">Escribe la serie del producto.</em>
                                 </template>
                             </v-select>
                         </div>
@@ -313,7 +302,7 @@ export default {
         },
         searchProducts() {
 
-            BaseUrl.get(`api/kardex/search-products/${this.modification.branch_id}/${this.searchProduct}`).then((resp) => {
+            BaseUrl.get(`api/stock-modification/search-products/${this.modification.branch_id}/${this.searchProduct}`).then((resp) => {
 
                 this.products = resp.data.data
 
@@ -328,36 +317,21 @@ export default {
             this.modification.stock = selectedOption.stock
             this.modification.manager_series = Boolean(selectedOption.manager_series)
             this.modification.referential_purchase_price = selectedOption.referential_purchase_price
-            console.log(this.modification)
-        },
 
+            BaseUrl.get(`api/stock-modification/branch-product-series/${selectedOption.id}`).then((resp) => {
 
-        onSeriesSearch(search, loading) {
-            this.searchSeries = searchSeries;
-            this.selectLoading = loading;
+                this.modification.allSeries = resp.data.data
 
-            clearTimeout(this.searching);
-
-            if (search.length !== 0) {
-                this.selectLoading(true);
-                this.searching = setTimeout(this.searchSeries, 500);
-            } else {
-                clearTimeout(this.searching);
-                this.series = [];
-                this.selectLoading(false);
-            }
-        },
-        async searchSeries() {
-            await BaseUrl.get(
-                `/api/series_url/`
-            )
-            .then((resp) => {
-                this.series = resp.data.data;
             })
             .finally(() => {
-                this.selectLoading(false);
+                console.log(this.modification)
             });
+
         },
+
+        getProductSeries(){
+            
+        }
 
     },
 };

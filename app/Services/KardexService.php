@@ -80,7 +80,7 @@ class KardexService
         $kardex = Kardex::create([
             'date' => Carbon::now()->toDateTimeString(),
             'quantity' => $quantity,
-            'movement_type' => $operation == 'suma' ? Kardex::INGRESO : Kardex::SALIDA, // Determinar si es aumento o disminucion
+            'movement_type' => $operation == 'ENTRADA' ? Kardex::INGRESO : Kardex::SALIDA, // Determinar si es aumento o disminucion
             'description' => Kardex::MODIFICA_STOCK,
             'series' => $series,
             'branch_product_id' => $branch_product_id,
@@ -89,14 +89,14 @@ class KardexService
 
         // Actualizar stock de productos
         $branchProduct = BranchProduct::find($branch_product_id);
-        $branchProduct->stock = $operation == 'suma' ? $branchProduct->stock + $quantity : $branchProduct->stock - $quantity; // Determinar si es aumento o disminucion
+        $branchProduct->stock = $operation == 'ENTRADA' ? $branchProduct->stock + $quantity : $branchProduct->stock - $quantity; // Determinar si es aumento o disminucion
         $branchProduct->save();
 
         // Agregar las series si maneja serie
         if ($branchProduct->manager_series) { //Comprobar si maneja series
             foreach ($series as $serie) { // Iterar cada serie del array
 
-                if ($operation == 'suma') {
+                if ($operation == 'ENTRADA') {
                     // Agregar las series
                     BranchProductSerie::create([
                         'serie' => $serie,

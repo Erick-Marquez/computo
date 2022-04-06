@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BranchProductResource;
-use App\Http\Resources\KardexResource;
+use App\Http\Resources\BranchProductSerieResource;
 use App\Models\BranchProduct;
-use App\Models\Kardex;
+use App\Models\BranchProductSerie;
 use Illuminate\Http\Request;
 
-class KardexController extends Controller
+class StockModificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class KardexController extends Controller
      */
     public function index()
     {
-        
+        //
     }
 
     /**
@@ -38,7 +38,7 @@ class KardexController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
@@ -49,9 +49,7 @@ class KardexController extends Controller
      */
     public function show($id)
     {
-        // $kardex = Kardex::where('branch_product_id', $id)->paginate(3)->sum('quantity');
-        $kardex = Kardex::where('branch_product_id', $id)->get();
-        return KardexResource::collection($kardex);
+        //
     }
 
     /**
@@ -90,18 +88,28 @@ class KardexController extends Controller
 
     public function searchProducts($branchId, $search)
     {
-        $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'p.slug', 'p.cod', 'b.description as brand')
+        $branchProducts = BranchProduct::select('branch_product.id', 'p.name', 'p.slug', 'p.cod', 'b.description as brand', 'branch_product.stock', 'p.manager_series', 'branch_product.referential_purchase_price')
             ->where('branch_id', $branchId)
             ->join('products as p', 'branch_product.product_id', '=', 'p.id')
             ->join('brands as b', 'p.brand_id', '=', 'b.id')
             ->where('p.slug', 'like', '%'. $search .'%')
+            ->with([
+                'branchProductSeries' => function ($query) {
+                    $query->where('sold', '=', 0);
+                }
+            ])
             ->limit(10)->get();
         return BranchProductResource::collection($branchProducts);
     }
     
-    public function print($branchProductId)
+    public function getBranchProductSeries($branchProductId)
     {
-        $kardex = Kardex::where('branch_product_id', $branchProductId)->get();
-        return KardexResource::collection($kardex);
+        $branchProductSeries = BranchProductSerie::select('serie')
+            ->where('branch_product_id', $branchProductId)
+            ->where('sold', '=', 0)
+            ->get();
+
+        return BranchProductSerieResource::make($branchProductSeries);
+
     }
 }
