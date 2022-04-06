@@ -20,7 +20,7 @@
                                 id="expenses"
                                 name="modifications"
                                 value="ENTRADA"
-                                v-model="modification.type"
+                                v-model="modification.operation"
                                 checked="true"
                                 @change="modification.series = []"
                             />
@@ -33,7 +33,7 @@
                                 id="incomes"
                                 name="modifications"
                                 value="SALIDA"
-                                v-model="modification.type"
+                                v-model="modification.operation"
                                 @change="modification.series = []"
                             />
                             <label for="incomes" class="custom-control-label">SALIDA</label>
@@ -41,8 +41,8 @@
                     </div>
                     <div
                         class="invalid-feedback ml-3"
-                        v-if="$errorsExists(errors['type'])"
-                    >{{ $errorsPrint(errors["type"]) }}</div>
+                        v-if="$errorsExists(errors['operation'])"
+                    >{{ $errorsPrint(errors["operation"]) }}</div>
 
                     <div class="form-group">
                         <label for="" class="lead">Sucursal</label>
@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <!-- <div class="col">
                             <div class="form-group">
                                 <label for>Costo $</label>
                                 <input
@@ -127,7 +127,7 @@
                                     v-if="$errorsExists(errors['referential_purchase_price'])"
                                 >{{ $errorsPrint(errors["referential_purchase_price"]) }}</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <button
@@ -159,7 +159,7 @@
                 </div>
 
                 <div
-                    v-if="modification.type == 'ENTRADA' && modification.quantity != null && modification.stock != null"
+                    v-if="modification.operation == 'ENTRADA' && modification.quantity != null && modification.stock != null"
                     class="alert alert-success alert-dismissible fade show mx-3"
                     role="alert"
                 >
@@ -178,7 +178,7 @@
                 </div>
 
                 <div
-                    v-else-if="modification.type == 'SALIDA' && modification.quantity != null && modification.stock != null"
+                    v-else-if="modification.operation == 'SALIDA' && modification.quantity != null && modification.stock != null"
                     class="alert alert-danger alert-dismissible fade show mx-3"
                     role="alert"
                 >
@@ -225,10 +225,10 @@
                 </div>
                 <div class="modal-body">
                     <div v-for="(index, q) in modification.quantity" :key="q.id">
-                        <div v-if="modification.type == 'ENTRADA'" class="form-group">
+                        <div v-if="modification.operation == 'ENTRADA'" class="form-group">
                             <input v-model="modification.series[index - 1]" class="form-control" type="text" :key="index" @keydown.enter.prevent/>
                         </div>
-                        <div v-if="modification.type == 'SALIDA'" class="form-group ">
+                        <div v-if="modification.operation == 'SALIDA'" class="form-group ">
 
                             <v-select v-model="modification.series[index - 1]" label="serie" :reduce="serie => serie.serie" :options="modification.allSeries" @keydown.enter.prevent>
                                 <template v-slot:no-options="{ search, searching }">
@@ -313,7 +313,7 @@ export default {
 
         },
         selectProduct(selectedOption){
-            this.modification.product_id = selectedOption.id
+            this.modification.branch_product_id = selectedOption.id
             this.modification.stock = selectedOption.stock
             this.modification.manager_series = Boolean(selectedOption.manager_series)
             this.modification.referential_purchase_price = selectedOption.referential_purchase_price

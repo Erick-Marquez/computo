@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StockModificationRequest;
 use App\Http\Resources\BranchProductResource;
 use App\Http\Resources\BranchProductSerieResource;
+use App\Http\Resources\StockModificationResource;
 use App\Models\BranchProduct;
 use App\Models\BranchProductSerie;
+use App\Models\StockModification;
+use App\Services\KardexService;
 use Illuminate\Http\Request;
 
 class StockModificationController extends Controller
@@ -17,7 +21,14 @@ class StockModificationController extends Controller
      */
     public function index()
     {
-        //
+        $stockModifications = StockModification::with('branchProduct.product')
+                                ->included()
+                                ->filter()
+                                ->search()
+                                ->sort()
+                                ->getOrPaginate();
+
+        return StockModificationResource::collection($stockModifications);
     }
 
     /**
@@ -36,9 +47,25 @@ class StockModificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StockModificationRequest $request)
     {
-        return $request;
+        $stockModification = StockModification::create([
+
+            'observation' => $request->observation,
+            'date' => now(),
+
+            'quantity' => $request->quantity,
+            'operation' => $request->operation,
+            'series' => $request->series,
+
+            'branch_product_id' => $request->branch_product_id,
+            'branch_id' => $request->branch_id,
+            'user_id' => auth()->user()->id
+        ]);
+
+        KardexService::stockModification($request->quantity, $request->operation, $request->series, $request->branch_product_id, auth()->user()->id);
+
+        return StockModificationResource::make($stockModification);
     }
 
     /**
@@ -93,11 +120,6 @@ class StockModificationController extends Controller
             ->join('products as p', 'branch_product.product_id', '=', 'p.id')
             ->join('brands as b', 'p.brand_id', '=', 'b.id')
             ->where('p.slug', 'like', '%'. $search .'%')
-            ->with([
-                'branchProductSeries' => function ($query) {
-                    $query->where('sold', '=', 0);
-                }
-            ])
             ->limit(10)->get();
         return BranchProductResource::collection($branchProducts);
     }

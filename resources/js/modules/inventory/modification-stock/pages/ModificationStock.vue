@@ -43,18 +43,14 @@
                         <th>Fecha</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
-                        <th>Costo</th>
-                        <th>Stock</th>
                         <th>Observación</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="modification in modifications" :key="modification.id">
-                        <td>{{ datetime(modification.date) }}</td>
-                        <td>{{ modification.product_name }}</td>
+                        <td>{{ datetime(modification.created_at) }}</td>
+                        <td>{{ modification.branch_product.product.slug }}</td>
                         <td>{{ modification.quantity }}</td>
-                        <td>{{ modification.price }}</td>
-                        <td>{{ modification.stock }}</td>
                         <td>{{ modification.observation }}</td>
                     </tr>
                 </tbody>
@@ -77,9 +73,9 @@ export default {
     data() {
         return {
             modification: {
-                type: 'ENTRADA',
+                operation: 'ENTRADA',
                 branch_id: null, // tal vez lo necesites idk
-                product_id: null,
+                branch_product_id: null,
                 stock: 0,
                 manager_series: true,
                 series: [],
@@ -99,7 +95,7 @@ export default {
     methods: {
         async getModifications() {
             await BaseUrl.get(
-                `api/url?sort=-id&perPage=10&page=${this.$route.query.page}`
+                `api/stock-modification?sort=-id&perPage=10&page=${this.$route.query.page}`
             )
                 .then((response) => {
                     this.modifications = response.data.data;
@@ -117,13 +113,14 @@ export default {
                 .then((response) => {
                     this.getModifications();
                     this.errors = [];
-                    this.modification = { type: "ENTRADA"};
+                    this.modification = { operation: "ENTRADA"};
                     $("#new-modification").modal("hide");
                     Swal.fire("Registrado!", response.data.message, "success");
 
                     console.log(response)
                 })
                 .catch((error) => {
+                    console.log(error.response)
                     error.response.data.errors != undefined
                         ? (this.errors = error.response.data.errors)
                         : console.log(error.response);

@@ -163,6 +163,7 @@ Route::middleware([
     Route::get('edit-series/{id}', [EditSerieController::class, 'show']);
     Route::put('edit-series/{id}', [EditSerieController::class, 'update']);
 
+    Route::get('stock-modification', [StockModificationController::class, 'index'])->name('api.stock-modification.index');
     Route::post('stock-modification', [StockModificationController::class, 'store'])->name('api.stock-modification.store');
     Route::get('stock-modification/search-products/{branchId}/{search}', [StockModificationController::class, 'searchProducts'])->name('api.stock-modification.searchProducts');
     Route::get('stock-modification/branch-product-series/{branchProductId}', [StockModificationController::class, 'getBranchProductSeries'])->name('api.stock-modification.getBranchProductSeries');
