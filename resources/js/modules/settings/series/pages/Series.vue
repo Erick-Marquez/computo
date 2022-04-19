@@ -229,6 +229,7 @@ export default {
         this.serieCreate = {
           serie: '',
           current_number: 1,
+          have_igv: false,
           voucher_type_id: '',
           branch_id: ''
         }

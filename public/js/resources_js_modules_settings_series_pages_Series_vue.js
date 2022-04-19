@@ -162,6 +162,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this6.serieCreate = {
           serie: '',
           current_number: 1,
+          have_igv: false,
           voucher_type_id: '',
           branch_id: ''
         };
