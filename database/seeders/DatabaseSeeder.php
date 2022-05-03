@@ -26,6 +26,49 @@ class DatabaseSeeder extends Seeder
         Storage::makeDirectory('public/assemblies');
         Storage::makeDirectory('public/products');
 
+        //Direcrotios Facturacion
+        Storage::deleteDirectory('Facturacion/Baja/Cdr');
+        Storage::deleteDirectory('Facturacion/Baja/Xml');
+        Storage::deleteDirectory('Facturacion/Baja/ZipXml');
+
+        Storage::deleteDirectory('Facturacion/Boleta/Cdr');
+        Storage::deleteDirectory('Facturacion/Boleta/Xml');
+        Storage::deleteDirectory('Facturacion/Boleta/ZipXml');
+
+        Storage::deleteDirectory('Facturacion/Factura/Cdr');
+        Storage::deleteDirectory('Facturacion/Factura/Xml');
+        Storage::deleteDirectory('Facturacion/Factura/ZipXml');
+
+        Storage::deleteDirectory('Facturacion/NotaCredito/Cdr');
+        Storage::deleteDirectory('Facturacion/NotaCredito/Xml');
+        Storage::deleteDirectory('Facturacion/NotaCredito/ZipXml');
+
+        Storage::deleteDirectory('Facturacion/NotaDebito/Cdr');
+        Storage::deleteDirectory('Facturacion/NotaDebito/Xml');
+        Storage::deleteDirectory('Facturacion/NotaDebito/ZipXml');
+
+
+
+        Storage::makeDirectory('Facturacion/Baja/Cdr');
+        Storage::makeDirectory('Facturacion/Baja/Xml');
+        Storage::makeDirectory('Facturacion/Baja/ZipXml');
+
+        Storage::makeDirectory('Facturacion/Boleta/Cdr');
+        Storage::makeDirectory('Facturacion/Boleta/Xml');
+        Storage::makeDirectory('Facturacion/Boleta/ZipXml');
+
+        Storage::makeDirectory('Facturacion/Factura/Cdr');
+        Storage::makeDirectory('Facturacion/Factura/Xml');
+        Storage::makeDirectory('Facturacion/Factura/ZipXml');
+
+        Storage::makeDirectory('Facturacion/NotaCredito/Cdr');
+        Storage::makeDirectory('Facturacion/NotaCredito/Xml');
+        Storage::makeDirectory('Facturacion/NotaCredito/ZipXml');
+
+        Storage::makeDirectory('Facturacion/NotaDebito/Cdr');
+        Storage::makeDirectory('Facturacion/NotaDebito/Xml');
+        Storage::makeDirectory('Facturacion/NotaDebito/ZipXml');
+
         $this->call(RoleSeeder::class);
         $this->call(VoucherTypeSeeder::class);
         // $this->call(ProductSeeder::class);
