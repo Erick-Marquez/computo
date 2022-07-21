@@ -1,0 +1,21 @@
+FROM php:7.3-fpm-alpine
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN apk --update add openssl wget unzip && rm -rf /var/cache/apk/*
+
+RUN install-php-extensions pdo pdo_mysql zip @composer-2.0.2
+
+# para que de rapido
+WORKDIR /var/www/html
+
+COPY . .
+
+# CIERRA LOS OJOS NANCY, NO QUIERO QUE VEAS ESTO
+RUN composer install
+
+# da permisos para editar los archivos en esta ruta del container
+RUN chown -R www-data:www-data /var/www
+RUN chmod -R 766 /var/www/html/storage
+
+RUN COMPOSER_VENDOR_DIR="/var/www/vendor" composer install
