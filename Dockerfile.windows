@@ -4,7 +4,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN apk --update add openssl wget unzip && rm -rf /var/cache/apk/*
 
-RUN install-php-extensions pdo pdo_mysql zip @composer-2.0.2
+RUN install-php-extensions pdo pdo_mysql gd xdebug imagick zip @composer-2.0.2
 
 # para que de rapido
 WORKDIR /var/www/html

@@ -40,7 +40,7 @@ services:
     php:
         build:
             context: .
-            dockerfile: Dockerfile.windows
+            dockerfile: Dockerfile
         container_name: php
         volumes:
             - .:/var/www/html
