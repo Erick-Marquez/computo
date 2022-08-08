@@ -149,6 +149,9 @@
         <form @submit.prevent="editUser()">
           <div class="modal-body">
             <div class="form-group">
+              <input type="text" class="form-control" v-model="userEdit.id" required>
+            </div>
+            <div class="form-group">
               <label for="name">Nombre</label>
               <input type="text" class="form-control" v-model="userEdit.name" required>
             </div>
@@ -211,6 +214,7 @@ export default {
         roles: []
       },
       userEdit: {
+        id: '',
         name: '',
         email: '',
         branch_id: '',
