@@ -270,12 +270,21 @@ class VoucherController extends Controller
 
     public function searchProducts($search)
     {
+        $params = explode(' ', $search);
+
+        $params = array_filter($params, function($var){
+            return $var != "";
+        });
+        
+        //return $params;
         $branchProducts = BranchProduct::from('branch_product AS bp')
             ->where('bp.branch_id', auth()->user()->branch_id)
-            ->where(function($query) use ($search){
-                $query->where('p.name', 'like', '%' . $search . '%')
-                ->orWhere('p.cod', 'like', '%' . $search . '%')
-                ->orWhere('p.slug', 'like', '%' . $search . '%');
+            ->where(function($query) use ($params){
+                foreach ($params as $key => $param) {
+                    $query->where('p.name', 'like', '%' . $param . '%')
+                    ->orWhere('p.cod', 'like', '%' . $param . '%')
+                    ->orWhere('p.slug', 'like', '%' . $param . '%');
+                }
             })
             ->join('products AS p', 'bp.product_id', '=', 'p.id')
             ->join('brands AS b', 'p.brand_id', '=', 'b.id')
